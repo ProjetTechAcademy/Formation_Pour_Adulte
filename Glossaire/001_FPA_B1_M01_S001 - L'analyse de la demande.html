@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>001_FPA_B1_M01_S001 - L'analyse de la demande | Glossaire PAIA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&family=Lexend:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Codes Couleurs Officiels Mathilde Martine PAISLEY */
+            --cta-yellow: #D9A526;
+            --title-blue: #0F2C48;
+            --surface-ivory: #F6F2E8;
+            --alert-bronze: #B4792A;
+
+            --bg-main: #FFFFFF;
+            --text-dark: #1e293b;
+            --base-font-size: 16px;
+        }
+
+        html {
+            font-size: var(--base-font-size);
+            transition: font-size 0.3s ease;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .font-code { font-family: 'Space Mono', monospace; }
+
+        /* HEADER */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--title-blue);
+        }
+
+        /* NAVIGATION RESPONSIVE */
+        .nav-container {
+            display: flex; align-items: center; gap: 1rem;
+            overflow-x: auto; white-space: nowrap; padding-bottom: 5px;
+            scrollbar-width: none;
+        }
+        .nav-container::-webkit-scrollbar { display: none; }
+
+        .nav-link {
+            color: var(--title-blue); font-weight: 700; padding: 0.5rem 1rem;
+            border-radius: 0.5rem; transition: all 0.2s; border: 2px solid transparent; font-size: 0.9rem;
+        }
+        .nav-link:hover { background: var(--surface-ivory); border-color: var(--cta-yellow); }
+
+        .nav-link-teams {
+            background: linear-gradient(135deg, #464EB8 0%, #E81123 50%, #FFB900 100%);
+            color: white !important; border: none; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(232, 17, 35, 0.3);
+        }
+        .nav-link-teams:hover {
+            transform: scale(1.05); box-shadow: 0 6px 20px rgba(232, 17, 35, 0.5);
+            filter: brightness(1.1); color: white !important;
+        }
+
+        /* CARTES DU GLOSSAIRE */
+        .glossary-card {
+            background-color: var(--surface-ivory);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(15, 44, 72, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(15, 44, 72, 0.05);
+        }
+
+        .glossary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(217, 165, 38, 0.15);
+            border-color: var(--cta-yellow);
+        }
+
+        /* ALPHABET FILTRE */
+        .alpha-btn {
+            background: var(--surface-ivory);
+            color: var(--title-blue);
+            border: 1px solid rgba(15, 44, 72, 0.2);
+            border-radius: 8px;
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; cursor: pointer; transition: all 0.2s ease;
+        }
+        .alpha-btn:hover { border-color: var(--cta-yellow); color: var(--alert-bronze); }
+        .alpha-btn.active {
+            background: var(--cta-yellow); color: white;
+            border-color: var(--cta-yellow); box-shadow: 0 4px 10px rgba(217, 165, 38, 0.3);
+        }
+
+        /* RECHERCHE */
+        .search-container {
+            background: var(--surface-ivory);
+            border: 2px solid rgba(15, 44, 72, 0.1);
+            transition: 0.3s;
+        }
+        .search-container:focus-within {
+            border-color: var(--cta-yellow);
+            box-shadow: 0 0 15px rgba(217, 165, 38, 0.1);
+        }
+
+        /* BARRE DE CONTRÔLE ACCESSIBILITÉ */
+        #global-controls-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+            display: flex; justify-content: center; gap: 10px; align-items: center; flex-wrap: wrap;
+            background: var(--title-blue);
+            padding: 10px; box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.3);
+            border-top: 3px solid var(--cta-yellow);
+        }
+        .control-group { display: flex; gap: 8px; align-items: center; background: rgba(255, 255, 255, 0.1); padding: 5px 12px; border-radius: 8px; }
+        .acc-btn { color: white; padding: 4px 8px; font-weight: bold; cursor: pointer; border: none; background: transparent; transition: 0.2s; }
+        .acc-btn:hover { color: var(--cta-yellow); transform: scale(1.1); }
+
+        /* NAVIGATION VERTICALE FINE (SCROLL) */
+        .nav-2in1-bar {
+            position: fixed; bottom: 95px; right: 15px; z-index: 1000;
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+            border-radius: 40px; width: 36px; padding: 6px 0;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            border: 1px solid rgba(15, 44, 72, 0.15); box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        .nav-btn {
+            width: 28px; height: 28px; border-radius: 50%; color: white;
+            display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
+            transition: 0.3s; cursor: pointer; border: none; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .nav-btn:hover { transform: scale(1.15); }
+        .nav-btn-up { background: linear-gradient(to top, var(--title-blue), #464EB8); }
+        .nav-btn-down { background: linear-gradient(to bottom, var(--cta-yellow), #E81123); }
+        .nav-btn.hidden-nav { opacity: 0; pointer-events: none; transform: scale(0.8); }
+
+        /* DYSLEXIE MODE */
+        body.dyslexia-mode {
+            font-family: 'Lexend', sans-serif !important;
+            letter-spacing: 0.08em; word-spacing: 0.15em;
+        }
+
+        .example-section {
+            background: white; border-left: 3px solid var(--alert-bronze);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header PAIA -->
+    <header class="glass-header h-[90px] md:h-[100px] flex items-center z-50 sticky top-0 shadow-sm">
+        <div class="w-full max-w-[1600px] mx-auto px-4 lg:px-6 flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4">
+
+            <!-- Logo & Titre -->
+            <div class="flex items-center gap-3 w-full md:w-auto cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png"
+                     alt="PAIA Logo" class="w-12 h-12 rounded-xl border-2 border-[var(--cta-yellow)] bg-white object-cover">
+                <div>
+                    <h1 class="text-lg md:text-xl font-black text-[var(--title-blue)] tracking-tight uppercase">Paia</h1>
+                    <p class="text-[10px] text-[var(--alert-bronze)] font-bold uppercase tracking-widest">Glossaire Module</p>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="nav-container w-full md:w-auto pb-2 md:pb-0">
+                <a href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/#" class="bg-[var(--title-blue)] text-white border-2 border-[var(--title-blue)] hover:bg-[var(--cta-yellow)] hover:border-[var(--cta-yellow)] hover:text-[var(--title-blue)] px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-sm">FPA</a>
+                <a href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/Examen/Examen.html" class="bg-[var(--alert-bronze)] text-white border-2 border-[var(--alert-bronze)] hover:bg-[var(--cta-yellow)] hover:border-[var(--cta-yellow)] hover:text-[var(--title-blue)] px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-sm">HUB</a>
+                <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="nav-link-teams px-5 py-2 rounded-lg font-bold text-sm flex items-center gap-2 shadow-sm transition-all">
+                    <i class="fab fa-microsoft"></i> TEAMS
+                </a>
+                <div class="hidden sm:flex px-3 py-2 bg-[var(--surface-ivory)] rounded-lg border border-[var(--cta-yellow)] text-[var(--title-blue)] font-bold text-xs ml-2 shadow-sm">
+                    <span id="totalWords">100</span>&nbsp;MOTS
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-[1600px] mx-auto px-4 lg:px-6 py-8 md:py-12">
+
+        <div class="mb-10 text-center lg:text-left">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-[var(--title-blue)] mb-4 tracking-tight">
+                001_FPA_B1_M01_S001 - <span class="text-[var(--cta-yellow)]">L'analyse de la demande</span> ✨
+            </h2>
+            <p class="text-base md:text-lg text-[var(--title-blue)] max-w-2xl border-l-4 border-[var(--cta-yellow)] pl-4 md:pl-6 mx-auto lg:mx-0">
+                Glossaire spécifique : 100 concepts clés extraits directement du document d'étude.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
+
+            <!-- Colonne de gauche : Filtres -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Recherche -->
+                <div class="search-container p-2 rounded-2xl flex items-center">
+                    <i class="fas fa-search ml-4 text-[var(--alert-bronze)]"></i>
+                    <input type="text" id="searchInput" placeholder="Rechercher..."
+                           class="w-full bg-transparent border-none py-3 px-4 focus:outline-none font-medium text-[var(--title-blue)]">
+                </div>
+
+                <!-- Alphabet -->
+                <div class="p-6 bg-[var(--surface-ivory)] rounded-2xl shadow-sm border border-[rgba(15,44,72,0.1)]">
+                    <h4 class="font-bold text-[var(--title-blue)] mb-4 flex items-center gap-2 text-xs uppercase tracking-widest border-b border-[rgba(15,44,72,0.1)] pb-2">
+                        <i class="fas fa-filter text-[var(--cta-yellow)]"></i> Filtre Alpha
+                    </h4>
+                    <div class="flex flex-wrap gap-2" id="alphabetContainer"></div>
+                </div>
+            </div>
+
+            <!-- Colonne de droite : Grille des mots -->
+            <div class="lg:col-span-3">
+                <div id="glossaryGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+
+                <div id="emptyState" class="hidden flex-col items-center justify-center py-20 text-center bg-[var(--surface-ivory)] rounded-3xl mt-6 border border-[rgba(15,44,72,0.1)]">
+                    <span class="text-6xl mb-4 opacity-50">🛰️</span>
+                    <h3 class="text-2xl font-bold text-[var(--title-blue)]">Aucun terme trouvé</h3>
+                    <button onclick="resetFilters()" class="mt-4 px-6 py-2 bg-[var(--cta-yellow)] text-white rounded-lg font-bold hover:bg-[var(--alert-bronze)] transition-colors">Réinitialiser</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer PAIA -->
+    <footer class="mt-auto py-10 pb-[110px] flex flex-col items-center justify-center gap-4 border-t-4 border-[var(--title-blue)] bg-[var(--surface-ivory)]">
+        <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg"
+             alt="Logo MMPA" class="w-16 h-16 rounded-full border-2 border-[var(--cta-yellow)] shadow-md object-cover">
+        <p class="text-[var(--title-blue)] font-bold text-xs md:text-sm text-center px-4 tracking-wide max-w-2xl leading-relaxed">
+            💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026 Tous droits réservés
+        </p>
+    </footer>
+
+    <!-- BARRE DE NAVIGATION VERTICALE (Scroll) -->
+    <div class="nav-2in1-bar">
+        <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="nav-btn nav-btn-up hidden-nav" title="Remonter"><i class="fas fa-arrow-up"></i></button>
+        <button id="scrollBottomBtn" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" class="nav-btn nav-btn-down" title="Descendre"><i class="fas fa-arrow-down"></i></button>
+    </div>
+
+    <!-- Barre de Contrôle Accessibilité -->
+    <div id="global-controls-bar">
+        <div class="control-group">
+            <button class="acc-btn" onclick="toggleDyslexia()" title="Mode Dyslexie"><i class="fas fa-eye"></i></button>
+        </div>
+        <div class="control-group">
+            <button class="acc-btn" onclick="changeSize(-1)"><i class="fas fa-font text-sm"></i>-</button>
+            <button class="acc-btn" onclick="changeSize(1)"><i class="fas fa-font text-lg"></i>+</button>
+        </div>
+        <div class="control-group">
+            <button class="acc-btn" onclick="toggleMute()" id="muteBtn"><i class="fas fa-volume-up"></i></button>
+        </div>
+        <div class="control-group">
+            <button class="acc-btn" onclick="changeSpeechRate(-0.1)">🐌</button>
+            <span id="ui-rate" class="text-white font-code text-xs font-bold w-10 text-center">x1.1</span>
+            <button class="acc-btn" onclick="changeSpeechRate(0.1)">🐇</button>
+        </div>
+    </div>
+
+    <script>
+        // --- BASE DE DONNÉES SPÉCIFIQUE AU MODULE 001 (100 MOTS EXTRAITS DU PDF) ---
+        const glossaryData = [
+            { term: "Acteurs de la formation", emoji: "👥", cat: "Acteurs", def: "Personnes mobilisées à chacune des étapes d'un projet de formation (commanditaire, experts métier, apprenants, formateurs, management).", example: "L'expert métier qui aide le formateur à valider le contenu." },
+            { term: "Analyse de la demande", emoji: "📋", cat: "Ingénierie", def: "Préalable incontournable à tout parcours de formation pour balayer tous les critères et faire émerger le besoin concret.", example: "Interviewer le client pour comprendre son besoin réel avant de créer l'offre." },
+            { term: "Apprenant", emoji: "🧑‍🎓", cat: "Acteurs", def: "Bénéficiaire final de la formation, dont il faut analyser le profil, les prérequis et la motivation.", example: "Les 12 salariés commerciaux ciblés par la formation." },
+            { term: "Aspiration", emoji: "✨", cat: "Besoins", def: "L'un des trois aspects d'un besoin en formation, correspondant à un souhait concernant le futur professionnel ou l'organisation.", example: "Le souhait de devenir plus performant à l'oral." },
+            { term: "Auto-détermination", emoji: "🎯", cat: "Apprenant", def: "Degré de choix et d'initiative de l'apprenant face à son projet de formation (formation choisie vs subie).", example: "Un apprenant qui s'inscrit de lui-même à une VAE a une forte auto-détermination." },
+            { term: "Besoin en formation", emoji: "🔍", cat: "Besoins", def: "Écart constaté entre l'état actuel insatisfaisant et l'état futur souhaité, auquel la formation peut répondre.", example: "Le manque de maîtrise d'un nouveau logiciel." },
+            { term: "Bibliographie", emoji: "📚", cat: "Ressources", def: "Ensemble des ouvrages et documents de référence utilisés pour répertorier des ressources pédagogiques lors de la conception.", example: "Consulter un livre sur le management pour préparer son cours." },
+            { term: "Cadre inter-entreprises", emoji: "🏢", cat: "Ingénierie", def: "Offre de formation construite en fonction d'une demande globale du marché, regroupant des apprenants de différentes entreprises.", example: "Une session publique de formation FPA à Paris." },
+            { term: "Cadre intra-entreprise", emoji: "🤝", cat: "Ingénierie", def: "Offre de formation construite en réponse à la demande spécifique d'un seul commanditaire pour ses propres salariés.", example: "Une formation sur-mesure pour l'entreprise Studia." },
+            { term: "Certification", emoji: "🏅", cat: "Objectifs", def: "Validation officielle des compétences acquises à l'issue d'un dispositif de formation multimodale.", example: "L'obtention du Titre Professionnel de Formateur d'Adultes." },
+            { term: "Changement stratégique", emoji: "📈", cat: "Besoins", def: "Projet global de l'entreprise (nouvelle culture, nouveau produit) dans lequel s'inscrit la demande de formation.", example: "Déployer une nouvelle méthode de vente au sein des équipes." },
+            { term: "Client final", emoji: "🛒", cat: "Acteurs", def: "La clientèle de l'organisation commanditaire, qu'il est parfois nécessaire d'interroger pour comprendre l'environnement de travail.", example: "Les acheteurs en magasin qui interagissent avec les apprenants." },
+            { term: "Co-financement externe", emoji: "💶", cat: "Moyens", def: "Aides financières provenant d'organismes tiers (OPCO, État) pour aider le commanditaire à payer la formation.", example: "Une subvention de la DREETS pour financer le projet." },
+            { term: "Commanditaire", emoji: "👔", cat: "Acteurs", def: "La personne ou l'entité qui passe commande de la formation et indique les enjeux et objectifs à atteindre.", example: "Le DRH de l'entreprise qui demande une formation pour ses équipes." },
+            { term: "Compétence pédagogique", emoji: "🧩", cat: "Compétences", def: "Capacité du formateur à transmettre un savoir et accompagner l'apprentissage d'un adulte.", example: "Savoir utiliser la méthode démonstrative efficacement." },
+            { term: "Compétence technique", emoji: "⚙️", cat: "Compétences", def: "L'expertise métier du formateur sur le sujet qu'il enseigne.", example: "Maîtriser Excel pour animer une formation sur les tableurs." },
+            { term: "Conception de formation", emoji: "🏗️", cat: "Ingénierie", def: "Processus d'ébauche et de création d'un parcours de formation (en présentiel, distanciel ou AFEST).", example: "Rédiger le scénario pédagogique et créer les slides." },
+            { term: "Conseiller en formation", emoji: "📞", cat: "Acteurs", def: "Interlocuteur qui accompagne le futur apprenant dans son inscription et le montage financier de son dossier.", example: "L'expert Studi qui valide votre éligibilité au CPF." },
+            { term: "Contexte d'apprentissage", emoji: "🌍", cat: "Besoins", def: "Ensemble des conditions spatiales, temporelles et sociales dans lesquelles se déroule la formation.", example: "Une formation en situation de travail dans un atelier bruyant." },
+            { term: "Contenu intemporel", emoji: "🕰️", cat: "Ressources", def: "Contenu de formation fixé une fois pour toutes, dont le fond ne change plus.", example: "Les principes de base de la communication non-verbale." },
+            { term: "Contenu temporel", emoji: "📅", cat: "Ressources", def: "Contenu nécessitant une actualisation régulière du fait des évolutions légales ou techniques.", example: "Le module sur le cadre légal de la formation professionnelle." },
+            { term: "Contraintes de disponibilité", emoji: "⏳", cat: "Moyens", def: "Limites de temps imposées par les apprenants ou le commanditaire pour la réalisation du projet.", example: "Les apprenants ne sont disponibles que le lundi matin." },
+            { term: "Délais de conception", emoji: "⏱️", cat: "Moyens", def: "Temps alloué au formateur ou à l'équipe pédagogique pour créer les ressources avant l'animation.", example: "Avoir 3 semaines pour préparer un support de cours de 10 heures." },
+            { term: "Déploiement de formation", emoji: "🚀", cat: "Ingénierie", def: "Phase de mise en œuvre et d'animation concrète du parcours de formation auprès des apprenants.", example: "Le lancement de la première classe virtuelle du programme." },
+            { term: "Dispositif de formation", emoji: "🛠️", cat: "Ingénierie", def: "Ensemble des moyens, ressources et modalités articulés pour permettre l'apprentissage.", example: "Un parcours sur 3 mois mixant e-learning et regroupements en salle." },
+            { term: "Distanciel (FOAD)", emoji: "💻", cat: "Modalités", def: "Modalité pédagogique se déroulant à distance, via des outils numériques.", example: "Une session de cours dispensée via une plateforme e-learning." },
+            { term: "Document livrable", emoji: "📑", cat: "Ingénierie", def: "Document concret produit à chacune des étapes du projet de formation.", example: "Le programme de formation ou la progression pédagogique." },
+            { term: "D'où partez-vous ?", emoji: "📍", cat: "Questionnement", def: "Question clé de l'analyse visant à faire formuler par le client l'état actuel insatisfaisant de son entreprise.", example: "Identifier que les commerciaux perdent 30% de leurs ventes actuellement." },
+            { term: "En quoi la formation est un outil ?", emoji: "🔧", cat: "Questionnement", def: "Question permettant de vérifier si la formation est bien la solution adaptée au problème posé.", example: "S'assurer que le problème vient bien d'un manque de compétences et non d'un manque de matériel." },
+            { term: "Engagement de l'apprenant", emoji: "🔥", cat: "Apprenant", def: "Niveau d'investissement personnel et d'assiduité du stagiaire vis-à-vis du projet de formation.", example: "Un apprenant qui participe activement à tous les forums." },
+            { term: "Enjeux du projet", emoji: "🎯", cat: "Besoins", def: "Raisons majeures (stratégiques, économiques) qui poussent le commanditaire à investir dans la formation.", example: "La survie de l'entreprise face à une nouvelle concurrence technologique." },
+            { term: "Entretien d'explicitation", emoji: "🎙️", cat: "Outils", def: "Outil d'analyse consistant à échanger avec le commanditaire pour explorer les 3 pistes du besoin de formation.", example: "Un rendez-vous d'une heure avec le DRH pour définir le cahier des charges." },
+            { term: "Équipement informatique", emoji: "🖥️", cat: "Moyens", def: "Matériel technologique nécessaire pour le bon déroulement des modalités présentielles ou distancielles.", example: "PC, tablettes, téléphones, réseau wifi." },
+            { term: "Équipement pédagogique", emoji: "🧰", cat: "Moyens", def: "Matériel didactique mis à disposition pour l'animation de la session de formation.", example: "Vidéoprojecteur, paperboard, maquettes." },
+            { term: "État actuel insatisfaisant", emoji: "📉", cat: "Besoins", def: "La situation de départ qui pose problème et qui justifie la demande de formation.", example: "Les équipes font trop d'erreurs sur la ligne de production." },
+            { term: "État futur souhaité", emoji: "📈", cat: "Besoins", def: "L'objectif à atteindre ou la situation idéale visée par le commanditaire grâce au projet de changement.", example: "Atteindre 0 défaut de production d'ici la fin de l'année." },
+            { term: "Évaluation de parcours", emoji: "📊", cat: "Ingénierie", def: "Dernière grande étape du projet de formation visant à mesurer son impact et sa qualité.", example: "Le passage des épreuves de certification devant un jury." },
+            { term: "Expert métier", emoji: "🧠", cat: "Acteurs", def: "Collaborateur de l'entreprise maîtrisant parfaitement la technique, interviewé pour adapter le contenu de formation.", example: "Le meilleur vendeur de l'entreprise consulté pour créer le module de vente." },
+            { term: "Expérientiel (AFEST)", emoji: "🏢", cat: "Modalités", def: "Modalité pédagogique basée sur la mise en situation réelle directement sur le poste de travail.", example: "Formation au pilotage d'une grue sur le chantier." },
+            { term: "Fiche ROME", emoji: "📜", cat: "Outils", def: "Répertoire Opérationnel des Métiers et des Emplois. Outil utilisé pour analyser le contexte d'un besoin en formation générique.", example: "Consulter la fiche ROME K2111 pour comprendre le métier de formateur." },
+            { term: "Finalité stratégique", emoji: "🏆", cat: "Besoins", def: "L'objectif ultime et global du projet de l'entreprise, au-delà du simple objectif pédagogique.", example: "Devenir le leader du marché grâce à des équipes mieux formées." },
+            { term: "Formateur d'adultes", emoji: "🧑‍🏫", cat: "Acteurs", def: "Professionnel doté d'une double expertise (pédagogique et technique) accompagnant l'apprentissage d'un métier.", example: "Le professionnel certifié Titre Pro FPA." },
+            { term: "Formateur interne", emoji: "👔", cat: "Acteurs", def: "Salarié de l'entreprise dont l'une des missions est de former ses collègues, souvent expert de son domaine.", example: "Un manager qui forme les nouveaux arrivants sur les procédures internes." },
+            { term: "Freins à l'apprentissage", emoji: "🛑", cat: "Apprenant", def: "Obstacles personnels, matériels ou psychologiques empêchant l'apprenant de s'engager pleinement.", example: "La peur de l'informatique chez un public senior." },
+            { term: "Guide d'entretien", emoji: "📝", cat: "Outils", def: "Support structuré utilisé par l'ingénieur de formation pour mener ses interviews d'analyse des besoins.", example: "Un questionnaire de 10 questions préparé pour interviewer l'expert métier." },
+            { term: "Indicateur de résultat", emoji: "📏", cat: "Besoins", def: "Critère objectif permettant de prouver que l'état futur souhaité a bien été atteint après la formation.", example: "Une hausse de 20% du chiffre d'affaires 3 mois après la formation." },
+            { term: "Ingénierie de formation", emoji: "🏗️", cat: "Ingénierie", def: "Compétence globale englobant l'analyse, la conception, le pilotage et l'évaluation d'un projet de formation.", example: "Réaliser le cahier des charges et trouver les financements." },
+            { term: "Insatisfaction", emoji: "😞", cat: "Besoins", def: "Sentiment du commanditaire face à une situation actuelle problématique, déclenchant le besoin d'agir.", example: "Le mécontentement du manager face au nombre de plaintes clients." },
+            { term: "Intranet", emoji: "🌐", cat: "Plateformes", def: "Réseau informatique interne à une entreprise, parfois utilisé pour diffuser des ressources de formation.", example: "Télécharger le livret d'accueil sur l'intranet de l'entreprise." },
+            { term: "Knowledge Management", emoji: "📚", cat: "Plateformes", def: "Plateforme ou système de gestion des connaissances visant à capitaliser les savoirs au sein de l'organisation.", example: "Une base de données wiki interne répertoriant toutes les procédures." },
+            { term: "LCMS", emoji: "⚙️", cat: "Plateformes", def: "Learning Content Management System. Plateforme permettant la création ET la diffusion de contenus pédagogiques.", example: "Un outil permettant au formateur de créer directement ses modules interactifs en ligne." },
+            { term: "LMS", emoji: "🖥️", cat: "Plateformes", def: "Learning Management System. Plateforme de diffusion de contenu et de suivi des apprenants.", example: "Moodle, 360Learning ou la plateforme d'apprentissage Studi." },
+            { term: "Maintien dans l'emploi", emoji: "🛡️", cat: "Objectifs", def: "Finalité de la formation consistant à éviter le licenciement d'un salarié en adaptant ses compétences aux évolutions.", example: "Former une secrétaire à de nouveaux logiciels bureautiques." },
+            { term: "Management", emoji: "👔", cat: "Acteurs", def: "L'encadrement de l'entreprise, acteur clé à interroger pour cerner les attentes professionnelles réelles du terrain.", example: "Le chef d'équipe qui supervise directement les futurs apprenants." },
+            { term: "Méthode QQOQCPC", emoji: "❓", cat: "QQOQCPC", def: "Méthode de questionnement rapide issue de la qualité pour faire le tour complet d'une demande de formation.", example: "Définir Qui, Quoi, Où, Quand, Comment, Pourquoi, Combien." },
+            { term: "Ministère du Travail", emoji: "🏛️", cat: "Certification", def: "Institution gouvernementale délivrant les Titres Professionnels (comme le Titre FPA).", example: "L'entité qui certifie la validité nationale du diplôme." },
+            { term: "Modalité pédagogique", emoji: "⚙️", cat: "Ingénierie", def: "Format ou environnement choisi pour délivrer la formation (salle, ligne, poste de travail).", example: "Le choix d'un format 100% distanciel pour des raisons de budget." },
+            { term: "Motivation de l'apprenant", emoji: "🚀", cat: "Apprenant", def: "Moteur interne ou externe poussant l'individu à s'investir dans le projet de formation.", example: "L'envie d'obtenir une promotion après la validation du cursus." },
+            { term: "Moyens d'actions", emoji: "🔧", cat: "Besoins", def: "Ensemble des solutions (incluant la formation, mais aussi l'organisation ou le matériel) pour atteindre l'objectif.", example: "Acheter un nouveau logiciel (moyen matériel) ET former les équipes dessus (moyen formation)." },
+            { term: "Moyens financiers", emoji: "💶", cat: "Moyens", def: "Enveloppe budgétaire dédiée au projet de formation (frais de conception, d'animation, logistique).", example: "Un budget validé de 5000 euros pour la prestation." },
+            { term: "Moyens matériels", emoji: "🧰", cat: "Moyens", def: "Outils, salles et équipements informatiques nécessaires au déploiement du dispositif.", example: "La réservation de deux salles équipées de vidéoprojecteurs." },
+            { term: "Moyens temporels", emoji: "⏳", cat: "Moyens", def: "Disponibilité des parties prenantes et délais de réalisation imposés pour le projet.", example: "L'obligation de terminer la formation avant la fin de l'année fiscale." },
+            { term: "Objectif de changement", emoji: "🎯", cat: "Besoins", def: "Le résultat attendu par l'entreprise qui motive la mise en place de la formation.", example: "Digitaliser l'ensemble du service comptabilité." },
+            { term: "Offre de formation", emoji: "📦", cat: "Ingénierie", def: "Proposition commerciale et pédagogique construite par le prestataire en réponse à l'analyse de la demande.", example: "Le devis et le programme détaillé envoyés au client." },
+            { term: "Parcours multimodale", emoji: "🌈", cat: "Ingénierie", def: "Dispositif d'apprentissage combinant de 2 à 3 modalités différentes (Présentiel, Distanciel, AFEST).", example: "Une formation alternant modules e-learning et ateliers pratiques." },
+            { term: "Piloter un projet", emoji: "🧭", cat: "Ingénierie", def: "Action de coordonner l'ensemble des étapes, des moyens et des acteurs d'une action de formation.", example: "Gérer le rétroplanning de la conception jusqu'à l'évaluation." },
+            { term: "Pré-acquis", emoji: "🧠", cat: "Apprenant", def: "Connaissances ou compétences que l'apprenant possède déjà de par son expérience avant d'entrer en formation.", example: "Un stagiaire qui connaît déjà les bases de la vente avant une formation de perfectionnement." },
+            { term: "Préférences d'apprentissage", emoji: "💡", cat: "Apprenant", def: "Façon dont l'apprenant préfère assimiler l'information (visuel, auditif, kinesthésique, travail de groupe...).", example: "Un public de techniciens préférant la manipulation directe plutôt que la théorie." },
+            { term: "Prérequis", emoji: "🔑", cat: "Apprenant", def: "Niveau de connaissances ou diplômes obligatoires pour avoir le droit d'entrer en formation.", example: "Avoir le niveau Bac pour intégrer la formation FPA." },
+            { term: "Présentiel", emoji: "🏫", cat: "Modalités", def: "Modalité pédagogique se déroulant physiquement en salle, regroupant formateur et apprenants.", example: "Un séminaire d'intégration de 2 jours au siège de l'entreprise." },
+            { term: "Prestation de conseil", emoji: "🤝", cat: "Ingénierie", def: "Alternative à proposer si l'analyse montre que la formation n'est pas la solution au problème du client.", example: "Proposer un audit managérial plutôt qu'une formation à la communication." },
+            { term: "Problème actuel", emoji: "⚠️", cat: "Besoins", def: "Formulation concrète de l'état d'insatisfaction de l'organisation justifiant la demande.", example: "Une augmentation de 15% des accidents de travail." },
+            { term: "Professionnalisation", emoji: "👔", cat: "Objectifs", def: "Processus visant à élever le niveau de maîtrise professionnelle d'un individu dans son métier.", example: "Un parcours en alternance pour devenir expert en gestion de paie." },
+            { term: "Profil de l'apprenant", emoji: "👤", cat: "Apprenant", def: "Cartographie des caractéristiques du public ciblé (préférences, pré-acquis, engagement).", example: "Un public senior, très expert techniquement mais frileux avec le numérique." },
+            { term: "Projet de formation", emoji: "🏗️", cat: "Ingénierie", def: "Le dispositif global à construire, nécessitant le pilotage des 12 étapes de l'ingénierie.", example: "Le déploiement du nouveau plan de formation annuel de l'entreprise." },
+            { term: "Projet professionnel", emoji: "🚀", cat: "Apprenant", def: "Objectif de carrière de l'apprenant (reconversion, mobilité) qui donne du sens à sa formation.", example: "Vouloir devenir formateur indépendant à l'issue du Titre FPA." },
+            { term: "Qualification", emoji: "📜", cat: "Objectifs", def: "Reconnaissance officielle (diplôme, titre) des compétences acquises, favorisant l'accès à l'emploi.", example: "Obtenir une certification RNCP de niveau 5." },
+            { term: "QQOQCPC - Combien ?", emoji: "💶", cat: "QQOQCPC", def: "Question visant à définir le budget, la durée ou le nombre d'apprenants de l'action de formation.", example: "Combien de jours de formation ? Quel est le tarif ?" },
+            { term: "QQOQCPC - Comment ?", emoji: "⚙️", cat: "QQOQCPC", def: "Question visant à définir les modalités pédagogiques et les moyens de mise en œuvre.", example: "En e-learning, en salle, ou en formation individualisée ?" },
+            { term: "QQOQCPC - Où ?", emoji: "📍", cat: "QQOQCPC", def: "Question définissant le lieu physique ou l'environnement virtuel du déroulement de la formation.", example: "Sur la plateforme LMS de l'entreprise ou en centre externe." },
+            { term: "QQOQCPC - Pourquoi ?", emoji: "🎯", cat: "QQOQCPC", def: "Question explorant la finalité, l'utilité profonde et les enjeux justifiant la formation.", example: "Parce que le cadre légal l'oblige ou pour augmenter la productivité." },
+            { term: "QQOQCPC - Quand ?", emoji: "📅", cat: "QQOQCPC", def: "Question fixant le rythme, le calendrier et les contraintes temporelles du projet.", example: "Une session par mois avec des horaires libres le soir." },
+            { term: "QQOQCPC - Qui ?", emoji: "👥", cat: "QQOQCPC", def: "Question identifiant le public ciblé par l'action de formation.", example: "Tout professionnel exerçant une activité de formation d'adultes." },
+            { term: "QQOQCPC - Quoi ?", emoji: "📖", cat: "QQOQCPC", def: "Question ciblant le contenu, les savoirs à transmettre et les objectifs pédagogiques à atteindre.", example: "Appliquer le cadre légal, concevoir des supports, évaluer des acquis." },
+            { term: "Référent interne", emoji: "👔", cat: "Acteurs", def: "Collaborateur désigné au sein de l'entreprise pour faire le lien ou accompagner le projet.", example: "Le responsable RH qui suit le déploiement du e-learning en interne." },
+            { term: "Référentiel métier", emoji: "📜", cat: "Outils", def: "Document de base listant les compétences attendues pour un métier spécifique, utilisé pour créer une offre 'sur étagère'.", example: "Le REAC du Titre Professionnel de Formateur d'Adultes." },
+            { term: "Responsabilité du prestataire", emoji: "⚖️", cat: "Ingénierie", def: "Engagement du formateur sur la qualité de l'apprentissage, qui peut être mis en cause si l'analyse préalable a été bâclée.", example: "Être tenu responsable de l'échec de la formation si elle ne répondait pas au vrai problème." },
+            { term: "Ressources pédagogiques", emoji: "📚", cat: "Ressources", def: "Ensemble des savoirs, textes, supports et documentations à acquérir par l'apprenant.", example: "Le diaporama, les fiches mémos et les vidéos du cours." },
+            { term: "Résultat attendu", emoji: "🏆", cat: "Besoins", def: "Le bénéfice concret ou la performance visée à l'issue de l'action de formation.", example: "La capacité des apprenants à concevoir un scénario pédagogique seuls." },
+            { term: "Salles d'animation", emoji: "🏫", cat: "Moyens", def: "Locaux physiques équipés, nécessaires pour le bon déroulement de la modalité présentielle.", example: "Une salle pour 15 personnes avec tables modulables en U." },
+            { term: "Sentiment d'efficacité personnelle", emoji: "💪", cat: "Apprenant", def: "Croyance de l'apprenant en ses propres capacités à réussir le projet de formation.", example: "L'apprenant qui doute de lui-même face à l'apprentissage d'un outil complexe." },
+            { term: "Session de formation", emoji: "📅", cat: "Ingénierie", def: "Unité de temps et d'organisation regroupant une cohorte d'apprenants autour d'un programme commun.", example: "La session de Septembre regroupant 12 futurs formateurs." },
+            { term: "Site interne", emoji: "🌐", cat: "Plateformes", def: "Espace web propre à l'organisation, parfois utilisé comme support de diffusion.", example: "Un site SharePoint hébergeant les fiches procédures." },
+            { term: "Solution envisagée", emoji: "💡", cat: "Besoins", def: "L'une des 3 formulations du besoin : quand le client expose directement la formation comme le remède à son problème.", example: "Le client qui appelle en disant : 'Il me faut une formation gestion du stress'." },
+            { term: "Titre Professionnel", emoji: "🏅", cat: "Certification", def: "Certification de l'État, enregistrée au RNCP, validant les compétences pour l'exercice d'un métier.", example: "Le Titre Professionnel FPA de Niveau 5." },
+            { term: "Validation des compétences", emoji: "✅", cat: "Objectifs", def: "Processus d'évaluation finale garantissant que l'apprenant a bien acquis les savoir-faire visés.", example: "Le passage d'une épreuve pratique devant jury." },
+            { term: "Variabilité du contenu", emoji: "🔄", cat: "Ressources", def: "Caractère évolutif d'une ressource pédagogique, déterminant la fréquence de ses mises à jour (temporel vs intemporel).", example: "Un cours sur la loi du travail a une forte variabilité." },
+            { term: "Veille pédagogique", emoji: "📡", cat: "Outils", def: "Recherche active d'informations sur les nouvelles méthodes d'enseignement pour enrichir ses ressources.", example: "S'informer sur les usages de la réalité virtuelle en formation." },
+            { term: "Veille professionnelle", emoji: "🔭", cat: "Outils", def: "Recherche active d'informations sur l'évolution du secteur d'activité du commanditaire pour adapter la formation.", example: "Suivre l'actualité du bâtiment avant de former des chefs de chantier." },
+            { term: "Vers quel objectif allez-vous ?", emoji: "🚀", cat: "Questionnement", def: "Question clé de l'analyse visant à faire formuler par le client l'état futur qu'il souhaite atteindre.", example: "Définir que le client souhaite diviser par deux le temps de traitement des dossiers." }
+        ];
+
+        // Tri alphabétique par défaut
+        glossaryData.sort((a, b) => a.term.localeCompare(b.term));
+
+        function render() {
+            const searchInput = document.getElementById('searchInput');
+            if(!searchInput) return;
+            const search = searchInput.value.toLowerCase();
+
+            const grid = document.getElementById('glossaryGrid');
+            if(grid) grid.innerHTML = '';
+
+            const filtered = glossaryData.filter(item => {
+                const matchSearch = item.term.toLowerCase().includes(search) || item.def.toLowerCase().includes(search);
+                const matchLetter = currentActiveLetter ? item.term.toUpperCase().startsWith(currentActiveLetter) : true;
+                return matchSearch && matchLetter;
+            });
+
+            const totalWordsSpan = document.getElementById('totalWords');
+            if (totalWordsSpan) {
+                totalWordsSpan.innerText = filtered.length;
+            }
+
+            const emptyState = document.getElementById('emptyState');
+
+            if(filtered.length === 0) {
+                if(emptyState) {
+                    emptyState.classList.remove('hidden');
+                    emptyState.classList.add('flex');
+                }
+            } else {
+                if(emptyState) {
+                    emptyState.classList.add('hidden');
+                    emptyState.classList.remove('flex');
+                }
+
+                filtered.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = `glossary-card p-6 flex flex-col relative`;
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4 relative z-10">
+                            <div class="flex items-center gap-3">
+                                <span class="text-2xl bg-white w-12 h-12 flex items-center justify-center rounded-xl border border-[rgba(217,165,38,0.2)] shadow-inner text-[var(--cta-yellow)]">${item.emoji}</span>
+                                <div>
+                                    <h3 class="font-bold text-lg text-[var(--title-blue)] leading-tight">${item.term}</h3>
+                                    <div class="flex items-center gap-2 mt-1.5">
+                                        <span class="text-[9px] font-bold px-2 py-0.5 rounded bg-white text-[var(--alert-bronze)] border border-[rgba(180,121,42,0.2)] uppercase tracking-widest">${item.cat}</span>
+                                        <span class="text-[11px] font-black text-[var(--title-blue)] font-code opacity-80">#${(index + 1).toString().padStart(3, '0')}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="speak('${(index + 1)}', '${item.term.replace(/'/g, "\\'")}', '${item.def.replace(/'/g, "\\'")}', '${item.example.replace(/'/g, "\\'")}')"
+                                    class="text-[var(--cta-yellow)] hover:scale-110 transition-transform p-2 bg-white rounded-full shadow-sm border border-[rgba(217,165,38,0.1)] shrink-0 ml-2" title="Écouter la définition">
+                                <i class="fas fa-volume-up text-lg"></i>
+                            </button>
+                        </div>
+                        <p class="text-sm text-[var(--title-blue)] leading-relaxed mb-4 flex-grow relative z-10 font-medium">${item.def}</p>
+                        <div class="mt-auto example-section p-3 rounded-lg relative z-10 shadow-sm">
+                            <p class="text-[9px] font-black text-[var(--alert-bronze)] uppercase mb-1 tracking-widest italic">Exemple</p>
+                            <p class="text-xs text-slate-600 italic">"${item.example}"</p>
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 text-7xl opacity-5 rotate-12 pointer-events-none">${item.emoji}</div>
+                    `;
+                    if(grid) grid.appendChild(card);
+                });
+            }
+        }
+
+        let currentActiveLetter = null;
+        let isMuted = false;
+        let speechRate = 1.1;
+
+        function generateAlphabet() {
+            const letters = [...new Set(glossaryData.map(i => i.term[0].toUpperCase()))].sort();
+            const alphaContainer = document.getElementById('alphabetContainer');
+            if(!alphaContainer) return;
+
+            alphaContainer.innerHTML = '';
+
+            const allBtn = document.createElement('button');
+            allBtn.className = 'alpha-btn active w-auto px-4';
+            allBtn.innerText = 'TOUT';
+            allBtn.onclick = () => {
+                currentActiveLetter = null;
+                document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+                allBtn.classList.add('active');
+                render();
+            };
+            alphaContainer.appendChild(allBtn);
+
+            letters.forEach(l => {
+                const btn = document.createElement('button');
+                btn.className = 'alpha-btn';
+                btn.innerText = l;
+                btn.onclick = () => {
+                    currentActiveLetter = l;
+                    document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    render();
+                };
+                alphaContainer.appendChild(btn);
+            });
+        }
+
+        function cleanTextForSpeech(text) {
+            return text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}]/gu, '');
+        }
+
+        function speak(num, term, def, example) {
+            if(isMuted) return;
+            window.speechSynthesis.cancel();
+
+            let textToRead = `Mot numéro ${num}. ${term}. Définition : ${def}. Exemple : ${example}`;
+            textToRead = cleanTextForSpeech(textToRead);
+
+            const utterance = new SpeechSynthesisUtterance(textToRead);
+            utterance.lang = 'fr-FR';
+            utterance.rate = speechRate;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const muteBtn = document.getElementById('muteBtn');
+            if(muteBtn) {
+                muteBtn.innerHTML = isMuted ? '<i class="fas fa-volume-mute text-red-500"></i>' : '<i class="fas fa-volume-up"></i>';
+            }
+            if(isMuted) window.speechSynthesis.cancel();
+        }
+
+        function changeSpeechRate(delta) {
+            speechRate = Math.min(2.0, Math.max(0.5, speechRate + delta));
+            const uiRate = document.getElementById('ui-rate');
+            if(uiRate) uiRate.innerText = "x" + speechRate.toFixed(1);
+        }
+
+        function toggleDyslexia() {
+            document.body.classList.toggle('dyslexia-mode');
+        }
+
+        function changeSize(delta) {
+            let current = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--base-font-size'));
+            let newSize = Math.min(24, Math.max(12, current + delta));
+            document.documentElement.style.setProperty('--base-font-size', newSize + 'px');
+        }
+
+        function resetFilters() {
+            const searchInput = document.getElementById('searchInput');
+            if(searchInput) searchInput.value = '';
+            currentActiveLetter = null;
+            document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+            const alphaContainer = document.getElementById('alphabetContainer');
+            if (alphaContainer && alphaContainer.firstChild) alphaContainer.firstChild.classList.add('active');
+            render();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            if(searchInput) searchInput.addEventListener('input', render);
+
+            window.addEventListener('scroll', () => {
+                const scrollTopBtn = document.getElementById('scrollTopBtn');
+                if(scrollTopBtn) {
+                    scrollTopBtn.classList.toggle('hidden-nav', window.scrollY < 300);
+                }
+            });
+
+            generateAlphabet();
+            render();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Parcours FPA - Suivi de Progression</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Librairie pour les feux d'artifice et confettis -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 380px; }
+        }
+
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .module-list::-webkit-scrollbar { width: 6px; }
+        .module-list::-webkit-scrollbar-track { background: #f5f5f4; border-radius: 4px; }
+        .module-list::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
+        .module-list::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+
+        /* Checkbox animation (Uniquement pour le programme) */
+        .sujet-checkbox:checked + label {
+            text-decoration: line-through;
+            color: #a8a29e;
+        }
+
+        @keyframes tada {
+            0% { transform: scale(1); }
+            10%, 20% { transform: scale(0.95) rotate(-3deg); }
+            30%, 50%, 70%, 90% { transform: scale(1.05) rotate(3deg); }
+            40%, 60%, 80% { transform: scale(1.05) rotate(-3deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .animate-tada {
+            animation: tada 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans antialiased min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="bg-stone-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">🎓</span>
+                    <span class="font-bold text-xl tracking-tight">Espace FPA | Mathilde</span>
+                </div>
+                <div class="flex space-x-1 overflow-x-auto items-center">
+                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn bg-stone-800 px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-stone-700">📊 Vue d'ensemble</button>
+                    <button onclick="switchTab('programme')" id="btn-programme" class="nav-btn text-stone-300 hover:bg-stone-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">📚 Ma Progression</button>
+                    <button onclick="switchTab('evaluations')" id="btn-evaluations" class="nav-btn text-stone-300 hover:bg-stone-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">📝 Évaluations</button>
+                    <a href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/#" target="_blank" class="nav-btn text-amber-400 hover:bg-stone-700 hover:text-amber-300 px-4 py-2 rounded-md text-sm font-bold transition-colors flex items-center gap-1">
+                        🌐 Hub Formation
+                    </a>
+                    <a href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/Examen/Examen.html" target="_blank" class="nav-btn text-emerald-400 hover:bg-stone-700 hover:text-emerald-300 px-4 py-2 rounded-md text-sm font-bold transition-colors flex items-center gap-1">
+                        🔗 Hub Examens
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Global Progress Bar -->
+        <div class="w-full h-1.5 bg-stone-800">
+            <div id="global-progress-bar" class="h-full bg-emerald-500 transition-all duration-500 ease-out" style="width: 0%;"></div>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- TAB: DASHBOARD -->
+        <section id="dashboard" class="tab-content active">
+            <header class="mb-8 border-b border-stone-200 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-stone-900 mb-2">Avancement global</h1>
+                    <p class="text-lg text-stone-600">Début officiel de la formation : <strong>Lundi 11 Mai 2026</strong></p>
+                    <div class="mt-4 flex gap-3">
+                        <a href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/#" target="_blank" class="inline-flex items-center gap-2 bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-2 rounded-lg font-bold transition-colors text-sm border border-amber-300 shadow-sm">
+                            <span>🌐</span> Accéder à toute la formation (Paia Hub)
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-white px-6 py-3 rounded-xl shadow-sm border border-stone-200 text-center">
+                    <p class="text-xs text-stone-500 uppercase font-bold tracking-wider mb-1">Progression Totale</p>
+                    <p class="text-3xl font-black text-emerald-600"><span id="global-percentage">0</span>%</p>
+                    <p class="text-xs text-stone-400 mt-1"><span id="global-completed-count">0</span> / <span id="global-total-count">0</span> éléments</p>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-white border-l-4 border-indigo-500 p-5 rounded-r-xl shadow-sm flex flex-col justify-center">
+                        <h3 class="text-sm font-bold text-indigo-900 uppercase tracking-wider mb-1">Bloc 1 : Conception</h3>
+                        <div class="w-full bg-stone-100 rounded-full h-2 mb-2">
+                            <div id="dash-prog-bloc1" class="bg-indigo-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <p class="text-xs font-medium text-stone-500 text-right"><span id="dash-txt-bloc1">0/0</span> sujets</p>
+                    </div>
+
+                    <div class="bg-white border-l-4 border-emerald-500 p-5 rounded-r-xl shadow-sm flex flex-col justify-center">
+                        <h3 class="text-sm font-bold text-emerald-900 uppercase tracking-wider mb-1">Bloc 2 : Animation</h3>
+                        <div class="w-full bg-stone-100 rounded-full h-2 mb-2">
+                            <div id="dash-prog-bloc2" class="bg-emerald-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <p class="text-xs font-medium text-stone-500 text-right"><span id="dash-txt-bloc2">0/0</span> sujets</p>
+                    </div>
+
+                    <div class="bg-white border-l-4 border-amber-500 p-5 rounded-r-xl shadow-sm flex flex-col justify-center">
+                        <h3 class="text-sm font-bold text-amber-900 uppercase tracking-wider mb-1">Bloc 3 : Accompagner</h3>
+                        <div class="w-full bg-stone-100 rounded-full h-2 mb-2">
+                            <div id="dash-prog-bloc3" class="bg-amber-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <p class="text-xs font-medium text-stone-500 text-right"><span id="dash-txt-bloc3">0/0</span> sujets</p>
+                    </div>
+
+                    <div class="bg-white border-l-4 border-rose-500 p-5 rounded-r-xl shadow-sm flex flex-col justify-center">
+                        <h3 class="text-sm font-bold text-rose-900 uppercase tracking-wider mb-1">Bloc 4 : Qualité & RSE</h3>
+                        <div class="w-full bg-stone-100 rounded-full h-2 mb-2">
+                            <div id="dash-prog-bloc4" class="bg-rose-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <p class="text-xs font-medium text-stone-500 text-right"><span id="dash-txt-bloc4">0/0</span> sujets</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+                    <h2 class="text-xl font-bold text-stone-800 text-center mb-4">Volume total à parcourir</h2>
+                    <div class="chart-container">
+                        <canvas id="blocsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: PROGRAMME & PROGRESSION -->
+        <section id="programme" class="tab-content">
+            <header class="mb-8 border-b border-stone-200 pb-6">
+                <h1 class="text-3xl font-extrabold text-stone-900 mb-2">Le Programme Détaillé</h1>
+                <p class="text-lg text-stone-600">Cochez les cases au fur et à mesure de votre apprentissage sur la plateforme.</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8" id="bloc-selectors"></div>
+
+            <div class="bg-white rounded-2xl shadow-md border border-stone-200 overflow-hidden flex flex-col">
+                <div class="bg-stone-100 px-6 py-4 border-b border-stone-200 flex justify-between items-center">
+                    <h2 id="current-bloc-title" class="text-xl font-bold text-stone-800">Sélectionnez un bloc ci-dessus</h2>
+                    <div id="current-bloc-stats" class="text-sm font-bold text-stone-500 bg-white px-3 py-1 rounded-full border border-stone-200 hidden">
+                        <span id="current-bloc-completed">0</span> / <span id="current-bloc-total">0</span> complétés
+                    </div>
+                </div>
+                <div class="p-6 h-[550px] overflow-y-auto module-list bg-white" id="modules-container">
+                    <div class="flex flex-col items-center justify-center h-full text-stone-400">
+                        <span class="text-5xl mb-4">👆</span>
+                        <p>Cliquez sur un bloc pour révéler ses modules et pointer votre avancement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: EVALUATIONS -->
+        <section id="evaluations" class="tab-content">
+            <header class="mb-6 border-b border-stone-200 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-stone-900 mb-2">Vos évaluations (Classées par Bloc)</h1>
+                    <p class="text-lg text-stone-600">
+                        Cochez pour <strong>"J'attaque"</strong> ⏳. Validez pour <strong>ranger la tâche</strong> et célébrer ! 🎉
+                    </p>
+                </div>
+                <div class="bg-white px-6 py-3 rounded-xl shadow-sm border border-stone-200 text-center">
+                    <p class="text-xs text-stone-500 uppercase font-bold tracking-wider mb-1">Progression Rendus</p>
+                    <p class="text-2xl font-black text-stone-800"><span id="eval-global-completed">0</span> / <span id="eval-global-total">0</span></p>
+                </div>
+            </header>
+
+            <!-- CALCULATEUR -->
+            <div class="mb-8 bg-white rounded-2xl shadow-sm border border-stone-200 p-6 relative overflow-hidden">
+                <div class="absolute left-0 top-0 h-full w-2 bg-emerald-500"></div>
+                <h3 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">
+                    <span class="text-2xl">⏱️</span> Simulateur de délai de correction (Studi)
+                </h3>
+
+                <div class="flex flex-col md:flex-row gap-4 items-end">
+                    <div class="flex-1 w-full">
+                        <label class="block text-sm font-bold text-stone-700 mb-1">Date de votre dépôt</label>
+                        <input type="date" id="calc-date-depot" class="w-full border-stone-300 rounded-lg shadow-sm focus:border-emerald-500 focus:ring-emerald-500 p-2.5 border bg-stone-50">
+                    </div>
+                    <div class="flex-1 w-full">
+                        <label class="block text-sm font-bold text-stone-700 mb-1">Délai Studi (Jours ouvrés)</label>
+                        <select id="calc-delai" class="w-full border-stone-300 rounded-lg shadow-sm focus:border-emerald-500 focus:ring-emerald-500 p-2.5 border bg-stone-50 cursor-pointer">
+                            <option value="7">7 jours ouvrés</option>
+                            <option value="10" selected>10 jours ouvrés</option>
+                        </select>
+                    </div>
+                    <div class="w-full md:w-auto">
+                        <button onclick="calculateReturnDate()" class="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-8 rounded-lg shadow-md transition-all">
+                            Calculer la date
+                        </button>
+                    </div>
+                </div>
+
+                <div id="calc-result-container" class="mt-5 hidden animate-fade-in">
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex flex-col md:flex-row items-start md:items-center gap-4">
+                        <label class="text-sm font-bold text-emerald-800 uppercase tracking-wide whitespace-nowrap">Date de retour estimée :</label>
+                        <input type="text" id="calc-resultat" readonly class="w-full md:max-w-md border border-emerald-300 rounded-md px-4 py-2 text-base font-black text-emerald-700 capitalize bg-white shadow-inner text-center cursor-not-allowed" placeholder="Résultat...">
+                    </div>
+                </div>
+            </div>
+
+            <div id="eval-columns" class="w-full"></div>
+        </section>
+
+    </main>
+
+    <script>
+        // ---------------------------------------------------------
+        // FESTIVE FIREWORKS ANIMATION
+        // ---------------------------------------------------------
+        function fireWorksAnimation() {
+            var duration = 2.5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000 };
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+              if (timeLeft <= 0) return clearInterval(interval);
+              var particleCount = 50 * (timeLeft / duration);
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        // ---------------------------------------------------------
+        // CALCULATOR LOGIC
+        // ---------------------------------------------------------
+        function getWorkingDaysAdded(dateStr, delayDays) {
+            let date = new Date(dateStr);
+            let addedDays = 0;
+            const fixedHolidays = ['01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25'];
+            const mobileHolidays = ['2026-04-06', '2026-05-14', '2026-05-25', '2027-03-29', '2027-05-06', '2027-05-17'];
+            while (addedDays < delayDays) {
+                date.setDate(date.getDate() + 1);
+                const dayOfWeek = date.getDay();
+                const monthDay = String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+                const fullDate = date.toISOString().split('T')[0];
+                if (dayOfWeek !== 0 && dayOfWeek !== 6 && !fixedHolidays.includes(monthDay) && !mobileHolidays.includes(fullDate)) {
+                    addedDays++;
+                }
+            }
+            return date;
+        }
+
+        window.calculateReturnDate = function() {
+            const inputVal = document.getElementById('calc-date-depot').value;
+            const delayDays = parseInt(document.getElementById('calc-delai').value);
+            if (!inputVal) return alert("Sélectionnez une date de dépôt.");
+            const date = getWorkingDaysAdded(inputVal, delayDays);
+            document.getElementById('calc-resultat').value = date.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('calc-result-container').classList.remove('hidden');
+        };
+
+        window.calcRowDate = function(evalId) {
+            const inputVal = document.getElementById('date-depot-' + evalId).value;
+            const resInput = document.getElementById('date-retour-' + evalId);
+            if (!resInput) return; // S'il n'y a pas de champ retour (cas des ECF directes)
+
+            if (!inputVal) {
+                resInput.value = '';
+                resInput.className = 'w-full border border-stone-200 rounded-md px-3 py-2 text-sm text-center bg-stone-100 text-stone-400 font-medium shadow-inner cursor-not-allowed';
+                return;
+            }
+            const date = getWorkingDaysAdded(inputVal, 10); // Standard Studi
+            resInput.value = date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            resInput.className = 'w-full border border-stone-300 rounded-md px-3 py-2 text-sm text-center bg-white text-stone-800 font-bold shadow-inner cursor-not-allowed';
+        };
+
+        // ---------------------------------------------------------
+        // STATE & LOGIC
+        // ---------------------------------------------------------
+        const dataProgram = {
+            bloc1: {
+                id: "bloc1", title: "1. Concevoir et préparer", color: "indigo", icon: "🏗️", description: "Ingénierie de formation et pédagogique.",
+                modules: [
+                    { title: "M01 : Analyser une demande", sujets: ["FPA_B1_M01_S001 - L'analyse de la demande", "FPA_B1_M01_S002 - La demande formelle ou informelle", "FPA_B1_M01_S003 - Les caractéristiques des publics"] },
+                    { title: "M02 : Appliquer les obligations légales", sujets: ["FPA_B1_M02_S001 - Cadre légal FP", "FPA_B1_M02_S002 - Cadre règlementaire", "FPA_B1_M02_S003 - Obligations administratives", "FPA_B1_M02_S004 - Mise en œuvre prestations"] },
+                    { title: "M03 : Financements", sujets: ["FPA_B1_M03_S001 - Gouvernance et financement", "FPA_B1_M03_S002 - Financement TNS", "FPA_B1_M03_S003 - Financement salarié", "FPA_B1_M03_S004 - Financement DE", "FPA_B1_M03_S005 - Autres publics", "FPA_B1_M03_S006 - Le CPF"] },
+                    { title: "M04 : Principes de l'ingénierie", sujets: ["FPA_B1_M04_S001 - Référentiels", "FPA_B1_M04_S002 - Pédagogie des adultes", "FPA_B1_M04_S003 - Concepts de base et vocabulaire", "FPA_B1_M04_S004 - Structurer en blocs de compétences"] },
+                    { title: "M05 : Moyens humains et matériels", sujets: ["FPA_B1_M05_S001 - Modalités pédagogiques", "FPA_B1_M05_S002 - Situations d'apprentissage", "FPA_B1_M05_S003 - Accompagnement pédagogique"] },
+                    { title: "M06 : Progression pédagogique", sujets: ["FPA_B1_M06_S001 - Étapes et durées", "FPA_B1_M06_S002 - Rédaction d'une progression", "FPA_B1_M06_S003 - Organisation logistique", "FPA_B1_M06_S004 - App: Élaborer la progression"] },
+                    { title: "M07 : Concepts de base", sujets: ["FPA_B1_M07_S001 - Méthodes pédagogiques", "FPA_B1_M07_S002 - Démarches pédagogiques", "FPA_B1_M07_S003 - Techniques pédagogiques", "FPA_B1_M07_S004 - Outillage pédagogique", "FPA_B1_M07_S005 - Pédagogies actives", "FPA_B1_M07_S006 - Évaluation et positionnement", "FPA_B1_M07_S007 - Concepts de base adultes"] },
+                    { title: "M08 : Modalités de formation", sujets: ["FPA_B1_M08_S001 - Auto-formation", "FPA_B1_M08_S002 - Formations individualisées", "FPA_B1_M08_S003 - Alternance et AFEST"] },
+                    { title: "M09 : Scénariser la formation", sujets: ["FPA_B1_M09_S001 - Apprentissage social", "FPA_B1_M09_S002 - Styles d'apprentissage", "FPA_B1_M09_S003 - Services numériques", "FPA_B1_M09_S004 - Obligations handicap", "FPA_B1_M09_S005 - Étapes clés d'un temps", "FPA_B1_M09_S006 - Construction du scénario"] },
+                    { title: "M10 : Plan d'accompagnement", sujets: ["FPA_B1_M10_S001 - Types d'accompagnement", "FPA_B1_M10_S002 - Situations d'accueil", "FPA_B1_M10_S003 - Rédaction scénario tutoral"] },
+                    { title: "M11 : Consolider la scénarisation", sujets: ["FPA_B1_M11_S001 - Scénarisation parcours", "FPA_B1_M11_S002 - Blended-learning", "FPA_B1_M11_S003 - Entrées et sorties permanentes", "FPA_B1_M11_S004 - App: Concevoir scénario multimodal"] },
+                    { title: "M12 : Règles de communication", sujets: ["FPA_B1_M12_S001 - Capter l'attention (images)", "FPA_B1_M12_S002 - Écriture consigne et graphisme", "FPA_B1_M12_S003 - Méthode FALC"] },
+                    { title: "M13 : Concevoir outils pédagogiques", sujets: ["FPA_B1_M13_S001 - Conception support/activité", "FPA_B1_M13_S002 - Spécifique à l'autoformation", "FPA_B1_M13_S003 - Digitalisation", "FPA_B1_M13_S004 - Réalisation storyboard", "FPA_B1_M13_S005 - Questionnaire satisfaction", "FPA_B1_M13_S006 - App: Projets de conception"] },
+                    { title: "M14 : Réaliser une veille", sujets: ["FPA_B1_M14_S001 - Concept de veille", "FPA_B1_M14_S002 - Organiser dispositif veille", "FPA_B1_M14_S003 - Veille technologique", "FPA_B1_M14_S004 - Synthèse des veilles", "FPA_B1_M14_S005 - App: Concevoir des activités"] }
+                ]
+            },
+            bloc2: {
+                id: "bloc2", title: "2. Animer et évaluer", color: "emerald", icon: "🎤", description: "Techniques d'animation et facilitation.",
+                modules: [
+                    { title: "M01 : Faciliter les apprentissages", sujets: ["FPA_B2_M01_S001 - Posture de facilitateur", "FPA_B2_M01_S002 - Communication pédagogique", "FPA_B2_M01_S003 - Intelligence collective", "FPA_B2_M01_S004 - Gestion du temps", "FPA_B2_M01_S005 - Facilitation interventions"] },
+                    { title: "M02 : Animer en présentiel", sujets: ["FPA_B2_M02_S001 - Préparer posture", "FPA_B2_M02_S002 - Démarrer session (Icebreakers)", "FPA_B2_M02_S003 - Impact démarrage/conclusion", "FPA_B2_M02_S004 - Écoute active", "FPA_B2_M02_S005 - Lancement séquences", "FPA_B2_M02_S006 - Dynamique de groupe", "FPA_B2_M02_S007 - Stimuler participants"] },
+                    { title: "M03 : Animer à distance", sujets: ["FPA_B2_M03_S001 - Digital Learning", "FPA_B2_M03_S002 - Préparer classe virtuelle", "FPA_B2_M03_S003 - Animer classe virtuelle"] },
+                    { title: "M04 : Techniques d'animation", sujets: ["FPA_B2_M04_S001 - Individualisation", "FPA_B2_M04_S002 - Difficultés d'apprentissage", "FPA_B2_M04_S003 - Désamorcer conflits", "FPA_B2_M04_S004 - Troubles DYS", "FPA_B2_M04_S005 - Autres handicaps", "FPA_B2_M04_S006 - Neurosciences", "FPA_B2_M04_S007 - App: Animer formation"] },
+                    { title: "M05 : Concevoir évaluation", sujets: ["FPA_B2_M05_S001 - Planification évaluation", "FPA_B2_M05_S002 - Dispositif", "FPA_B2_M05_S003 - Critères et indicateurs", "FPA_B2_M05_S004 - Adaptation handicap", "FPA_B2_M05_S005 - Alignement pédagogique"] },
+                    { title: "M06 : Outils d'évaluation", sujets: ["FPA_B2_M06_S001 - Évaluation acquis", "FPA_B2_M06_S002 - Outils", "FPA_B2_M06_S003 - Construction outils"] },
+                    { title: "M07 : Restituer évaluation", sujets: ["FPA_B2_M07_S001 - Modalités restitution", "FPA_B2_M07_S002 - Exploitation résultats", "FPA_B2_M07_S003 - Planification temps", "FPA_B2_M07_S004 - Bilans pédagogiques", "FPA_B2_M07_S005 - App: Evaluer acquis"] },
+                    { title: "M08 : Identifier difficultés", sujets: ["FPA_B2_M08_S001 - Difficultés et obstacles", "FPA_B2_M08_S002 - Remédier difficultés", "FPA_B2_M08_S003 - Indicateurs décrochage"] },
+                    { title: "M09 : Stratégies de remédiation", sujets: ["FPA_B2_M09_S001 - Adaptation formation", "FPA_B2_M09_S002 - Résolution de problème", "FPA_B2_M09_S003 - Posture à adopter", "FPA_B2_M09_S004 - App: Remédier difficultés"] }
+                ]
+            },
+            bloc3: {
+                id: "bloc3", title: "3. Accompagner", color: "amber", icon: "🤝", description: "Tutorat, suivi individualisé.",
+                modules: [
+                    { title: "M01 : Diagnostiquer les besoins", sujets: ["FPA_B3_M01_S001 - Difficultés périphériques", "FPA_B3_M01_S002 - Démarches diagnostiques"] },
+                    { title: "M02 : Outils pour accompagner", sujets: ["FPA_B3_M02_S001 - Techniques d'entretien", "FPA_B3_M02_S002 - Types d'entretien", "FPA_B3_M02_S003 - Outils suivi et bilan", "FPA_B3_M02_S004 - Outils pédagogiques"] },
+                    { title: "M03 : Réadapter un parcours", sujets: ["FPA_B3_M03_S001 - Intelligence émotionnelle", "FPA_B3_M03_S002 - Réadaptation parcours", "FPA_B3_M03_S003 - Acteurs de l'accompagnement", "FPA_B3_M03_S004 - Communication situation"] },
+                    { title: "M04 : Suivre le parcours", sujets: ["FPA_B3_M04_S001 - Flux d'apprenants", "FPA_B3_M04_S002 - Plateforme numérique", "FPA_B3_M04_S003 - App: Accompagner parcours"] },
+                    { title: "M05 : Co-construire", sujets: ["FPA_B3_M05_S001 - Positionnement", "FPA_B3_M05_S002 - Analyse positionnement", "FPA_B3_M05_S003 - Co-construction", "FPA_B3_M05_S004 - Protocole individuel"] },
+                    { title: "M06 : Accueillir individualisé", sujets: ["FPA_B3_M06_S001 - Accueil individuel", "FPA_B3_M06_S002 - Analyse réflexive", "FPA_B3_M06_S003 - App: Accueillir et co-construire"] },
+                    { title: "M07 : Tutorat à distance", sujets: ["FPA_B3_M07_S001 - Fonctions tutorales", "FPA_B3_M07_S002 - Motivation et attention", "FPA_B3_M07_S003 - Leviers et freins", "FPA_B3_M07_S004 - Remédiation technique"] },
+                    { title: "M08 : Règles tutorat", sujets: ["FPA_B3_M08_S001 - Communautés", "FPA_B3_M08_S002 - Écriture réseaux", "FPA_B3_M08_S003 - Feed-back", "FPA_B3_M08_S004 - Protection données", "FPA_B3_M08_S005 - Spécificités apprenants", "FPA_B3_M08_S006 - App: Tutorer distance"] },
+                    { title: "M09 : Alternance", sujets: ["FPA_B3_M09_S001 - Enjeux alternance", "FPA_B3_M09_S002 - Contrats apprentissage", "FPA_B3_M09_S003 - Reconversion (PRO-A)"] },
+                    { title: "M10 : Former situation de travail", sujets: ["FPA_B3_M10_S001 - Tutorat en entreprise"] },
+                    { title: "M11 : Accompagner projet", sujets: ["FPA_B3_M11_S001 - Insertion sociale", "FPA_B3_M11_S002 - Freins projet", "FPA_B3_M11_S003 - Démarche HANDICAP", "FPA_B3_M11_S004 - Suivi développement", "FPA_B3_M11_S005 - Outils numériques recherche", "FPA_B3_M11_S006 - Méthodes accompagnement"] },
+                    { title: "M12 : Recherche d'emploi", sujets: ["FPA_B3_M12_S001 - Techniques recherche", "FPA_B3_M12_S002 - Mesures d'accès", "FPA_B3_M12_S003 - App: Accompagner développement"] }
+                ]
+            },
+            bloc4: {
+                id: "bloc4", title: "4. Qualité et RSE", color: "rose", icon: "🔎", description: "Démarche d'amélioration continue.",
+                modules: [
+                    { title: "M01 : Réglementation organismes", sujets: ["FPA_B4_M01_S001 - Cadre légal", "FPA_B4_M01_S002 - Démarche Qualiopi", "FPA_B4_M01_S003 - Réglementations Qualiopi", "FPA_B4_M01_S004 - Bilan pédagogique"] },
+                    { title: "M02 : Prévenir risques pros", sujets: ["FPA_B4_M02_S001 - Égalité", "FPA_B4_M02_S002 - Démarche prévention", "FPA_B4_M02_S003 - Risques physiques", "FPA_B4_M02_S004 - Risques pros", "FPA_B4_M02_S005 - Ergonomie", "FPA_B4_M02_S006 - Charge mentale", "FPA_B4_M02_S007 - RPS et QVT", "FPA_B4_M02_S008 - Hygiène santé sécurité", "FPA_B4_M02_S009 - Principes RSE", "FPA_B4_M02_S010 - Lutte discriminations", "FPA_B4_M02_S011 - App: Respecter réglementation"] },
+                    { title: "M03 : Veille réglementaire", sujets: ["FPA_B4_M03_S001 - Veille pro", "FPA_B4_M03_S002 - Cadre légal ressources", "FPA_B4_M03_S003 - Méthodologies", "FPA_B4_M03_S004 - Outils surveillance"] },
+                    { title: "M04 : Actualiser ressources", sujets: ["FPA_B4_M04_S001 - Propriété intellectuelle", "FPA_B4_M04_S002 - Actualiser ingénierie", "FPA_B4_M04_S003 - App: Actualiser ressources"] },
+                    { title: "M05 : Analyser pratiques", sujets: ["FPA_B4_M05_S001 - Analyse de pratique", "FPA_B4_M05_S002 - Analyse réflexive", "FPA_B4_M05_S003 - Axes amélioration", "FPA_B4_M05_S004 - Analyser ses pratiques", "FPA_B4_M05_S005 - App: Analyser pratiques"] }
+                ]
+            }
+        };
+
+        const dataEvaluations = {
+            eval_ccp1: {
+                id: "eval_ccp1", title: "Concevoir et préparer", subtitle: "Évaluations du Bloc 1", color: "indigo", icon: "🏗️",
+                items: [
+                    { id: "e_c1_ecf_ent", title: "ECF d'entrainement - CCP1" },
+                    { id: "e_c1_dt_d1", title: "Dossier technique Chap. 1 - Dépôt 1" },
+                    { id: "e_c1_dt_d2", title: "Dossier technique Chap. 1 - Dépôt 2" },
+                    { id: "e_c1_dt_df", title: "Dossier technique Chap. 1 - Dépôt final" },
+                    { id: "e_c1_ecf_fin", title: "ECF Finale 2026 - CCP1" }
+                ]
+            },
+            eval_ccp2: {
+                id: "eval_ccp2", title: "Animer et évaluer", subtitle: "Évaluations du Bloc 2", color: "emerald", icon: "🎤",
+                items: [
+                    { id: "e_c2_ecf_ent", title: "ECF d'entraînement - CCP2" },
+                    { id: "e_c2_dt_d1", title: "Dossier technique Chap. 2 - Dépôt 1" },
+                    { id: "e_c2_dt_d2", title: "Dossier technique Chap. 2 - Dépôt 2" },
+                    { id: "e_c2_dt_df", title: "Dossier technique Chap. 2 - Dépôt final" },
+                    { id: "e_c2_ecf_fin", title: "ECF Finale 2026 - CCP2" }
+                ]
+            },
+            eval_ccp3: {
+                id: "eval_ccp3", title: "Accompagner", subtitle: "Évaluations du Bloc 3", color: "amber", icon: "🤝",
+                items: [
+                    { id: "e_c3_ecf_ent", title: "ECF d'entraînement - CCP3" },
+                    { id: "e_c3_dt_d1", title: "Dossier technique Chap. 3 - Dépôt 1" },
+                    { id: "e_c3_dt_d2", title: "Dossier technique Chap. 3 - Dépôt 2" },
+                    { id: "e_c3_dt_df", title: "Dossier technique Chap. 3 - Dépôt final" },
+                    { id: "e_c3_ecf_fin", title: "ECF Finale 2026 - CCP3" }
+                ]
+            },
+            eval_ccp4: {
+                id: "eval_ccp4", title: "Qualité et RSE", subtitle: "Évaluations du Bloc 4", color: "rose", icon: "🔎",
+                items: [
+                    { id: "e_c4_ecf_ent", title: "ECF d'entraînement - CCP4" },
+                    { id: "e_c4_dt_d1", title: "Dossier technique Chap. 4 - Dépôt 1" },
+                    { id: "e_c4_dt_d2", title: "Dossier technique Chap. 4 - Dépôt 2" },
+                    { id: "e_c4_dt_df", title: "Dossier technique Chap. 4 - Dépôt final" },
+                    { id: "e_c4_ecf_fin", title: "ECF Finale 2026 - CCP4" }
+                ]
+            },
+            eval_trans: {
+                id: "eval_trans", title: "Évaluations Transverses", subtitle: "Dossier Pro & Examens Finaux", color: "sky", icon: "🏆",
+                items: [
+                    { id: "e_tr_dp_grille", title: "Dossier Professionnel - Grille de validation" },
+                    { id: "e_tr_dp_d1", title: "Dossier Professionnel - 1er dépôt" },
+                    { id: "e_tr_dp_d2", title: "Dossier Professionnel - 2ème dépôt" },
+                    { id: "e_tr_dp_df", title: "Dossier Professionnel - Dépôt final" },
+                    { id: "e_tr_stage", title: "Grille de stage : évaluation du tuteur" },
+                    { id: "e_tr_test", title: "Tester mes connaissances" },
+                    { id: "e_tr_oral_q", title: "Entrainement au questionnement (Oral)" },
+                    { id: "e_tr_oral_t", title: "Entraînement à l'oral de l'entretien technique" },
+                    { id: "e_tr_ecf_glob", title: "Evaluation ECF Finale - Dépôt global (19/11/26)" }
+                ]
+            }
+        };
+
+        const progressState = {
+            bloc1: { total: 0, completed: new Set() },
+            bloc2: { total: 0, completed: new Set() },
+            bloc3: { total: 0, completed: new Set() },
+            bloc4: { total: 0, completed: new Set() },
+            evaluations: { total: 0, inProgress: new Set(), completed: new Set(), statuses: {} }
+        };
+
+        let activeTab = 'dashboard';
+        let activeBloc = null;
+        let chartInstance = null;
+
+        function initProgressCounts() {
+            Object.values(dataProgram).forEach(bloc => {
+                let count = 0;
+                bloc.modules.forEach(mod => { if (mod.sujets) count += mod.sujets.length; });
+                progressState[bloc.id].total = count;
+            });
+            Object.values(dataEvaluations).forEach(col => {
+                progressState.evaluations.total += col.items.length;
+            });
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.id && !btn.id.startsWith('btn-eval')) {
+                    btn.classList.remove('bg-stone-800', 'text-white');
+                    btn.classList.add('text-stone-300');
+                }
+            });
+            if(document.getElementById(`btn-${tabId}`)) {
+                document.getElementById(`btn-${tabId}`).classList.remove('text-stone-300');
+                document.getElementById(`btn-${tabId}`).classList.add('bg-stone-800', 'text-white');
+            }
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            activeTab = tabId;
+            if (tabId === 'dashboard' && !chartInstance) renderChart();
+        }
+
+        // CHECKBOXES DU PROGRAMME (Barre le texte)
+        window.toggleSujet = function(sujetCode, blocId) {
+            const set = progressState[blocId].completed;
+            if (set.has(sujetCode)) set.delete(sujetCode);
+            else set.add(sujetCode);
+            updateProgressUI();
+        };
+
+        // ---------------------------------------------------------
+        // LOGIQUE EVALUATIONS : ECF (Envoi/Livret), Dossiers, Actions Directes
+        // ---------------------------------------------------------
+
+        window.toggleEvalInProgress = function(evalId) {
+            const set = progressState.evaluations.inProgress;
+            const isChecked = document.getElementById('chk-' + evalId).checked;
+            if (isChecked) set.add(evalId);
+            else set.delete(evalId);
+
+            applyEvalStyles(evalId);
+        };
+
+        window.setEvalStatus = function(evalId, status) {
+            progressState.evaluations.completed.add(evalId);
+            progressState.evaluations.statuses[evalId] = status;
+
+            applyEvalStyles(evalId);
+            updateProgressUI();
+
+            // Feux d'artifice si Validation Finale
+            if (status === 'valide' || status === 'livret_recu' || status === 'termine') {
+                fireWorksAnimation();
+
+                // Si c'est un Dépôt 1 de Dossier validé, on ignore le Dépôt 2
+                if (evalId.endsWith('_d1')) {
+                    const d2Id = evalId.replace('_d1', '_d2');
+                    if (document.getElementById('li-' + d2Id)) {
+                        progressState.evaluations.completed.add(d2Id);
+                        progressState.evaluations.statuses[d2Id] = 'ignore';
+                        applyEvalStyles(d2Id);
+                    }
+                }
+            }
+        };
+
+        window.resetEvalStatus = function(evalId) {
+            progressState.evaluations.completed.delete(evalId);
+            delete progressState.evaluations.statuses[evalId];
+
+            applyEvalStyles(evalId);
+            updateProgressUI();
+
+            if (evalId.endsWith('_d1')) {
+                const d2Id = evalId.replace('_d1', '_d2');
+                if (document.getElementById('li-' + d2Id) && progressState.evaluations.statuses[d2Id] === 'ignore') {
+                    progressState.evaluations.completed.delete(d2Id);
+                    delete progressState.evaluations.statuses[d2Id];
+                    applyEvalStyles(d2Id);
+                }
+            }
+        };
+
+        function applyEvalStyles(evalId) {
+            const li = document.getElementById('li-' + evalId);
+            const badgeEnCours = document.getElementById('badge-encours-' + evalId);
+            const details = document.getElementById('details-' + evalId);
+            const chkContainer = document.getElementById('chk-container-' + evalId);
+            const finalBadgeContainer = document.getElementById('final-badge-container-' + evalId);
+            const finalBadge = document.getElementById('status-badge-' + evalId);
+            const extraActions = document.getElementById('extra-actions-' + evalId);
+
+            if (!li) return;
+
+            const isCompleted = progressState.evaluations.completed.has(evalId);
+            const status = progressState.evaluations.statuses[evalId];
+            const isInProgress = progressState.evaluations.inProgress.has(evalId);
+
+            li.className = "flex flex-col p-4 bg-white rounded-xl border shadow-sm transition-all group";
+
+            if (isCompleted) {
+                // ETAT: FINALISÉ OU ENVOYÉ (Les cases se replient)
+                chkContainer.classList.add('hidden');
+                details.classList.add('hidden');
+                finalBadgeContainer.classList.remove('hidden');
+                badgeEnCours.classList.add('hidden');
+                extraActions.innerHTML = ''; // reset
+
+                if (status === 'valide') {
+                    li.classList.add('border-emerald-400', 'bg-emerald-50/40');
+                    finalBadge.innerHTML = '✨ VALIDÉ 🥳 🥂';
+                    finalBadge.className = 'inline-flex items-center text-[11px] font-black px-3 py-1.5 rounded bg-emerald-100 text-emerald-700 shadow-sm border border-emerald-300';
+                } else if (status === 'refaire') {
+                    li.classList.add('border-rose-400', 'bg-rose-50/40');
+                    finalBadge.innerHTML = '💪 À REFAIRE 🛠️';
+                    finalBadge.className = 'inline-flex items-center text-[11px] font-black px-3 py-1.5 rounded bg-rose-100 text-rose-700 shadow-sm border border-rose-300';
+                } else if (status === 'ignore') {
+                    li.classList.add('border-stone-200', 'bg-stone-100', 'opacity-60');
+                    finalBadge.innerHTML = '⏭️ IGNORÉ (Dépôt 1 Validé)';
+                    finalBadge.className = 'inline-flex items-center text-[10px] font-bold px-3 py-1.5 rounded bg-stone-200 text-stone-600 shadow-inner border border-stone-300';
+                } else if (status === 'envoye') {
+                    // ECF Envoyé mais en attente du livret
+                    li.classList.add('border-sky-400', 'bg-sky-50/40');
+                    finalBadge.innerHTML = '🚀 ENVOYÉ (Attente Livret) ⏳';
+                    finalBadge.className = 'inline-flex items-center text-[11px] font-black px-3 py-1.5 rounded bg-sky-100 text-sky-700 shadow-sm border border-sky-300';
+                    if (evalId.includes('_ecf_')) {
+                        extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'livret_recu')" class="text-[10px] font-bold px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-md transition-colors shadow-sm flex items-center gap-1">📖 Marquer Livret Reçu</button>`;
+                    }
+                } else if (status === 'livret_recu') {
+                    li.classList.add('border-emerald-400', 'bg-emerald-50/40');
+                    finalBadge.innerHTML = '📖 LIVRET REÇU ✅ 🥳';
+                    finalBadge.className = 'inline-flex items-center text-[11px] font-black px-3 py-1.5 rounded bg-emerald-100 text-emerald-700 shadow-sm border border-emerald-300 transition-transform hover:scale-105';
+                } else if (status === 'termine') {
+                    li.classList.add('border-emerald-400', 'bg-emerald-50/40');
+                    finalBadge.innerHTML = '✅ TERMINÉ 🎉';
+                    finalBadge.className = 'inline-flex items-center text-[11px] font-black px-3 py-1.5 rounded bg-emerald-100 text-emerald-700 shadow-sm border border-emerald-300 transition-transform hover:scale-105';
+                }
+            } else {
+                // ETAT: ACTIF OU EN COURS
+                chkContainer.classList.remove('hidden');
+                details.classList.remove('hidden');
+                finalBadgeContainer.classList.add('hidden');
+
+                if (isInProgress) {
+                    li.classList.add('border-sky-400', 'bg-sky-50/30', 'shadow-md');
+                    badgeEnCours.classList.remove('hidden');
+                } else {
+                    li.classList.add('border-stone-200', 'hover:border-stone-400', 'hover:shadow-md');
+                    badgeEnCours.classList.add('hidden');
+                }
+            }
+        }
+
+        // ---------------------------------------------------------
+        // MISE A JOUR GLOBALE DE L'UI
+        // ---------------------------------------------------------
+        function updateProgressUI() {
+            let globalTotal = 0;
+            let globalCompleted = 0;
+
+            Object.values(dataProgram).forEach(bloc => {
+                const total = progressState[bloc.id].total;
+                const completed = progressState[bloc.id].completed.size;
+                const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+                globalTotal += total;
+                globalCompleted += completed;
+
+                const dashBar = document.getElementById(`dash-prog-${bloc.id}`);
+                const dashTxt = document.getElementById(`dash-txt-${bloc.id}`);
+                if(dashBar) dashBar.style.width = `${percentage}%`;
+                if(dashTxt) dashTxt.innerText = `${completed}/${total}`;
+
+                const selectorBar = document.getElementById(`prog-bar-${bloc.id}`);
+                const selectorTxt = document.getElementById(`prog-txt-${bloc.id}`);
+                if(selectorBar) selectorBar.style.width = `${percentage}%`;
+                if(selectorTxt) selectorTxt.innerText = `${percentage}% complété`;
+            });
+
+            let evalTotal = progressState.evaluations.total;
+            let evalCompleted = 0;
+
+            Object.values(dataEvaluations).forEach(col => {
+                let colTotal = col.items.length;
+                let colCompleted = 0;
+                col.items.forEach(item => {
+                    // On ne compte l'évaluation comme terminée dans la progression QUE si elle est Vraiment validée/livret reçu
+                    const st = progressState.evaluations.statuses[item.id];
+                    if(st === 'valide' || st === 'livret_recu' || st === 'termine' || st === 'ignore') {
+                        colCompleted++;
+                    }
+                });
+                const colBar = document.getElementById(`prog-eval-${col.id}`);
+                if(colBar) {
+                    const pct = colTotal === 0 ? 0 : Math.round((colCompleted / colTotal) * 100);
+                    colBar.style.width = `${pct}%`;
+                }
+                evalCompleted += colCompleted;
+            });
+
+            const evalGlobalCompEl = document.getElementById('eval-global-completed');
+            const evalGlobalTotEl = document.getElementById('eval-global-total');
+            if (evalGlobalCompEl) evalGlobalCompEl.innerText = evalCompleted;
+            if (evalGlobalTotEl) evalGlobalTotEl.innerText = evalTotal;
+
+            globalTotal += evalTotal;
+            globalCompleted += evalCompleted;
+
+            const globalPercentage = globalTotal === 0 ? 0 : Math.round((globalCompleted / globalTotal) * 100);
+            document.getElementById('global-progress-bar').style.width = `${globalPercentage}%`;
+            document.getElementById('global-percentage').innerText = globalPercentage;
+            document.getElementById('global-completed-count').innerText = globalCompleted;
+            document.getElementById('global-total-count').innerText = globalTotal;
+        }
+
+        // ---------------------------------------------------------
+        // RENDU HTML DES ÉVALUATIONS
+        // ---------------------------------------------------------
+        window.switchEvalTab = function(evalId) {
+            Object.values(dataEvaluations).forEach(col => {
+                const btn = document.getElementById('btn-eval-' + col.id);
+                if(btn) btn.className = "flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-sm border bg-white text-stone-600 hover:bg-stone-100 border-stone-200 flex items-center gap-2";
+                const block = document.getElementById('block-eval-' + col.id);
+                if(block) {
+                    block.classList.add('hidden');
+                    block.classList.remove('block');
+                }
+            });
+            const activeBtn = document.getElementById('btn-eval-' + evalId);
+            if(activeBtn) activeBtn.className = "flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-sm border bg-stone-800 text-white border-stone-800 flex items-center gap-2";
+            const activeBlock = document.getElementById('block-eval-' + evalId);
+            if(activeBlock) {
+                activeBlock.classList.remove('hidden');
+                activeBlock.classList.add('block');
+            }
+        };
+
+        function renderEvaluations() {
+            const container = document.getElementById('eval-columns');
+            container.className = "w-full";
+            container.innerHTML = '';
+
+            let subNavHtml = '<div class="flex space-x-3 overflow-x-auto mb-8 pb-2" style="scrollbar-width: none;">';
+            Object.values(dataEvaluations).forEach((col, index) => {
+                const isActive = index === 0 ? 'bg-stone-800 text-white border-stone-800' : 'bg-white text-stone-600 hover:bg-stone-100 border-stone-200';
+                subNavHtml += `
+                    <button onclick="switchEvalTab('${col.id}')" id="btn-eval-${col.id}" class="flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-sm border ${isActive} flex items-center gap-2">
+                        <span class="text-lg">${col.icon}</span> ${col.title}
+                    </button>
+                `;
+            });
+            subNavHtml += '</div>';
+
+            let contentHtml = '<div class="relative w-full">';
+
+            Object.values(dataEvaluations).forEach((col, index) => {
+                let itemsHtml = '<ul class="space-y-4 mt-2">';
+                col.items.forEach(item => {
+                    const isChecked = progressState.evaluations.inProgress.has(item.id) ? 'checked' : '';
+
+                    // LOGIQUE D'AFFICHAGE SELON LE TYPE D'EVALUATION
+                    const isEcf = item.id.includes('_ecf_');
+                    const isDossier = item.id.includes('_dt_') || item.id.includes('_dp_');
+                    const isDirect = !isEcf && !isDossier;
+
+                    let datesHtml = '';
+                    let buttonsHtml = '';
+
+                    if (isEcf) {
+                        datesHtml = `
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-4">
+                                <div class="flex flex-col">
+                                    <label for="date-depot-${item.id}" class="text-[10px] text-stone-500 font-bold uppercase tracking-wider mb-1.5">Date d'Envoi</label>
+                                    <input type="date" id="date-depot-${item.id}" class="w-full border border-stone-300 rounded-md px-3 py-2 text-sm focus:ring-sky-500 focus:border-sky-500 bg-white shadow-inner cursor-pointer" onchange="calcRowDate('${item.id}')">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] text-stone-500 font-bold uppercase tracking-wider mb-1.5">Retour Livret (10j ouvrés)</span>
+                                    <div class="w-full bg-white border border-stone-200 rounded-md px-3 py-2 text-sm text-center shadow-inner flex items-center justify-center min-h-[38px]">
+                                        <input type="text" id="date-retour-${item.id}" readonly class="w-full h-full bg-transparent text-stone-400 font-medium text-center outline-none cursor-not-allowed" placeholder="-">
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        buttonsHtml = `
+                            <button onclick="setEvalStatus('${item.id}', 'envoye')" class="text-xs font-bold px-3 py-1.5 bg-white border border-stone-300 hover:bg-sky-100 hover:border-sky-500 rounded-md text-stone-600 hover:text-sky-700 transition-colors shadow-sm flex items-center gap-1">🚀 Confirm. Envoi</button>
+                            <button onclick="setEvalStatus('${item.id}', 'livret_recu')" class="text-xs font-bold px-3 py-1.5 bg-white border border-stone-300 hover:bg-emerald-100 hover:border-emerald-500 rounded-md text-stone-600 hover:text-emerald-700 transition-colors shadow-sm flex items-center gap-1">📖 Livret Reçu</button>
+                        `;
+                    } else if (isDossier) {
+                        datesHtml = `
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-4">
+                                <div class="flex flex-col">
+                                    <label for="date-depot-${item.id}" class="text-[10px] text-stone-500 font-bold uppercase tracking-wider mb-1.5">Date de Dépôt</label>
+                                    <input type="date" id="date-depot-${item.id}" class="w-full border border-stone-300 rounded-md px-3 py-2 text-sm focus:ring-${col.color}-500 focus:border-${col.color}-500 bg-white shadow-inner cursor-pointer" onchange="calcRowDate('${item.id}')">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] text-stone-500 font-bold uppercase tracking-wider mb-1.5">Retour Estimé (10j)</span>
+                                    <div class="w-full bg-white border border-stone-200 rounded-md px-3 py-2 text-sm text-center shadow-inner flex items-center justify-center min-h-[38px]">
+                                        <input type="text" id="date-retour-${item.id}" readonly class="w-full h-full bg-transparent text-stone-400 font-medium text-center outline-none cursor-not-allowed" placeholder="-">
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        buttonsHtml = `
+                            <button onclick="setEvalStatus('${item.id}', 'valide')" class="text-xs font-bold px-3 py-1.5 bg-white border border-stone-300 hover:bg-emerald-100 hover:border-emerald-500 rounded-md text-stone-600 hover:text-emerald-700 transition-colors shadow-sm flex items-center gap-1">✅ Validé</button>
+                            <button onclick="setEvalStatus('${item.id}', 'refaire')" class="text-xs font-bold px-3 py-1.5 bg-white border border-stone-300 hover:bg-rose-100 hover:border-rose-500 rounded-md text-stone-600 hover:text-rose-700 transition-colors shadow-sm flex items-center gap-1">❌ À refaire</button>
+                        `;
+                    } else {
+                        datesHtml = `
+                            <div class="grid grid-cols-1 gap-6 mb-4">
+                                <div class="flex flex-col">
+                                    <label for="date-depot-${item.id}" class="text-[10px] text-stone-500 font-bold uppercase tracking-wider mb-1.5">Date de réalisation</label>
+                                    <input type="date" id="date-depot-${item.id}" class="w-full sm:w-1/2 border border-stone-300 rounded-md px-3 py-2 text-sm focus:ring-sky-500 focus:border-sky-500 bg-white shadow-inner cursor-pointer">
+                                </div>
+                            </div>
+                        `;
+                        buttonsHtml = `
+                            <button onclick="setEvalStatus('${item.id}', 'termine')" class="text-xs font-bold px-4 py-2 bg-white border border-stone-300 hover:bg-emerald-100 hover:border-emerald-500 rounded-md text-stone-700 hover:text-emerald-800 transition-colors shadow-sm flex items-center gap-2">
+                                ✅ Marquer Terminé
+                            </button>
+                        `;
+                    }
+
+                    itemsHtml += `
+                        <li id="li-${item.id}" class="flex flex-col p-4 bg-white rounded-xl border border-stone-200 shadow-sm transition-all group">
+
+                            <!-- Titre et Checkbox (J'attaque) -->
+                            <div class="flex flex-wrap items-center gap-4">
+                                <div class="pt-0.5 shrink-0" id="chk-container-${item.id}">
+                                    <input type="checkbox" id="chk-${item.id}" class="w-6 h-6 rounded text-sky-600 focus:ring-sky-500 cursor-pointer border-stone-300" onchange="toggleEvalInProgress('${item.id}')" ${isChecked}>
+                                </div>
+                                <div class="flex-1 flex flex-wrap items-center justify-between gap-2">
+                                    <label for="chk-${item.id}" class="text-base text-stone-700 cursor-pointer font-bold select-none leading-tight transition-colors group-hover:text-stone-900">${item.title}</label>
+                                    <span id="badge-encours-${item.id}" class="hidden text-[10px] font-black uppercase tracking-wider px-2 py-1 bg-sky-100 text-sky-700 rounded-md border border-sky-200 shadow-sm animate-fade-in">⏳ En cours</span>
+                                </div>
+                            </div>
+
+                            <!-- Zone de suivi des dates et actions -->
+                            <div id="details-${item.id}" class="mt-4 ml-0 sm:ml-10 transition-all">
+                                <div class="bg-stone-50 rounded-lg border border-stone-200 p-4">
+
+                                    ${datesHtml}
+
+                                    <!-- ACTIONS -->
+                                    <div class="pt-3 border-t border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                        <span class="text-xs text-stone-500 font-bold uppercase tracking-wider">Action / Statut :</span>
+
+                                        <div class="flex gap-2 flex-wrap" id="status-btns-${item.id}">
+                                            ${buttonsHtml}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Badge Final avec bouton d'annulation TOUJOURS présent et explicite -->
+                            <div id="final-badge-container-${item.id}" class="hidden mt-3 ml-0 sm:ml-10 animate-fade-in flex items-center flex-wrap gap-3">
+                                <div id="status-badge-${item.id}"></div>
+                                <div id="extra-actions-${item.id}"></div>
+                                <button onclick="resetEvalStatus('${item.id}')" class="text-[10px] font-bold text-stone-500 hover:text-stone-800 bg-stone-100 hover:bg-stone-200 border border-stone-200 px-3 py-1.5 rounded-md transition-colors shadow-sm flex items-center gap-1">
+                                    ↩️ Annuler / Modifier
+                                </button>
+                            </div>
+
+                        </li>
+                    `;
+                });
+                itemsHtml += '</ul>';
+
+                const displayClass = index === 0 ? 'block' : 'hidden';
+
+                contentHtml += `
+                    <div id="block-eval-${col.id}" class="eval-block ${displayClass} max-w-4xl mx-auto w-full animate-fade-in">
+                        <div class="bg-${col.color}-50 rounded-2xl border border-${col.color}-200 shadow-md overflow-hidden flex flex-col">
+                            <div class="bg-${col.color}-600 text-white p-6 text-center relative overflow-hidden">
+                                <span class="text-4xl block mb-3">${col.icon}</span>
+                                <h2 class="font-black text-xl uppercase tracking-wider">${col.title}</h2>
+                                <p class="text-${col.color}-100 text-sm mt-1 mb-2 font-medium">${col.subtitle}</p>
+                                <div class="absolute bottom-0 left-0 w-full h-2 bg-${col.color}-800">
+                                    <div id="prog-eval-${col.id}" class="h-full bg-white transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="p-6 bg-stone-50/50">
+                                ${itemsHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            contentHtml += '</div>';
+            container.innerHTML = subNavHtml + contentHtml;
+
+            Object.values(dataEvaluations).forEach(col => {
+                col.items.forEach(item => applyEvalStyles(item.id));
+            });
+        }
+
+        function initProgramme() {
+            initProgressCounts();
+            const selectorContainer = document.getElementById('bloc-selectors');
+            Object.values(dataProgram).forEach(bloc => {
+                const bgColors = {
+                    'indigo': 'hover:bg-indigo-50 hover:border-indigo-300',
+                    'emerald': 'hover:bg-emerald-50 hover:border-emerald-300',
+                    'amber': 'hover:bg-amber-50 hover:border-amber-300',
+                    'rose': 'hover:bg-rose-50 hover:border-rose-300'
+                };
+                const btn = document.createElement('button');
+                btn.className = `text-left p-4 rounded-xl border-2 border-stone-100 bg-white shadow-sm transition-all duration-200 cursor-pointer ${bgColors[bloc.color]} relative overflow-hidden`;
+                btn.id = `selector-${bloc.id}`;
+                btn.onclick = () => selectBloc(bloc.id);
+                btn.innerHTML = `
+                    <span class="text-3xl block mb-2">${bloc.icon}</span>
+                    <h3 class="font-bold text-stone-800 text-sm leading-tight">${bloc.title}</h3>
+                    <div class="mt-3 w-full bg-stone-100 rounded-full h-1.5">
+                        <div id="prog-bar-${bloc.id}" class="bg-${bloc.color}-500 h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    <p id="prog-txt-${bloc.id}" class="text-[10px] uppercase font-bold text-stone-400 mt-1">0% complété</p>
+                `;
+                selectorContainer.appendChild(btn);
+            });
+            updateProgressUI();
+        }
+
+        function selectBloc(blocId) {
+            const bloc = dataProgram[blocId];
+            activeBloc = blocId;
+            Object.values(dataProgram).forEach(b => {
+                const btn = document.getElementById(`selector-${b.id}`);
+                btn.classList.remove('border-indigo-500', 'border-emerald-500', 'border-amber-500', 'border-rose-500', 'ring-2', 'ring-stone-200');
+                if(b.id === blocId) btn.classList.add(`border-${bloc.color}-500`, 'shadow-md');
+            });
+            const titleEl = document.getElementById('current-bloc-title');
+            titleEl.innerHTML = `<span class="mr-2">${bloc.icon}</span> ${bloc.title}`;
+            titleEl.className = `text-xl font-bold text-${bloc.color}-800`;
+            const container = document.getElementById('modules-container');
+            container.innerHTML = '';
+            const descEl = document.createElement('p');
+            descEl.className = "text-sm text-stone-600 mb-6 italic";
+            descEl.textContent = bloc.description;
+            container.appendChild(descEl);
+            const ul = document.createElement('ul');
+            ul.className = "space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-stone-300 before:to-transparent";
+            bloc.modules.forEach((mod, index) => {
+                const li = document.createElement('li');
+                li.className = "relative flex items-start justify-between md:justify-normal md:odd:flex-row-reverse group is-active";
+                const dotColor = `bg-${bloc.color}-500`;
+                const borderColor = `border-${bloc.color}-200`;
+                let sujetsHtml = '';
+                if (mod.sujets && mod.sujets.length > 0) {
+                    sujetsHtml = '<ul class="mt-3 space-y-1">';
+                    mod.sujets.forEach(sujet => {
+                        const parts = sujet.split(' - ');
+                        const sujetCode = parts[0];
+                        const sujetTitle = parts.slice(1).join(' - ');
+                        const isChecked = progressState[bloc.id].completed.has(sujetCode) ? 'checked' : '';
+                        sujetsHtml += `
+                            <li class="flex items-start gap-2 p-1.5 hover:bg-stone-50 rounded transition-colors">
+                                <input type="checkbox" id="chk-${sujetCode}" class="sujet-checkbox mt-0.5 w-4 h-4 rounded text-${bloc.color}-600 focus:ring-${bloc.color}-500 cursor-pointer border-stone-300" onclick="toggleSujet('${sujetCode}', '${bloc.id}')" ${isChecked}>
+                                <label for="chk-${sujetCode}" class="text-xs text-stone-600 cursor-pointer font-medium select-none transition-all"><span class="font-bold text-stone-500">${sujetCode}</span> - ${sujetTitle}</label>
+                            </li>
+                        `;
+                    });
+                    sujetsHtml += '</ul>';
+                }
+                li.innerHTML = `
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white ${dotColor} text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 text-xs font-bold mt-2">
+                        ${index + 1}
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-5 rounded-lg border ${borderColor} shadow-sm transition-transform duration-200 hover:-translate-y-1 hover:shadow-md">
+                        <p class="text-sm font-extrabold text-stone-800">${mod.title}</p>
+                        ${sujetsHtml}
+                    </div>
+                `;
+                ul.appendChild(li);
+            });
+            container.appendChild(ul);
+            container.scrollTop = 0;
+            updateProgressUI();
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('blocsChart').getContext('2d');
+            const labels = Object.values(dataProgram).map(b => b.title.substring(3));
+            const dataCounts = Object.values(dataProgram).map(b => {
+                let c = 0; b.modules.forEach(m => c+= m.sujets ? m.sujets.length : 0); return c;
+            });
+            const colors = ['#6366f1', '#10b981', '#f59e0b', '#f43f5e'];
+            chartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dataCounts, backgroundColor: colors, borderWidth: 2, borderColor: '#ffffff', hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { padding: 20, font: { family: 'sans-serif', size: 13 } } },
+                        tooltip: {
+                            backgroundColor: '#292524', titleFont: { size: 14 }, bodyFont: { size: 14, weight: 'bold' },
+                            padding: 12, displayColors: true,
+                            callbacks: { label: function(context) { return ` ${context.raw} Sujets au total`; } }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initProgramme();
+            renderEvaluations();
+            renderChart();
+            updateProgressUI();
+        });
+
+    </script>
+</body>
+</html>

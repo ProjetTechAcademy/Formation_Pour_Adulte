@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>005_FPA_B1_M02_S002 - Cadre réglementaire | PAIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette exacte PAIA */
+            --surface-ivory: #F6F2E8;
+            --title-blue: #0F2C48;
+            --cta-yellow: #D9A526;
+            --alert-bronze: #B4792A;
+            --blanc: #ffffff;
+            --rouge-vies: #e74c3c;
+            --shadow-subtle: 0 4px 20px rgba(15, 44, 72, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+        html { font-size: 16px; transition: font-size 0.2s; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--surface-ivory);
+            color: var(--title-blue);
+            margin: 0; padding: 10px;
+            display: flex; justify-content: center; align-items: flex-start;
+            min-height: 100vh; overflow-x: hidden;
+            transition: all 0.5s ease;
+            padding-bottom: 80px;
+        }
+
+        /* --- BARRE GLOBALE PAIA (ACCESSIBILITÉ) --- */
+        #global-controls-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+            display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap;
+            background: var(--surface-ivory);
+            padding: 10px 15px; box-shadow: 0 -5px 25px rgba(15, 44, 72, 0.1);
+            border-top: 3px solid var(--title-blue);
+        }
+
+        /* --- DARK MODE --- */
+        body.dark-mode {
+            --surface-ivory: #0a1c2e;
+            --blanc: #0F2C48;
+            --title-blue: #F6F2E8;
+            --cta-yellow: #D9A526;
+        }
+        body.dark-mode #global-controls-bar { background: var(--surface-ivory); border-top-color: var(--cta-yellow); }
+        body.dark-mode .config-block, body.dark-mode .glossary-box, body.dark-mode .anecdote-box {
+            background: var(--blanc) !important; border: 1px solid rgba(217, 165, 38, 0.2) !important;
+        }
+        body.dark-mode .opt-btn { background: #153a5e; color: #F6F2E8; border-color: #1a4a7a; }
+        body.dark-mode .diploma { background: var(--blanc); border: 3px solid var(--cta-yellow); color: var(--title-blue); }
+        body.dark-mode .footer-paia { border-top-color: rgba(246, 242, 232, 0.1); }
+
+        /* --- CONTENEUR --- */
+        #quiz-container {
+            background: var(--blanc); max-width: 800px; width: 100%;
+            border-radius: 12px; box-shadow: var(--shadow-subtle);
+            padding: 30px; position: relative; z-index: 10; margin-top: 10px;
+            border: 1px solid rgba(15, 44, 72, 0.1);
+        }
+
+        /* --- HEADER & BRANDING --- */
+        .header-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; }
+        .header-brand { display: flex; align-items: center; gap: 15px; }
+        .header-logo { width: 65px; height: 65px; border-radius: 12px; border: 2px solid var(--title-blue); object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header-titles { text-align: left; }
+        .platform-name { font-family: 'Roboto', sans-serif; font-size: 2rem; font-weight: 900; color: var(--title-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0; line-height: 1; }
+        .platform-sub { color: var(--alert-bronze); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; margin-top: 6px; }
+
+        .btn-teams {
+            background: linear-gradient(135deg, #464EB8 0%, #E81123 50%, #FFB900 100%);
+            color: #ffffff; padding: 10px 22px; border-radius: 50px; text-decoration: none;
+            font-weight: 700; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s ease, box-shadow 0.2s ease;
+            white-space: nowrap; font-size: 0.95rem;
+        }
+        .btn-teams:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 15px rgba(0,0,0,0.25); color: #ffffff; }
+
+        .module-banner {
+            background: var(--title-blue); color: var(--cta-yellow);
+            padding: 10px 25px; border-radius: 8px; font-weight: 700; margin-bottom: 20px; display: inline-block;
+            border: 1px solid var(--cta-yellow); text-align: center; width: 100%;
+        }
+
+        /* --- ÉCRANS --- */
+        .screen { display: none; }
+        .active-screen { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .config-block { background: var(--surface-ivory); padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px solid rgba(15, 44, 72, 0.05); }
+        .config-block label { display: block; font-weight: 700; color: var(--title-blue); margin-bottom: 10px; }
+
+        .opt-btn {
+            background: var(--blanc); border: 2px solid rgba(15, 44, 72, 0.2); color: var(--title-blue);
+            padding: 14px 20px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: 500;
+            transition: all 0.2s ease; text-align: left;
+        }
+        .opt-btn:hover:not(:disabled) { border-color: var(--cta-yellow); background-color: rgba(217, 165, 38, 0.05); }
+        .opt-btn.selected-config { background: var(--title-blue); color: var(--cta-yellow); border-color: var(--title-blue); }
+        .compact-btn { padding: 10px 18px; border-radius: 8px; text-align: center; width: auto; flex-grow: 0; font-weight: 700;}
+
+        .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 700;}
+        .timer-box { font-weight: 900; color: var(--alert-bronze); font-size: 1.2rem; }
+
+        .progress-bar { width: 100%; height: 8px; background: rgba(15, 44, 72, 0.1); border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--cta-yellow); width: 0%; transition: width 1s linear; }
+
+        .q-text { font-size: 1.3rem; font-weight: 700; color: var(--title-blue); margin-bottom: 25px; line-height: 1.4; }
+        .options-grid { display: grid; gap: 12px; }
+
+        .feedback { margin-top: 20px; padding: 20px; border-radius: 8px; display: none; font-weight: 500; animation: fadeIn 0.3s; }
+        .success { background: rgba(217, 165, 38, 0.1); color: var(--title-blue); border: 2px solid var(--cta-yellow); }
+        .error { background: #fef2f2; color: #991b1b; border: 2px solid #f87171; }
+
+        .btn-action {
+            background: var(--title-blue); color: var(--surface-ivory); border: 2px solid var(--title-blue); padding: 16px 30px;
+            border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%; margin-top: 20px;
+            transition: all 0.3s ease; text-transform: uppercase;
+        }
+        .btn-action:hover { background: var(--cta-yellow); color: var(--title-blue); border-color: var(--cta-yellow); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(217, 165, 38, 0.3); }
+
+        .glossary-box { margin-top: 25px; padding: 20px; background: var(--surface-ivory); border-radius: 8px; border: 1px dashed var(--cta-yellow); text-align: left; }
+        .glossary-box h3 { color: var(--title-blue); display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; font-weight: 700; margin-top:0;}
+        .glossary-list li { margin-bottom: 12px; padding: 10px; background: var(--blanc); border-radius: 6px; list-style: none; border: 1px solid rgba(15, 44, 72, 0.1); }
+        .glossary-list strong { color: var(--alert-bronze); font-weight: 700; }
+
+        .vocab-diploma { display: none; padding: 25px; background: rgba(217, 165, 38, 0.15); border: 2px solid var(--cta-yellow); border-radius: 8px; text-align: center; margin-top: 20px; font-weight: 700; color: var(--title-blue); }
+        .motivation-banner { margin-top: 20px; padding: 15px; background: rgba(15, 44, 72, 0.05); border-radius: 8px; text-align: center; font-style: italic; font-weight: 500; color: var(--title-blue); border-left: 4px solid var(--alert-bronze); }
+
+        .diploma { text-align: center; }
+
+        /* --- FOOTER PAIA --- */
+        .footer-paia { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(15, 44, 72, 0.1); }
+        .footer-logo { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--cta-yellow); object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .signature { font-size: 11px; color: var(--title-blue); text-align: center; font-weight: 500; line-height: 1.6; opacity: 0.85; }
+
+        .acc-btn { padding: 8px 12px; font-size: 1.1rem; border-radius: 8px; color: var(--title-blue); font-weight: 700; background: transparent; border: none; cursor: pointer; }
+        .control-group-horiz { display: flex; gap: 5px; align-items: center; background: rgba(15, 44, 72, 0.05); padding: 5px 10px; border-radius: 8px; }
+        .divider-vert { width: 1px; height: 25px; background: rgba(15, 44, 72, 0.2); margin: 0 8px; }
+        .hidden-group { display: none !important; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div id="global-controls-bar">
+    <button class="acc-btn" onclick="toggleDarkMode()" id="btn-dark-mode">🌙</button>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="changeFontSize(-1)">A-</button>
+        <button class="acc-btn" onclick="changeFontSize(1)">A+</button>
+    </div>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="toggleMute()" id="btn-mute">🔊</button>
+        <button class="acc-btn" onclick="changeVolume(-0.1)">🔉</button>
+        <button class="acc-btn" onclick="changeVolume(0.1)">🔊</button>
+    </div>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="changeSpeechRate(-0.1)">🗣️-</button>
+        <span id="ui-rate" style="font-weight:700; font-size:0.85rem; min-width:35px; text-align:center;">x1.2</span>
+        <button class="acc-btn" onclick="changeSpeechRate(0.1)">🗣️+</button>
+    </div>
+</div>
+
+<div id="quiz-container">
+    <div class="header">
+        <div class="header-top">
+            <div class="header-brand">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="PAIA Logo" class="header-logo">
+                <div class="header-titles">
+                    <div class="platform-name">Paia</div>
+                    <div class="platform-sub">Adult Learning Hub</div>
+                </div>
+            </div>
+            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgI" target="_blank" class="btn-teams">
+                <span style="font-size:1.2rem;">💬</span> Communauté Teams
+            </a>
+        </div>
+        <div class="module-banner">📌 005_FPA_B1_M02_S002 - Cadre réglementaire de l'activité</div>
+    </div>
+
+    <div id="screen-setup" class="screen active-screen">
+        <div class="config-block">
+            <label>🛠️ Options Accessibilité</label>
+            <div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleDys(this)">🔤 Dys</button>
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleContrast(this)">🌓 Contraste</button>
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleAnimations(this)">🛑 Calme</button>
+            </div>
+        </div>
+
+        <div class="config-block" style="background: var(--blanc);">
+            <div class="config-grid" style="display:grid; gap:15px;">
+                <div class="config-block"><label>📌 Volume de Questions (Aléatoire)</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setQ(10, this)" class="opt-btn compact-btn selected-config">10</button>
+                    <button onclick="setQ(20, this)" class="opt-btn compact-btn">20</button>
+                    <button onclick="setQ(30, this)" class="opt-btn compact-btn">30</button>
+                </div></div>
+                <div class="config-block"><label>🎮 Style de Jeu</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setMode('chrono', this)" class="opt-btn compact-btn selected-config">⏱️ Chrono</button>
+                    <button onclick="setMode('vies', this)" class="opt-btn compact-btn">❤️ Survie</button>
+                </div></div>
+                <div class="config-block" id="chrono-settings"><label>⏳ Temps / Question</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setT(20, this)" class="opt-btn compact-btn">20s</button>
+                    <button onclick="setT(40, this)" class="opt-btn compact-btn selected-config">40s</button>
+                    <button onclick="setT(0, this)" class="opt-btn compact-btn">∞</button>
+                </div></div>
+            </div>
+            <div id="vies-settings" class="hidden-group" style="padding:10px; border-radius:8px; background:rgba(180, 121, 42, 0.1);">
+                <p style="color:var(--alert-bronze); font-size:0.9rem; margin:0;"><b>Mode Survie :</b> 1 vie / 10 Q. Soyez précis, l'erreur est fatale !</p>
+            </div>
+        </div>
+        <div id="ui-motivation-start" class="motivation-banner">
+            Loi Avenir, URSSAF, BPF et documents contractuels : maîtrisez-vous les rouages de l'OF ?
+        </div>
+        <button class="btn-action" onclick="startGame()">DÉMARRER LA SESSION 🚀</button>
+    </div>
+
+    <div id="screen-game" class="screen">
+        <div class="hud">
+            <div id="ui-timer" class="timer-box" style="display:none;">⏱️ --s</div>
+            <div id="ui-hearts" style="display:none; color:var(--rouge-vies); font-size:1.3rem;">❤️❤️❤️</div>
+            <div id="ui-progress" class="vies">📝 Question 1 / --</div>
+            <button class="acc-btn" style="border:1px solid var(--title-blue);" onclick="speakCurrent()">🎤</button>
+        </div>
+        <div class="progress-bar"><div id="ui-bar" class="progress-fill"></div></div>
+        <div id="ui-q-text" class="q-text" tabindex="0">Chargement...</div>
+        <div id="ui-options" class="options-grid"></div>
+        <div id="ui-feedback" class="feedback" tabindex="-1"></div>
+        <button id="btn-next" class="btn-action" style="display:none;" onclick="handleNext()">CONTINUER ➡️</button>
+    </div>
+
+    <div id="screen-result" class="screen diploma">
+        <div class="diploma-content">
+            <span style="font-size: 3.5rem; display:block; margin-bottom:10px;" id="ui-diploma-icon">🎓</span>
+            <h2 id="final-title" style="font-weight:900; text-transform:uppercase;">BILAN RÉGLEMENTAIRE</h2>
+            <div id="ui-final-score" style="font-size:4rem; font-weight:900; margin:10px 0; color:var(--cta-yellow);">0/0</div>
+            <p id="ui-humor" style="font-weight:500; padding:0 20px;"></p>
+
+            <div class="motivation-banner" style="text-align:left;">
+                <b>💡 Insight FPA :</b><br><span id="ui-anecdote">...</span>
+            </div>
+
+            <div class="glossary-box">
+                <h3>
+                    <span style="display:flex; align-items:center; gap:10px;">
+                        Glossaire Expert
+                        <button class="acc-btn" style="padding:2px 8px; font-size:1.1rem; color:var(--alert-bronze); border:1px solid rgba(180, 121, 42, 0.3);" onclick="speakGlossary()" title="Écouter les termes affichés">🔊</button>
+                    </span>
+                    <span id="ui-glossary-progress" style="font-size:0.85rem; background:var(--title-blue); color:var(--cta-yellow); padding:4px 12px; border-radius:50px;">0 / 12</span>
+                </h3>
+                <ul class="glossary-list" id="ui-glossary-list"></ul>
+                <button id="btn-new-words" class="opt-btn" style="margin-top:15px; text-align:center; background:transparent; font-weight:700; border-style:dashed;" onclick="generateGlossary(true)">🔄 Termes suivants</button>
+                <div id="ui-vocab-diploma" class="vocab-diploma">🏅 Maîtrise Lexicale Confirmée !</div>
+            </div>
+        </div>
+        <button class="btn-action" onclick="location.reload()">NOUVELLE SESSION 🔄</button>
+    </div>
+
+    <div class="footer-paia">
+        <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo MMPA" class="footer-logo">
+        <div class="signature">💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026 Tous droits réservés</div>
+    </div>
+</div>
+
+<script>
+    // --- BANQUE DE 30 QUESTIONS (FICHE 005) ---
+    const questionBank = [
+        {q: "Quel est l'intitulé de la loi du 5 septembre 2018 ?", options: ["Loi Travail", "Loi pour la liberté de choisir son avenir professionnel", "Loi de modernisation sociale"], correct: 1, rationale: "C'est la réforme majeure qui a transformé le financement et l'organisation de la formation." },
+        {q: "Comment est exprimé le CPF pour les salariés du secteur privé depuis 2019 ?", options: ["En heures", "En euros", "En points"], correct: 1, rationale: "Le CPF a été monétisé : il est alimenté de 500€ par an (plafonné à 5000€)." },
+        {q: "Quel organisme collecte désormais les contributions formation des entreprises ?", options: ["Les OPCO", "L'URSSAF", "France Compétences"], correct: 1, rationale: "Depuis la réforme, l'URSSAF centralise les collectes pour les reverser à France Compétences." },
+        {q: "Quel est le rôle principal de France Compétences ?", options: ["Collecter la taxe d'apprentissage", "Réguler, financer et garantir la qualité du système", "Donner les cours aux stagiaires"], correct: 1, rationale: "C'est l'autorité nationale de régulation et de financement." },
+        {q: "Quelle est la date butoir annuelle pour la télédéclaration du BPF ?", options: ["31 décembre", "30 avril", "1er septembre"], correct: 1, rationale: "Le Bilan Pédagogique et Financier doit être transmis avant le 30 avril de chaque année." },
+        {q: "Que signifie le sigle NDA ?", options: ["Norme de Développement Adulte", "Numéro de Déclaration d'Activité", "Niveau de Diplôme Atteint"], correct: 1, rationale: "C'est le numéro obligatoire pour tout prestataire facturant des formations." },
+        {q: "Dans quel délai un nouveau prestataire doit-il demander son NDA ?", options: ["Dans les 3 mois suivant la première convention", "Immédiatement à la création de l'entreprise", "Après la première année d'exercice"], correct: 0, rationale: "La déclaration d'activité doit être déposée dans les 3 mois après la signature de la 1ère prestation." },
+        {q: "Lequel de ces documents est obligatoire pour un achat de formation par une entreprise ?", options: ["Un contrat de formation pro", "Une convention de formation", "Une simple facture"], correct: 1, rationale: "La convention lie l'OF à un acheteur professionnel (B2B)." },
+        {q: "Lequel de ces documents est obligatoire pour un stagiaire finançant lui-même sa formation ?", options: ["Une convention de formation", "Un contrat de formation professionnelle", "Un devis oral"], correct: 1, rationale: "Le contrat protège le consommateur individuel (B2C)." },
+        {q: "Quel est le délai de rétractation pour un particulier signant un contrat de formation ?", options: ["Il n'y en a pas", "10 jours (14 jours si vente à distance)", "1 mois"], correct: 1, rationale: "C'est un droit protecteur issu du Code du travail et du Code de la consommation." },
+        {q: "Une attestation de fin de formation est-elle obligatoire ?", options: ["Non, c'est facultatif", "Oui, elle doit être remise au stagiaire", "Seulement pour les diplômes d'État"], correct: 1, rationale: "L'article L6353-1 du Code du travail impose la remise d'une attestation mentionnant les acquis." },
+        {q: "Que se passe-t-il si un OF ne transmet pas son BPF dans les temps ?", options: ["Il paie une amende de 150€", "Son NDA devient caduc", "Il reçoit un simple avertissement"], correct: 1, rationale: "L'absence de BPF entraîne la perte automatique du droit de former (caducité du NDA)." },
+        {q: "La certification Qualiopi est-elle obligatoire pour TOUS les organismes de formation ?", options: ["Oui, systématiquement", "Seulement pour accéder aux fonds publics ou mutualisés", "Seulement pour les CFA"], correct: 1, rationale: "Un OF peut exercer sans Qualiopi, mais ses clients ne pourront pas mobiliser de financements (CPF, OPCO, État)." },
+        {q: "Que doit comporter obligatoirement le règlement intérieur d'un OF ?", options: ["Le menu de la cantine", "Les règles d'hygiène, de sécurité et de discipline", "La liste des formateurs"], correct: 1, rationale: "C'est une obligation légale pour tout organisme accueillant des stagiaires." },
+        {q: "L'indemnisation chômage pour les démissionnaires nécessite :", options: ["Juste d'en avoir envie", "Un projet de reconversion réel et sérieux validé", "D'avoir 65 ans"], correct: 1, rationale: "La loi de 2018 a ouvert ce droit sous réserve de validation du projet par une commission." },
+        {q: "Quelle mention légale doit obligatoirement suivre le numéro NDA sur les documents ?", options: ["'Agrément d'État n°...'", "'Déclaration enregistrée sous le numéro... cet enregistrement ne vaut pas agrément de l'État'", "'Certifié conforme'"], correct: 1, rationale: "Il est interdit de présenter le NDA comme un label de qualité ou un agrément public." },
+        {q: "Quel document prouve la réalisation effective d'une formation ?", options: ["Le RIB de l'OF", "Les feuilles d'émargement", "Le flyer publicitaire"], correct: 1, rationale: "Signées par demi-journée, elles constituent la preuve de présence exigée par les financeurs." },
+        {q: "L'AFEST permet de former :", options: ["Uniquement en salle", "Directement sur le poste de travail", "Uniquement par visio"], correct: 1, rationale: "C'est l'Action de Formation En Situation de Travail, avec phases réflexives." },
+        {q: "Le BPF retrace quoi précisément ?", options: ["Seulement l'argent gagné", "L'activité pédagogique (stagiaires, heures) et financière de l'année précédente", "Le CV des formateurs"], correct: 1, rationale: "C'est une radiographie complète de l'activité annuelle de l'OF." },
+        {q: "Un formateur indépendant doit-il posséder un NDA pour facturer une entreprise ?", options: ["Non, son SIRET suffit", "Oui, dès qu'il réalise des actions de formation pro", "Seulement s'il a des salariés"], correct: 1, rationale: "Le NDA est requis dès que l'activité entre dans le champ de la formation professionnelle." },
+        {q: "Combien d'OPCO existent en France depuis 2019 ?", options: ["11", "22", "5"], correct: 0, rationale: "On compte 11 Opérateurs de Compétences organisés par branches professionnelles." },
+        {q: "Le 'RNCP' géré par France Compétences signifie :", options: ["Règlement National des Cours de Pilotage", "Répertoire National des Certifications Professionnelles", "Registre Nominal des Contrats Pro"], correct: 1, rationale: "Il liste les diplômes et titres reconnus pour l'exercice d'un métier." },
+        {q: "Le 'RS' (Répertoire Spécifique) concerne :", options: ["Les métiers complets", "Les habilitations et compétences complémentaires (ex: TOSA, CACES)", "Les retraités"], correct: 1, rationale: "Le RS valide des compétences transversales ou réglementaires." },
+        {q: "L'entretien professionnel entre employeur et salarié doit avoir lieu :", options: ["Chaque année", "Tous les 2 ans", "Tous les 5 ans"], correct: 1, rationale: "C'est une obligation légale portant sur les perspectives d'évolution professionnelle." },
+        {q: "Que vérifie le critère d'honorabilité du dirigeant d'OF ?", options: ["Son niveau de diplôme", "L'absence de certaines condamnations pénales (Casier bulletin 3)", "Son solde bancaire"], correct: 1, rationale: "C'est une condition légale pour diriger ou gérer un organisme de formation." },
+        {q: "Le programme de formation doit être remis au stagiaire :", options: ["Après la formation", "Avant toute inscription", "Pendant l'examen final"], correct: 1, rationale: "L'obligation d'information pré-contractuelle impose de fournir le programme détaillé en amont." },
+        {q: "La taxe d'apprentissage fait partie de quelle contribution unique ?", options: ["La TVA", "La CUFPA (Contribution Unique à la Formation Pro et à l'Alternance)", "L'impôt sur les sociétés"], correct: 1, rationale: "La CUFPA regroupe la contribution formation et la taxe d'apprentissage." },
+        {q: "Un OF peut-il être exonéré de TVA ?", options: ["Oui, s'il a un NDA et fait une demande d'attestation fiscale spécifique", "Non, jamais", "Oui, c'est automatique"], correct: 0, rationale: "L'exonération n'est pas automatique, elle nécessite une démarche auprès de la DREETS." },
+        {q: "Qu'est-ce que le 'Pro-A' ?", options: ["Une promotion pour acheter des logiciels", "Le dispositif de reconversion ou promotion par l'alternance", "Une assurance professionnelle"], correct: 1, rationale: "Il permet aux salariés de changer de métier ou de monter en grade via une alternance interne." },
+        {q: "Quelle autorité délivre le NDA ?", options: ["La Mairie", "Le préfet de région (via la DREETS)", "Pôle Emploi"], correct: 1, rationale: "C'est un service déconcentré de l'État qui instruit la demande." }
+    ];
+
+    const glossaryTerms = [
+        { word: "Loi Avenir (2018)", def: "Réforme pour la liberté de choisir son avenir professionnel, instaurant la monétisation du CPF." },
+        { word: "NDA", def: "Numéro de Déclaration d'Activité. Enregistrement obligatoire pour tout prestataire de formation." },
+        { word: "BPF", def: "Bilan Pédagogique et Financier. Déclaration annuelle retraçant l'activité et l'usage des fonds." },
+        { word: "Convention", def: "Contrat de formation entre un organisme (OF) et une entreprise (B2B)." },
+        { word: "Contrat de FP", def: "Contrat liant l'OF à une personne physique finançant elle-même sa formation (B2C)." },
+        { word: "France Compétences", def: "Autorité nationale de régulation et de financement de la formation professionnelle." },
+        { word: "URSSAF", def: "Organisme collectant les contributions formation et apprentissage auprès des entreprises." },
+        { word: "OPCO", def: "Opérateur de Compétences. Accompagne la formation selon les branches professionnelles (au nombre de 11)." },
+        { word: "Qualiopi", def: "Certification qualité obligatoire pour obtenir des fonds publics ou mutualisés." },
+        { word: "RNCP", def: "Répertoire National des Certifications Professionnelles (diplômes liés à un métier)." },
+        { word: "Répertoire Spécifique", def: "Répertoire recensant les habilitations et compétences transversales." },
+        { word: "Honorabilité", def: "Condition de probité du dirigeant d'OF (casier judiciaire vierge de délits spécifiques)." }
+    ];
+
+    const anecdotes = [
+        "Sans BPF transmis avant le 30 avril, votre NDA meurt administrativement. C'est l'erreur fatale des jeunes OF !",
+        "Le NDA n'est PAS un agrément. Mentionner 'Agréé par l'État' sur votre site est illégal et passible de sanctions.",
+        "Grâce à la monétisation de 2019, le CPF est devenu l'application la plus téléchargée de France en quelques semaines.",
+        "Le casier judiciaire du dirigeant est vérifié systématiquement par la DREETS lors de la demande de NDA.",
+        "Une simple formation de 2 heures peut nécessiter un contrat de 10 pages pour être parfaitement en règle avec le Code du Travail."
+    ];
+
+    let gameMode = 'chrono', activeSet = [], current = 0, score = 0, timer, timeLeft, totalQ = 10, lives = 3;
+    let isDarkMode = false, isDys = false, isContrast = false, isCalm = false, isMuted = false, speechRate = 1.2, globalVolume = 1.0;
+
+    let seenGlossaryTerms = new Set(JSON.parse(localStorage.getItem('paia_vocab_005') || '[]'));
+    const maxGlossary = glossaryTerms.length;
+
+    // --- ACCESSIBILITÉ & UI CONTROLS ---
+    function toggleDarkMode() { isDarkMode = !isDarkMode; document.body.classList.toggle('dark-mode', isDarkMode); document.getElementById('btn-dark-mode').innerText = isDarkMode ? "☀️" : "🌙"; }
+    function changeFontSize(s) { let f = parseInt(window.getComputedStyle(document.documentElement).fontSize); document.documentElement.style.fontSize = Math.min(24, Math.max(12, f + (s*2))) + "px"; }
+    function toggleDys(b) { isDys = !isDys; document.body.classList.toggle('dys-mode'); b.classList.toggle('selected-config', isDys); }
+    function toggleContrast(b) { isContrast = !isContrast; document.body.classList.toggle('high-contrast'); b.classList.toggle('selected-config', isContrast); }
+    function toggleAnimations(b) { isCalm = !isCalm; document.body.classList.toggle('no-anim'); b.classList.toggle('selected-config', isCalm); }
+
+    // --- AUDIO CONTROLS ---
+    function changeSpeechRate(s) { speechRate = Math.min(1.5, Math.max(0.5, speechRate + s)); document.getElementById('ui-rate').innerText = "x" + speechRate.toFixed(1); }
+    function changeVolume(v) { globalVolume = Math.min(1, Math.max(0, globalVolume + v)); if(globalVolume > 0 && isMuted) toggleMute(); }
+    function toggleMute() { isMuted = !isMuted; document.getElementById('btn-mute').innerText = isMuted ? "🔇" : "🔊"; if(isMuted) window.speechSynthesis.cancel(); }
+
+    function speak(txt) {
+        if (isMuted) return;
+        window.speechSynthesis.cancel();
+        const m = new SpeechSynthesisUtterance(txt); m.lang = 'fr-FR'; m.rate = speechRate; m.volume = globalVolume; m.pitch = 1.15;
+        window.speechSynthesis.speak(m);
+    }
+    function speakCurrent() {
+        if(!activeSet[current]) return;
+        const d = activeSet[current];
+        let tts = d.q + ". Les propositions sont : ";
+        d.options.forEach((o, i) => tts += `Option ${i+1}, ${o}. `);
+        speak(tts);
+    }
+    function speakGlossary() {
+        let tts = "Glossaire. ";
+        const listItems = document.querySelectorAll('#ui-glossary-list li');
+        if(listItems.length === 0) { tts += "Le glossaire est vide."; }
+        else { listItems.forEach(li => { tts += li.innerText + ". "; }); }
+        speak(tts);
+    }
+
+    // --- GAME LOGIC ---
+    function setMode(mode, btn) {
+        gameMode = mode; highlight(btn);
+        document.getElementById('chrono-settings').classList.toggle('hidden-group', mode === 'vies');
+        document.getElementById('vies-settings').classList.toggle('hidden-group', mode === 'chrono');
+    }
+    function setQ(n, btn) { totalQ = n; highlight(btn); }
+    function setT(n, btn) { timeLimit = n; highlight(btn); }
+    function highlight(btn) { btn.parentNode.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected-config')); btn.classList.add('selected-config'); }
+
+    function startGame() {
+        score = 0; current = 0;
+        if(gameMode === 'vies') { lives = (totalQ <= 10 ? 1 : totalQ <= 20 ? 2 : 3); document.getElementById('ui-hearts').style.display = 'block'; document.getElementById('ui-timer').style.display = 'none'; }
+        else { lives = 99; document.getElementById('ui-hearts').style.display = 'none'; }
+
+        // ALÉATOIRE : Mélange de la banque et extraction
+        activeSet = [...questionBank].sort(() => Math.random() - 0.5).slice(0, totalQ);
+
+        document.getElementById('screen-setup').classList.remove('active-screen');
+        document.getElementById('screen-game').classList.add('active-screen');
+        speak("C'est parti ! Bonne chance.");
+        setTimeout(loadQuestion, 1500);
+    }
+
+    function loadQuestion() {
+        const d = activeSet[current];
+        document.getElementById('ui-q-text').innerText = d.q;
+        document.getElementById('ui-progress').innerText = `📝 Question ${current + 1} / ${totalQ}`;
+        const box = document.getElementById('ui-options'); box.innerHTML = "";
+        document.getElementById('ui-feedback').style.display = "none";
+        document.getElementById('btn-next').style.display = "none";
+        if(gameMode === 'vies') updateHearts();
+
+        let tts = d.q + ". ";
+        d.options.forEach((o, i) => {
+            const b = document.createElement('button'); b.className = "opt-btn"; b.innerText = (i+1) + ". " + o;
+            b.onclick = () => validate(i); box.appendChild(b);
+            tts += `Option ${i+1}, ${o}. `;
+        });
+        speak(tts);
+        if(gameMode === 'chrono' && timeLimit > 0) startTimer();
+    }
+
+    function startTimer() {
+        timeLeft = timeLimit; document.getElementById('ui-timer').style.display = 'block';
+        clearInterval(timer);
+        timer = setInterval(() => {
+            timeLeft--; document.getElementById('ui-timer').innerText = "⏱️ " + timeLeft + "s";
+            document.getElementById('ui-bar').style.width = (timeLeft/timeLimit)*100 + "%";
+            if(timeLeft <= 0) { clearInterval(timer); validate(-1); }
+        }, 1000);
+    }
+
+    function validate(i) {
+        clearInterval(timer);
+        const d = activeSet[current];
+        const f = document.getElementById('ui-feedback');
+        f.style.display = "block";
+        document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+
+        let tts = "";
+        if(i === d.correct) {
+            score++;
+            f.className = "feedback success";
+            f.innerHTML = "✨ <b>Bravo !</b> " + d.rationale;
+            tts = "Excellent ! " + d.rationale;
+            rain();
+        } else {
+            if(gameMode === 'vies') lives--;
+            f.className = "feedback error";
+            tts = (i === -1 ? "Oups, temps écoulé !" : "Erreur !") + " La réponse était : " + d.options[d.correct] + ". " + d.rationale;
+            f.innerHTML = `❌ ${tts}`;
+        }
+        speak(tts);
+        document.getElementById('btn-next').style.display = "block";
+    }
+
+    function updateHearts() { document.getElementById('ui-hearts').innerText = "❤️".repeat(Math.max(0, lives)) + "🖤".repeat(Math.max(0, Math.ceil(totalQ/10) - lives)); }
+
+    function handleNext() {
+        window.speechSynthesis.cancel();
+        current++;
+        if(gameMode === 'vies' && lives <= 0) finish(true);
+        else if(current < activeSet.length) loadQuestion();
+        else finish(false);
+    }
+
+    function generateGlossary(isManual = false) {
+        const listEl = document.getElementById('ui-glossary-list'); listEl.style.opacity = '0.3';
+        setTimeout(() => {
+            let pool = glossaryTerms.filter(t => !seenGlossaryTerms.has(t.word));
+            if(pool.length < 4) { seenGlossaryTerms.clear(); pool = glossaryTerms; }
+            const selection = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
+            selection.forEach(t => seenGlossaryTerms.add(t.word));
+            localStorage.setItem('paia_vocab_005', JSON.stringify([...seenGlossaryTerms]));
+
+            let h = ""; selection.forEach(t => h += `<li><strong>${t.word} :</strong> ${t.def}</li>`);
+            listEl.innerHTML = h; listEl.style.opacity = '1';
+
+            document.getElementById('ui-glossary-progress').innerText = `${seenGlossaryTerms.size} / ${maxGlossary}`;
+            if(seenGlossaryTerms.size >= maxGlossary) {
+                document.getElementById('ui-vocab-diploma').style.display = 'block';
+                document.getElementById('btn-new-words').innerText = "🔄 Revoir les termes";
+            } else {
+                document.getElementById('ui-vocab-diploma').style.display = 'none';
+                document.getElementById('btn-new-words').innerText = "🔄 Termes suivants";
+            }
+            if(isManual) speak("Voici d'autres concepts juridiques.");
+        }, 300);
+    }
+
+    function finish(lose) {
+        document.getElementById('screen-game').classList.remove('active-screen');
+        document.getElementById('screen-result').classList.add('active-screen');
+        document.getElementById('ui-final-score').innerText = `${score} / ${lose ? current : totalQ}`;
+        let msg = lose ? "Game Over ! Reprenez les fondamentaux de la réglementation (Loi 2018, BPF, NDA)." : (score === totalQ ? "Performance exceptionnelle ! L'administration de l'OF n'a plus de secret pour vous." : "C'est validé ! Vous avez bien cerné les obligations réglementaires.");
+        document.getElementById('ui-humor').innerText = msg;
+        document.getElementById('ui-anecdote').innerText = anecdotes[Math.floor(Math.random()*anecdotes.length)];
+        generateGlossary(false);
+        speak(`Bilan de session terminé. ${msg}`);
+    }
+
+    function rain() {
+        if(isCalm) return;
+        for(let i=0; i<15; i++) {
+            const e = document.createElement('div'); e.className = 'emoji'; e.innerText = '⚖️📜🎓'[Math.floor(Math.random()*3)];
+            e.style.position = 'fixed'; e.style.top = '-50px'; e.style.left = Math.random()*100+'vw'; e.style.zIndex = '9999';
+            e.style.animation = `slideUp ${(Math.random()*3+4)}s linear reverse`;
+            document.body.appendChild(e); setTimeout(()=>e.remove(), 7000);
+        }
+    }
+</script>
+</body>
+</html>

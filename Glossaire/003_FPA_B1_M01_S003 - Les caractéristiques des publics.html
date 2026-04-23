@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>003_FPA_B1_M01_S003 - Les caractéristiques des publics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&family=Lexend:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Couleurs PAIA - Version "Dark Premium" validée */
+            --bg-deep: #06111a; /* Bleu nuit très profond */
+            --surface-glass: rgba(15, 44, 72, 0.4);
+            --title-blue: #0F2C48;
+            --surface-ivory: #F6F2E8;
+            --cta-yellow: #D9A526;
+            --alert-bronze: #B4792A;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --base-font-size: 16px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            font-size: var(--base-font-size);
+            transition: font-size 0.3s ease;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            padding-bottom: 90px; /* Espace pour la barre de contrôle */
+        }
+
+        .font-code { font-family: 'Space Mono', monospace; }
+
+        /* Custom Scrollbar Luxueuse */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: rgba(217, 165, 38, 0.3); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--cta-yellow); }
+
+        /* Effets Glassmorphism & Glow Or/Bronze */
+        .glass-panel {
+            background: var(--surface-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(217, 165, 38, 0.15); /* Bordure or subtile */
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .glossary-card {
+            animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transition: all 0.3s ease;
+            border-top: 2px solid transparent;
+        }
+
+        .glossary-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: rgba(15, 44, 72, 0.6);
+            border-color: var(--cta-yellow);
+            box-shadow: 0 0 25px rgba(217, 165, 38, 0.25); /* Glow Or */
+            z-index: 10;
+        }
+
+        /* Thèmes subtils par catégories (Dégradés PAIA) */
+        .theme-B1 { border-top-color: #4facfe; } /* Cyan */
+        .theme-B2 { border-top-color: #ff0844; } /* Rose */
+        .theme-B3 { border-top-color: var(--cta-yellow); } /* Or */
+        .theme-B4 { border-top-color: #43e97b; } /* Vert */
+
+        /* Lettres Filtres Alphabet */
+        .alpha-btn {
+            background: rgba(15, 44, 72, 0.5);
+            color: var(--surface-ivory);
+            border: 1px solid rgba(217, 165, 38, 0.2);
+            border-radius: 10px;
+            width: 42px; height: 42px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; cursor: pointer; transition: all 0.2s ease;
+        }
+        .alpha-btn:hover:not(.active) {
+            background: rgba(217, 165, 38, 0.1);
+            color: var(--cta-yellow);
+            transform: translateY(-2px);
+            border-color: var(--cta-yellow);
+        }
+        .alpha-btn.active {
+            background: linear-gradient(135deg, var(--cta-yellow) 0%, var(--alert-bronze) 100%);
+            color: var(--title-blue);
+            border-color: transparent;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(217, 165, 38, 0.4);
+        }
+
+        /* =========================================
+           BARRE DE CONTRÔLE FIXE (Style validé)
+           ========================================= */
+        #global-controls-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+            display: flex; justify-content: center; gap: 15px; align-items: center; flex-wrap: wrap;
+            background: rgba(6, 17, 26, 0.9); backdrop-filter: blur(10px);
+            padding: 12px 15px; box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.5);
+            border-top: 1px solid var(--cta-yellow);
+        }
+        .control-group-horiz { display: flex; gap: 5px; align-items: center; background: rgba(255, 255, 255, 0.05); padding: 5px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+        .divider-vert { width: 1px; height: 25px; background: rgba(255, 255, 255, 0.1); margin: 0 5px; }
+        .acc-btn { padding: 6px 12px; font-size: 1rem; border-radius: 6px; color: var(--surface-ivory); font-weight: 700; background: transparent; border: none; cursor: pointer; transition: all 0.2s; }
+        .acc-btn:hover { background: rgba(217, 165, 38, 0.2); color: var(--cta-yellow); }
+
+        /* =========================================
+           MODE DYSLEXIE (Accessibilité Maximale)
+           ========================================= */
+        body.dyslexia-mode {
+            font-family: 'Lexend', sans-serif !important;
+            letter-spacing: 0.08em !important;
+            word-spacing: 0.15em !important;
+            line-height: 1.8 !important;
+            background-color: var(--surface-ivory) !important;
+            color: var(--title-blue) !important;
+        }
+        body.dyslexia-mode .glass-panel, body.dyslexia-mode .glossary-card {
+            background: #ffffff !important;
+            border: 2px solid rgba(15, 44, 72, 0.2) !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+            color: var(--title-blue) !important;
+        }
+        body.dyslexia-mode .text-slate-300, body.dyslexia-mode .text-slate-400 { color: #334155 !important; }
+        body.dyslexia-mode .alpha-btn { background: #fff; color: var(--title-blue); }
+        body.dyslexia-mode #global-controls-bar { background: var(--surface-ivory); border-top: 2px solid var(--title-blue); }
+        body.dyslexia-mode .control-group-horiz { background: rgba(15, 44, 72, 0.05); border-color: rgba(15, 44, 72, 0.1); }
+        body.dyslexia-mode .acc-btn { color: var(--title-blue); }
+
+        /* Bouton Audio de la carte */
+        .speaker-card-btn {
+            color: var(--cta-yellow); opacity: 0.7; transition: all 0.3s ease;
+        }
+        .speaker-card-btn:hover {
+            opacity: 1; transform: scale(1.15); text-shadow: 0 0 10px var(--cta-yellow);
+        }
+    </style>
+</head>
+<body class="selection:bg-[#D9A526]/30 relative">
+
+    <!-- Background Grille Immersive -->
+    <div class="fixed inset-0 opacity-[0.03] pointer-events-none z-[-1]"
+         style="background-image: linear-gradient(var(--cta-yellow) 1px, transparent 1px), linear-gradient(90deg, var(--cta-yellow) 1px, transparent 1px); background-size: 40px 40px;">
+    </div>
+
+    <!-- Header PAIA Dark Premium -->
+    <header class="glass-panel border-b-0 h-[90px] flex items-center shadow-lg z-50 sticky top-0">
+        <div class="w-full max-w-[1600px] mx-auto px-4 md:px-6 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 md:gap-4 cursor-pointer min-w-max" onclick="window.scrollTo(0,0)">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png"
+                     alt="PAIA Logo"
+                     class="w-12 h-12 md:w-14 md:h-14 rounded-xl border border-[rgba(217,165,38,0.5)] shadow-[0_0_15px_rgba(217,165,38,0.2)] object-cover">
+                <div class="hidden sm:block">
+                    <h1 class="text-lg md:text-2xl font-black text-white tracking-tight uppercase">Paia - Adult Learning Hub</h1>
+                    <p class="text-[10px] text-[#D9A526] font-bold uppercase tracking-widest">Glossaire Expert FPA</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgM" target="_blank" rel="noopener noreferrer"
+                   class="bg-gradient-to-r from-[#464EB8] to-[#E81123] text-white flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs md:text-sm transition-all duration-300 hover:shadow-[0_0_20px_rgba(232,17,35,0.4)] hover:scale-105 whitespace-nowrap border border-white/20">
+                    <i class="fab fa-microsoft"></i>
+                    <span class="hidden md:inline">Communauté Teams</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-[1600px] mx-auto px-4 md:px-6 py-12 flex flex-col relative z-10">
+
+        <!-- Titre de la page -->
+        <div class="mb-12 text-center md:text-left flex flex-col md:flex-row justify-between items-end gap-6">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight drop-shadow-md">
+                    003_FPA_B1_M01_S003 - <br class="hidden md:block"/><span class="text-[#D9A526]">Les caractéristiques des publics</span> 🎯
+                </h2>
+                <p class="text-slate-400 font-medium text-sm md:text-lg">Explore 105 concepts clés pour comprendre les publics de la formation.</p>
+            </div>
+            <div class="glass-panel px-4 py-2 rounded-lg inline-flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#D9A526] animate-pulse"></span>
+                <span class="text-sm font-code text-[#D9A526] font-bold" id="totalWords">105 mots actifs</span>
+            </div>
+        </div>
+
+        <!-- Barre de recherche -->
+        <div class="relative w-full max-w-3xl mx-auto md:mx-0 mb-8 group">
+            <div class="absolute inset-0 bg-[#D9A526] rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-500"></div>
+            <div class="relative glass-panel rounded-2xl flex items-center">
+                <i class="fas fa-search absolute left-6 text-[#D9A526] text-xl group-focus-within:text-white transition-colors"></i>
+                <input type="text" id="searchInput" placeholder="Rechercher un terme, un organisme (ex: OPCO, CPF, RQTH)..."
+                    class="w-full bg-transparent border-none py-5 pl-14 pr-6 text-white text-lg font-medium focus:outline-none placeholder-slate-500">
+            </div>
+        </div>
+
+        <!-- Filtre Alphabétique -->
+        <div class="glass-panel p-5 rounded-2xl mb-10">
+            <div class="flex items-center gap-2 mb-4">
+                <i class="fas fa-filter text-[#D9A526]"></i>
+                <span class="font-bold text-slate-200 text-sm uppercase tracking-wider">Navigation Rapide</span>
+            </div>
+            <div class="flex flex-wrap gap-2" id="alphabetContainer">
+                <!-- Généré en JS -->
+            </div>
+        </div>
+
+        <!-- Compteur de résultats -->
+        <div class="mb-6 font-bold text-[#D9A526] font-code text-sm tracking-widest uppercase" id="resultCount"></div>
+
+        <!-- Conteneur des cartes du glossaire -->
+        <div id="glossaryContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-12">
+            <!-- Les cartes seront injectées ici par JavaScript -->
+        </div>
+
+        <!-- État vide -->
+        <div id="emptyState" class="hidden flex-col items-center justify-center py-20 text-center glass-panel rounded-3xl mt-10">
+            <div class="text-7xl mb-6 opacity-50 drop-shadow-[0_0_15px_rgba(217,165,38,0.3)]">🛰️</div>
+            <h3 class="text-3xl font-bold text-white mb-3">Concept introuvable</h3>
+            <p class="text-slate-400 text-lg">Aucun terme ne correspond à cette recherche dans ce module.</p>
+            <button onclick="resetFilters()" class="mt-8 px-8 py-3 bg-[#D9A526] hover:bg-[#B4792A] text-[#0F2C48] rounded-xl font-black transition-all hover:scale-105 shadow-[0_0_20px_rgba(217,165,38,0.3)]">
+                <i class="fas fa-undo mr-2"></i> Afficher tous les termes
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer PAIA -->
+    <footer class="mt-auto py-10 flex flex-col items-center justify-center gap-5 border-t border-[rgba(217,165,38,0.2)] bg-[#06111a] relative z-10">
+        <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo MMPA" class="w-16 h-16 rounded-full border-2 border-[#D9A526] shadow-[0_0_15px_rgba(217,165,38,0.4)] object-cover hover:scale-110 transition-transform">
+        <p class="text-slate-400 font-bold text-xs md:text-sm text-center px-4 tracking-wide mt-2">
+            💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026
+        </p>
+    </footer>
+
+    <!-- BARRE DE CONTRÔLE GLOBALE PAIA -->
+    <div id="global-controls-bar">
+        <!-- Dyslexie -->
+        <div class="control-group-horiz" title="Activer le mode haute lisibilité">
+            <button class="acc-btn flex items-center gap-2" onclick="toggleDyslexia()" id="btn-dys">
+                <i class="fas fa-eye"></i> <span class="text-xs uppercase hidden sm:inline">Dyslexie</span>
+            </button>
+        </div>
+        <div class="divider-vert"></div>
+        <!-- Taille Police -->
+        <div class="control-group-horiz" title="Taille du texte">
+            <button class="acc-btn" onclick="changeFontSize(-1)"><i class="fas fa-font text-sm"></i>-</button>
+            <button class="acc-btn" onclick="changeFontSize(1)"><i class="fas fa-font text-lg"></i>+</button>
+        </div>
+        <div class="divider-vert"></div>
+        <!-- Volume -->
+        <div class="control-group-horiz" title="Volume">
+            <button class="acc-btn" onclick="toggleMute()" id="btn-mute" aria-label="Activer ou désactiver le son"><i class="fas fa-volume-up"></i></button>
+        </div>
+        <div class="divider-vert"></div>
+        <!-- Vitesse Voix -->
+        <div class="control-group-horiz" title="Vitesse de la voix">
+            <button class="acc-btn" onclick="changeSpeechRate(-0.1)">🐌</button>
+            <span id="ui-rate" class="text-white font-code text-xs font-bold w-10 text-center">x1.0</span>
+            <button class="acc-btn" onclick="changeSpeechRate(0.1)">🐇</button>
+        </div>
+    </div>
+
+    <script>
+        // --- LOGIQUE BARRE DE CONTRÔLE ---
+        let isDyslexia = false;
+        let baseFontSize = 16;
+        let isMuted = false;
+        let speechRate = 1.0;
+
+        function toggleDyslexia() {
+            isDyslexia = !isDyslexia;
+            document.body.classList.toggle('dyslexia-mode', isDyslexia);
+            const btn = document.getElementById('btn-dys');
+            btn.style.color = isDyslexia ? 'var(--cta-yellow)' : '';
+        }
+
+        function changeFontSize(direction) {
+            baseFontSize = Math.min(22, Math.max(14, baseFontSize + direction * 2));
+            document.documentElement.style.setProperty('--base-font-size', baseFontSize + 'px');
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            document.getElementById('btn-mute').innerHTML = isMuted ? '<i class="fas fa-volume-mute text-red-400"></i>' : '<i class="fas fa-volume-up"></i>';
+            if (isMuted) window.speechSynthesis.cancel();
+        }
+
+        function changeSpeechRate(amount) {
+            speechRate = Math.min(1.5, Math.max(0.5, speechRate + amount));
+            document.getElementById('ui-rate').innerText = "x" + speechRate.toFixed(1);
+        }
+
+        // Fonction Lecture à voix haute (inclut Mot, Def, et Exemple)
+        window.lireTexte = function(term, def, example) {
+            if (isMuted) return;
+            window.speechSynthesis.cancel();
+            const fullText = `${term}. Définition : ${def}. Exemple : ${example}`;
+            const utterance = new SpeechSynthesisUtterance(fullText);
+            utterance.lang = 'fr-FR';
+            utterance.rate = speechRate;
+            window.speechSynthesis.speak(utterance);
+        };
+
+        // --- BASE DE DONNÉES EXACTE : MODULE 003 (105 mots FPA) ---
+        // Catégories (themes) : B1 (Publics), B2 (Dispositifs), B3 (Acteurs), B4 (Financement & Enjeux)
+        const glossaryData = [
+            { term: "Actif", emoji: "🏃", cat: "B1", catName: "Publics & Profils", def: "Toute personne âgée d'au moins 16 ans et exerçant ou cherchant une activité professionnelle en France.", example: "Un salarié du privé ou un demandeur d'emploi inscrit à France Travail." },
+            { term: "Afdas", emoji: "🎭", cat: "B3", catName: "Acteurs & Organismes", def: "OPCO dédié aux secteurs de la culture, des industries créatives, des médias, de la communication, du sport et du divertissement.", example: "Financer la formation d'un technicien intermittent du spectacle." },
+            { term: "AFPA", emoji: "🏢", cat: "B3", catName: "Acteurs & Organismes", def: "Agence nationale pour la Formation Professionnelle des Adultes, acteur historique et majeur de la formation en France.", example: "Un demandeur d'emploi qui passe un Titre Professionnel de plaquiste à l'AFPA." },
+            { term: "AGEFIPH", emoji: "♿", cat: "B3", catName: "Acteurs & Organismes", def: "Association gérant le fonds pour l'insertion des personnes handicapées. Elle aide au financement et à l'accompagnement des PSH.", example: "Solliciter l'AGEFIPH pour adapter un poste informatique en entreprise." },
+            { term: "Agent public", emoji: "🏛️", cat: "B1", catName: "Publics & Profils", def: "Personne travaillant pour la fonction publique (État, territoriale ou hospitalière), avec des droits à la formation spécifiques.", example: "Un infirmier en hôpital public qui utilise son CPF." },
+            { term: "Akto", emoji: "🧹", cat: "B3", catName: "Acteurs & Organismes", def: "OPCO spécialisé dans les services à forte intensité de main-d'œuvre (propreté, hôtellerie, restauration, travail temporaire).", example: "Financer le CQP d'un agent de propreté via l'OPCO Akto." },
+            { term: "Allophone", emoji: "🗣️", cat: "B1", catName: "Publics & Profils", def: "Personne dont la langue maternelle n'est pas le français (langue étrangère à la communauté dans laquelle elle vit).", example: "Un immigré récemment arrivé en France qui doit suivre une formation FLE." },
+            { term: "Ancienneté", emoji: "⏳", cat: "B4", catName: "Financement & Enjeux", def: "Durée de présence d'un salarié dans une entreprise, critère obligatoire pour accéder à certains droits à la formation.", example: "Avoir 24 mois d'ancienneté pour demander un Projet de Transition Professionnelle." },
+            { term: "Apprenant", emoji: "🧑‍🎓", cat: "B1", catName: "Publics & Profils", def: "Toute personne engagée activement dans un processus d'acquisition de connaissances ou de compétences.", example: "Le stagiaire inscrit au parcours Graduate Formateur pour adultes." },
+            { term: "Apprentissage (Contrat)", emoji: "🛠️", cat: "B2", catName: "Dispositifs & Contrats", def: "Formation initiale en alternance pour les jeunes de 16 à 29 ans, visant l'obtention d'un diplôme d'État ou titre RNCP.", example: "Un jeune de 20 ans qui alterne 3 jours en entreprise et 2 jours en CFA." },
+            { term: "Aspirations", emoji: "🚀", cat: "B4", catName: "Financement & Enjeux", def: "Souhaits profonds d'évolution professionnelle, de changement de carrière ou de développement personnel d'un individu.", example: "Un salarié qui aspire à devenir manager et demande un bilan de compétences." },
+            { term: "Assistant social", emoji: "🏠", cat: "B3", catName: "Acteurs & Organismes", def: "Professionnel accompagnant les publics éloignés de l'emploi pour lever les freins sociaux, familiaux ou financiers périphériques.", example: "Aider un stagiaire à trouver un logement pour qu'il puisse assister à sa formation." },
+            { term: "Atlas", emoji: "🏦", cat: "B3", catName: "Acteurs & Organismes", def: "OPCO dédié aux services financiers, au conseil et à l'assurance.", example: "Le financement de la formation d'un courtier en assurance." },
+            { term: "Avenir Professionnel (Loi)", emoji: "📜", cat: "B4", catName: "Financement & Enjeux", def: "Loi du 5 septembre 2018 ayant réformé la formation professionnelle (monétisation du CPF, création de France Compétences).", example: "Le passage du financement en heures au financement en euros sur le CPF." },
+            { term: "Bilan de compétences", emoji: "⚖️", cat: "B2", catName: "Dispositifs & Contrats", def: "Action de formation encadrée permettant d'analyser ses compétences, motivations et intérêts pour définir un projet professionnel.", example: "Faire le point sur ses 10 ans de carrière pour envisager une reconversion." },
+            { term: "Bourse régionale", emoji: "💶", cat: "B4", catName: "Financement & Enjeux", def: "Aide financière octroyée par la région, sous conditions de ressources, pour aider les jeunes ou les DE à se former.", example: "Une subvention pour payer l'abonnement de transport d'un stagiaire." },
+            { term: "Bourse universitaire", emoji: "🎓", cat: "B4", catName: "Financement & Enjeux", def: "Aide financière de l'État (CROUS) destinée aux étudiants en formation initiale pour couvrir leurs frais de scolarité et de vie.", example: "Une bourse mensuelle pour un étudiant en Licence de psychologie." },
+            { term: "Branche professionnelle", emoji: "🌳", cat: "B3", catName: "Acteurs & Organismes", def: "Regroupement d'entreprises d'un même secteur d'activité qui définit les niveaux de prise en charge et les priorités de formation.", example: "La branche de la métallurgie qui valide la création d'un nouveau CQP." },
+            { term: "CCI", emoji: "🏛️", cat: "B3", catName: "Acteurs & Organismes", def: "Chambre de Commerce et d'Industrie, organisme public qui peut également dispenser des formations pour les professionnels.", example: "Suivre une formation en création d'entreprise à la CCI de Paris." },
+            { term: "CDAPH", emoji: "⚖️", cat: "B3", catName: "Acteurs & Organismes", def: "Commission des Droits et de l'Autonomie des Personnes Handicapées. Elle décide de l'orientation des PSH vers les centres adaptés.", example: "Recevoir une notification de la CDAPH pour entrer en stage ESRP." },
+            { term: "CEP", emoji: "🧭", cat: "B2", catName: "Dispositifs & Contrats", def: "Conseil en Évolution Professionnelle. Dispositif gratuit d'accompagnement pour faire le point sur sa situation professionnelle.", example: "Prendre rendez-vous avec un conseiller CEP avant d'utiliser son CPF." },
+            { term: "Certification", emoji: "🏆", cat: "B4", catName: "Financement & Enjeux", def: "Document officiel (diplôme, titre ou certificat) reconnaissant l'acquisition de compétences professionnelles spécifiques.", example: "Obtenir le Titre Professionnel de Formateur pour Adultes de niveau 5." },
+            { term: "Changement", emoji: "🔄", cat: "B4", catName: "Financement & Enjeux", def: "Processus de modification de carrière, de poste ou d'outils, nécessitant souvent un accompagnement par la formation.", example: "Former les collaborateurs suite à la fusion de deux départements." },
+            { term: "CIF", emoji: "⏳", cat: "B2", catName: "Dispositifs & Contrats", def: "Congé Individuel de Formation, ancien dispositif remplacé depuis 2019 par le Projet de Transition Professionnelle (PTP).", example: "L'ancêtre du dispositif permettant de s'absenter un an pour se former." },
+            { term: "CNAM", emoji: "🏛️", cat: "B3", catName: "Acteurs & Organismes", def: "Conservatoire National des Arts et Métiers, grand établissement public d'enseignement supérieur dédié à la formation tout au long de la vie.", example: "Suivre des cours du soir en informatique pour valider un diplôme d'ingénieur." },
+            { term: "CNED", emoji: "🌐", cat: "B3", catName: "Acteurs & Organismes", def: "Centre National d'Enseignement à Distance, opérateur public historique de la formation par correspondance et en ligne.", example: "Préparer le concours de professeur des écoles à distance." },
+            { term: "Code du travail", emoji: "⚖️", cat: "B4", catName: "Financement & Enjeux", def: "Recueil de textes de lois qui encadre le droit du travail en France, et définit le cadre légal de la formation professionnelle.", example: "Se référer à l'Article L6111-1 pour vérifier les droits à la formation." },
+            { term: "Cohésion sociale", emoji: "🤝", cat: "B3", catName: "Acteurs & Organismes", def: "Nom d'un des 11 OPCO, dédié aux métiers du social, du médico-social, de l'animation et de l'habitat.", example: "Financement de la formation d'un éducateur spécialisé." },
+            { term: "Compétence", emoji: "💪", cat: "B1", catName: "Publics & Profils", def: "Capacité à mobiliser des savoirs (connaissances), savoir-faire (pratiques) et savoir-être (comportements) en situation de travail.", example: "La compétence d'animer un groupe difficile sans perdre le fil du cours." },
+            { term: "Compétitivité", emoji: "📈", cat: "B4", catName: "Financement & Enjeux", def: "Capacité d'une entreprise à faire face à la concurrence sur son marché, souvent maintenue grâce à la formation de ses salariés.", example: "Former ses développeurs aux derniers langages pour ne pas perdre de parts de marché." },
+            { term: "Congé spécifique", emoji: "🌴", cat: "B2", catName: "Dispositifs & Contrats", def: "Absence autorisée (souvent rémunérée) accordée à un agent public ou un salarié pour préparer un examen ou suivre une formation.", example: "Poser 5 jours de congé de formation pour réviser un concours administratif." },
+            { term: "Conseiller France Travail", emoji: "👔", cat: "B3", catName: "Acteurs & Organismes", def: "Interlocuteur privilégié du demandeur d'emploi, qui peut orienter et prescrire des formations financées.", example: "Valider son projet de reconversion avec son conseiller pour obtenir un financement." },
+            { term: "Constructys", emoji: "🏗️", cat: "B3", catName: "Acteurs & Organismes", def: "L'OPCO de la construction (BTP, négoce des matériaux de construction et de bois).", example: "L'organisme qui finance la formation d'un chef de chantier." },
+            { term: "Consultant", emoji: "🧠", cat: "B3", catName: "Acteurs & Organismes", def: "Professionnel expert, souvent extérieur à l'entreprise, qui accompagne un actif lors d'un bilan de compétences ou conseille une entreprise.", example: "Le consultant qui fait passer des tests d'intérêts professionnels à un stagiaire." },
+            { term: "Contrat de professionnalisation", emoji: "📝", cat: "B2", catName: "Dispositifs & Contrats", def: "Contrat de travail en alternance, accessible notamment aux demandeurs d'emploi de plus de 26 ans pour favoriser leur insertion.", example: "Une adulte de 35 ans embauchée en alternance pour devenir secrétaire." },
+            { term: "CPF", emoji: "💳", cat: "B4", catName: "Financement & Enjeux", def: "Compte Personnel de Formation. Droits cumulés en euros (ou heures pour les agents publics) mobilisables à l'initiative de l'actif.", example: "Se connecter sur l'appli Mon Compte Formation pour payer son permis de conduire." },
+            { term: "CQP", emoji: "📜", cat: "B4", catName: "Financement & Enjeux", def: "Certificat de Qualification Professionnelle. Certification créée par les professionnels d'une branche pour répondre à un besoin métier spécifique.", example: "Le CQP de réceptionniste en hôtellerie." },
+            { term: "Demandeur d'emploi (DE)", emoji: "🔍", cat: "B1", catName: "Publics & Profils", def: "Personne sans emploi, disponible et à la recherche d'un travail, inscrite auprès de France Travail.", example: "Un chômeur qui suit une POEC pour retrouver rapidement un poste." },
+            { term: "DREETS", emoji: "🏛️", cat: "B3", catName: "Acteurs & Organismes", def: "Directions Régionales de l'Économie, de l'Emploi, du Travail et des Solidarités. Administration d'État contrôlant les OF.", example: "C'est à la DREETS qu'un formateur demande son numéro de déclaration d'activité." },
+            { term: "Droit commun", emoji: "⚖️", cat: "B4", catName: "Financement & Enjeux", def: "Ensemble des financements et dispositifs accessibles à tous les actifs, par opposition aux aides spécifiques (comme celles du handicap).", example: "Le CPF est un financement de droit commun, l'aide Inclu'Pro est spécifique." },
+            { term: "Effet miroir", emoji: "🪞", cat: "B2", catName: "Dispositifs & Contrats", def: "Outil d'accompagnement où le consultant reformule ou renvoie au bénéficiaire son image pour provoquer une prise de conscience.", example: "Dire : 'Vous me dites aimer le calme, mais vous postulez dans l'événementiel ?'." },
+            { term: "Éloigné de l'emploi", emoji: "🏜️", def: "Public vulnérable, sans emploi ni formation depuis plus d'un an, nécessitant un accompagnement social et professionnel renforcé.", example: "Une personne n'ayant jamais travaillé, accompagnée par un PLIE.", cat: "B1", catName: "Publics & Profils" },
+            { term: "Employabilité", emoji: "💪", cat: "B4", catName: "Financement & Enjeux", def: "Capacité d'un individu à trouver un emploi, à le conserver, et à s'adapter aux évolutions du marché du travail.", example: "Se former aux nouveaux outils digitaux pour maintenir son employabilité à 50 ans." },
+            { term: "Employeur", emoji: "👔", cat: "B3", catName: "Acteurs & Organismes", def: "Personne ou entreprise qui embauche des salariés et a l'obligation légale de veiller au maintien de leurs compétences.", example: "Le chef d'entreprise qui valide le plan de développement des compétences." },
+            { term: "Entreprise", emoji: "🏢", cat: "B3", catName: "Acteurs & Organismes", def: "Unité économique qui cotise à la formation professionnelle continue proportionnellement à sa masse salariale.", example: "Une PME de 30 salariés qui finance la formation de ses équipes via son OPCO." },
+            { term: "ESPO", emoji: "🏥", cat: "B3", catName: "Acteurs & Organismes", def: "Établissement et Service de Pré-Orientation. Centre accompagnant les PSH pour évaluer leurs capacités et définir un projet professionnel.", example: "Faire un stage de deux semaines en ESPO pour tester le métier d'informaticien." },
+            { term: "ESRP", emoji: "🛠️", cat: "B3", catName: "Acteurs & Organismes", def: "Établissement et Service de Réadaptation Professionnelle. Centre proposant des formations qualifiantes adaptées aux PSH.", example: "Un centre de formation avec des locaux et un rythme médicalisé." },
+            { term: "Fiche métier", emoji: "📋", cat: "B2", catName: "Dispositifs & Contrats", def: "Document décrivant de manière standardisée les activités et compétences requises pour un emploi (comme les fiches ROME).", example: "Lire la fiche ROME K2111 pour connaître les attendus du métier de formateur." },
+            { term: "FLE", emoji: "🇫🇷", cat: "B2", catName: "Dispositifs & Contrats", def: "Français Langue Étrangère. Enseignement du français à un public non francophone dans un but d'intégration générale ou culturelle.", example: "Des cours de français du soir pour des expatriés récemment arrivés." },
+            { term: "Fonction publique d'État", emoji: "🏛️", cat: "B1", catName: "Publics & Profils", def: "Ensemble des agents travaillant dans les ministères, les préfectures ou l'éducation nationale.", example: "Un professeur des écoles qui souhaite passer un concours interne." },
+            { term: "Fonction publique hospitalière", emoji: "🏥", cat: "B1", catName: "Publics & Profils", def: "Ensemble des agents travaillant dans les hôpitaux publics, EHPAD publics ou établissements médico-sociaux.", example: "Une infirmière du CHU qui demande une formation en soins palliatifs." },
+            { term: "Fonction publique territoriale", emoji: "🏙️", cat: "B1", catName: "Publics & Profils", def: "Ensemble des agents travaillant pour les collectivités locales (mairies, départements, régions).", example: "Un agent de la mairie qui suit une formation sur les marchés publics." },
+            { term: "Fonctionnaire", emoji: "👮", cat: "B1", catName: "Publics & Profils", def: "Agent titulaire occupant un emploi permanent dans l'une des trois fonctions publiques.", example: "Un agent administratif qui mobilise ses heures CPF pour une reconversion." },
+            { term: "Fonds propres", emoji: "💸", cat: "B4", catName: "Financement & Enjeux", def: "Financement personnel par l'apprenant lui-même lorsque les aides publiques (CPF, OPCO) sont inexistantes ou insuffisantes.", example: "Payer 500€ de sa poche pour compléter les 1000€ de son CPF." },
+            { term: "Formation continue", emoji: "🔄", cat: "B4", catName: "Financement & Enjeux", def: "Processus d'apprentissage suivi par des adultes ayant déjà quitté le système scolaire, pour s'adapter ou évoluer professionnellement.", example: "Le perfectionnement d'un cadre sur un nouveau logiciel de gestion." },
+            { term: "Formation initiale", emoji: "🎒", cat: "B4", catName: "Financement & Enjeux", def: "Cycle d'études (scolaire ou universitaire) suivi par les jeunes avant leur première entrée sur le marché du travail.", example: "Le cursus classique pour obtenir un Baccalauréat puis un Master." },
+            { term: "Formation prioritaire", emoji: "🔝", cat: "B4", catName: "Financement & Enjeux", def: "Domaine de formation ciblé par l'État ou la région car il répond à un fort besoin économique ou un manque de main-d'œuvre.", example: "Une formation en transition écologique financée à 100% par France Travail." },
+            { term: "FOS", emoji: "🎯", cat: "B2", catName: "Dispositifs & Contrats", def: "Français sur Objectifs Spécifiques. Apprentissage accéléré du français centré sur un besoin professionnel précis.", example: "Apprendre le vocabulaire médical en français pour une infirmière étrangère." },
+            { term: "France Compétences", emoji: "🇫🇷", cat: "B3", catName: "Acteurs & Organismes", def: "Institution nationale publique qui régule la qualité et le financement du système de la formation professionnelle.", example: "L'instance qui valide l'inscription des diplômes au RNCP." },
+            { term: "France Travail", emoji: "🔍", cat: "B3", catName: "Acteurs & Organismes", def: "Acteur du service public (ex-Pôle Emploi) en charge de l'accompagnement et de l'indemnisation des demandeurs d'emploi.", example: "L'organisme qui peut financer la formation d'un chômeur via une AIF." },
+            { term: "GPEC", emoji: "🗺️", cat: "B4", catName: "Financement & Enjeux", def: "Gestion Prévisionnelle de l'Emploi et des Compétences. Démarche RH d'anticipation des besoins futurs de l'entreprise.", example: "Former les caissiers à l'accueil client car les caisses deviennent automatiques." },
+            { term: "Greta", emoji: "🏫", cat: "B3", catName: "Acteurs & Organismes", def: "Groupement d'Établissements publics locaux d'enseignement qui organisent des formations pour adultes.", example: "Préparer un BTS en cours du soir dans le lycée de sa ville grâce au Greta." },
+            { term: "Immersion professionnelle", emoji: "🤿", cat: "B2", catName: "Dispositifs & Contrats", def: "Fait de passer du temps dans une entreprise pour observer un métier ou confirmer un projet professionnel.", example: "Faire un stage d'observation d'une semaine chez un boulanger." },
+            { term: "Inaptitude professionnelle", emoji: "🩺", cat: "B1", catName: "Publics & Profils", def: "Incapacité médicale, constatée par le médecin du travail, d'un salarié à exercer son poste actuel.", example: "Un ouvrier qui ne peut plus porter de charges lourdes suite à une blessure." },
+            { term: "Inclu'Pro", emoji: "🤝", cat: "B2", catName: "Dispositifs & Contrats", def: "Prestation de l'AGEFIPH pour accompagner spécifiquement les personnes handicapées dans leur projet professionnel.", example: "Bénéficier d'ateliers collectifs pour reprendre confiance après un accident de la vie." },
+            { term: "Indépendant", emoji: "🚲", cat: "B1", catName: "Publics & Profils", def: "Travailleur non salarié (freelance, auto-entrepreneur, profession libérale) qui finance ses formations via les FAF (Fonds d'Assurance Formation).", example: "Un graphiste freelance qui se forme au webdesign." },
+            { term: "Insertion socioprofessionnelle", emoji: "🚪", cat: "B4", catName: "Financement & Enjeux", def: "Ensemble des actions visant à amener un public en difficulté vers l'autonomie sociale et un emploi durable.", example: "Le but ultime de l'accompagnement d'un jeune par une Mission Locale." },
+            { term: "Intégration", emoji: "🧩", cat: "B4", catName: "Financement & Enjeux", def: "Processus permettant à une personne (nouvel employé, allophone, PSH) de trouver sa place dans une communauté de travail.", example: "Former un tuteur pour qu'il facilite l'intégration du nouvel apprenti." },
+            { term: "Inventaire de personnalité", emoji: "🧠", cat: "B2", catName: "Dispositifs & Contrats", def: "Questionnaire psychométrique utilisé (en bilan de compétences notamment) pour identifier les modes de fonctionnement de la personne.", example: "Faire passer le test MBTI à un stagiaire pour l'aider à se connaître." },
+            { term: "Jeunes", emoji: "🛹", cat: "B1", catName: "Publics & Profils", def: "Public généralement défini comme ayant entre 16 et 25 ans (jusqu'à 29 ans révolus pour l'apprentissage).", example: "Le public cible prioritaire des Missions Locales." },
+            { term: "Langue maternelle", emoji: "🍼", cat: "B1", catName: "Publics & Profils", def: "Première langue apprise par un individu dans sa petite enfance. Concept opposé aux formations FLE/FOS.", example: "L'espagnol, pour un stagiaire immigré qui doit suivre une formation en France." },
+            { term: "Maintien dans l'emploi", emoji: "🛡️", cat: "B4", catName: "Financement & Enjeux", def: "Enjeu consistant à former ou adapter le poste d'un salarié (souvent suite à un handicap) pour éviter son licenciement.", example: "Former un ancien maçon accidenté pour qu'il devienne dessinateur en bureau d'études." },
+            { term: "Maison de l'Emploi", emoji: "🏠", cat: "B3", catName: "Acteurs & Organismes", def: "Structure locale qui coordonne les acteurs de l'emploi sur un territoire et informe le grand public.", example: "Aller à la Maison de l'Emploi pour trouver les dates des prochains forums de recrutement." },
+            { term: "Masse salariale", emoji: "💰", cat: "B4", catName: "Financement & Enjeux", def: "Total des rémunérations brutes versées par une entreprise. Elle sert de base au calcul de la contribution à la formation.", example: "L'entreprise verse un pourcentage de sa masse salariale à l'URSSAF pour financer la formation." },
+            { term: "Métier en tension", emoji: "⚡", cat: "B4", catName: "Financement & Enjeux", def: "Profession dans laquelle les employeurs rencontrent de fortes difficultés à recruter par manque de candidats qualifiés.", example: "Le métier de soudeur industriel, souvent priorisé pour des financements France Travail." },
+            { term: "Mission Locale", emoji: "📍", cat: "B3", catName: "Acteurs & Organismes", def: "Structure d'accueil et d'accompagnement dédiée exclusivement aux jeunes de 16 à 25 ans sortis du système scolaire.", example: "Le conseiller Mission Locale aide le jeune à financer son permis de conduire." },
+            { term: "Mobilité", emoji: "🚗", cat: "B4", catName: "Financement & Enjeux", def: "Capacité d'un salarié à changer de poste (mobilité interne) ou à changer d'entreprise/région (mobilité externe).", example: "Demander une formation pour accompagner sa mobilité vers un poste de manager." },
+            { term: "Mobilité interne", emoji: "🏢", cat: "B4", catName: "Financement & Enjeux", def: "Changement de poste, de fonction ou de service d'un salarié au sein de la même entreprise.", example: "Un caissier qui devient chef de rayon grâce à une formation interne." },
+            { term: "Mon Compte Formation", emoji: "📱", cat: "B2", catName: "Dispositifs & Contrats", def: "Application officielle de l'État permettant aux actifs de consulter leur solde CPF et d'acheter directement une formation.", example: "Télécharger l'appli sur son téléphone pour s'inscrire en un clic à une formation d'anglais." },
+            { term: "Motivation", emoji: "🔥", cat: "B1", catName: "Publics & Profils", def: "Ensemble des forces internes (envie) et externes (récompense) qui poussent un apprenant à s'engager dans sa formation.", example: "Identifier lors d'un bilan que le stagiaire est motivé par l'aide aux autres." },
+            { term: "Numéro de déclaration d'activité (NDA)", emoji: "🔢", cat: "B4", catName: "Financement & Enjeux", def: "Numéro d'enregistrement obligatoire délivré par le préfet (via la DREETS) pour tout prestataire de formation.", example: "Le numéro à faire figurer sur toutes les conventions de formation de l'organisme." },
+            { term: "Ocapiat", emoji: "🚜", cat: "B3", catName: "Acteurs & Organismes", def: "OPCO de la coopération agricole, de l'agriculture, de la pêche, et de l'industrie agroalimentaire.", example: "L'OPCO qui finance la formation d'un ouvrier viticole." },
+            { term: "OPCO", emoji: "🏦", cat: "B3", catName: "Acteurs & Organismes", def: "Opérateur de Compétences. Organisme agréé par l'État pour collecter les fonds et financer l'apprentissage et la formation continue.", example: "L'entreprise contacte son OPCO pour obtenir le remboursement du stage d'un salarié." },
+            { term: "Opco 2i", emoji: "🏭", cat: "B3", catName: "Acteurs & Organismes", def: "OPCO interindustriel (chimie, métallurgie, pharmacie, plasturgie...).", example: "Le financement de la certification d'un technicien de maintenance industrielle." },
+            { term: "Opcommerce", emoji: "🛒", cat: "B3", catName: "Acteurs & Organismes", def: "L'OPCO des entreprises du commerce (grande distribution, commerce de détail, bricolage...).", example: "Financer la formation d'un responsable de rayon supermarché." },
+            { term: "Opco Entreprises de proximité", emoji: "🥖", cat: "B3", catName: "Acteurs & Organismes", def: "OPCO des artisans, professions libérales et commerces de proximité (boulangers, coiffeurs...).", example: "L'OPCO qui finance la formation en comptabilité d'un artisan boucher." },
+            { term: "Opco Mobilités", emoji: "🚌", cat: "B3", catName: "Acteurs & Organismes", def: "L'OPCO des transports (voyageurs, marchandises) et des services de l'automobile.", example: "Le financement du permis super-lourd pour un chauffeur de bus." },
+            { term: "Opco Santé", emoji: "🩺", cat: "B3", catName: "Acteurs & Organismes", def: "L'OPCO du secteur privé de la santé, du médico-social et du social.", example: "Financer la formation d'une aide-soignante en clinique privée." },
+            { term: "Organisme de formation public", emoji: "🏫", cat: "B3", catName: "Acteurs & Organismes", def: "Structures étatiques ou para-étatiques délivrant des formations (Universités, Greta, AFPA, CNAM, CNED, CCI).", example: "S'inscrire à l'Université pour suivre un Diplôme Universitaire en formation continue." },
+            { term: "Plan de développement des compétences", emoji: "🗺️", cat: "B2", catName: "Dispositifs & Contrats", def: "Document rassemblant l'ensemble des actions de formation retenues par l'employeur pour ses salariés (remplace le plan de formation).", example: "L'entreprise inscrit tous ses managers à une formation de 2 jours sur le leadership." },
+            { term: "PLIE", emoji: "🧩", cat: "B2", catName: "Dispositifs & Contrats", def: "Plan Local pour l'Insertion et l'Emploi. Dispositif territorial coordonnant l'accompagnement renforcé des publics très éloignés de l'emploi.", example: "Bénéficier d'un référent unique de parcours grâce au PLIE de sa ville." },
+            { term: "PMSMP", emoji: "🏢", cat: "B2", catName: "Dispositifs & Contrats", def: "Période de Mise en Situation en Milieu Professionnel. Dispositif légal permettant à un chômeur de faire une immersion non rémunérée en entreprise.", example: "Faire un stage d'une semaine chez un fleuriste sans perdre ses indemnités chômage." },
+            { term: "POEC", emoji: "👥", cat: "B2", catName: "Dispositifs & Contrats", def: "Préparation Opérationnelle à l'Emploi Collective. Action de formation pour plusieurs demandeurs d'emploi afin de répondre à des métiers en tension.", example: "Former un groupe de 15 personnes pour devenir caristes dans un bassin industriel." },
+            { term: "Portabilité du CPF", emoji: "📱", cat: "B4", catName: "Financement & Enjeux", def: "Principe selon lequel les droits acquis sur le CPF restent valables et utilisables même si la personne change d'entreprise ou perd son emploi.", example: "Un demandeur d'emploi qui utilise les 1500€ acquis lors de son ancien CDD." },
+            { term: "Prétentions salariales", emoji: "💰", cat: "B1", catName: "Publics & Profils", def: "Attentes de rémunération d'un individu. C'est un sujet souvent abordé lors de la définition du projet (bilan de compétences).", example: "Vérifier si le projet de devenir artisan permet d'atteindre les prétentions de l'apprenant." },
+            { term: "Projet de transition professionnelle (PTP)", emoji: "🔄", cat: "B2", catName: "Dispositifs & Contrats", def: "Dispositif permettant à un salarié de s'absenter pour suivre une formation certifiante longue en vue de changer de métier.", example: "Un comptable qui prend un congé d'un an pour se former au métier de menuisier." },
+            { term: "Projet professionnel", emoji: "🗺️", cat: "B1", catName: "Publics & Profils", def: "Vision structurée de l'avenir professionnel d'un individu, incluant le métier visé, les compétences à acquérir et le marché du travail.", example: "L'objectif final que cherche à définir le consultant lors d'un bilan de compétences." },
+            { term: "Promotion", emoji: "👑", cat: "B4", catName: "Financement & Enjeux", def: "Évolution vers un poste de niveau hiérarchique ou de responsabilité supérieur, souvent accompagnée ou permise par une formation.", example: "Suivre un Master en management pour être promu directeur d'agence." },
+            { term: "PSH", emoji: "🦽", cat: "B1", catName: "Publics & Profils", def: "Personne en Situation de Handicap. Public nécessitant des adaptations pédagogiques ou matérielles (tiers-temps, police adaptée, accès PMR).", example: "Mettre en place un clavier braille pour un apprenant malvoyant." },
+            { term: "Public fragilisé", emoji: "🍂", cat: "B1", catName: "Publics & Profils", def: "Personne cumulant des difficultés (sociales, santé, manque de qualification) rendant son retour à l'emploi complexe.", example: "Un demandeur d'emploi longue durée sans diplôme ni moyen de locomotion." },
+            { term: "Reclassement professionnel", emoji: "🔄", cat: "B4", catName: "Financement & Enjeux", def: "Processus visant à trouver un nouveau poste à un salarié qui ne peut plus exercer son ancien métier (suite à licenciement éco ou inaptitude).", example: "Proposer une formation de développeur à un ouvrier dont l'usine a fermé." },
+            { term: "Reconversion", emoji: " metamorphosis", cat: "B4", catName: "Financement & Enjeux", def: "Changement complet de domaine professionnel ou de métier, nécessitant l'acquisition de compétences totalement nouvelles.", example: "Un banquier qui décide de devenir formateur d'adultes." },
+            { term: "RQTH", emoji: "♿", cat: "B4", catName: "Financement & Enjeux", def: "Reconnaissance de la Qualité de Travailleur Handicapé. Statut administratif donnant droit à des aides spécifiques (AGEFIPH, emploi accompagné).", example: "Déclarer sa RQTH à l'organisme de formation pour bénéficier du tiers-temps aux examens." },
+            { term: "Salarié", emoji: "💼", cat: "B1", catName: "Publics & Profils", def: "Personne liée à un employeur par un contrat de travail. Public principal des plans de développement des compétences des entreprises.", example: "Un employé en CDI dans une PME de la métallurgie." },
+            { term: "Savoir-être", emoji: "🤝", cat: "B1", catName: "Publics & Profils", def: "Comportements, attitudes et qualités relationnelles (soft skills) d'un individu en situation professionnelle.", example: "La ponctualité, l'empathie, la gestion du stress ou l'esprit d'équipe." },
+            { term: "Savoir-faire", emoji: "🛠️", cat: "B1", catName: "Publics & Profils", def: "Compétences pratiques et techniques, maîtrise de gestes ou d'outils spécifiques au métier.", example: "Savoir coder en HTML ou savoir conduire un chariot élévateur." },
+            { term: "Secteur privé", emoji: "🏢", cat: "B4", catName: "Financement & Enjeux", def: "Ensemble des entreprises marchandes et non-marchandes non gérées par l'État, soumises au Code du travail et finançant les OPCO.", example: "Les entreprises commerciales qui forment le gros du marché de la formation intra-entreprise." },
+            { term: "Secteur public", emoji: "🏛️", cat: "B4", catName: "Financement & Enjeux", def: "Ensemble des administrations (État, hôpitaux, collectivités). Les règles de formation y sont spécifiques (ex: compte CPF en heures).", example: "Le Ministère de l'Éducation Nationale." },
+            { term: "Stagiaire", emoji: "🧑‍🎓", cat: "B1", catName: "Publics & Profils", def: "Terme juridique et courant désignant l'apprenant pendant la durée de son action de formation professionnelle continue.", example: "Faire signer la feuille de présence aux 12 stagiaires du groupe." },
+            { term: "Stage de pré-orientation", emoji: "🧭", cat: "B2", catName: "Dispositifs & Contrats", def: "Période d'évaluation en centre spécialisé (ESPO) permettant à une personne handicapée de tester ses capacités et valider un projet.", example: "Passer deux semaines en stage pour vérifier si le métier de comptable est physiquement tenable." },
+            { term: "Tests de personnalité", emoji: "🧩", cat: "B2", catName: "Dispositifs & Contrats", def: "Outils psychotechniques utilisés pour identifier les traits de caractère et aider à l'orientation d'un apprenant.", example: "Utiliser le test PAPI lors d'un bilan de compétences pour identifier le profil du candidat." },
+            { term: "Titre Professionnel (TP)", emoji: "🏆", cat: "B4", catName: "Financement & Enjeux", def: "Certification professionnelle délivrée par le Ministère du Travail, très axée sur les compétences pratiques du métier.", example: "Le Titre Professionnel Formateur Professionnel d'Adultes (Niveau 5)." },
+            { term: "VAE", emoji: "🏅", cat: "B2", catName: "Dispositifs & Contrats", def: "Validation des Acquis de l'Expérience. Démarche permettant d'obtenir un diplôme en prouvant que l'on possède déjà les compétences par son expérience.", example: "Rédiger son livret VAE pour obtenir le Titre FPA après avoir été formateur interne pendant 5 ans." }
+        ];
+
+        // Vérification de sécurité interne et Tri
+        glossaryData.sort((a, b) => a.term.localeCompare(b.term));
+
+        const container = document.getElementById('glossaryContainer');
+        const searchInput = document.getElementById('searchInput');
+        const alphabetContainer = document.getElementById('alphabetContainer');
+        const resultCount = document.getElementById('resultCount');
+        const emptyState = document.getElementById('emptyState');
+        const totalWords = document.getElementById('totalWords');
+
+        let currentActiveLetter = null;
+
+        // Générer le filtre alphabétique
+        function generateAlphabetFilter() {
+            const letters = [...new Set(glossaryData.map(item => item.term.charAt(0).toUpperCase()))].sort();
+
+            const allBtn = document.createElement('button');
+            allBtn.className = 'alpha-btn active px-4 w-auto text-sm';
+            allBtn.innerText = 'TOUT';
+            allBtn.onclick = () => filterByLetter(null, allBtn);
+            alphabetContainer.appendChild(allBtn);
+
+            letters.forEach(letter => {
+                const btn = document.createElement('button');
+                btn.className = 'alpha-btn';
+                btn.innerText = letter;
+                btn.onclick = () => filterByLetter(letter, btn);
+                alphabetContainer.appendChild(btn);
+            });
+        }
+
+        function filterByLetter(letter, activeBtn) {
+            document.querySelectorAll('.alpha-btn').forEach(btn => btn.classList.remove('active'));
+            activeBtn.classList.add('active');
+            currentActiveLetter = letter;
+            renderGlossary();
+        }
+
+        window.resetFilters = function() {
+            searchInput.value = "";
+            currentActiveLetter = null;
+            document.querySelectorAll('.alpha-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.alpha-btn').classList.add('active');
+            renderGlossary();
+        };
+
+        function renderGlossary() {
+            const searchTerm = searchInput.value.toLowerCase();
+            container.innerHTML = '';
+
+            const filteredData = glossaryData.filter(item => {
+                const matchSearch = item.term.toLowerCase().includes(searchTerm) || item.def.toLowerCase().includes(searchTerm) || item.catName.toLowerCase().includes(searchTerm);
+                const matchLetter = currentActiveLetter ? item.term.toUpperCase().startsWith(currentActiveLetter) : true;
+                return matchSearch && matchLetter;
+            });
+
+            resultCount.innerText = `[ ${filteredData.length} TERME${filteredData.length > 1 ? 'S' : ''} DÉTECTÉ${filteredData.length > 1 ? 'S' : ''} ]`;
+
+            if (filteredData.length === 0) {
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+            } else {
+                emptyState.classList.add('hidden');
+                emptyState.classList.remove('flex');
+
+                filteredData.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = `glossary-card glass-panel rounded-2xl p-6 flex flex-col relative overflow-hidden theme-${item.cat}`;
+                    card.style.animationDelay = `${(index % 10) * 0.05}s`;
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4 relative z-10">
+                            <div class="flex items-center gap-4">
+                                <span class="text-3xl bg-[rgba(217,165,38,0.1)] w-12 h-12 flex items-center justify-center rounded-xl border border-[rgba(217,165,38,0.2)] shadow-inner text-[#D9A526]">${item.emoji}</span>
+                                <div>
+                                    <h3 class="font-black text-xl tracking-wide">${item.term}</h3>
+                                    <span class="inline-block mt-1 text-[11px] font-bold px-2 py-0.5 rounded uppercase tracking-widest font-code text-[#B4792A] bg-[rgba(180,121,42,0.1)] border border-[rgba(180,121,42,0.2)]">${item.catName}</span>
+                                </div>
+                            </div>
+                            <button onclick="lireTexte(\`${item.term.replace(/"/g, '&quot;')}\`, \`${item.def.replace(/"/g, '&quot;')}\`, \`${item.example.replace(/"/g, '&quot;')}\`)" class="speaker-card-btn p-2 rounded-full border border-transparent" title="Écouter le mot, la définition et l'exemple">
+                                <i class="fas fa-volume-up text-xl"></i>
+                            </button>
+                        </div>
+
+                        <p class="text-slate-300 text-[15px] leading-relaxed mb-5 flex-grow relative z-10">
+                            ${item.def}
+                        </p>
+
+                        <div class="mt-auto bg-black/40 border-l-2 border-[#D9A526] p-3 rounded-r-lg relative z-10 shadow-inner">
+                            <p class="text-[11px] text-[#D9A526] font-bold uppercase mb-1 tracking-widest"><i class="fas fa-lightbulb mr-1.5 opacity-80"></i>Exemple</p>
+                            <p class="text-slate-300 text-sm italic opacity-90">${item.example}</p>
+                        </div>
+
+                        <!-- Filigrane Emojis géant -->
+                        <div class="absolute -bottom-8 -right-8 text-9xl opacity-5 rotate-12 pointer-events-none z-0">
+                            ${item.emoji}
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        searchInput.addEventListener('input', renderGlossary);
+        generateAlphabetFilter();
+        renderGlossary();
+    </script>
+</body>
+</html>

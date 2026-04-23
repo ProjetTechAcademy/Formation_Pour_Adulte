@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>002_FPA_B1_M01_S002 - La demande formelle ou informelle et les besoins en formation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Lexend:wght@400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Palette PAIA */
+            --paia-ivory: #F6F2E8;
+            --paia-ivory-dark: #EAE4D3;
+            --paia-blue: #0F2C48;
+            --paia-blue-dark: #0A1C2E;
+            --paia-gold: #D9A526;
+            --paia-bronze: #B4792A;
+
+            --base-font: 'Roboto', sans-serif;
+            --font-size-base: 16px;
+        }
+
+        * { box-sizing: border-box; }
+        html { font-size: var(--font-size-base); transition: font-size 0.3s ease; }
+
+        body {
+            font-family: var(--base-font);
+            background-color: var(--paia-ivory);
+            color: var(--paia-blue);
+            min-height: 100vh; margin: 0; padding-bottom: 0;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex-grow: 1;
+        }
+
+        .font-code { font-family: 'Space Mono', monospace; }
+
+        /* Scrollbar Tech */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(15, 44, 72, 0.4); border-radius: 10px; }
+
+        /* =========================================
+           MODE SOMBRE (Lune/Soleil - Zéro Noir)
+           ========================================= */
+        body.dark-mode {
+            background-color: var(--paia-blue-dark);
+            color: var(--paia-ivory);
+        }
+        body.dark-mode .compact-header { background-color: var(--paia-blue); border-bottom-color: var(--paia-gold); }
+        body.dark-mode .compact-header h1 { color: var(--paia-ivory) !important; }
+
+        body.dark-mode .search-box { background-color: var(--paia-blue) !important; border-color: rgba(246, 242, 232, 0.2) !important; }
+        body.dark-mode .search-box input { color: var(--paia-ivory) !important; }
+        body.dark-mode .search-box input::placeholder { color: rgba(246, 242, 232, 0.5) !important; }
+        body.dark-mode .search-box i { color: var(--paia-gold) !important; }
+
+        body.dark-mode .count-box { background-color: var(--paia-blue) !important; border-color: var(--paia-gold) !important; color: var(--paia-ivory) !important; }
+
+        body.dark-mode .alpha-btn { background-color: var(--paia-blue); color: var(--paia-ivory); border-color: rgba(246, 242, 232, 0.1); }
+        body.dark-mode .alpha-btn.active { color: white; border-color: transparent; }
+
+        body.dark-mode .empty-box { background-color: var(--paia-blue) !important; border-color: var(--paia-gold) !important; }
+        body.dark-mode .empty-box h3, body.dark-mode .empty-box p { color: var(--paia-ivory) !important; }
+
+        /* =========================================
+           BOUTONS MULTICOLORES & CARTES BENTO
+           ========================================= */
+        .btn-multicolor {
+            background: linear-gradient(135deg, #464EB8 0%, #E81123 50%, #FFB900 100%);
+            color: #ffffff !important; border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .ms-blue { --accent: #0078D4; }
+        .ms-red { --accent: #E81123; }
+        .ms-yellow { --accent: #FFB900; }
+        .ms-green { --accent: #107C41; }
+        .ms-purple { --accent: #6264A7; }
+
+        .bento-card {
+            background-color: var(--paia-blue);
+            color: var(--paia-ivory);
+            border-radius: 1rem; padding: 1.25rem;
+            box-shadow: 0 8px 16px rgba(15, 44, 72, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column;
+            border-top: 4px solid var(--accent, var(--paia-gold));
+        }
+        .bento-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(15, 44, 72, 0.3); }
+
+        .icon-box {
+            width: 40px; height: 40px; border-radius: 0.75rem;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.1); color: var(--accent, var(--paia-gold));
+        }
+
+        .alpha-btn {
+            background: var(--paia-ivory-dark);
+            color: var(--paia-blue);
+            border-radius: 0.75rem; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; cursor: pointer; transition: all 0.2s;
+            border: 1px solid rgba(15, 44, 72, 0.1);
+        }
+        .alpha-btn:hover:not(.active) { transform: scale(1.1); }
+        .alpha-btn.active {
+            background: linear-gradient(135deg, #464EB8, #E81123, #FFB900);
+            color: white; border-color: transparent; box-shadow: 0 5px 15px rgba(232, 17, 35, 0.3);
+        }
+
+        /* =========================================
+           DOCK ACCESSIBILITÉ INTÉGRÉ
+           ========================================= */
+        .integrated-dock {
+            background: var(--paia-blue); border: 2px solid var(--paia-gold);
+            border-radius: 1.5rem; padding: 0.5rem 1.5rem;
+            display: flex; gap: 0.5rem; align-items: center; justify-content: center; flex-wrap: wrap;
+            box-shadow: 0 10px 20px rgba(15, 44, 72, 0.2);
+            max-width: 100%;
+        }
+        .dock-btn {
+            width: 40px; height: 40px; border-radius: 50%; border: none;
+            background: transparent; color: var(--paia-ivory);
+            cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;
+        }
+        .dock-btn:hover { background: rgba(255,255,255,0.1); color: var(--paia-gold); }
+        .dock-btn.active { background: var(--paia-gold); color: var(--paia-blue); }
+
+        /* =========================================
+           MODE DYSLEXIE (Typo Uniquement)
+           ========================================= */
+        body.dyslexia-mode {
+            font-family: 'Lexend', sans-serif !important;
+            letter-spacing: 0.08em; word-spacing: 0.15em; line-height: 1.8;
+        }
+
+        .compact-header {
+            background-color: var(--paia-ivory); border-bottom: 2px solid var(--paia-blue);
+            position: sticky; top: 0; z-index: 50; transition: background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Compact -->
+    <header class="compact-header py-2 shadow-sm">
+        <div class="max-w-[1600px] mx-auto px-4 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 min-w-0 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png"
+                     alt="PAIA Logo" class="w-10 h-10 rounded-lg border border-[#0F2C48] shadow-sm">
+                <div class="min-w-0">
+                    <h1 class="text-sm md:text-lg font-black text-[#0F2C48] truncate" title="002_FPA_B1_M01_S002 - La demande formelle ou informelle et les besoins en formation">
+                        002_FPA_B1_M01_S002 - La demande formelle ou informelle et les besoins en formation
+                    </h1>
+                </div>
+            </div>
+            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgM" target="_blank"
+               class="btn-multicolor flex-shrink-0 flex items-center gap-2 px-4 py-1.5 rounded-full font-bold text-xs transition-all">
+                <i class="fab fa-microsoft"></i> <span class="hidden sm:inline">Communauté</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-[1600px] mx-auto px-4 py-6">
+
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between mb-6">
+            <div class="relative w-full md:max-w-md group">
+                <div class="search-box relative flex items-center bg-[#EAE4D3] border-2 border-[#0F2C48]/20 rounded-xl shadow-inner focus-within:border-[#D9A526] transition-all">
+                    <div class="pl-4 flex items-center pointer-events-none"><i class="fas fa-search text-[#0F2C48]/40"></i></div>
+                    <input type="text" id="searchInput" placeholder="Rechercher parmi les 105 concepts..."
+                        class="w-full bg-transparent py-3 pl-3 pr-4 text-[#0F2C48] text-base font-bold focus:outline-none">
+                </div>
+            </div>
+            <div class="count-box flex items-center gap-3 bg-[#EAE4D3] text-[#0F2C48] px-4 py-2 rounded-lg border border-[#0F2C48]/10 transition-all">
+                <i class="fas fa-layer-group text-[#D9A526]"></i>
+                <span id="resultCount" class="font-code text-sm font-bold">105 MOTS DÉTECTÉS</span>
+            </div>
+        </div>
+
+        <!-- Filtre Alphabétique Multicolore -->
+        <div class="flex flex-wrap justify-center gap-2 mb-8" id="alphabetContainer"></div>
+
+        <!-- Grille des concepts -->
+        <div id="glossaryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-8"></div>
+
+        <!-- Vide -->
+        <div id="emptyState" class="empty-box hidden flex-col items-center justify-center py-20 text-center bg-[#EAE4D3] text-[#0F2C48] rounded-2xl border-2 border-dashed border-[#0F2C48]/20 mt-4 transition-all">
+            <div class="text-5xl mb-4">🛸</div>
+            <h3 class="text-xl font-bold">Concept non répertorié</h3>
+            <button onclick="resetFilters()" class="mt-4 px-5 py-2 bg-[#0F2C48] text-[#F6F2E8] hover:bg-[#D9A526] rounded-full font-bold transition-colors">Voir tout</button>
+        </div>
+
+    </main>
+
+    <!-- Dock Accessibilité Intégré en bas de page (Responsive) -->
+    <div class="w-full flex justify-center px-4 pb-10 pt-2 bg-transparent relative z-10">
+        <div class="integrated-dock">
+            <button class="dock-btn" onclick="toggleTheme()" id="btn-theme" title="Mode Clair/Sombre"><i class="fas fa-moon"></i></button>
+            <button class="dock-btn" onclick="toggleDyslexia()" id="btn-dys" title="Mode Dyslexie"><i class="fas fa-font"></i></button>
+            <div class="w-[1px] h-6 bg-white/20 mx-1 md:mx-2"></div>
+            <button class="dock-btn" onclick="changeFontSize(-1)" title="Réduire le texte"><i class="fas fa-minus text-xs"></i></button>
+            <button class="dock-btn" onclick="changeFontSize(1)" title="Agrandir le texte"><i class="fas fa-plus text-xs"></i></button>
+            <div class="w-[1px] h-6 bg-white/20 mx-1 md:mx-2"></div>
+            <button class="dock-btn" onclick="toggleMute()" id="btn-mute" title="Son Actif/Inactif"><i class="fas fa-volume-up text-[#D9A526]"></i></button>
+            <button class="dock-btn text-[10px]" onclick="changeSpeechRate(-0.1)">🐌</button>
+            <span id="ui-rate" class="text-[#F6F2E8] font-code text-[11px] font-bold w-8 text-center">x1.1</span>
+            <button class="dock-btn text-[10px]" onclick="changeSpeechRate(0.1)">🐇</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-auto py-8 flex flex-col items-center justify-center gap-4 border-t-2 border-[#0F2C48]/10 bg-transparent relative z-10 transition-colors">
+        <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo MMPA" class="w-14 h-14 rounded-full border-2 border-[#D9A526] shadow-md object-cover">
+        <p class="font-bold text-xs md:text-sm text-center px-4 tracking-wide opacity-80">
+            💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026
+        </p>
+    </footer>
+
+    <script>
+        // Logique UI
+        let isDark = false, isDys = false, baseFS = 16, isMuted = false, sRate = 1.1;
+
+        function toggleTheme() {
+            isDark = !isDark;
+            document.body.classList.toggle('dark-mode', isDark);
+            document.getElementById('btn-theme').innerHTML = isDark ? '<i class="fas fa-sun text-[#D9A526]"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        function toggleDyslexia() {
+            isDys = !isDys;
+            document.body.classList.toggle('dyslexia-mode', isDys);
+            document.getElementById('btn-dys').classList.toggle('active', isDys);
+        }
+
+        function changeFontSize(d) {
+            baseFS = Math.min(22, Math.max(12, baseFS + d*2));
+            document.documentElement.style.setProperty('--font-size-base', baseFS + 'px');
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            document.getElementById('btn-mute').innerHTML = isMuted ? '<i class="fas fa-volume-mute text-[#E81123]"></i>' : '<i class="fas fa-volume-up text-[#D9A526]"></i>';
+            if (isMuted) window.speechSynthesis.cancel();
+        }
+
+        function changeSpeechRate(a) {
+            sRate = Math.min(2.0, Math.max(0.5, sRate + a));
+            document.getElementById('ui-rate').innerText = "x" + sRate.toFixed(1);
+        }
+
+        window.lireTexte = function(t, d, e) {
+            if (isMuted) return;
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(`${t}. Définition : ${d}. Exemple : ${e}`);
+            msg.lang = 'fr-FR';
+            msg.rate = sRate;
+            window.speechSynthesis.speak(msg);
+        };
+
+        // --- BASE DE DONNÉES : 105 CONCEPTS MODULE 002 ---
+        const data = [
+            { term: "Accompagnement", emoji: "🤝", def: "Action de soutenir l'apprenant pour lever ses freins psychologiques ou matériels.", example: "Un tuteur aide un stagiaire à mieux gérer son stress avant l'examen." },
+            { term: "Adaptabilité", emoji: "🦎", def: "Capacité de l'organisme de formation à ajuster ses contenus selon les retours du client.", example: "Modifier le programme pour inclure une heure sur le nouveau logiciel interne du client." },
+            { term: "Adaptation au contexte", emoji: "🧩", def: "Prise en compte des contraintes métiers et logistiques propres à l'entreprise.", example: "Former en 2h chrono car l'équipe de production ne peut pas s'arrêter plus longtemps." },
+            { term: "Ajustement pédagogique", emoji: "🔧", def: "Modification en temps réel des méthodes d'apprentissage pour répondre aux difficultés des participants.", example: "Passer d'une lecture théorique à un schéma visuel car le groupe ne comprenait pas." },
+            { term: "Alignement stratégique", emoji: "🎯", def: "Cohérence entre les objectifs de la formation et la vision à long terme de l'entreprise.", example: "Former à l'IA parce que l'entreprise veut devenir leader numérique sous 2 ans." },
+            { term: "Analyse de poste", emoji: "📋", def: "Étude détaillée des missions d'un salarié pour identifier les compétences réellement requises.", example: "Observer un commercial en rendez-vous pour voir où il pèche dans sa négociation." },
+            { term: "Analyse des besoins", emoji: "🔍", def: "Processus systématique pour identifier l'écart entre l'existant et le souhaité.", example: "Faire passer un test de niveau Excel à 50 collaborateurs." },
+            { term: "Analyse des lacunes", emoji: "🕳️", def: "Identification précise des manques techniques ou comportementaux chez les apprenants.", example: "Relever que l'équipe ne sait pas créer de tableaux croisés dynamiques." },
+            { term: "Analyse du marché", emoji: "📊", def: "Veille externe pour comprendre quelles compétences sont demandées par les concurrents ou le secteur.", example: "Proposer du codage Python car c'est la norme actuelle dans l'informatique." },
+            { term: "Analyse systémique", emoji: "🕸️", def: "Considérer la formation comme un élément d'un tout (management, outils, culture).", example: "Vérifier si le problème vient du manque de savoir ou d'un logiciel obsolète." },
+            { term: "Appel à projets", emoji: "💡", def: "Sollicitation orientée vers l'innovation et la créativité du prestataire.", example: "Demander des idées originales pour animer un séminaire de cohésion." },
+            { term: "Appel d'offres", emoji: "📜", def: "Procédure formelle de mise en concurrence pour choisir un organisme de formation.", example: "L'État publie un marché public pour former 1000 demandeurs d'emploi." },
+            { term: "Approche pédagogique", emoji: "🛤️", def: "La philosophie ou la direction choisie pour transmettre le savoir (active, transmissive...).", example: "Privilégier la pratique et les jeux de rôle plutôt que le cours magistral." },
+            { term: "Approbation hiérarchique", emoji: "✍️", def: "Validation officielle d'un projet de formation par la direction ou les RH.", example: "Le N+1 signe le bon de commande pour la formation de son équipe." },
+            { term: "Aptitude", emoji: "💪", def: "Capacité naturelle ou acquise d'un individu à réaliser une tâche.", example: "Avoir une bonne élocution naturelle pour une formation à la vente." },
+            { term: "Auto-détermination", emoji: "🗽", def: "Capacité d'un apprenant à choisir volontairement sa formation pour son propre projet.", example: "Un salarié qui mobilise son CPF de son propre chef le soir." },
+            { term: "Auto-identification", emoji: "🙋", def: "Fait pour un salarié de reconnaître lui-même son besoin de monter en compétences.", example: "Dire à son chef : 'Je ne comprends rien à ce logiciel, je veux une formation'." },
+            { term: "Autonomie", emoji: "🚲", def: "Degré de liberté de l'apprenant dans la gestion de ses apprentissages.", example: "L'apprenant choisit de suivre ses modules e-learning quand il le souhaite." },
+            { term: "Besoin d'accompagnement", emoji: "🫂", def: "Besoin de soutien humain pour réussir (motivation, tutorat).", example: "Un apprenant dyslexique qui demande un support avec une police adaptée." },
+            { term: "Besoin de savoirs", emoji: "🧠", def: "Nécessité d'acquérir des connaissances théoriques ou techniques.", example: "Apprendre les nouvelles lois de la finance pour un comptable." },
+            { term: "Besoin de formation", emoji: "🎯", def: "Écart mesuré entre les compétences actuelles et celles requises.", example: "L'écart entre savoir parler anglais et savoir négocier un contrat en anglais." },
+            { term: "Budget formation", emoji: "💶", def: "Enveloppe financière dédiée au développement des compétences.", example: "L'entreprise alloue 10 000€ pour former son pôle logistique cette année." },
+            { term: "Cahier des charges (offre)", emoji: "📝", def: "Document détaillant les besoins du client (public, durée, objectifs).", example: "Un document spécifiant : '12 personnes, 3 jours, locaux fournis'." },
+            { term: "Cahier des charges (réponse)", emoji: "📤", def: "Proposition technique et financière du prestataire en réponse au besoin.", example: "Le document du formateur expliquant sa méthode et son prix (4500€)." },
+            { term: "Calendrier prévisionnel", emoji: "📅", def: "Planification temporelle des différentes étapes de la formation.", example: "Prévoir 1 jour par semaine pendant un mois." },
+            { term: "Capitaux humains", emoji: "💎", def: "Ensemble des talents et compétences des collaborateurs d'une organisation.", example: "Investir en formation pour augmenter la valeur de l'entreprise via ses salariés." },
+            { term: "Certification", emoji: "🏆", def: "Validation officielle des acquis sanctionnée par un titre ou diplôme.", example: "Passer le titre FPA pour devenir formateur reconnu." },
+            { term: "Changement organisationnel", emoji: "🔄", def: "Transformation de la structure ou des méthodes de l'entreprise.", example: "L'entreprise passe au télétravail total, il faut former les managers." },
+            { term: "Clauses de confidentialité", emoji: "🤐", def: "Obligation légale de ne pas divulguer les infos internes du client.", example: "Le formateur ne doit pas révéler les secrets de fabrication de l'usine." },
+            { term: "Client final", emoji: "👤", def: "La personne qui bénéficie de la prestation de l'entreprise commanditaire.", example: "Former les vendeurs pour qu'ils satisfassent mieux les acheteurs du magasin." },
+            { term: "Coaching", emoji: "🧭", def: "Accompagnement individuel axé sur la performance ou le déblocage.", example: "Aider un manager à prendre confiance en lui lors des réunions." },
+            { term: "Collaboration", emoji: "🤝", def: "Travail conjoint entre client et formateur pour créer le programme.", example: "Construire les exercices de vente avec le chef des ventes." },
+            { term: "Commanditaire", emoji: "👔", def: "La personne qui décide et finance la formation (souvent le client).", example: "Le DRH qui signe le contrat avec l'organisme de formation." },
+            { term: "Communication interpersonnelle", emoji: "🗣️", def: "Échange d'informations entre individus (verbale et non-verbale).", example: "Savoir écouter sans couper la parole pendant un entretien." },
+            { term: "Compétence", emoji: "💪", def: "Combinaison de savoir, savoir-faire et savoir-être en situation.", example: "Savoir réparer un moteur sous pression et expliquer la panne au client." },
+            { term: "Compétences techniques", emoji: "🛠️", def: "Savoir-faire spécifiques liés à un métier.", example: "Savoir coder en langage C++ ou souder de l'inox." },
+            { term: "Compétences transversales", emoji: "🌉", def: "Capacités utilisables dans plusieurs métiers (soft skills).", example: "L'esprit d'équipe ou la capacité d'analyse." },
+            { term: "Conditions contractuelles", emoji: "📜", def: "Règles juridiques qui encadrent la prestation (paiement, annulation).", example: "Préciser que toute annulation à J-7 est facturée à 50%." },
+            { term: "Connaissance", emoji: "📚", def: "Information apprise, comprise et mémorisée par l'individu.", example: "Connaître les règles du code du travail sur les congés payés." },
+            { term: "Contexte professionnel", emoji: "🏢", def: "Environnement réel dans lequel l'apprenant exerce ses missions.", example: "Former des infirmiers de nuit n'est pas pareil que former des infirmiers de jour." },
+            { term: "Contraintes organisationnelles", emoji: "⛓️", def: "Limites liées au planning ou au fonctionnement de l'entreprise.", example: "Le lundi est impossible car cest le jour de la réunion générale." },
+            { term: "Contrat de formation", emoji: "✍️", def: "Document juridique liant l'organisme de formation et le client.", example: "La convention de formation signée pour un stage de 3 jours." },
+            { term: "CPF (Compte Personnel)", emoji: "💶", def: "Droit à la formation acquis par le travailleur tout au long de sa vie.", example: "Utiliser son budget CPF pour financer un permis poids lourd." },
+            { term: "Critères de sélection", emoji: "⚖️", def: "Points de comparaison pour choisir le meilleur prestataire.", example: "Choisir le formateur qui a la meilleure expérience terrain." },
+            { term: "Critères d'évaluation", emoji: "✅", def: "Points sur lesquels on mesure la réussite de l'apprenant.", example: "Vérifier si le tableau Excel calcule la TVA sans erreur." },
+            { term: "Culture d'entreprise", emoji: "🛡️", def: "Ensemble des valeurs et habitudes partagées dans une organisation.", example: "Former au 'tout numérique' dans une entreprise qui utilise encore beaucoup le papier." },
+            { term: "Démarche diagnostique", emoji: "🩺", def: "Analyse préalable pour trouver la cause d'un dysfonctionnement.", example: "Faire un audit pour comprendre pourquoi les ventes baissent." },
+            { term: "Demande directe", emoji: "📣", def: "Expression explicite d'un besoin de formation.", example: "Le manager dit : 'Je veux que mon équipe soit formée à Photoshop'." },
+            { term: "Demande formelle", emoji: "📧", def: "Demande officielle, structurée et souvent documentée par écrit.", example: "L'envoi d'un cahier des charges via un portail d'appels d'offres." },
+            { term: "Demande indirecte", emoji: "🕵️", def: "Besoin non exprimé directement mais détecté par l'analyse.", example: "Constater beaucoup d'erreurs de caisse et en déduire un besoin de formation." },
+            { term: "Demande informelle", emoji: "💬", def: "Expression orale ou légère d'un intérêt pour la formation.", example: "Discuter d'une formation Word devant la machine à café." },
+            { term: "Développement du leadership", emoji: "👑", def: "Renforcer la capacité à guider et motiver une équipe.", example: "Former les jeunes managers à la gestion de conflit." },
+            { term: "Développement professionnel", emoji: "🚀", def: "Évolution continue des compétences pour sa carrière.", example: "Suivre un module sur la gestion de projet pour devenir chef d'équipe." },
+            { term: "Devis financier", emoji: "💰", def: "Estimation chiffrée du coût de la formation.", example: "Un devis de 1200€ pour 7 heures de formation individuelle." },
+            { term: "Digitalisation", emoji: "🖥️", def: "Transformation des contenus papier en ressources numériques.", example: "Transformer un manuel de 100 pages en 10 vidéos interactives." },
+            { term: "Direction (Management)", emoji: "👔", def: "Entité qui valide la stratégie et les investissements formation.", example: "Le Directeur Général qui décide de former tous les cadres." },
+            { term: "Disponibilité", emoji: "⏳", def: "Capacité des participants à être présents lors de la formation.", example: "Vérifier que les commerciaux ne sont pas tous en salon le jour du cours." },
+            { term: "Distanciel (FOAD)", emoji: "🌐", def: "Formation réalisée à distance via des outils numériques.", example: "Suivre un cours de management en visioconférence sur Teams." },
+            { term: "Documents livrables", emoji: "📄", def: "Productions concrètes remises au client (supports, rapports).", example: "Le livret stagiaire et le guide du formateur remis en fin de mission." },
+            { term: "Domaine prioritaire", emoji: "🔝", def: "Secteur jugé crucial pour la survie ou la croissance de l'entreprise.", example: "La cybersécurité est devenue la priorité n°1 pour la formation informatique." },
+            { term: "DREETS", emoji: "🏛️", def: "Administration régionale contrôlant l'activité de formation.", example: "Déclarer son BPF chaque année à la DREETS pour garder son numéro d'activité." },
+            { term: "Écart de compétences", emoji: "📐", def: "Distance entre ce que le salarié sait faire et ce qu'il devrait faire.", example: "Le salarié met 2h pour faire une tâche qui devrait en prendre 30 min." },
+            { term: "Échanges informels", emoji: "🗣️", def: "Conversations non structurées permettant de recueillir des infos.", example: "Parler avec les stagiaires pendant la pause déjeuner." },
+            { term: "Échéancier", emoji: "📅", def: "Planning des paiements ou des étapes clés du projet.", example: "Payer 30% à la commande et 70% après la réalisation." },
+            { term: "Écoute active", emoji: "👂", def: "Posture visant à comprendre le sens profond des mots de l'interlocuteur.", example: "Reformuler ce que dit le manager pour valider son besoin." },
+            { term: "Engagement", emoji: "🔥", def: "Niveau d'investissement et de motivation de l'apprenant.", example: "L'apprenant qui pose des questions et fait tous les exercices optionnels." },
+            { term: "Enjeux opérationnels", emoji: "⚙️", def: "Besoins liés au fonctionnement quotidien du terrain.", example: "Savoir utiliser le nouveau scanneur pour ne pas bloquer les livraisons." },
+            { term: "Enjeux stratégiques", emoji: "🗺️", def: "Besoins liés à la vision globale et au futur de l'entreprise.", example: "Se former à l'export pour ouvrir une filiale aux USA." },
+            { term: "Entretien d'explicitation", emoji: "🗣️", def: "Technique pour faire dire précisément 'comment' on fait une tâche.", example: "Demander : 'Qu'est-ce que tu regardes exactement sur l'écran avant de cliquer ?'." },
+            { term: "Environnement de travail", emoji: "🏢", def: "Lieu et ambiance dans lesquels l'apprentissage doit s'appliquer.", example: "Former au calme dans une salle pour un travail en open space bruyant." },
+            { term: "Équipe de formateurs", emoji: "👥", def: "Ensemble des experts intervenant sur un même projet.", example: "Avoir un expert en droit et un expert en RH pour une formation sociale." },
+            { term: "État actuel insatisfaisant", emoji: "📉", def: "La situation de départ qui justifie le besoin de formation.", example: "Il y a 30% d'erreurs sur les factures émises." },
+            { term: "État futur souhaité", emoji: "🚀", def: "La situation idéale visée après la formation.", example: "Moins de 2% d'erreurs sur les factures." },
+            { term: "Études de cas", emoji: "📖", def: "Mise en situation sur un problème réel ou fictif à résoudre.", example: "Analyser un conflit client réel et proposer une solution de médiation." },
+            { term: "Évaluation à chaud", emoji: "🔥", def: "Mesure de la satisfaction immédiate après la formation.", example: "Le questionnaire rempli 5 minutes avant de partir." },
+            { term: "Évaluation à froid", emoji: "❄️", def: "Mesure du transfert des acquis sur le poste de travail (plusieurs mois après).", example: "Vérifier 3 mois plus tard si le salarié utilise bien les fonctions Excel apprises." },
+            { term: "Évaluation continue", emoji: "📈", def: "Suivi des progrès tout au long du parcours.", example: "Faire un petit quiz de 2 min au début de chaque matinée." },
+            { term: "Évaluation des offres", emoji: "⚖️", def: "Analyse comparative des propositions reçues par les prestataires.", example: "Noter chaque prestataire sur son prix, son expérience et son programme." },
+            { term: "Évolution technologique", emoji: "💻", def: "Progrès technique obligeant à mettre à jour les compétences.", example: "Apprendre à utiliser ChatGPT pour rédiger des mails plus vite." },
+            { term: "Exigence légale", emoji: "⚖️", def: "Obligation de formation imposée par la loi.", example: "La formation à la sécurité incendie obligatoire tous les ans." },
+            { term: "Expert métier", emoji: "🧠", def: "Personne qui détient le savoir technique de référence sur le sujet.", example: "Le meilleur mécanicien de l'atelier qui explique les pannes fréquentes." },
+            { term: "Expression de besoins", emoji: "📢", def: "Document ou parole qui formalise ce qu'on attend de la formation.", example: "Le mail du chef d'équipe listant les 5 points à aborder absolument." },
+            { term: "Feedback", emoji: "💬", def: "Retour d'information donné à l'apprenant ou au formateur.", example: "Dire au stagiaire : 'Ton explication était très claire, continue comme ça'." },
+            { term: "Fidélisation", emoji: "🤝", def: "Utiliser la formation pour donner envie aux salariés de rester.", example: "Offrir une formation certifiante pour montrer qu'on croit au salarié." },
+            { term: "Finalité stratégique", emoji: "🏁", def: "Le 'pourquoi' lointain de l'action de formation.", example: "La formation vise à réduire le turnover de 15%." },
+            { term: "Flexibilité", emoji: "🤸", def: "Capacité à changer de méthode ou de planning au dernier moment.", example: "Reporter une séance car une urgence client mobilise toute l'équipe." },
+            { term: "Formation inter-entreprises", emoji: "🏢", def: "Session regroupant des salariés de différentes sociétés.", example: "Un cours d'anglais avec 3 personnes de chez Apple et 2 de chez Google." },
+            { term: "Formation intra-entreprise", emoji: "🏠", def: "Session réservée aux salariés d'une seule société.", example: "Une formation management uniquement pour les cadres de l'entreprise X." },
+            { term: "Garantie de réussite", emoji: "🛡️", def: "Engagement du prestataire sur l'atteinte des objectifs.", example: "Proposer une heure de coaching bonus si l'examen n'est pas réussi." },
+            { term: "Gestion du changement", emoji: "🔄", def: "Accompagner l'humain lors des transitions techniques ou sociales.", example: "Expliquer les bénéfices du nouveau logiciel pour lever les peurs." },
+            { term: "Impact de la formation", emoji: "💥", def: "Changement concret observé dans l'entreprise après le stage.", example: "Le chiffre d'affaires du pôle formé a augmenté de 10%." },
+            { term: "Indicateur de réussite", emoji: "✅", def: "Donnée chiffrée permettant de dire si l'objectif est atteint.", example: "Le stagiaire doit réussir 80% du test final." },
+            { term: "Ingénierie de formation", emoji: "🏗️", def: "Gestion globale du projet (finances, logistique, stratégie).", example: "Monter un dossier de financement OPCO pour un plan de 50 formations." },
+            { term: "Ingénierie pédagogique", emoji: "🧩", def: "Conception des méthodes et outils d'apprentissage.", example: "Créer un jeu de plateau pour apprendre les règles de sécurité." },
+            { term: "Innovation", emoji: "💡", def: "Intégrer de nouvelles manières d'apprendre (VR, IA, jeux).", example: "Utiliser des casques de réalité virtuelle pour simuler un incendie." },
+            { term: "Lieu de formation", emoji: "📍", def: "Endroit physique ou virtuel où se déroule l'apprentissage.", example: "Dans les bureaux du client ou dans un centre spécialisé." },
+            { term: "Maquette de formation", emoji: "🏗️", def: "Structure globale du parcours avec les différents modules.", example: "Le plan : Module 1 (Théorie), Module 2 (Pratique), Module 3 (Bilan)." },
+            { term: "Mesure quantitative", emoji: "🔢", def: "Évaluation basée sur des chiffres précis.", example: "Réduire le temps de traitement des dossiers de 10 minutes." },
+            { term: "Méthodologie pédagogique", emoji: "🛤️", def: "Ensemble des procédés utilisés pour faire apprendre.", example: "La méthode interrogative : faire trouver la solution par les apprenants." },
+            { term: "Moyens d'actions", emoji: "⚙️", def: "Outils ou leviers utilisés pour atteindre l'objectif (dont la formation).", example: "La formation + un nouveau guide de procédure papier." },
+            { term: "Négociation", emoji: "🤝", def: "Phase de discussion sur le prix ou les modalités du contrat.", example: "Baisser le prix journalier contre une garantie de 10 sessions." },
+            { term: "Objectifs organisationnels", emoji: "🎯", def: "Buts que l'entreprise veut atteindre globalement.", example: "Devenir n°1 de la relation client en France." },
+            { term: "Objectif pédagogique", emoji: "🏁", def: "Ce que l'apprenant saura faire à la fin du cours.", example: "Être capable de monter un mur en briques de 2 mètres." },
+            { term: "OPCO", emoji: "🏦", def: "Organisme qui finance la formation professionnelle des entreprises.", example: "L'OPCO Atlas pour les métiers du conseil et de l'ingénierie." },
+            { term: "Performance individuelle", emoji: "📈", def: "Résultat concret du travail d'un seul salarié.", example: "Augmenter son nombre de ventes par mois de 5 à 8." }
+        ];
+
+        data.sort((a,b) => a.term.localeCompare(b.term));
+
+        const container = document.getElementById('glossaryContainer');
+        const alphabetBox = document.getElementById('alphabetContainer');
+        const searchInput = document.getElementById('searchInput');
+        const countDisplay = document.getElementById('resultCount');
+        const emptyState = document.getElementById('emptyState');
+
+        const msColors = ['ms-blue', 'ms-red', 'ms-yellow', 'ms-green', 'ms-purple'];
+
+        function renderAlphabet() {
+            const letters = [...new Set(data.map(i => i.term[0].toUpperCase()))].sort();
+            alphabetBox.innerHTML = `<button class="alpha-btn active" onclick="filterByLetter(null, this)">ALL</button>`;
+            letters.forEach(l => {
+                alphabetBox.innerHTML += `<button class="alpha-btn" onclick="filterByLetter('${l}', this)">${l}</button>`;
+            });
+        }
+
+        let currentLetter = null;
+        function filterByLetter(l, btn) {
+            document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active'); currentLetter = l; renderCards();
+        }
+
+        function renderCards() {
+            const term = searchInput.value.toLowerCase();
+            container.innerHTML = '';
+            const filtered = data.filter(i => {
+                const matchSearch = i.term.toLowerCase().includes(term) || i.def.toLowerCase().includes(term);
+                const matchLetter = currentLetter ? i.term.startsWith(currentLetter) : true;
+                return matchSearch && matchLetter;
+            });
+
+            countDisplay.innerText = `${filtered.length} MOTS DÉTECTÉS`;
+
+            if(filtered.length === 0) { emptyState.classList.replace('hidden', 'flex'); }
+            else {
+                emptyState.classList.replace('flex', 'hidden');
+                filtered.forEach((i, idx) => {
+                    const color = msColors[idx % msColors.length];
+                    const card = document.createElement('div');
+                    card.className = `bento-card ${color}`;
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="icon-box">${i.emoji}</div>
+                                <h3 class="font-black text-sm md:text-base leading-tight">${i.term}</h3>
+                            </div>
+                            <button onclick="lireTexte(\`${i.term}\`, \`${i.def.replace(/'/g, "\\'")}\`, \`${i.example.replace(/'/g, "\\'")}\`)" class="dock-btn opacity-60 hover:opacity-100"><i class="fas fa-volume-up"></i></button>
+                        </div>
+                        <p class="text-[13px] leading-relaxed mb-4 flex-grow opacity-90">${i.def}</p>
+                        <div class="mt-auto bg-black/30 border-l-4 border-[var(--accent)] p-2 rounded-r-lg">
+                            <p class="text-[10px] text-[var(--accent)] font-bold uppercase mb-0.5">Exemple</p>
+                            <p class="text-[12px] italic opacity-80">${i.example}</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        window.resetFilters = () => { searchInput.value = ''; filterByLetter(null, document.querySelector('.alpha-btn')); };
+        searchInput.addEventListener('input', renderCards);
+        renderAlphabet(); renderCards();
+    </script>
+</body>
+</html>

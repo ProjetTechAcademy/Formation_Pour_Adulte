@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>015_FPA_B1_M04_S002 - Pédagogie des Adultes | PAIA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Roboto:wght@300;400;700;900&family=Open+Dyslexic&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --surface-ivory: #F6F2E8;
+            --title-blue: #0F2C48;
+            --cta-yellow: #D9A526;
+            --alert-bronze: #B4792A;
+            --blanc: #ffffff;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--surface-ivory);
+            color: var(--title-blue);
+            margin: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* --- ACCESSIBILITÉ --- */
+        body.dys-mode { font-family: 'Open Dyslexic', sans-serif !important; }
+        body.dys-mode * { font-family: 'Open Dyslexic', sans-serif !important; }
+        body.high-contrast { background-color: #1a1a1a !important; color: #ffffff !important; }
+        body.high-contrast header { background-color: #1a1a1a !important; border-bottom-color: #ffffff !important; }
+        body.high-contrast .node rect { fill: #000 !important; stroke: #fff !important; }
+        body.high-contrast .node text { fill: #fff !important; }
+
+        /* --- BARRE D'ACCESSIBILITÉ (BAS) --- */
+        #global-controls-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+            display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap;
+            background: var(--surface-ivory);
+            padding: 10px 15px; box-shadow: 0 -5px 25px rgba(15, 44, 72, 0.1);
+            border-top: 3px solid var(--title-blue);
+        }
+        .acc-btn { padding: 8px 12px; font-size: 1.1rem; border-radius: 8px; background: transparent; border: none; cursor: pointer; color: var(--title-blue); }
+        .acc-btn:hover { transform: scale(1.1); background: rgba(15, 44, 72, 0.05); }
+        .divider-vert { width: 1px; height: 25px; background: rgba(15, 44, 72, 0.2); margin: 0 8px; }
+
+        /* --- HEADER --- */
+        .btn-teams-gradient {
+            background: linear-gradient(135deg, #464EB8 0%, #E81123 50%, #FFB900 100%);
+            background-size: 200% 200%;
+            animation: gradient-shift 4s ease infinite;
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(232, 17, 35, 0.3);
+        }
+        @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        /* --- BARRE D'ACTION VERTICALE AFFINÉE (GAUCHE) --- */
+        .map-tool-bar {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 8px;
+            background: rgba(255, 255, 255, 0.9); padding: 6px; border-radius: 50px;
+            border: 1px solid var(--cta-yellow); backdrop-filter: blur(5px); z-index: 40;
+        }
+        .tool-btn {
+            width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; transition: all 0.2s; background: var(--blanc); border: 1px solid rgba(15, 44, 72, 0.05); color: var(--title-blue);
+        }
+        .tool-btn:hover { background: var(--cta-yellow); color: var(--blanc); transform: scale(1.1); }
+
+        /* --- D3 NODES --- */
+        .node rect { fill: var(--title-blue); stroke: var(--cta-yellow); stroke-width: 1.5px; rx: 10px; transition: all 0.3s ease; }
+        .node:hover rect { fill: var(--cta-yellow); stroke: var(--title-blue); }
+        .node text { fill: var(--surface-ivory); font-weight: 700; font-size: 13px; pointer-events: none; }
+        .node:hover text { fill: var(--title-blue); }
+
+        .node.root rect { fill: var(--cta-yellow); stroke: var(--alert-bronze); rx: 15px; }
+        .node.root text { fill: var(--title-blue); font-size: 14px; font-weight: 900; }
+
+        .node.leaf rect { fill: #fff; stroke: var(--alert-bronze); stroke-dasharray: 2,2; }
+        .node.leaf text { fill: var(--title-blue); font-size: 11px; font-weight: 600; }
+        .link { fill: none; stroke: var(--alert-bronze); stroke-width: 2px; opacity: 0.4; }
+
+        #map-container { width: 100%; height: calc(100vh - 160px); position: relative; }
+
+        .footer-signature {
+            position: fixed; bottom: 65px; left: 0; right: 0; text-align: center;
+            font-size: 10px; font-weight: 800; color: var(--title-blue); opacity: 0.7; pointer-events: none;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+
+    <header class="bg-[#F6F2E8] border-b-4 border-[#0F2C48] min-h-[85px] flex items-center shadow-md z-30 relative py-2">
+        <div class="w-full max-w-[1800px] mx-auto px-6 flex items-center justify-between">
+            <div class="flex items-center gap-4 cursor-pointer" onclick="centerMap()">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="PAIA Logo" class="w-12 h-12 md:w-14 md:h-14 rounded-xl border-2 border-[#0F2C48] object-cover">
+                <div>
+                    <h1 class="text-lg md:text-xl font-black uppercase text-[#0F2C48] leading-none">Pédagogie Adultes</h1>
+                    <p class="text-[9px] text-[#B4792A] font-bold uppercase tracking-widest mt-1">015_FPA_B1_M04_S002</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 md:gap-4">
+                <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="btn-teams-gradient flex items-center gap-2 px-4 py-2 rounded-full font-black text-[10px] shadow-md whitespace-nowrap">
+                    <i class="fab fa-microsoft"></i> <span class="hidden sm:inline">Communauté</span> Teams
+                </a>
+                <a href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/#/" target="_blank" class="bg-[#0F2C48] hover:bg-[#D9A526] text-[#F6F2E8] hover:text-[#0F2C48] font-extrabold h-9 w-9 rounded-full text-[10px] shadow-lg flex items-center justify-center border-2 border-[#D9A526] transition-all">HUB</a>
+                <a href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/Examen/Examen.html" target="_blank" class="bg-[#B4792A] hover:bg-[#D9A526] text-white hover:text-[#0F2C48] font-extrabold h-9 w-9 rounded-full text-[10px] shadow-lg flex items-center justify-center border-2 border-white/50 transition-all">REV</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="map-container" class="cursor-grab active:cursor-grabbing">
+        <div class="map-tool-bar">
+            <button onclick="expandAll()" class="tool-btn" title="Déployer tout">🚀</button>
+            <button onclick="collapseAll()" class="tool-btn" title="Réduire tout">🎯</button>
+            <button onclick="centerMap()" class="tool-btn" title="Recentrer"><i class="fas fa-home"></i></button>
+        </div>
+    </main>
+
+    <div class="footer-signature">
+        💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026
+    </div>
+
+    <div id="global-controls-bar">
+        <div class="flex items-center gap-2">
+            <button class="acc-btn" onclick="toggleDarkMode()">🌙</button>
+            <button class="acc-btn" onclick="toggleDys()">🔤</button>
+            <button class="acc-btn" onclick="toggleContrast()">🌓</button>
+        </div>
+        <div class="divider-vert"></div>
+        <div class="flex items-center gap-2">
+            <button class="acc-btn font-bold" onclick="changeFontSize(-1)">A-</button>
+            <button class="acc-btn font-bold" onclick="changeFontSize(1)">A+</button>
+        </div>
+        <div class="divider-vert"></div>
+        <div class="flex items-center gap-2">
+            <button class="acc-btn" onclick="toggleMute()" id="btn-mute">🔊</button>
+            <button class="acc-btn" onclick="changeSpeechRate(-0.1)">🗣️-</button>
+            <button class="acc-btn" onclick="changeSpeechRate(0.1)">🗣️+</button>
+        </div>
+    </div>
+
+    <script>
+        const treeData = {
+            name: "🎓 PÉDAGOGIE DES ADULTES",
+            isRoot: true,
+            children: [
+                {
+                    name: "🏗️ COHÉRENCE PÉDAGOGIQUE",
+                    children: [
+                        {
+                            name: "📐 TRIANGLE DE COHÉRENCE",
+                            children: [
+                                { name: "🎯 OBJECTIFS (Quoi faire ?)" },
+                                { name: "🛠️ MÉTHODES (Comment faire ?)" },
+                                { name: "📊 ÉVALUATION (Quels résultats ?)" }
+                            ]
+                        },
+                        {
+                            name: "🔗 3 DIMENSIONS",
+                            children: [
+                                { name: "📚 PÉDAGOGIQUE (Contenu)" },
+                                { name: "📜 DOCUMENTAIRE (Preuves)" },
+                                { name: "💻 TECHNIQUE (Outils/LMS)" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "🧠 L'ANDRAGOGIE (Knowles)",
+                    children: [
+                        {
+                            name: "🌟 SPÉCIFICITÉS ADULTE",
+                            children: [
+                                { name: "👤 Besoin d'autonomie" },
+                                { name: "🏗️ Basé sur l'expérience" },
+                                { name: "🎯 Orientation 'Problème'" },
+                                { name: "🔥 Motivation intrinsèque" }
+                            ]
+                        },
+                        {
+                            name: "📜 PÉDAGOGUES CLÉS",
+                            children: [
+                                { name: "Skinner (Enseignement programmé)" },
+                                { name: "Dewey (Learning by doing)" },
+                                { name: "Confucius (Implication)" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "📐 DÉVELOPPEMENT COMPÉTENCE",
+                    children: [
+                        {
+                            name: "🛤️ LES 4 PHASES",
+                            children: [
+                                { name: "1️⃣ Incompétence Inconsciente" },
+                                { name: "2️⃣ Incompétence Consciente" },
+                                { name: "3️⃣ Compétence Consciente" },
+                                { name: "4️⃣ Compétence Inconsciente" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "🔬 NEUROSCIENCES",
+                    children: [
+                        {
+                            name: "🚫 NEUROMYTHES (À bannir)",
+                            children: [
+                                { name: "🧠 Cerveau Gauche / Droit" },
+                                { name: "🤹 Multi-tâches (Inefficace)" },
+                                { name: "📐 Styles d'app. (VAK)" }
+                            ]
+                        },
+                        {
+                            name: "📔 MÉMOIRE & ATTENTION",
+                            children: [
+                                { name: "⏳ Attention : 15-20 min max" },
+                                { name: "🔄 Répétition expansée" },
+                                { name: "📦 Mémoire Travail (7 +/- 2)" }
+                            ]
+                        },
+                        {
+                            name: "🎭 ÉMOTIONS",
+                            children: [
+                                { name: "✨ Dopamine (Apprentissage)" },
+                                { name: "⚠️ Cortisol (Blocage)" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "💡 CONSEILS PRATIQUES",
+                    children: [
+                        { name: "🧱 Fragmenter le savoir (Chunking)" },
+                        { name: "🧪 Utiliser des analogies" },
+                        { name: "☕ Prévoir des pauses régulières" }
+                    ]
+                }
+            ]
+        };
+
+        let isMuted = false, speechRate = 1.2, baseFontSize = 16, i = 0;
+        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
+        function toggleDys() { document.body.classList.toggle('dys-mode'); }
+        function toggleContrast() { document.body.classList.toggle('high-contrast'); }
+        function changeFontSize(s) { baseFontSize = Math.min(24, Math.max(12, baseFontSize + s)); document.documentElement.style.fontSize = baseFontSize + 'px'; }
+        function toggleMute() { isMuted = !isMuted; document.getElementById('btn-mute').innerText = isMuted ? "🔇" : "🔊"; }
+        function changeSpeechRate(s) { speechRate = Math.min(2, Math.max(0.5, speechRate + s)); }
+        function speak(txt) { if (isMuted) return; speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(txt); m.lang = 'fr-FR'; m.rate = speechRate; speechSynthesis.speak(m); }
+
+        const container = document.getElementById('map-container');
+        const nodeWidth = 210, nodeHeight = 38;
+        const zoom = d3.zoom().scaleExtent([0.15, 2.5]).on("zoom", (e) => svgGroup.attr("transform", e.transform));
+        const svg = d3.select("#map-container").append("svg").attr("width", "100%").attr("height", "100%").call(zoom);
+        const svgGroup = svg.append("g");
+        const treeMap = d3.tree().nodeSize([65, 260]);
+        let root = d3.hierarchy(treeData);
+
+        function update(source) {
+            const nodes = treeMap(root).descendants();
+            const links = nodes.slice(1);
+            nodes.forEach(d => d.y = d.depth * 280);
+            const node = svgGroup.selectAll('g.node').data(nodes, d => d.id || (d.id = ++i));
+            const nodeEnter = node.enter().append('g').attr('class', d => `node ${d.data.isRoot ? 'root' : ''} ${!d.children && !d._children ? 'leaf' : ''}`).attr("transform", d => `translate(${source.y0 || 0},${source.x0 || 0})`).on('click', (e, d) => {
+                if (d.children) { d._children = d.children; d.children = null; }
+                else { d.children = d._children; d._children = null; }
+                update(d);
+                speak(d.data.name);
+            });
+            nodeEnter.append('rect').attr('width', nodeWidth).attr('height', nodeHeight).attr('y', -nodeHeight/2);
+            nodeEnter.append('text').attr("dy", ".35em").attr("x", nodeWidth/2).attr("text-anchor", "middle").text(d => d.data.name);
+            const nodeUpdate = nodeEnter.merge(node);
+            nodeUpdate.transition().duration(600).attr("transform", d => `translate(${d.y},${d.x})`);
+            node.exit().transition().duration(600).attr("transform", d => `translate(${source.y},${source.x})`).remove();
+            const link = svgGroup.selectAll('path.link').data(links, d => d.id);
+            const linkEnter = link.enter().insert('path', "g").attr("class", "link");
+            linkEnter.merge(link).transition().duration(600).attr('d', d => d3.linkHorizontal().x(d => d.y).y(d => d.x)({source: {x: d.parent.x, y: d.parent.y + nodeWidth}, target: {x: d.x, y: d.y}}));
+            link.exit().remove();
+            nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+        }
+
+        window.expandAll = () => { root.descendants().forEach(d => { if(d._children){ d.children = d._children; d._children = null; } }); update(root); setTimeout(centerMap, 700); };
+        window.collapseAll = () => { root.children.forEach(d => { if(d.children){ d._children = d.children; d.children = null; } }); update(root); };
+        window.centerMap = () => {
+            const b = svgGroup.node().getBBox();
+            const fullW = container.clientWidth, fullH = container.clientHeight;
+            const midX = b.x + b.width / 2, midY = b.y + b.height / 2;
+            const s = Math.min(fullW/(b.width+120), fullH/(b.height+120), 0.95);
+            svg.transition().duration(800).call(zoom.transform, d3.zoomIdentity.translate(fullW/2 - s*midX, fullH/2 - s*midY).scale(s));
+        };
+
+        root.children.forEach(d => { d._children = d.children; d.children = null; });
+        update(root);
+        setTimeout(centerMap, 400);
+        window.addEventListener('resize', () => centerMap());
+    </script>
+</body>
+</html>

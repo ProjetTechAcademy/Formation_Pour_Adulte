@@ -1,0 +1,1153 @@
+<!doctype html>
+<html lang="fr" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paia - Adult Learning Hub (V10.1 Complete)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&family=Open+Dyslexic&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --surface-ivory: #f6f2e8;
+        --title-blue: #0f2c48;
+        --cta-yellow: #ffb900;
+        --cta-orange: #ff8c00;
+        --ms-red: #f25022;
+        --ms-green: #7fba00;
+        --ms-blue: #00a4ef;
+        --ms-yellow: #ffb900;
+      }
+
+      body.dys-mode {
+        font-family: "Open Dyslexic", sans-serif !important;
+      }
+      body.dys-mode * {
+        font-family: "Open Dyslexic", sans-serif !important;
+      }
+
+      body.high-contrast {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+      }
+      body.high-contrast header {
+        background-color: #1a1a1a !important;
+        border-bottom: 2px solid #ffffff !important;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: var(--surface-ivory);
+        color: var(--title-blue);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* --- Teams Microsoft --- */
+      .btn-teams-ms {
+        background: linear-gradient(
+          90deg,
+          var(--ms-red) 0%,
+          var(--ms-green) 33%,
+          var(--ms-blue) 66%,
+          var(--ms-yellow) 100%
+        );
+        background-size: 200% auto;
+        transition: 0.4s;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: none;
+      }
+      .btn-teams-ms:hover {
+        background-position: right center;
+        transform: translateY(-2px) scale(1.05);
+      }
+
+      /* --- Onglets --- */
+      .tab-btn {
+        background-color: #ffffff;
+        color: var(--title-blue);
+        border: 2px solid rgba(15, 44, 72, 0.1);
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-weight: 700;
+        transition: 0.3s;
+      }
+      .tab-btn.active {
+        background: linear-gradient(135deg, #464eb8 0%, #e81123 100%);
+        color: white;
+        border-color: transparent;
+      }
+
+      /* --- Bouton Valider Solaire 3D --- */
+      .btn-valider-3d {
+        background: linear-gradient(
+          135deg,
+          #ffeb3b 0%,
+          #ffb900 50%,
+          #ff8c00 100%
+        );
+        color: #0f2c48 !important;
+        border-bottom: 4px solid #b4792a !important;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+      .btn-valider-3d:hover {
+        transform: translateY(-2px);
+        border-bottom-width: 6px !important;
+        filter: brightness(1.05);
+      }
+      .btn-valider-3d:active {
+        transform: translateY(2px);
+        border-bottom-width: 1px !important;
+      }
+
+      .btn-success-line {
+        background: linear-gradient(
+          135deg,
+          #10b981 0%,
+          #059669 100%
+        ) !important;
+        color: #0f2c48 !important;
+        border-bottom: 4px solid #064e3b !important;
+      }
+
+      /* --- Ressources --- */
+      .btn-resource {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: 0.3s;
+        position: relative;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      .btn-resource:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .bg-audio {
+        background: #667eea;
+        color: white;
+      }
+      .bg-pdf {
+        background: #0f2c48;
+        color: #d9a526;
+      }
+      .bg-lien {
+        background: #0078d4;
+        color: white;
+      }
+      .bg-excel {
+        background: #107c41;
+        color: white;
+      }
+      .bg-infog {
+        background: #e81123;
+        color: white;
+      }
+      .bg-slide {
+        background: #d83b01;
+        color: white;
+      }
+      .bg-video {
+        background: #e52d27;
+        color: white;
+      }
+      .bg-glo {
+        background: #4a5568;
+        color: white;
+      }
+      .bg-map {
+        background: #ffb900;
+        color: #0f2c48;
+      }
+      .bg-quiz {
+        background: #b4792a;
+        color: white;
+      }
+
+      .tooltip-container .tooltip {
+        position: absolute;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #0f2c48;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.2s;
+        z-index: 100;
+        border: 1px solid var(--ms-yellow);
+        pointer-events: none;
+      }
+      .tooltip-container:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .check-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-animate {
+        animation: slideIn 0.4s ease-out forwards;
+        opacity: 0;
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateY(15px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header
+      class="bg-[#F6F2E8] border-b-2 border-[#0F2C48] h-[90px] flex items-center sticky top-0 z-[100] shadow-sm"
+    >
+      <div
+        class="w-full max-w-[1600px] mx-auto px-6 flex items-center justify-between"
+      >
+        <div
+          class="flex items-center gap-4 cursor-pointer"
+          onclick="location.reload()"
+        >
+          <img
+            src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png"
+            alt="Logo Paia Hub"
+            class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover"
+          />
+          <div>
+            <h1 class="text-xl font-black uppercase text-[#0F2C48]">
+              Paia Hub
+            </h1>
+            <p
+              class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest"
+            >
+              Base de données FPA • Version 10.1 Complète
+            </p>
+          </div>
+        </div>
+
+        <div class="relative w-full max-w-sm hidden lg:block">
+          <i
+            class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-[#0F2C48]/50"
+          ></i>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Chercher un mot ou un code..."
+            class="w-full bg-white border border-[#0F2C48]/30 rounded-lg py-2 pl-10 pr-4 text-[#0F2C48] text-sm focus:outline-none shadow-inner"
+          />
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ"
+            target="_blank"
+            class="btn-teams-ms flex items-center gap-3 px-6 py-3 rounded-full font-black text-xs text-white"
+          >
+            <i class="fab fa-microsoft text-sm"></i> COMMUNAUTÉ TEAMS
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-[1600px] mx-auto px-6 py-8">
+      <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
+        <div class="flex gap-2">
+          <a
+            href="https://app.studi.fr/v3/blog"
+            target="_blank"
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg text-xs font-black shadow-sm hover:bg-blue-600"
+            >NEWSLETTER</a
+          >
+          <a
+            href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/Examen/Examen.html"
+            target="_blank"
+            class="px-4 py-2 bg-purple-600 text-white rounded-lg text-xs font-black shadow-sm hover:bg-purple-700"
+            >EXAMEN</a
+          >
+          <a
+            href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/Tableau_de_Bord_FPA/Évaluations_par_Bloc.html"
+            target="_blank"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg text-xs font-black shadow-sm hover:bg-green-700"
+            >TABLEAU DE BORD</a
+          >
+        </div>
+        <div class="access-bar flex gap-3">
+          <button
+            onclick="toggleAudio()"
+            id="audioBtn"
+            class="p-2 px-4 rounded-full bg-white border border-gray-200 font-bold text-[10px] shadow-sm"
+          >
+            Audio : OFF
+          </button>
+          <button
+            onclick="document.body.classList.toggle('dys-mode')"
+            class="p-2 px-4 rounded-full bg-white border border-gray-200 font-bold text-[10px] shadow-sm"
+          >
+            Mode DYS
+          </button>
+          <button
+            onclick="document.body.classList.toggle('high-contrast')"
+            class="p-2 px-4 rounded-full bg-white border border-gray-200 font-bold text-[10px] shadow-sm"
+          >
+            Contraste
+          </button>
+        </div>
+      </div>
+
+      <div class="tabs-container mb-8" id="tabsMenu">
+        <button
+          class="tab-btn active"
+          id="tab-ALL"
+          onclick="filtrerBloc('ALL')"
+        >
+          Vue Globale
+        </button>
+        <button class="tab-btn" id="tab-B0" onclick="filtrerBloc('B0')">
+          B0: Fondamentaux
+        </button>
+        <button class="tab-btn" id="tab-B1" onclick="filtrerBloc('B1')">
+          B1: Concevoir
+        </button>
+        <button class="tab-btn" id="tab-B2" onclick="filtrerBloc('B2')">
+          B2: Animer
+        </button>
+        <button class="tab-btn" id="tab-B3" onclick="filtrerBloc('B3')">
+          B3: Accompagner
+        </button>
+        <button class="tab-btn" id="tab-B4" onclick="filtrerBloc('B4')">
+          B4: Qualité & RSE
+        </button>
+      </div>
+
+      <div
+        class="bg-white rounded-2xl p-6 shadow-sm border border-black/5 mb-8 flex items-center gap-6"
+      >
+        <div class="flex flex-col">
+          <span
+            class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
+            >Votre Progression Totale</span
+          >
+          <div class="text-3xl font-black text-[#D9A526]" id="progressText">
+            0%
+          </div>
+        </div>
+        <div
+          class="flex-grow bg-gray-100 h-4 rounded-full overflow-hidden relative"
+        >
+          <div
+            id="progressBar"
+            class="h-full absolute left-0 bg-green-500"
+            style="width: 0%; transition: width 0.5s ease"
+          ></div>
+        </div>
+        <div class="text-right font-bold text-xs">
+          <span id="compteurResVue">0</span> /
+          <span id="compteurResTotal">0</span><br />Éléments validés
+        </div>
+      </div>
+
+      <div id="subTabsContainer" class="sub-tabs-container hidden"></div>
+      <div id="listContainer" class="flex flex-col gap-4 pb-12"></div>
+    </main>
+
+    <footer
+      class="py-10 flex flex-col items-center gap-4 bg-white/30 border-t border-black/5"
+    >
+      <img
+        src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg"
+        alt="Logo Mathilde Martine PAISLEY"
+        class="w-16 h-16 rounded-full border-2 border-[#D9A526] object-cover"
+      />
+      <p
+        class="text-[10px] font-bold opacity-50 uppercase tracking-widest text-center"
+      >
+        💫 PAIA ✨ Platform Automation & Intelligent Architecture<br />By
+        Mathilde Martine PAISLEY - © 2026
+      </p>
+      <button
+        onclick="
+          if (confirm('Tout réinitialiser?')) {
+            localStorage.clear();
+            location.reload();
+          }
+        "
+        class="text-red-400 font-bold text-[9px] uppercase hover:text-red-600"
+      >
+        Réinitialiser le parcours
+      </button>
+    </footer>
+
+    <div
+      id="modalTravaux"
+      class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[2000]"
+    >
+      <div
+        class="bg-white p-10 rounded-2xl border-4 border-[#0F2C48] shadow-[10px_10px_0_#FFB900] text-center max-w-md"
+      >
+        <div class="text-4xl mb-4">🚧</div>
+        <h2 class="font-black text-[#0F2C48] uppercase mb-2">
+          Bientôt disponible
+        </h2>
+        <p id="modalTxt" class="text-gray-500 text-sm mb-6 font-bold"></p>
+        <button
+          onclick="
+            document.getElementById('modalTravaux').style.display = 'none'
+          "
+          class="bg-[#0F2C48] text-white px-8 py-2 rounded-lg font-bold"
+        >
+          D'ACCORD
+        </button>
+      </div>
+    </div>
+    <div
+      id="toastContainer"
+      class="fixed bottom-10 right-10 flex flex-col gap-3 pointer-events-none z-[3000]"
+    ></div>
+
+    <script>
+      // ==========================================
+      // 🏠 BASE DE DONNÉES INTÉGRALE (174 modules)
+      // Actualisée avec vos vrais titres pour le 137 et le 152
+      // ==========================================
+      const database = [
+        "000_FPA_B0_M01_S001 - Présentation du module et auto positionnement",
+        "000_FPA_B0_M01_S002 - Plus de 15 jeux pédagogiques 1",
+        "000_FPA_B0_M01_S003 - Plus de 15 jeux pédagogiques 2",
+        "000_FPA_B0_M01_S004 - Plus de 10 scénarios pédagogiques",
+        "000_FPA_B0_M01_S005 - Panorama de plus de 40 techniques pédagogiques",
+        "000_FPA_B0_M02_S001 - Les usages de la classe virtuelle",
+        "000_FPA_B0_M02_S002 - Se lancer dans la classe virtuelle",
+        "000_FPA_B0_M02_S003 - Préparer l'animation d'une classe virtuelle",
+        "000_FPA_B0_M02_S004 - Animer une classe virtuelle",
+        "000_FPA_B0_M02_S005 - Les outils de la classe virtuelle",
+        "000_FPA_B0_M03_S001 - Auto-positionnement pédagogie inversée",
+        "000_FPA_B0_M03_S002 - Qu'est-ce que la pédagogie inversée",
+        "000_FPA_B0_M03_S003 - Le Learning by Doing",
+        "000_FPA_B0_M03_S004 - Styles d'apprentissage et rôle du formateur",
+        "000_FPA_B0_M03_S005 - Les différents niveaux de la classe inversée",
+        "000_FPA_B0_M03_S006 - Quelques outils pour inverser sa classe",
+        "000_FPA_B1_M01_S000 - Graduate Formateur pour adultes",
+        "001_FPA_B1_M01_S001 - L'analyse de la demande",
+        "002_FPA_B1_M01_S002 - La demande formelle ou informelle et les besoins en formation",
+        "003_FPA_B1_M01_S003 - Les caractéristiques des publics",
+        "004_FPA_B1_M02_S001 - Le cadre légal de la formation professionnelle",
+        "005_FPA_B1_M02_S002 - Le cadre règlementaires, législatif de l'activité de formation",
+        "006_FPA_B1_M02_S003 - Les obligations administratives des organismes de formation",
+        "007_FPA_B1_M02_S004 - La mise en œuvre des prestations",
+        "008_FPA_B1_M03_S001 - La gouvernance et le financement du système de la formation professionnelle",
+        "009_FPA_B1_M03_S002 - Les financements du public Travailleur Non Salarié",
+        "010_FPA_B1_M03_S003 - Les financements du public salarié",
+        "011_FPA_B1_M03_S004 - Le financement des demandeurs d'emploi",
+        "012_FPA_B1_M03_S005 - Le financement des autres publics",
+        "013_FPA_B1_M03_S006 - Le fonctionnement du Compte Personnel de Formation (CPF)",
+        "014_FPA_B1_M04_S001 - Les référentiels en formation",
+        "015_FPA_B1_M04_S002 - La pédagogie des adultes",
+        "016_FPA_B1_M04_S003 - Les concepts de base de l'ingénierie et le vocabulaire de formation",
+        "017_FPA_B1_M04_S004 - Structurer sa formation en blocs de compétences",
+        "018_FPA_B1_M05_S001 - Les modalités pédagogiques et les modalités d'accompagnement",
+        "019_FPA_B1_M05_S002 - Les situations d'apprentissage, d'accompagnement et d'évaluation",
+        "020_FPA_B1_M05_S003 - L'accompagnement pédagogique",
+        "021_FPA_B1_M06_S001 - Les étapes de la formation et de l'accompagnement et les durées associées",
+        "022_FPA_B1_M06_S002 - La rédaction d'une progression pédagogique et d'un plan d'accompagnement",
+        "023_FPA_B1_M06_S003 - L'organisation logistique des moyens pédagogiques",
+        "024_FPA_B1_M06_S004 - Application : Élaborer la progression pédagogique d’une formation multimodale à partir d'une demande",
+        "025_FPA_B1_M07_S001 - Les méthodes pédagogiques",
+        "026_FPA_B1_M07_S002 - Les concepts, modalités et démarches pédagogiques",
+        "027_FPA_B1_M07_S003 - Les techniques pédagogiques",
+        "028_FPA_B1_M07_S004 - L'outillage pédagogique",
+        "029_FPA_B1_M07_S005 - Les stratégies favorisant l'analyse réflexive, les pédagogies actives et l'apprentissage par les pairs",
+        "030_FPA_B1_M07_S006 - Les types d'évaluation et de positionnement",
+        "031_FPA_B1_M07_S007 - Les concepts de base de l'ingénierie pédagogique adaptée aux adultes",
+        "032_FPA_B1_M08_S001 - Les outils d'auto-formation et d'auto-évaluation",
+        "033_FPA_B1_M08_S002 - Les spécificités des formations individualisées",
+        "034_FPA_B1_M08_S003 - La formation en alternance et l'AFEST",
+        "035_FPA_B1_M09_S001 - Les théories de l'apprentissage social et des outils collaboratifs",
+        "036_FPA_B1_M09_S002 - Les différents styles d'apprentissage",
+        "037_FPA_B1_M09_S003 - Les environnements et services numériques mobilisables",
+        "038_FPA_B1_M09_S004 - Les principales obligations des organismes de formation sur le handicap",
+        "039_FPA_B1_M09_S005 - Les étapes clés structurant un temps de formation",
+        "040_FPA_B1_M09_S006 - La construction du scénario pédagogique",
+        "041_FPA_B1_M10_S001 - Les types d'accompagnement et des outils de suivi associés",
+        "042_FPA_B1_M10_S002 - Les situations d'accueil et d'accompagnements des apprenants",
+        "043_FPA_B1_M10_S003 - La rédaction d'un scénario tutoral d'accompagnement",
+        "044_FPA_B1_M11_S001 - La scénarisation d'un parcours",
+        "045_FPA_B1_M11_S002 - Scénariser ses parcours avec les blended-learning",
+        "046_FPA_B1_M11_S003 - La planification et l'accueil de nouveaux apprenants y compris dans les formations à entrées et sorties permanentes",
+        "047_FPA_B1_M11_S004 - Application : Concevoir un scénario pédagogique et d'accompagnement en intégrant la multimodalité",
+        "048_FPA_B1_M12_S001 - Capter l'attention grâce aux images et aux schémas",
+        "049_FPA_B1_M12_S002 - Les règles d'écriture d'une consigne, de communication et de conception graphique",
+        "050_FPA_B1_M12_S003 - La méthode FALC",
+        "051_FPA_B1_M13_S001 - La conception d'un support de formation et d'une activité d'apprentissage",
+        "052_FPA_B1_M13_S002 - La conception d'un support de formation et d'une activité d'apprentissage spécifique à l'autoformation",
+        "053_FPA_B1_M13_S003 - La digitalisation d'une formation",
+        "054_FPA_B1_M13_S004 - La réalisation d'un storyboard",
+        "055_FPA_B1_M13_S005 - Comment construire un questionnaire de satisfaction ?",
+        "056_FPA_B1_M13_S006 - Travailler sur des projets de conception d’activités d’apprentissage ou d’évaluation",
+        "057_FPA_B1_M14_S001 - Le concept de veille et sa méthodologie",
+        "058_FPA_B1_M14_S002 - Organiser un dispositif de veille efficace",
+        "059_FPA_B1_M14_S003 - La veille technologique : sources, référents, outils et bonnes pratiques",
+        "060_FPA_B1_M14_S004 - La synthèse des veilles",
+        "061_FPA_B1_M14_S005 - Application : Concevoir des activités d'apprentissage et d'évaluation",
+        "062_FPA_B2_M01_S001 - La posture de facilitateur",
+        "063_FPA_B2_M01_S002 - La communication pédagogique",
+        "064_FPA_B2_M01_S003 - L'intelligence collective en formation",
+        "065_FPA_B2_M01_S004 - Les consignes de travail, la gestion du temps",
+        "066_FPA_B2_M01_S005 - La facilitation et l'exploitation des interventions des stagiaires",
+        "067_FPA_B2_M02_S001 - Préparer sa posture professionnelle et son animation",
+        "068_FPA_B2_M02_S002 - Démarrer une session de formation, plus de 15 ateliers de lancement",
+        "069_FPA_B2_M02_S003 - L’impact du démarrage et de la conclusion d’une formation",
+        "070_FPA_B2_M02_S004 - L'écoute active",
+        "071_FPA_B2_M02_S005 - Le lancement des séquences pédagogiques",
+        "072_FPA_B2_M02_S006 - La dynamique de groupe",
+        "073_FPA_B2_M02_S007 - Stimuler et canaliser les participants",
+        "074_FPA_B2_M03_S001 - Le digital Learning",
+        "075_FPA_B2_M03_S002 - Préparer l'animation d'une classe virtuelle",
+        "076_FPA_B2_M03_S003 - Animer une classe virtuelle",
+        "077_FPA_B2_M04_S001 - L'individualisation",
+        "078_FPA_B2_M04_S002 - Les difficultés individuelles et collectives d'apprentissage",
+        "079_FPA_B2_M04_S003 - Désamorcer une situation conflictuelle",
+        "080_FPA_B2_M04_S004 - Les troubles DYS dans les apprentissages",
+        "081_FPA_B2_M04_S005 - Les autres types de handicaps et leurs conséquences en formation",
+        "082_FPA_B2_M04_S006 - Les mécanismes de l'attention, de la motivation et les neurosciences",
+        "083_FPA_B2_M04_S007 - Application : Animer une formation et faciliter les apprentissages selon différentes modalités",
+        "084_FPA_B2_M05_S001 - La planification et la mise en place d'une évaluation",
+        "085_FPA_B2_M05_S002 - Le dispositif d'évaluation",
+        "086_FPA_B2_M05_S003 - Les référentiels, les critères et indicateurs de l'évaluation",
+        "087_FPA_B2_M05_S004 - La réglementation sur l’adaptation des évaluations pour les apprenants en situation de handicap",
+        "088_FPA_B2_M05_S005 - L'alignement pédagogique entre les objectifs d'apprentissage, les activités et l'évaluation",
+        "089_FPA_B2_M06_S001 - L'évaluation des acquis",
+        "090_FPA_B2_M06_S002 - Les outils d'évaluation",
+        "091_FPA_B2_M06_S003 - La construction d'activités et d'outils d'évaluation des acquis",
+        "092_FPA_B2_M07_S001 - Les modalités de restitution d'une évaluation",
+        "093_FPA_B2_M07_S002 - L'exploitation des résultats en tant que situation d'apprentissage",
+        "094_FPA_B2_M07_S003 - La planification des temps d'évaluation, de correction, de restitution",
+        "095_FPA_B2_M07_S004 - La restitution de bilans pédagogiques individuels et collectifs",
+        "096_FPA_B2_M07_S005 - Application : Evaluer les acquis de formation des apprenants",
+        "097_FPA_B2_M08_S001 - Les difficultés et obstacles à l’apprentissage",
+        "098_FPA_B2_M08_S002 - Remédier aux difficultés d'apprentissage",
+        "099_FPA_B2_M08_S003 - Les indicateurs de décrochage et les stratégies de remédiation",
+        "100_FPA_B2_M09_S001 - L'adaptation de la formation en cas de difficultés individuelles",
+        "101_FPA_B2_M09_S002 - Les techniques de résolution de problème",
+        "102_FPA_B2_M09_S003 - La posture à adopter pour remédier aux difficultés individuelles d'apprentissage",
+        "103_FPA_B2_M09_S004 - Application : Remédier aux difficultés individuelles d'apprentissage",
+        "104_FPA_B3_M01_S001 - Les différents types de difficultés périphériques et besoin d'accompagnement",
+        "105_FPA_B3_M01_S002 - Les démarches diagnostiques",
+        "106_FPA_B3_M02_S001 - Les techniques d'entretien",
+        "107_FPA_B3_M02_S002 - Les différents types d'entretien",
+        "108_FPA_B3_M02_S003 - Les outils de suivi et de bilan",
+        "109_FPA_B3_M02_S004 - Les outils d'accompagnement pédagogique",
+        "110_FPA_B3_M03_S001 - L'intelligence émotionnelle : au coeur de l'être humain",
+        "111_FPA_B3_M03_S002 - La réadaptation d'un parcours de formation",
+        "112_FPA_B3_M03_S003 - Les acteurs de l'accompagnement",
+        "113_FPA_B3_M03_S004 - La communication de la situation d'un apprenant",
+        "114_FPA_B3_M04_S001 - Les flux d'apprenants dans la gestion d'un parcours",
+        "115_FPA_B3_M04_S002 - Administrer et suivre un parcours de formation sur une plateforme numérique",
+        "116_FPA_B3_M04_S003 - Application : Accompagner les apprenants dans leurs parcours de formation",
+        "117_FPA_B3_M05_S001 - Le positionnement des apprenants",
+        "118_FPA_B3_M05_S002 - L'analyse et la restitution du résultat d'un positionnement",
+        "119_FPA_B3_M05_S003 - La co-construction d'un parcours de formation",
+        "120_FPA_B3_M05_S004 - La mise en place d'un protocole individuel de formation",
+        "121_FPA_B3_M06_S001 - L'accueil individuel d'un apprenant en formation",
+        "122_FPA_B3_M06_S002 - L'analyse réflexive et l'auto-évaluation",
+        "123_FPA_B3_M06_S003 - Application : Accueillir un apprenant en formation et co-construire un parcours",
+        "124_FPA_B3_M07_S001 - Fonctions tutorales et besoins de l'apprenant en formation à distance",
+        "125_FPA_B3_M07_S002 - Les mécanismes motivationnels et attentionnels en formation à distance",
+        "126_FPA_B3_M07_S003 - Les leviers et freins aux apprentissages dans la relation à distance",
+        "127_FPA_B3_M07_S004 - La remédiation aux difficultés techniques",
+        "128_FPA_B3_M08_S001 - Les principes de fonctionnement des communautés d'apprentissage",
+        "129_FPA_B3_M08_S002 - L'écriture pour les réseaux sociaux",
+        "130_FPA_B3_M08_S003 - Le feed-back dans une situation de formation à distance",
+        "131_FPA_B3_M08_S004 - La protection des données personnelles : Grands principes et lois informatique et Libertés",
+        "132_FPA_B3_M08_S005 - Les spécificités des apprenants dans le tutorat à distance",
+        "133_FPA_B3_M08_S006 - Application : Tutorer les apprenants à distance",
+        "134_FPA_B3_M09_S001 - Les enjeux de l'alternance",
+        "135_FPA_B3_M09_S002 - Les contrats d'apprentissage et de professionnalisation",
+        "136_FPA_B3_M09_S003 - La reconversion ou promotion par l'alternance, le \"PRO-A\"",
+        "137_FPA_B3_M10_S001 - Le tutorat en entreprise",
+        "138_FPA_B3_M11_S001 - L'insertion sociale et professionnelle",
+        "139_FPA_B3_M11_S002 - Les problématiques pouvant constituer des freins à la mise en œuvre du projet",
+        "140_FPA_B3_M11_S003 - La démarche HANDICAP",
+        "141_FPA_B3_M11_S004 - Le suivi dans le développement professionnel des apprenants",
+        "142_FPA_B3_M11_S005 - Les outils numériques d'accompagnement au projet professionnel et de recherche d'emploi",
+        "143_FPA_B3_M11_S006 - Les méthodes d'accompagnement au projet professionnel",
+        "144_FPA_B3_M12_S001 - Les techniques de recherche d'emploi",
+        "145_FPA_B3_M12_S002 - Les mesures d'accès à la formation et à l'emploi",
+        "146_FPA_B3_M12_S003 - Application : Accompagner le développement des apprenants",
+        "147_FPA_B4_M01_S001 - Le cadre légale de l'activité de formation",
+        "148_FPA_B4_M01_S002 - La démarche Qualiopi",
+        "149_FPA_B4_M01_S003 - Les réglementations Qualiopi",
+        "150_FPA_B4_M01_S004 - Le bilan pédagogique et financier",
+        "151_FPA_B4_M02_S001 - Les principes de l'égalité professionnelle appliquée à la formation professionnelle",
+        "152_FPA_B4_M02_S002 - La démarche de prévention appliquée à une activité de travail",
+        "153_FPA_B4_M02_S003 - Les risques liés à l'activité physique du métier",
+        "154_FPA_B4_M02_S004 - Les risques professionnels dans l'activité de travail",
+        "155_FPA_B4_M02_S005 - La démarche ergonomique",
+        "156_FPA_B4_M02_S006 - La charge mentale",
+        "157_FPA_B4_M02_S007 - Les risques psychosociaux et la qualité de vie au travail",
+        "158_FPA_B4_M02_S008 - Les réglementation sur l'hygiène, la santé et la sécurité de la FP",
+        "159_FPA_B4_M02_S009 - Les principes et enjeux de la RSE en formation",
+        "160_FPA_B4_M02_S010 - La lutte contre la discrimination en formation",
+        "161_FPA_B4_M02_S011 - Application : Respecter et faire respecter la réglementation en vigueur en formation et dans son domaine de spécialité",
+        "162_FPA_B4_M03_S001 - La veille professionnelle",
+        "163_FPA_B4_M03_S002 - Le cadre légal autour de la diffusion de ressources",
+        "164_FPA_B4_M03_S003 - Méthodologies de recherche, de capitalisation d'informations et d'organisation de la veille",
+        "165_FPA_B4_M03_S004 - Les outils de surveillance et de recherche",
+        "166_FPA_B4_M04_S001 - Le Code de la propriété intellectuelle",
+        "167_FPA_B4_M04_S002 - Actualiser son ingénierie, ses pratiques et ses supports de formation",
+        "168_FPA_B4_M04_S003 - Application : Respecter et faire respecter la réglementation en vigueur en formation et dans sa spécialité",
+        "169_FPA_B4_M05_S001 - L'analyse de pratique",
+        "170_FPA_B4_M05_S002 - L'analyse réflexive",
+        "171_FPA_B4_M05_S003 - Les axes d'amélioration du parcours",
+        "172_FPA_B4_M05_S004 - Analyser ses pratiques de formation",
+        "173_FPA_B4_M05_S005 - Application : Analyser ses pratiques professionnelles",
+      ];
+
+      // ==========================================
+      // LISTE EXACTE DES LIENS PDF FOURNIE (Drive)
+      // ==========================================
+      const LIENS_PDF = {
+        "000_FPA_B0_M01_S001": "https://drive.google.com/file/d/1Fye_QLxXQv_zZ9L8O0UCteRCNoxC0DGY/view?usp=drive_link",
+        "000_FPA_B0_M01_S002": "https://drive.google.com/file/d/18lpdAHNaHufNZCiwX15lwhHKP0aQBcHC/view?usp=drive_link",
+        "000_FPA_B0_M01_S003": "https://drive.google.com/file/d/1S0ZEI4TJXVnCjqTnl3rKfp1BHV1H78fr/view?usp=drive_link",
+        "000_FPA_B0_M01_S004": "https://drive.google.com/file/d/1iYQU8OHyfkObdkM5zFSuzDIXf0tsN6KR/view?usp=drive_link",
+        "000_FPA_B0_M01_S005": "https://drive.google.com/file/d/1cVuoZOThBCbZWoytTZiMNV26S4PmcggL/view?usp=drive_link",
+        "000_FPA_B0_M02_S001": "https://drive.google.com/file/d/1E1JoLc9gzQgvEE2lS43f11JzcIKxTEeQ/view?usp=drive_link",
+        "000_FPA_B0_M02_S002": "https://drive.google.com/file/d/1e5NnWSjvy43Hd1DjPNZAbj9MUii-2BXE/view?usp=drive_link",
+        "000_FPA_B0_M02_S003": "https://drive.google.com/file/d/1-oaaVu4JqUsN9_oh_nbQIrUJ1rkuRpdl/view?usp=drive_link",
+        "000_FPA_B0_M02_S004": "https://drive.google.com/file/d/1onfpnFcNgUgWf4mvBfFQN3iubUV7Ejix/view?usp=drive_link",
+        "000_FPA_B0_M02_S005": "https://drive.google.com/file/d/1K67Dg0ISpx0Ug_aKCPj73auhitnyMUWd/view?usp=drive_link",
+        "000_FPA_B0_M03_S001": "https://drive.google.com/file/d/1GeM_GFNwSA1v6ckoCIN1yyND3O8Ai89Y/view?usp=drive_link",
+        "000_FPA_B0_M03_S002": "https://drive.google.com/file/d/1eJWCrnhx-D5ZAWlny7kjLeqHLM1snnuU/view?usp=drive_link",
+        "000_FPA_B0_M03_S003": "https://drive.google.com/file/d/1tM1x3U09KFR1O-xp5RwTRthflH3u5qgU/view?usp=drive_link",
+        "000_FPA_B0_M03_S004": "https://drive.google.com/file/d/1y3TS4Kywtjg4y30cjjSv9pOb39NlqO0T/view?usp=drive_link",
+        "000_FPA_B0_M03_S005": "https://drive.google.com/file/d/1JaeDjour-Xzxl5mYvogaKWpyVClFl25d/view?usp=drive_link",
+        "000_FPA_B0_M03_S006": "https://drive.google.com/file/d/1a8uM7d7tABGe3qUzapmP3Jnt7YGRmIkc/view?usp=drive_link",
+        "000_FPA_B1_M01_S000": "https://drive.google.com/file/d/1M3Iq6TVPxSgiuFyZ63TVQCvQ8ubkveml/view?usp=drive_link",
+        "001_FPA_B1_M01_S001": "https://drive.google.com/file/d/1dVCuUr87Dt8SPwwD8lMqTdC4RvX5ZOns/view?usp=drive_link",
+        "002_FPA_B1_M01_S002": "https://drive.google.com/file/d/16wORLN-v0BFQfuUUUcD-E7noxwstk3o8/view?usp=drive_link",
+        "003_FPA_B1_M01_S003": "https://drive.google.com/file/d/14JbhEoKdqtPWyJvX4HiP4Fd8PhefaCUY/view?usp=drive_link",
+        "004_FPA_B1_M02_S001": "https://drive.google.com/file/d/1c8Zx987dMlFqK6psiR9xfu4WDJ7c1plg/view?usp=drive_link",
+        "005_FPA_B1_M02_S002": "https://drive.google.com/file/d/1HJDY9Kqw4I4uO6B109jaMdV7LZaUqNHv/view?usp=drive_link",
+        "006_FPA_B1_M02_S003": "https://drive.google.com/file/d/1BIwhcDWEN6WyyjVJCv4b_iqiJdYtwg5a/view?usp=drive_link",
+        "007_FPA_B1_M02_S004": "https://drive.google.com/file/d/1RahGK7RfM-r-lB4asUDlsPGLRLCA1OP6/view?usp=drive_link",
+        "008_FPA_B1_M03_S001": "https://drive.google.com/file/d/1_elCR_k4b3Pzldf1F90W2heyh-UoabPI/view?usp=drive_link",
+        "009_FPA_B1_M03_S002": "https://drive.google.com/file/d/19Z7gjWJc2OgE4_eKeSAhz86_T0lL4kZQ/view?usp=drive_link",
+        "010_FPA_B1_M03_S003": "https://drive.google.com/file/d/1WVJ3jFXaTQU2UTl3ewirQO-atm7QvNIY/view?usp=drive_link",
+        "011_FPA_B1_M03_S004": "https://drive.google.com/file/d/1JQTNDcrj86qOBLKnRLIRhbkBES81h585/view?usp=drive_link",
+        "012_FPA_B1_M03_S005": "https://drive.google.com/file/d/1NMQYTMWBsTQRdOYG9wiBfGmF6j54gBwj/view?usp=drive_link",
+        "013_FPA_B1_M03_S006": "https://drive.google.com/file/d/1FPlgCm88ZKYRz_kOddbMNAb3JcvhPvM3/view?usp=drive_link",
+        "014_FPA_B1_M04_S001": "https://drive.google.com/file/d/1qHj0b76OdcC-LvjQgf-rgmLZtE06JN7a/view?usp=drive_link",
+        "015_FPA_B1_M04_S002": "https://drive.google.com/file/d/151-p5MB93KFcJ8Oy17STH1aIWx-kJg5o/view?usp=drive_link",
+        "016_FPA_B1_M04_S003": "https://drive.google.com/file/d/1hEZccIZadpc5VQ_TUlCT7YRfAWv9HF5J/view?usp=drive_link",
+        "017_FPA_B1_M04_S004": "https://drive.google.com/file/d/1jzfD0i1EiJ9ejuneGhpFr8DGF7f-jWxw/view?usp=drive_link",
+        "018_FPA_B1_M05_S001": "https://drive.google.com/file/d/1OoTTczBRhXdQJhxrRRXUEGZkIjZ7fuNg/view?usp=drive_link",
+        "019_FPA_B1_M05_S002": "https://drive.google.com/file/d/1GSyTSyynqX5DsBT6nqHiC2vYoUxFwwG-/view?usp=drive_link",
+        "020_FPA_B1_M05_S003": "https://drive.google.com/file/d/16VJfGf0ZDTwiFLbBkQ9qF35zhSztbpZI/view?usp=drive_link",
+        "021_FPA_B1_M06_S001": "https://drive.google.com/file/d/1F4vsC7Y2OOeAYdV1Fg2eyNlujJMmUfBc/view?usp=drive_link",
+        "022_FPA_B1_M06_S002": "https://drive.google.com/file/d/1KARJBjMp26JBy8dUeyAwMb_bbklX1Lg8/view?usp=drive_link",
+        "023_FPA_B1_M06_S003": "https://drive.google.com/file/d/1M_3K7rJKzd0UrvUJJ5uTEPSj6PCi333t/view?usp=drive_link",
+        "024_FPA_B1_M06_S004": "https://drive.google.com/file/d/10VzMFbP5-dW9uQ6vklQR3aihGwpEe2fI/view?usp=drive_link",
+        "025_FPA_B1_M07_S001": "https://drive.google.com/file/d/1Q56ru1sJPMOiaWQAHvLxxXSrW-ilYuzU/view?usp=drive_link",
+        "026_FPA_B1_M07_S002": "https://drive.google.com/file/d/1ge5ielPGZE23lwElk8Ug79scZfAOuRbE/view?usp=drive_link",
+        "027_FPA_B1_M07_S003": "https://drive.google.com/file/d/1XCVhgWBxEfgvYifZIF7KthoVH3GrhtE6/view?usp=drive_link",
+        "028_FPA_B1_M07_S004": "https://drive.google.com/file/d/18Shv-r2H48kPr8WKTe8qA75FBV4RngoH/view?usp=drive_link",
+        "029_FPA_B1_M07_S005": "https://drive.google.com/file/d/1tonrfYs622tvHf1k-wrpP5RzVkIE2vR5/view?usp=drive_link",
+        "030_FPA_B1_M07_S006": "https://drive.google.com/file/d/1XW5fOzFqPJN6J4DtI8VOK8eJYPYiTIIM/view?usp=drive_link",
+        "031_FPA_B1_M07_S007": "https://drive.google.com/file/d/1mRTKEwjoX33PWQ2eHFMfYshKRU2-LsO6/view?usp=drive_link",
+        "032_FPA_B1_M08_S001": "https://drive.google.com/file/d/1PXEcVBQJdpYGRZN_3dLq_HwOVBstIos4/view?usp=drive_link",
+        "033_FPA_B1_M08_S002": "https://drive.google.com/file/d/1O0ks01SdqnJu1TraO5Sk_KLO999T_s5h/view?usp=drive_link",
+        "034_FPA_B1_M08_S003": "https://drive.google.com/file/d/187gK6deDUU9EoG2r5Yfp4Z5jJl9NmnFz/view?usp=drive_link",
+        "035_FPA_B1_M09_S001": "https://drive.google.com/file/d/1d4gKr_zO564rgdbw2mngej1sI8VclPyS/view?usp=drive_link",
+        "036_FPA_B1_M09_S002": "https://drive.google.com/file/d/1MZz9Vu3O0XE3iAdKwuigq8Ix3F8gkn5J/view?usp=drive_link",
+        "037_FPA_B1_M09_S003": "https://drive.google.com/file/d/1vaZLAZZcG6rTzsGF8rWwzaszyqL1Hjxc/view?usp=drive_link",
+        "038_FPA_B1_M09_S004": "https://drive.google.com/file/d/1MlV0Aop3gK_gI4bZm0n0kN-Pb8i6469i/view?usp=drive_link",
+        "039_FPA_B1_M09_S005": "https://drive.google.com/file/d/19cxjmVHp0FzV6_S_aIpz8DdocRw8mHT4/view?usp=drive_link",
+        "040_FPA_B1_M09_S006": "https://drive.google.com/file/d/1mHywPqmjI8Tqp2hdtXvlquo3-xFzMhL3/view?usp=drive_link",
+        "041_FPA_B1_M10_S001": "https://drive.google.com/file/d/1tGtygM8y8LqU3K0M5nJQ_VsY5gK468k6/view?usp=drive_link",
+        "042_FPA_B1_M10_S002": "https://drive.google.com/file/d/1GymE_T-CoKrGJqncxr2ROvmhCzRdyn1d/view?usp=drive_link",
+        "043_FPA_B1_M10_S003": "https://drive.google.com/file/d/1eLCdgAWNI1otxA47hm8Tuyw9ST1IDDVi/view?usp=drive_link",
+        "044_FPA_B1_M11_S001": "https://drive.google.com/file/d/12zHZngDS8GaOjdk8IbZ_jTo3TJTRyQmJ/view?usp=drive_link",
+        "045_FPA_B1_M11_S002": "https://drive.google.com/file/d/1094X1uNgatgZLhBQnBl-Kd2EriXgvRiS/view?usp=drive_link",
+        "046_FPA_B1_M11_S003": "https://drive.google.com/file/d/1YC-X9s8A9QOKoyyzsbnfMU4_Aoq_eMOM/view?usp=drive_link",
+        "047_FPA_B1_M11_S004": "https://drive.google.com/file/d/1gXBMfgcfHiugsW31OwAPFkyWJSE3lh90/view?usp=drive_link",
+        "048_FPA_B1_M12_S001": "https://drive.google.com/file/d/1bKn1GtlF-78EY-11rxfcSMygncfKVXMu/view?usp=drive_link",
+        "049_FPA_B1_M12_S002": "https://drive.google.com/file/d/1mm_tzu66CyTlbyCR61uio6u8qfWDNCJc/view?usp=drive_link",
+        "050_FPA_B1_M12_S003": "https://drive.google.com/file/d/1hA0ZTfwLAWO8UCCJns2QGGo94Z054NXI/view?usp=drive_link",
+        "051_FPA_B1_M13_S001": "https://drive.google.com/file/d/1gTPd7OxQH8q5oS6xhpDSkAv4iP35wEQ6/view?usp=drive_link",
+        "052_FPA_B1_M13_S002": "https://drive.google.com/file/d/1OkAZCPLdvu5A0mMjqUi9kEmZ5VuBhCOm/view?usp=drive_link",
+        "053_FPA_B1_M13_S003": "https://drive.google.com/file/d/17tnYlWCiW5RQJK2TXwRLbG5trphLvO5c/view?usp=drive_link",
+        "054_FPA_B1_M13_S004": "https://drive.google.com/file/d/1efYRzo7hZx5nw2zDrQPnM7Bon92ADa8j/view?usp=drive_link",
+        "055_FPA_B1_M13_S005": "https://drive.google.com/file/d/1uFyLHrCVYRk_6uz6Wrqy8Ka_S6K_cvGC/view?usp=drive_link",
+        "056_FPA_B1_M13_S006": "https://drive.google.com/file/d/1ui0TSe_Bt1eAufjGE9Ub6zjXCoorIO_b/view?usp=drive_link",
+        "057_FPA_B1_M14_S001": "https://drive.google.com/file/d/1Ls69f91lCKcbp17B3SkhFydu18-sNAlC/view?usp=drive_link",
+        "058_FPA_B1_M14_S002": "https://drive.google.com/file/d/15bewQGaAUc4jxZK29AD6K2j-XpUAvyam/view?usp=drive_link",
+        "059_FPA_B1_M14_S003": "https://drive.google.com/file/d/1BOsnoyBm5rZtannMlRROLPW4BXtyifze/view?usp=drive_link",
+        "060_FPA_B1_M14_S004": "https://drive.google.com/file/d/1HFu20F1Zwch5Sj_bQC17V9mYXk7SwEIj/view?usp=drive_link",
+        "061_FPA_B1_M14_S005": "https://drive.google.com/file/d/18qNv-B55-JTRlvalgY5wTTPYgFgwYbKb/view?usp=drive_link",
+        "062_FPA_B2_M01_S001": "https://drive.google.com/file/d/1K2gm4O4tuAUuz-UH4h9n6eTfE2IF5xXt/view?usp=drive_link",
+        "063_FPA_B2_M01_S002": "https://drive.google.com/file/d/1cT2iERIhHdTf49q2trYt_GoQqV0j8YAL/view?usp=drive_link",
+        "064_FPA_B2_M01_S003": "https://drive.google.com/file/d/1LarVB1EY3B3oxunpCcmXPhnsOyLC46ew/view?usp=drive_link",
+        "065_FPA_B2_M01_S004": "https://drive.google.com/file/d/1RseLTtI4BtwGxYxU9J7wapG4fVH8ztoC/view?usp=drive_link",
+        "066_FPA_B2_M01_S005": "https://drive.google.com/file/d/1pg55n1iA5s8b2nUufqzE_bu_AEpRdesy/view?usp=drive_link",
+        "067_FPA_B2_M02_S001": "https://drive.google.com/file/d/16_2Xepk04xB0qYSOEL0elNZJIhrwBmxU/view?usp=drive_link",
+        "068_FPA_B2_M02_S002": "https://drive.google.com/file/d/15uCjVtA0nk1IDQwfmZNEGHC72nOub7zh/view?usp=drive_link",
+        "069_FPA_B2_M02_S003": "https://drive.google.com/file/d/1FM7djTCtda1DLJCbgKOZtaWGGah1tfS_/view?usp=drive_link",
+        "070_FPA_B2_M02_S004": "https://drive.google.com/file/d/19EZKrYV33K09fAZSyJvOFkuJImbsPwtz/view?usp=drive_link",
+        "071_FPA_B2_M02_S005": "https://drive.google.com/file/d/1dR3excSsIcIzHx3gRcwNEzHkZshy2ah0/view?usp=drive_link",
+        "072_FPA_B2_M02_S006": "https://drive.google.com/file/d/13uSWApxLFJnY63zzsLtAGpEilYZcF28E/view?usp=drive_link",
+        "073_FPA_B2_M02_S007": "https://drive.google.com/file/d/15WTz9oELXf1Vm9MYKRxb6sxJh0rg3wz2/view?usp=drive_link",
+        "074_FPA_B2_M03_S001": "https://drive.google.com/file/d/1UU9RA52kO4zIh5IXc0GlCWrbiVh3CL4i/view?usp=drive_link",
+        "075_FPA_B2_M03_S002": "https://drive.google.com/file/d/1ahzVnlaCcux38MaiwYE0-oN4R0YSv4GX/view?usp=drive_link",
+        "076_FPA_B2_M03_S003": "https://drive.google.com/file/d/1MCbV0Co1IJ3iAKFG5H3vp4Xuac5nArF9/view?usp=drive_link",
+        "077_FPA_B2_M04_S001": "https://drive.google.com/file/d/1-nC_CKsfUMIiIptpOm7IXLVpGDEAJ1By/view?usp=drive_link",
+        "078_FPA_B2_M04_S002": "https://drive.google.com/file/d/1exHMb6F84dLjlSz3IwftuLcc3sUtX_1Y/view?usp=drive_link",
+        "079_FPA_B2_M04_S003": "https://drive.google.com/file/d/1ouMngoVIo4usi0S_-LKvJAdfT8GWV877/view?usp=drive_link",
+        "080_FPA_B2_M04_S004": "https://drive.google.com/file/d/1mYA9EGyeXQZRvSNYle1LYvv2VuWSYDr2/view?usp=drive_link",
+        "081_FPA_B2_M04_S005": "https://drive.google.com/file/d/1ST6bH5CZd5BreC1gzMCjrSPNq55DPAsd/view?usp=drive_link",
+        "082_FPA_B2_M04_S006": "https://drive.google.com/file/d/1JEKQz_1aDqLc1U5CEzN9pdNmlZtRIn6t/view?usp=drive_link",
+        "083_FPA_B2_M04_S007": "https://drive.google.com/file/d/1mtKJaXLO2DZskfA6kLyh9L9v6Df5_uuo/view?usp=drive_link",
+        "084_FPA_B2_M05_S001": "https://drive.google.com/file/d/1fCaBF5jq1IHdeNpEkBSeYyg6iRYFytV9/view?usp=drive_link",
+        "085_FPA_B2_M05_S002": "https://drive.google.com/file/d/1LJxHrt0UvNnUOR89TP8gyLaEJ9TIT3eV/view?usp=drive_link",
+        "086_FPA_B2_M05_S003": "https://drive.google.com/file/d/1qTROC045sjtVh9wo3c2c2F_nqqx0CTCf/view?usp=drive_link",
+        "087_FPA_B2_M05_S004": "https://drive.google.com/file/d/1hTetDJ6wxGJYa959bU6wFdcrW_Q6qCDH/view?usp=drive_link",
+        "088_FPA_B2_M05_S005": "https://drive.google.com/file/d/1Yoqkl7qqC2CWFTagwpl34YwjHPQVW1jf/view?usp=drive_link",
+        "089_FPA_B2_M06_S001": "https://drive.google.com/file/d/13iGXqMIWwb7aHYJ3dwwQEJqxVXBZbrm7/view?usp=drive_link",
+        "090_FPA_B2_M06_S002": "https://drive.google.com/file/d/1SGkSdFv1IFBFCLGr4SH77yT2rzcQ3QN1/view?usp=drive_link",
+        "091_FPA_B2_M06_S003": "https://drive.google.com/file/d/18eLq_Jq7r5P8iigvJaAhAotlvHs3xv0i/view?usp=drive_link",
+        "092_FPA_B2_M07_S001": "https://drive.google.com/file/d/1u3IZK-t5CX3TuRX-K8M4pwE9GLiZD74w/view?usp=drive_link",
+        "093_FPA_B2_M07_S002": "https://drive.google.com/file/d/1tmI46G6W0ffWzCoCAfCXtfmpRto3MmDN/view?usp=drive_link",
+        "094_FPA_B2_M07_S003": "https://drive.google.com/file/d/1zdx6NaapwgYANeRK1K1DBJioOJcGEj7S/view?usp=drive_link",
+        "095_FPA_B2_M07_S004": "https://drive.google.com/file/d/1-xXt7iYDXm1wjd40KyDoZHuKYFf2JYvs/view?usp=drive_link",
+        "096_FPA_B2_M07_S005": "https://drive.google.com/file/d/1wOKAkFfD5BhS01FjARz2cV4AofO3kxnX/view?usp=drive_link",
+        "097_FPA_B2_M08_S001": "https://drive.google.com/file/d/1Saj4jBkXPIvVXOPwHsHr7MyJQbApuYPB/view?usp=drive_link",
+        "098_FPA_B2_M08_S002": "https://drive.google.com/file/d/13jgr5v6_c5Ah_TUZbRiuTiaFXbcPaH8-/view?usp=drive_link",
+        "099_FPA_B2_M08_S003": "https://drive.google.com/file/d/1h2Gs99dhwGMQHeGHVjYm8w_BdBpmGml-/view?usp=drive_link",
+        "100_FPA_B2_M09_S001": "https://drive.google.com/file/d/1ADmcXdYkWbg8UKXN27Lxm3EtHcDCNmIU/view?usp=drive_link",
+        "101_FPA_B2_M09_S002": "https://drive.google.com/file/d/1rCipVNEUfCEOweKWigw_T-xZEDCwJdwk/view?usp=drive_link",
+        "102_FPA_B2_M09_S003": "https://drive.google.com/file/d/1Bsmsca7-k6RtcXkSEPXXTUZs0t_SUrb_/view?usp=drive_link",
+        "103_FPA_B2_M09_S004": "https://drive.google.com/file/d/10eUHks15d8mXMrJdceHiHIGnDnW_6pfC/view?usp=drive_link",
+        "104_FPA_B3_M01_S001": "https://drive.google.com/file/d/1m_N5bTXztoLRIxpnGpeH6mVTxOVFHwiG/view?usp=drive_link",
+        "105_FPA_B3_M01_S002": "https://drive.google.com/file/d/10R6bY2xKAili4uXiIWr40cqSxkXdwhyy/view?usp=drive_link",
+        "106_FPA_B3_M02_S001": "https://drive.google.com/file/d/1rJk998jgQlc7dlWxip-9VSyBc3dA-3_B/view?usp=drive_link",
+        "107_FPA_B3_M02_S002": "https://drive.google.com/file/d/1GD6vg3iR9qLbaOM98vUXqWKjf3LdujzM/view?usp=drive_link",
+        "108_FPA_B3_M02_S003": "https://drive.google.com/file/d/1eHLrsaFKynUq6US9gGJQ77AWb5oZisgG/view?usp=drive_link",
+        "109_FPA_B3_M02_S004": "https://drive.google.com/file/d/1iM8MCrAe1TdvMs1ririCzbYT4auOS8sE/view?usp=drive_link",
+        "110_FPA_B3_M03_S001": "https://drive.google.com/file/d/1XFT4vEOXlE7YSpiEasxr7GvfcyaAT4VL/view?usp=drive_link",
+        "111_FPA_B3_M03_S002": "https://drive.google.com/file/d/1_UPsw5csXCPPzYFC4aRzZN-5La2cbbxU/view?usp=drive_link",
+        "112_FPA_B3_M03_S003": "https://drive.google.com/file/d/1uBqu11Jdahv3toajg07D6qnTjJAjsFT9/view?usp=drive_link",
+        "113_FPA_B3_M03_S004": "https://drive.google.com/file/d/1TytMZCBrJoh-uS_SS-1N0UHvbSADqxM0/view?usp=drive_link",
+        "114_FPA_B3_M04_S001": "https://drive.google.com/file/d/1TlP46MHPllubd8hL5NB9xE9NCcPwP5pZ/view?usp=drive_link",
+        "115_FPA_B3_M04_S002": "https://drive.google.com/file/d/1GDZ2IZlbIowBkCD8gVysbTAxf79B7fts/view?usp=drive_link",
+        "116_FPA_B3_M04_S003": "https://drive.google.com/file/d/1R_o8KKsJivm9a9foKuAv6oGheoeoLbKa/view?usp=drive_link",
+        "117_FPA_B3_M05_S001": "https://drive.google.com/file/d/1FpjlcViKY_bT-cys5JfmDLQFAHLqfB7y/view?usp=drive_link",
+        "118_FPA_B3_M05_S002": "https://drive.google.com/file/d/1g8W7uUKna3P8C6Ku3QiZQju3s6YiL9Ve/view?usp=drive_link",
+        "119_FPA_B3_M05_S003": "https://drive.google.com/file/d/166ksT0W2L9ftR48zMkhZdmLqKvqVee50/view?usp=drive_link",
+        "120_FPA_B3_M05_S004": "https://drive.google.com/file/d/1dvrIIMgq9-NisGVO79f3JN6fDcWAiUV3/view?usp=drive_link",
+        "121_FPA_B3_M06_S001": "https://drive.google.com/file/d/1mqpKF5M2zImJFZXAMb-oe5X7Ihv6pyN6/view?usp=drive_link",
+        "122_FPA_B3_M06_S002": "https://drive.google.com/file/d/1mEeBRGSQ6UrQk8stsdm4Mv88egcpsVz7/view?usp=drive_link",
+        "123_FPA_B3_M06_S003": "https://drive.google.com/file/d/17f2uiQkINiKKJxrpmKb3AmYupE3a2YNq/view?usp=drive_link",
+        "124_FPA_B3_M07_S001": "https://drive.google.com/file/d/1geSzMniDt56U2HHAIwI-qqpGHmm0C4rI/view?usp=drive_link",
+        "125_FPA_B3_M07_S002": "https://drive.google.com/file/d/1UIP9qOhhfMeGZClJ0D39r-Rt4w11O_9A/view?usp=drive_link",
+        "126_FPA_B3_M07_S003": "https://drive.google.com/file/d/18LbTtcWcE2GM1mELyLBBtFcldCmy-8UG/view?usp=drive_link",
+        "127_FPA_B3_M07_S004": "https://drive.google.com/file/d/1zbQfJw_DpbHSFCA52URDsYVguM_1CfP9/view?usp=drive_link",
+        "128_FPA_B3_M08_S001": "https://drive.google.com/file/d/1CLnptqjQ4x0mQpRhjKAEoJMS5zMD-CHI/view?usp=drive_link",
+        "129_FPA_B3_M08_S002": "https://drive.google.com/file/d/1sbYv2kzkl0tgsSdK3AX8O52aZhSa5izp/view?usp=drive_link",
+        "130_FPA_B3_M08_S003": "https://drive.google.com/file/d/1ssIsm0Jxpe1IDltwAKnODX2iiIpzukJU/view?usp=drive_link",
+        "131_FPA_B3_M08_S004": "https://drive.google.com/file/d/1aPTk2zTKyJPgTKtSC0ffw77ep3fRuOla/view?usp=drive_link",
+        "132_FPA_B3_M08_S005": "https://drive.google.com/file/d/1mtmozeaCvlXQXPJomQgW6IpMqDilfld4/view?usp=drive_link",
+        "133_FPA_B3_M08_S006": "https://drive.google.com/file/d/1YOymcnZJzxjzTwNFU5_PGeev6bvpCK7e/view?usp=drive_link",
+        "134_FPA_B3_M09_S001": "https://drive.google.com/file/d/13t-WG4MCvNlKtvJNkasiNtNXE5sx673E/view?usp=drive_link",
+        "135_FPA_B3_M09_S002": "https://drive.google.com/file/d/1-XeIUTWrofte0FXwl2I2oY31fK__98NS/view?usp=drive_link",
+        "136_FPA_B3_M09_S003": "https://drive.google.com/file/d/1TgCFaLIQMpqYDI0zZao6DvDWNTNKzXMp/view?usp=drive_link",
+        "137_FPA_B3_M10_S001": "https://drive.google.com/file/d/1PzdDvlbgg_6CzjZr9gBqYOF0LvykTXhT/view?usp=drive_link",
+        "138_FPA_B3_M11_S001": "https://drive.google.com/file/d/18WMnfogYKWqWRrc1OCdx7AVzItZcrFZX/view?usp=drive_link",
+        "139_FPA_B3_M11_S002": "https://drive.google.com/file/d/1nq6dMnkrjgH9Xa55VWgaldPjtXQLOidJ/view?usp=drive_link",
+        "140_FPA_B3_M11_S003": "https://drive.google.com/file/d/1iVuG_5BP5tcDPeLfThm6epKZ-eHJ6fMS/view?usp=drive_link",
+        "141_FPA_B3_M11_S004": "https://drive.google.com/file/d/1OLbJhPN434gJnoJTwyKcj68TqMGyHhdU/view?usp=drive_link",
+        "142_FPA_B3_M11_S005": "https://drive.google.com/file/d/1JqFO_ZfF0Lg3dlajg936HTZs2EouOLT3/view?usp=drive_link",
+        "143_FPA_B3_M11_S006": "https://drive.google.com/file/d/1xc8_cj24XPMpd3D_JVlgrwLJYUEl0Hpm/view?usp=drive_link",
+        "144_FPA_B3_M12_S001": "https://drive.google.com/file/d/102qQZLXBwEmU4OuFTNlYiFhiEsiasP0G/view?usp=drive_link",
+        "145_FPA_B3_M12_S002": "https://drive.google.com/file/d/1AfXpNJL0KuwFbK5srUOQ8TRQ74dyZfrx/view?usp=drive_link",
+        "146_FPA_B3_M12_S003": "https://drive.google.com/file/d/1zTkc8lADIv_yBrWqwA8SByLCnLq4Kp_L/view?usp=drive_link",
+        "147_FPA_B4_M01_S001": "https://drive.google.com/file/d/1B12ONh5NhIjxJ4cBJdK13M2e8nc1muhk/view?usp=drive_link",
+        "148_FPA_B4_M01_S002": "https://drive.google.com/file/d/1Z51v-9beRUw563aabXadk8BHjr-9Pm1d/view?usp=drive_link",
+        "149_FPA_B4_M01_S003": "https://drive.google.com/file/d/1ebaYm-qjKS833ZgftVpTtMoUDm5NWKO2/view?usp=drive_link",
+        "150_FPA_B4_M01_S004": "https://drive.google.com/file/d/1zZOctia4TtcArLcYiadmR0VaeUrrZ-9o/view?usp=drive_link",
+        "151_FPA_B4_M02_S001": "https://drive.google.com/file/d/1odPqw4VMk2lM-ydI2rE5GkBbyYpfSB1L/view?usp=drive_link",
+        "152_FPA_B4_M02_S002": "https://drive.google.com/file/d/1t6pik9zRnwOb2gsq-KU6QUoYdP2F0xXb/view?usp=drive_link",
+        "153_FPA_B4_M02_S003": "https://drive.google.com/file/d/1S1ax_DX2h2379kw92UuhKcKA9VX6QqWe/view?usp=drive_link",
+        "154_FPA_B4_M02_S004": "https://drive.google.com/file/d/1XiJcnC8VFk61qgT4f8mGx49M2X6841HD/view?usp=drive_link",
+        "155_FPA_B4_M02_S005": "https://drive.google.com/file/d/16vmuSoL75PJd63FdJ0E5Vih9TUVFhkGT/view?usp=drive_link",
+        "156_FPA_B4_M02_S006": "https://drive.google.com/file/d/17hXKD6YVllwORYJOnPwsDT71Utf6OFcb/view?usp=drive_link",
+        "157_FPA_B4_M02_S007": "https://drive.google.com/file/d/1C1bdmvJZx5i3huJq5LIVi4prdUvw7yOC/view?usp=drive_link",
+        "158_FPA_B4_M02_S008": "https://drive.google.com/file/d/1a4L3L_s47als4eGuaVTUIyagfHTDM7LC/view?usp=drive_link",
+        "159_FPA_B4_M02_S009": "https://drive.google.com/file/d/1qFOJuHoYdTQIFrxHahRHncf5htPXoecr/view?usp=drive_link",
+        "160_FPA_B4_M02_S010": "https://drive.google.com/file/d/1JPxDMWTnxL-ylcp48eBFYFL4EG3LFSh_/view?usp=drive_link",
+        "161_FPA_B4_M02_S011": "https://drive.google.com/file/d/1tL9pdmgKozQ9RORmR_HLj3Io4COgjSdA/view?usp=drive_link",
+        "162_FPA_B4_M03_S001": "https://drive.google.com/file/d/1D7pB1ER6j-lAABriQ-VkMOwvTa-Jea8h/view?usp=drive_link",
+        "163_FPA_B4_M03_S002": "https://drive.google.com/file/d/19nUj4qc2quNTrAsMGVq7cLW83bmNbpd5/view?usp=drive_link",
+        "164_FPA_B4_M03_S003": "https://drive.google.com/file/d/1gINOFrFpoz3JPjrBiGCAHVUWH34VDyff/view?usp=drive_link",
+        "165_FPA_B4_M03_S004": "https://drive.google.com/file/d/15FkwAFwLXNuRwTtpSUPbTPEgBItmS7YG/view?usp=drive_link",
+        "166_FPA_B4_M04_S001": "https://drive.google.com/file/d/1wTftutnhfarIx1e_hwqrWv8qc0QUfd-a/view?usp=drive_link",
+        "167_FPA_B4_M04_S002": "https://drive.google.com/file/d/1ah4nicVd0Y8LdTCdcRzWw2XpC6t2HR1_/view?usp=drive_link",
+        "168_FPA_B4_M04_S003": "https://drive.google.com/file/d/1GQON8G7YRhYoE_l7e2N5rBtDZNvUnNIV/view?usp=drive_link",
+        "169_FPA_B4_M05_S001": "https://drive.google.com/file/d/1rltRQLf4rG2E98w6GpXQLIVGAE_CUjhX/view?usp=drive_link",
+        "170_FPA_B4_M05_S002": "https://drive.google.com/file/d/1SEPilrHAwKuJogomtCtZib8HaAHEa-bT/view?usp=drive_link",
+        "171_FPA_B4_M05_S003": "https://drive.google.com/file/d/11X6y1nTr4PSm2IC6thw5aNSOaCgvO9_f/view?usp=drive_link",
+        "172_FPA_B4_M05_S004": "https://drive.google.com/file/d/1-_4zZFgiOIzLHYzdj9Eqk0uGoZOQRo7_/view?usp=drive_link",
+        "173_FPA_B4_M05_S005": "https://drive.google.com/file/d/1fpwnpGQjpaonJ99EOcs7mMbllYzpRyk1/view?usp=drive_link"
+      };
+
+      const configStructure = {
+        B0: [
+          { id: "M01", nom: "M01" },
+          { id: "M02", nom: "M02" },
+          { id: "M03", nom: "M03" },
+        ],
+        B1: [
+          { id: "M01", nom: "M01" },
+          { id: "M02", nom: "M02" },
+          { id: "M03", nom: "M03" },
+          { id: "M04", nom: "M04" },
+          { id: "M05", nom: "M05" },
+          { id: "M06", nom: "M06" },
+          { id: "M07", nom: "M07" },
+          { id: "M08", nom: "M08" },
+          { id: "M09", nom: "M09" },
+          { id: "M10", nom: "M10" },
+          { id: "M11", nom: "M11" },
+          { id: "M12", nom: "M12" },
+          { id: "M13", nom: "M13" },
+          { id: "M14", nom: "M14" },
+        ],
+        B2: [
+          { id: "M01", nom: "M01" },
+          { id: "M02", nom: "M02" },
+          { id: "M03", nom: "M03" },
+          { id: "M04", nom: "M04" },
+          { id: "M05", nom: "M05" },
+          { id: "M06", nom: "M06" },
+          { id: "M07", nom: "M07" },
+          { id: "M08", nom: "M08" },
+          { id: "M09", nom: "M09" },
+        ],
+        B3: [
+          { id: "M01", nom: "M01" },
+          { id: "M02", nom: "M02" },
+          { id: "M03", nom: "M03" },
+          { id: "M04", nom: "M04" },
+          { id: "M05", nom: "M05" },
+          { id: "M06", nom: "M06" },
+          { id: "M07", nom: "M07" },
+          { id: "M08", nom: "M08" },
+          { id: "M09", nom: "M09" },
+          { id: "M10", nom: "M10" },
+          { id: "M11", nom: "M11" },
+          { id: "M12", nom: "M12" },
+        ],
+        B4: [
+          { id: "M01", nom: "M01" },
+          { id: "M02", nom: "M02" },
+          { id: "M03", nom: "M03" },
+          { id: "M04", nom: "M04" },
+          { id: "M05", nom: "M05" },
+        ],
+      };
+
+      // ==========================================
+      // ⚙️ LOGIQUE & ÉTAT
+      // ==========================================
+      let progressRes = JSON.parse(localStorage.getItem("paia_p_v10")) || {};
+      let isVoice = localStorage.getItem("paia_voice") === "true";
+      let currentBloc = "ALL";
+      let currentMod = "ALL";
+
+      function extraire(item) {
+        let p = item.split(" - ");
+        return {
+          id: p[0].trim(),
+          titre: p.slice(1).join(" - "),
+        };
+      }
+
+      function toggleAudio() {
+        isVoice = !isVoice;
+        localStorage.setItem("paia_voice", isVoice);
+        document.getElementById("audioBtn").innerText = isVoice
+          ? "Audio : ON"
+          : "Audio : OFF";
+      }
+
+      function lire(txt) {
+        if (!isVoice) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(txt);
+        u.lang = "fr-FR";
+        window.speechSynthesis.speak(u);
+      }
+
+      function filtrerBloc(bloc) {
+        currentBloc = bloc;
+        currentMod = "ALL";
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        document.getElementById("tab-" + bloc)?.classList.add("active");
+        renderSubTabs();
+        afficherModules(
+          document.getElementById("searchInput")
+            ? document.getElementById("searchInput").value
+            : "",
+        );
+      }
+
+      function renderSubTabs() {
+        const sub = document.getElementById("subTabsContainer");
+        sub.innerHTML = "";
+        if (currentBloc === "ALL") {
+          sub.classList.add("hidden");
+          return;
+        }
+        sub.classList.remove("hidden");
+        const mods = configStructure[currentBloc] || [];
+        const allBtn = document.createElement("button");
+        allBtn.className = `tab-btn text-[10px] ${currentMod === "ALL" ? "active" : ""} px-4 py-2 font-bold rounded shadow-sm border mb-2`;
+        allBtn.innerText = "TOUT " + currentBloc;
+        allBtn.onclick = () => {
+          currentMod = "ALL";
+          renderSubTabs();
+          afficherModules("");
+        };
+        sub.appendChild(allBtn);
+        mods.forEach((m) => {
+          const btn = document.createElement("button");
+          btn.className = `tab-btn text-[10px] ${currentMod === m.id ? "active" : ""} px-4 py-2 font-bold rounded shadow-sm border ml-2 mb-2`;
+          btn.innerText = m.id;
+          btn.onclick = () => {
+            currentMod = m.id;
+            renderSubTabs();
+            afficherModules("");
+          };
+          sub.appendChild(btn);
+        });
+      }
+
+      window.toggleRes = function (id, rid) {
+        const key = `${id}-${rid}`;
+        progressRes[key] = !progressRes[key];
+        localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
+        if (progressRes[key])
+          confetti({ particleCount: 30, spread: 50, origin: { y: 0.9 } });
+        afficherModules(document.getElementById("searchInput").value, false);
+      };
+
+      window.toggleLine = function (id) {
+        const rids = [
+          "audio",
+          "pdf",
+          "lien",
+          "excel",
+          "infog",
+          "slide",
+          "video",
+          "glo",
+          "map",
+          "quiz",
+        ];
+        const keys = rids.map((rid) => `${id}-${rid}`);
+        const isAll = keys.every((k) => progressRes[k]);
+        keys.forEach((k) => (progressRes[k] = !isAll));
+        localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
+        if (!isAll) {
+          confetti({ particleCount: 150 });
+          afficherToast("Ligne Validée ! ✅");
+        }
+        afficherModules(document.getElementById("searchInput").value, false);
+      };
+
+      function afficherModules(filtre = "", anim = true) {
+        const list = document.getElementById("listContainer");
+        if (!list) return;
+        list.innerHTML = "";
+        let vueCount = 0,
+          totalCount = 0,
+          cardIdx = 0;
+
+        database.forEach((item) => {
+          const { id, titre } = extraire(item);
+          if (!item.toLowerCase().includes(filtre.toLowerCase())) return;
+          if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
+          if (
+            currentMod !== "ALL" &&
+            !id.includes(`${currentBloc}_${currentMod}`)
+          )
+            return;
+
+          const res = [
+            { id: "audio", em: "🎧", n: "Audio", b: "bg-audio" },
+            { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf" },
+            { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien" },
+            { id: "excel", em: "📊", n: "Excel", b: "bg-excel" },
+            { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog" },
+            { id: "slide", em: "📽️", n: "Slide", b: "bg-slide" },
+            { id: "video", em: "🎬", n: "Vidéo", b: "bg-video" },
+            {
+              id: "glo",
+              em: "📚",
+              n: "Lexique",
+              b: "bg-glo",
+              p: `Glossaire/${encodeURIComponent(item)}.html`,
+            },
+            {
+              id: "map",
+              em: "🧠",
+              n: "Carte",
+              b: "bg-map",
+              p: `Carte Mentale/${encodeURIComponent(item)}.html`,
+            },
+            {
+              id: "quiz",
+              em: "⚡",
+              n: "Quiz",
+              b: "bg-quiz",
+              p: `Quiz/${encodeURIComponent(item)}.html`,
+            },
+          ];
+
+          let lineChecked = 0;
+          const htmlRes = res
+            .map((r) => {
+              totalCount++;
+              const isV = progressRes[`${id}-${r.id}`];
+              if (isV) {
+                vueCount++;
+                lineChecked++;
+              }
+              const checkC = isV
+                ? "bg-green-500 text-white"
+                : "bg-white text-gray-200";
+
+              let tag = "a";
+              let action = "";
+
+              if (r.p) {
+                action = `href="${r.p}" target="_blank"`;
+              } else if (r.id === "pdf" && typeof LIENS_PDF !== 'undefined' && LIENS_PDF[id]) {
+                action = `href="${LIENS_PDF[id]}" target="_blank"`;
+              } else if (r.id === "lien" && typeof LIENS_LIEN !== 'undefined' && LIENS_LIEN[id]) {
+                if (LIENS_LIEN[id].startsWith("http")) {
+                    action = `href="${LIENS_LIEN[id]}" target="_blank"`;
+                } else {
+                    tag = "div";
+                    action = `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"`;
+                }
+              } else {
+                tag = "div";
+                action = `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"`;
+              }
+
+              return `<div class="relative tooltip-container">
+                        <${tag} ${action} class="btn-resource ${r.b}" onmouseenter="lire('${r.n}')"><span>${r.em}</span></${tag}>
+                        <button onclick="toggleRes('${id}','${r.id}')" class="check-badge ${checkC}"><i class="fas fa-check"></i></button>
+                        <span class="tooltip">${r.n}</span>
+                    </div>`;
+            })
+            .join("");
+
+          const isFull = lineChecked === res.length;
+          const card = document.createElement("div");
+          card.className = `flex flex-col md:flex-row gap-4 p-5 bg-white border border-[#0F2C48]/10 rounded-xl shadow-sm mb-4 ${anim ? "card-animate" : ""} ${isFull ? "bg-green-50" : ""}`;
+          if (anim) card.style.animationDelay = `${cardIdx * 0.04}s`;
+
+          card.innerHTML = `<div class="flex-grow">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="text-black font-black text-2xl pr-2">${id.split("_")[0]}</span>
+                        <h3 class="font-bold text-lg text-[#0F2C48] leading-tight">${titre}</h3>
+                    </div>
+                    <p class="text-[9px] text-[#B4792A] font-code uppercase mb-4 tracking-tighter opacity-70">${id}</p>
+                    <div class="flex flex-wrap gap-3">${htmlRes}</div>
+                </div>
+                <div class="flex flex-col items-center justify-center min-w-[150px] border-t md:border-t-0 md:border-l pt-4 md:pt-0 md:pl-4 border-gray-100">
+                    <button onclick="toggleLine('${id}')" class="btn-to-validate btn-valider-3d px-6 py-3 rounded-xl text-xs w-full ${isFull ? "btn-success-line" : ""}">
+                         ${isFull ? "Terminé ✅" : "Valider"}
+                    </button>
+                </div>`;
+          list.appendChild(card);
+          cardIdx++;
+        });
+
+        const gP =
+          totalCount === 0 ? 0 : Math.round((vueCount / totalCount) * 100);
+        document.getElementById("progressBar").style.width = gP + "%";
+        document.getElementById("progressText").innerText = gP + "%";
+        document.getElementById("compteurResVue").innerText = vueCount;
+        document.getElementById("compteurResTotal").innerText = totalCount;
+      }
+
+      function afficherToast(m) {
+        const c = document.getElementById("toastContainer");
+        const t = document.createElement("div");
+        t.className =
+          "toast-notification show p-3 bg-white border-l-4 border-green-500 shadow-lg rounded-lg flex items-center gap-3 pointer-events-auto";
+        t.innerHTML = `<span class="text-xl">✨</span><span class="text-[#0F2C48] font-bold text-sm">${m}</span>`;
+        c.appendChild(t);
+        setTimeout(() => {
+          t.remove();
+        }, 3000);
+      }
+
+      function afficherTravaux(n) {
+        document.getElementById("modalTxt").innerText = n;
+        document.getElementById("modalTravaux").style.display = "flex";
+      }
+
+      const sE = document.getElementById("searchInput");
+      if (sE)
+        sE.addEventListener("input", (e) => afficherModules(e.target.value));
+
+      filtrerBloc("ALL");
+    </script>
+  </body>
+</html>

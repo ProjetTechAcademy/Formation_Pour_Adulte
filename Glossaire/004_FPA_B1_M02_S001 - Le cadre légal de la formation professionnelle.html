@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>004_FPA_B1_M02_S001 - Le cadre légal de la formation professionnelle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&family=Lexend:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Palette PAIA STRICTE - ZÉRO NOIR */
+            --bg-deep: #0A1C2E; /* Bleu nuit intense et profond */
+            --surface-glass: rgba(15, 44, 72, 0.4); /* Bleu PAIA translucide */
+            --title-blue: #0F2C48;
+            --surface-ivory: #F6F2E8; /* Crème / Ivoire */
+            --cta-yellow: #D9A526; /* Or */
+            --alert-bronze: #B4792A; /* Bronze */
+            --text-main: #F6F2E8; /* Écriture Crème par défaut */
+            --text-muted: #94a3b8;
+            --base-font-size: 16px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            font-size: var(--base-font-size);
+            transition: font-size 0.3s ease;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            padding-bottom: 90px;
+        }
+
+        .font-code { font-family: 'Space Mono', monospace; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: rgba(217, 165, 38, 0.3); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--cta-yellow); }
+
+        /* Effets Glassmorphism & Glow Or/Bronze (Sans aucun noir) */
+        .glass-panel {
+            background: var(--surface-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(217, 165, 38, 0.15);
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .glossary-card {
+            animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transition: all 0.3s ease;
+            border-top: 2px solid transparent;
+        }
+
+        .glossary-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: rgba(15, 44, 72, 0.7);
+            border-color: var(--cta-yellow);
+            box-shadow: 0 0 25px rgba(217, 165, 38, 0.25);
+            z-index: 10;
+        }
+
+        /* Thèmes de bordures (Identique au doc 000) */
+        .theme-B1 { border-top-color: #4facfe; } /* Cyan */
+        .theme-B2 { border-top-color: #ff0844; } /* Rose */
+        .theme-B3 { border-top-color: var(--cta-yellow); } /* Or */
+        .theme-B4 { border-top-color: #43e97b; } /* Vert */
+
+        /* Lettres Filtres Alphabet */
+        .alpha-btn {
+            background: rgba(15, 44, 72, 0.5);
+            color: var(--surface-ivory);
+            border: 1px solid rgba(217, 165, 38, 0.2);
+            border-radius: 10px;
+            width: 42px; height: 42px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; cursor: pointer; transition: all 0.2s ease;
+        }
+        .alpha-btn:hover:not(.active) {
+            background: rgba(217, 165, 38, 0.1);
+            color: var(--cta-yellow);
+            transform: translateY(-2px);
+            border-color: var(--cta-yellow);
+        }
+        .alpha-btn.active {
+            background: linear-gradient(135deg, var(--cta-yellow) 0%, var(--alert-bronze) 100%);
+            color: var(--title-blue);
+            border-color: transparent;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(217, 165, 38, 0.4);
+        }
+
+        /* =========================================
+           BARRE DE CONTRÔLE FIXE
+           ========================================= */
+        #global-controls-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+            display: flex; justify-content: center; gap: 15px; align-items: center; flex-wrap: wrap;
+            background: rgba(10, 28, 46, 0.95); /* Bleu Nuit, pas de noir */
+            backdrop-filter: blur(10px);
+            padding: 12px 15px;
+            box-shadow: 0 -5px 25px rgba(15, 44, 72, 0.8);
+            border-top: 1px solid var(--cta-yellow);
+        }
+        .control-group-horiz { display: flex; gap: 5px; align-items: center; background: rgba(246, 242, 232, 0.05); padding: 5px 10px; border-radius: 8px; border: 1px solid rgba(246, 242, 232, 0.1); }
+        .divider-vert { width: 1px; height: 25px; background: rgba(246, 242, 232, 0.1); margin: 0 5px; }
+        .acc-btn { padding: 6px 12px; font-size: 1rem; border-radius: 6px; color: var(--surface-ivory); font-weight: 700; background: transparent; border: none; cursor: pointer; transition: all 0.2s; }
+        .acc-btn:hover { background: rgba(217, 165, 38, 0.2); color: var(--cta-yellow); }
+
+        /* =========================================
+           MODE DYSLEXIE
+           ========================================= */
+        body.dyslexia-mode {
+            font-family: 'Lexend', sans-serif !important;
+            letter-spacing: 0.08em !important;
+            word-spacing: 0.15em !important;
+            line-height: 1.8 !important;
+            background-color: var(--surface-ivory) !important;
+            color: var(--title-blue) !important;
+        }
+        body.dyslexia-mode .glass-panel, body.dyslexia-mode .glossary-card {
+            background: #ffffff !important;
+            border: 2px solid rgba(15, 44, 72, 0.2) !important;
+            box-shadow: 0 4px 10px rgba(15, 44, 72, 0.05) !important;
+            color: var(--title-blue) !important;
+        }
+        body.dyslexia-mode .text-slate-300 { color: #334155 !important; }
+        body.dyslexia-mode .text-white { color: var(--title-blue) !important; }
+        body.dyslexia-mode .alpha-btn { background: #fff; color: var(--title-blue); }
+        body.dyslexia-mode #global-controls-bar { background: var(--surface-ivory); border-top: 2px solid var(--title-blue); }
+        body.dyslexia-mode .control-group-horiz { background: rgba(15, 44, 72, 0.05); border-color: rgba(15, 44, 72, 0.1); }
+        body.dyslexia-mode .acc-btn { color: var(--title-blue); }
+        body.dyslexia-mode .exemple-box { background: rgba(15, 44, 72, 0.05) !important; }
+        body.dyslexia-mode .exemple-text { color: var(--title-blue) !important; }
+
+        .speaker-card-btn {
+            color: var(--cta-yellow); opacity: 0.7; transition: all 0.3s ease;
+        }
+        .speaker-card-btn:hover {
+            opacity: 1; transform: scale(1.15); text-shadow: 0 0 10px var(--cta-yellow);
+        }
+    </style>
+</head>
+<body class="selection:bg-[#D9A526]/30 relative">
+
+    <!-- Background Grille Immersive -->
+    <div class="fixed inset-0 opacity-[0.03] pointer-events-none z-[-1]"
+         style="background-image: linear-gradient(var(--cta-yellow) 1px, transparent 1px), linear-gradient(90deg, var(--cta-yellow) 1px, transparent 1px); background-size: 40px 40px;">
+    </div>
+
+    <!-- Header PAIA Dark Premium -->
+    <header class="glass-panel border-b-0 h-[90px] flex items-center shadow-lg z-50 sticky top-0">
+        <div class="w-full max-w-[1600px] mx-auto px-4 md:px-6 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 md:gap-4 cursor-pointer min-w-max" onclick="window.scrollTo(0,0)">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png"
+                     alt="PAIA Logo"
+                     class="w-12 h-12 md:w-14 md:h-14 rounded-xl border border-[rgba(217,165,38,0.5)] shadow-[0_0_15px_rgba(217,165,38,0.2)] object-cover">
+                <div class="hidden sm:block">
+                    <h1 class="text-lg md:text-2xl font-black text-white tracking-tight uppercase">Paia - Adult Learning Hub</h1>
+                    <p class="text-[10px] text-[#D9A526] font-bold uppercase tracking-widest">Glossaire Expert FPA</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgM" target="_blank" rel="noopener noreferrer"
+                   class="bg-gradient-to-r from-[#464EB8] to-[#E81123] text-white flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs md:text-sm transition-all duration-300 hover:shadow-[0_0_20px_rgba(232,17,35,0.4)] hover:scale-105 whitespace-nowrap border border-[rgba(246,242,232,0.2)]">
+                    <i class="fab fa-microsoft"></i>
+                    <span class="hidden md:inline">Communauté Teams</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-[1600px] mx-auto px-4 md:px-6 py-12 flex flex-col relative z-10">
+
+        <!-- Titre de la page -->
+        <div class="mb-12 text-center md:text-left flex flex-col md:flex-row justify-between items-end gap-6">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight drop-shadow-md">
+                    004_FPA_B1_M02_S001 - <br class="hidden md:block"/><span class="text-[#D9A526]">Le cadre légal de la formation</span> ⚖️
+                </h2>
+                <p class="text-[#F6F2E8] opacity-80 font-medium text-sm md:text-lg">Explore 105 concepts juridiques (DREETS, PAC, BPF, Qualiopi...).</p>
+            </div>
+            <div class="glass-panel px-4 py-2 rounded-lg inline-flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#D9A526] animate-pulse"></span>
+                <span class="text-sm font-code text-[#D9A526] font-bold" id="totalWords">105 mots actifs</span>
+            </div>
+        </div>
+
+        <!-- Barre de recherche -->
+        <div class="relative w-full max-w-3xl mx-auto md:mx-0 mb-8 group">
+            <div class="absolute inset-0 bg-[#D9A526] rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-500"></div>
+            <div class="relative glass-panel rounded-2xl flex items-center">
+                <i class="fas fa-search absolute left-6 text-[#D9A526] text-xl group-focus-within:text-[#F6F2E8] transition-colors"></i>
+                <input type="text" id="searchInput" placeholder="Rechercher un terme, un acronyme (ex: OPCO, Qualiopi)..."
+                    class="w-full bg-transparent border-none py-5 pl-14 pr-6 text-[#F6F2E8] text-lg font-medium focus:outline-none placeholder-[#F6F2E8]/40">
+            </div>
+        </div>
+
+        <!-- Filtre Alphabétique -->
+        <div class="glass-panel p-5 rounded-2xl mb-10">
+            <div class="flex items-center gap-2 mb-4">
+                <i class="fas fa-filter text-[#D9A526]"></i>
+                <span class="font-bold text-[#F6F2E8] text-sm uppercase tracking-wider">Navigation Rapide</span>
+            </div>
+            <div class="flex flex-wrap gap-2" id="alphabetContainer">
+                <!-- Généré en JS -->
+            </div>
+        </div>
+
+        <!-- Compteur de résultats -->
+        <div class="mb-6 font-bold text-[#D9A526] font-code text-sm tracking-widest uppercase" id="resultCount"></div>
+
+        <!-- Conteneur des cartes du glossaire -->
+        <div id="glossaryContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-12">
+            <!-- Les cartes seront injectées ici par JavaScript -->
+        </div>
+
+        <!-- État vide -->
+        <div id="emptyState" class="hidden flex-col items-center justify-center py-20 text-center glass-panel rounded-3xl mt-10">
+            <div class="text-7xl mb-6 opacity-50 drop-shadow-[0_0_15px_rgba(217,165,38,0.3)]">🛰️</div>
+            <h3 class="text-3xl font-bold text-white mb-3">Concept introuvable</h3>
+            <p class="text-[#F6F2E8] opacity-70 text-lg">Aucun terme ne correspond à cette recherche dans ce module.</p>
+            <button onclick="resetFilters()" class="mt-8 px-8 py-3 bg-[#D9A526] hover:bg-[#B4792A] text-[#0F2C48] rounded-xl font-black transition-all hover:scale-105 shadow-[0_0_20px_rgba(217,165,38,0.3)]">
+                <i class="fas fa-undo mr-2"></i> Afficher tous les termes
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer PAIA -->
+    <footer class="mt-auto py-10 flex flex-col items-center justify-center gap-5 border-t border-[rgba(217,165,38,0.2)] bg-[#0A1C2E] relative z-10">
+        <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo MMPA" class="w-16 h-16 rounded-full border-2 border-[#D9A526] shadow-[0_0_15px_rgba(217,165,38,0.4)] object-cover hover:scale-110 transition-transform">
+        <p class="text-[#F6F2E8] opacity-70 font-bold text-xs md:text-sm text-center px-4 tracking-wide mt-2">
+            💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026
+        </p>
+    </footer>
+
+    <!-- BARRE DE CONTRÔLE GLOBALE PAIA -->
+    <div id="global-controls-bar">
+        <!-- Dyslexie -->
+        <div class="control-group-horiz" title="Activer le mode haute lisibilité">
+            <button class="acc-btn flex items-center gap-2" onclick="toggleDyslexia()" id="btn-dys">
+                <i class="fas fa-eye"></i> <span class="text-xs uppercase hidden sm:inline">Dyslexie</span>
+            </button>
+        </div>
+        <div class="divider-vert"></div>
+        <!-- Taille Police -->
+        <div class="control-group-horiz" title="Taille du texte">
+            <button class="acc-btn" onclick="changeFontSize(-1)"><i class="fas fa-font text-sm"></i>-</button>
+            <button class="acc-btn" onclick="changeFontSize(1)"><i class="fas fa-font text-lg"></i>+</button>
+        </div>
+        <div class="divider-vert"></div>
+        <!-- Volume -->
+        <div class="control-group-horiz" title="Volume">
+            <button class="acc-btn" onclick="toggleMute()" id="btn-mute" aria-label="Activer ou désactiver le son"><i class="fas fa-volume-up"></i></button>
+        </div>
+        <div class="divider-vert"></div>
+        <!-- Vitesse Voix (Défaut 1.1) -->
+        <div class="control-group-horiz" title="Vitesse de la voix">
+            <button class="acc-btn" onclick="changeSpeechRate(-0.1)">🐌</button>
+            <span id="ui-rate" class="text-white font-code text-xs font-bold w-10 text-center">x1.1</span>
+            <button class="acc-btn" onclick="changeSpeechRate(0.1)">🐇</button>
+        </div>
+    </div>
+
+    <script>
+        // --- LOGIQUE BARRE DE CONTRÔLE ---
+        let isDyslexia = false;
+        let baseFontSize = 16;
+        let isMuted = false;
+        let speechRate = 1.1; // Vitesse de démarrage demandée par Mathilde
+
+        function toggleDyslexia() {
+            isDyslexia = !isDyslexia;
+            document.body.classList.toggle('dyslexia-mode', isDyslexia);
+            const btn = document.getElementById('btn-dys');
+            btn.style.color = isDyslexia ? 'var(--cta-yellow)' : '';
+        }
+
+        function changeFontSize(direction) {
+            baseFontSize = Math.min(22, Math.max(14, baseFontSize + direction * 2));
+            document.documentElement.style.setProperty('--base-font-size', baseFontSize + 'px');
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            document.getElementById('btn-mute').innerHTML = isMuted ? '<i class="fas fa-volume-mute text-red-400"></i>' : '<i class="fas fa-volume-up"></i>';
+            if (isMuted) window.speechSynthesis.cancel();
+        }
+
+        function changeSpeechRate(amount) {
+            speechRate = Math.min(2.0, Math.max(0.5, speechRate + amount));
+            document.getElementById('ui-rate').innerText = "x" + speechRate.toFixed(1);
+        }
+
+        // Fonction Lecture à voix haute (Mot + Déf + Exemple)
+        window.lireTexte = function(term, def, example) {
+            if (isMuted) return;
+            window.speechSynthesis.cancel();
+            const fullText = `${term}. Définition : ${def}. Exemple : ${example}`;
+            const utterance = new SpeechSynthesisUtterance(fullText);
+            utterance.lang = 'fr-FR';
+            utterance.rate = speechRate;
+            window.speechSynthesis.speak(utterance);
+        };
+
+
+        // --- BASE DE DONNÉES : 105 MOTS FPA DU MODULE 004 ---
+        const glossaryData = [
+            // Catégorie B1 : Acteurs & Instances
+            { term: "PAC", emoji: "🏢", cat: "B1", catName: "Acteurs & Instances", def: "Prestataire d'Actions concourant au développement des Compétences. Statut juridique dès qu'on dispense de la FP.", example: "Un formateur indépendant ou une société de formation devient un PAC." },
+            { term: "DREETS", emoji: "🏛️", cat: "B1", catName: "Acteurs & Instances", def: "Directions Régionales de l'Économie, de l'Emploi, du Travail et des Solidarités. Organisme d'État qui contrôle les OF.", example: "C'est à la DREETS qu'on demande son Numéro de Déclaration d'Activité." },
+            { term: "France Compétences", emoji: "🇫🇷", cat: "B1", catName: "Acteurs & Instances", def: "Autorité nationale publique chargée de la régulation et du financement de la formation professionnelle et de l'apprentissage.", example: "C'est l'organisme qui valide l'enregistrement des certifications au RNCP." },
+            { term: "OPCO", emoji: "🏦", cat: "B1", catName: "Acteurs & Instances", def: "Opérateur de Compétences. Organisme agréé qui finance l'alternance et le plan de développement des compétences des entreprises.", example: "Faire une demande de prise en charge auprès de l'OPCO Atlas ou Akto." },
+            { term: "URSSAF", emoji: "🏛️", cat: "B1", catName: "Acteurs & Instances", def: "Organisme de recouvrement qui collecte les contributions à la formation professionnelle versées par les entreprises.", example: "L'employeur paie sa taxe d'apprentissage directement à l'URSSAF." },
+            { term: "Caisse des Dépôts (CDC)", emoji: "🏦", cat: "B1", catName: "Acteurs & Instances", def: "Institution publique qui gère financièrement le CPF et paie directement les organismes de formation.", example: "La CDC verse l'argent sur le compte de l'OF 30 jours après la réalisation de la formation CPF." },
+            { term: "Employeur", emoji: "🛡️", cat: "B1", catName: "Acteurs & Instances", def: "Personne morale ou physique ayant l'obligation légale d'assurer l'adaptation des salariés à leur poste et le maintien de leur employabilité.", example: "L'employeur doit proposer des formations régulières à ses équipes via son plan de développement." },
+            { term: "CSE", emoji: "👥", cat: "B1", catName: "Acteurs & Instances", def: "Comité Social et Économique. Instance de représentation du personnel dans l'entreprise, impliquée et consultée sur la FP.", example: "Le CSE donne son avis sur les orientations de la formation dans l'entreprise." },
+            { term: "Médiateur de la consommation", emoji: "⚖️", cat: "B1", catName: "Acteurs & Instances", def: "Tiers neutre dont les coordonnées doivent obligatoirement être fournies par l'OF aux clients particuliers pour résoudre les litiges à l'amiable.", example: "Inscrire les coordonnées du médiateur dans ses CGV." },
+            { term: "DPO", emoji: "🛡️", cat: "B1", catName: "Acteurs & Instances", def: "Délégué à la Protection des Données. Personne chargée de veiller au respect strict du RGPD au sein de l'organisme de formation.", example: "Le DPO s'assure que les évaluations des stagiaires ne sont pas diffusées publiquement." },
+            { term: "Certificateur", emoji: "🏆", cat: "B1", catName: "Acteurs & Instances", def: "Ministère, organisme ou branche professionnelle qui crée, possède et délivre une certification (Titre, Diplôme, CQP).", example: "Le Ministère du Travail est le certificateur du Titre FPA." },
+            { term: "Jury de certification", emoji: "👨‍⚖️", cat: "B1", catName: "Acteurs & Instances", def: "Groupe de professionnels habilités par le certificateur à évaluer les candidats pour la délivrance d'un titre RNCP.", example: "Le candidat passe son épreuve orale de formateur devant un jury de 2 professionnels." },
+            { term: "Référent handicap", emoji: "🦽", cat: "B1", catName: "Acteurs & Instances", def: "Personne ressource au sein de l'OF (obligatoire selon Qualiopi) chargée de faciliter l'accueil des personnes en situation de handicap.", example: "Nommer un référent handicap et diffuser ses coordonnées sur le site web." },
+            { term: "Maître d'apprentissage", emoji: "🛡️", cat: "B1", catName: "Acteurs & Instances", def: "Salarié de l'entreprise, qualifié, responsable de l'accompagnement et de la formation pratique de l'apprenti sur le terrain.", example: "L'artisan boulanger qui forme son jeune apprenti au quotidien." },
+            { term: "Tuteur", emoji: "🧭", cat: "B1", catName: "Acteurs & Instances", def: "Salarié chargé d'accompagner un alternant (en contrat pro) ou un stagiaire AFEST au sein de l'entreprise.", example: "Le technicien senior qui transmet ses gestes métiers au nouveau venu." },
+            { term: "CFA", emoji: "🏫", cat: "B1", catName: "Acteurs & Instances", def: "Centre de Formation d'Apprentis. Établissement dispensant des formations diplômantes en apprentissage (les OF peuvent obtenir ce statut).", example: "Le CFA de la chambre des métiers de l'artisanat." },
+            { term: "UFA", emoji: "🏫", cat: "B1", catName: "Acteurs & Instances", def: "Unité de Formation d'Apprentis. Section d'apprentissage intégrée au sein d'un établissement d'enseignement classique.", example: "Un lycée professionnel qui héberge une classe spécifique en apprentissage." },
+            { term: "Inspecteur DREETS", emoji: "🕵️", cat: "B1", catName: "Acteurs & Instances", def: "Agent de l'État chargé du contrôle administratif et financier des organismes de formation.", example: "Un inspecteur vérifie que l'OF a bien fait signer toutes les feuilles d'émargement." },
+            { term: "Portage salarial", emoji: "💼", cat: "B1", catName: "Acteurs & Instances", def: "Statut permettant à un formateur indépendant de facturer via une société tierce qui possède le NDA et lui verse un salaire.", example: "Un formateur qui passe par une société de portage certifiée Qualiopi pour exercer." },
+            { term: "Auditeur Qualiopi", emoji: "🔍", cat: "B1", catName: "Acteurs & Instances", def: "Expert indépendant mandaté par un organisme certificateur pour vérifier la conformité de l'OF au Référentiel National Qualité.", example: "L'auditeur qui passe une journée dans l'OF pour vérifier les 32 indicateurs." },
+
+            // Catégorie B2 : Dispositifs & Modalités
+            { term: "Formation Professionnelle Continue", emoji: "🔄", cat: "B2", catName: "Dispositifs & Modalités", def: "Ensemble des actions permettant le développement des compétences des travailleurs pour leur maintien ou retour à l'emploi.", example: "Former un salarié sur un nouveau logiciel pour maintenir son employabilité." },
+            { term: "FOAD", emoji: "💻", cat: "B2", catName: "Dispositifs & Modalités", def: "Formation Ouverte et À Distance. Modalité pédagogique reconnue légalement, réalisée en tout ou partie via des outils numériques.", example: "Un module e-learning suivi sur la plateforme Studi." },
+            { term: "AFEST", emoji: "🛠️", cat: "B2", catName: "Dispositifs & Modalités", def: "Action de Formation En Situation de Travail. Modalité légale d'apprentissage expérientiel réalisée directement sur le poste de travail.", example: "Apprendre à souder encadré par son chef d'atelier avec des phases réflexives obligatoires." },
+            { term: "Bilan de compétences", emoji: "🧭", cat: "B2", catName: "Dispositifs & Modalités", def: "Action relevant de la FP permettant d'analyser ses compétences et motivations pour définir un projet professionnel.", example: "Faire le point sur sa carrière avant de demander un financement pour une reconversion." },
+            { term: "VAE", emoji: "🏅", cat: "B2", catName: "Dispositifs & Modalités", def: "Validation des Acquis de l'Expérience. Action de la FP permettant d'obtenir une certification grâce à son expérience de terrain.", example: "Obtenir le Titre FPA après 3 ans d'expérience comme formateur interne." },
+            { term: "Apprentissage", emoji: "🎒", cat: "B2", catName: "Dispositifs & Modalités", def: "Action de formation en alternance (pour les jeunes de 16 à 29 ans) visant l'obtention d'une certification d'État.", example: "Préparer un BTS en alternance en entreprise." },
+            { term: "Action de formation", emoji: "📚", cat: "B2", catName: "Dispositifs & Modalités", def: "Parcours pédagogique permettant d'atteindre un objectif professionnel. C'est l'une des 4 actions officielles de la FP.", example: "Une formation qualifiante de 3 jours sur la gestion du temps." },
+            { term: "Positionnement pédagogique", emoji: "📍", cat: "B2", catName: "Dispositifs & Modalités", def: "Phase légale d'une action de formation permettant d'évaluer les acquis et prérequis de l'apprenant avant le début du parcours.", example: "Un test de niveau envoyé au stagiaire avant la signature de son inscription." },
+            { term: "Parcours pédagogique", emoji: "🛤️", cat: "B2", catName: "Dispositifs & Modalités", def: "Concept intégré par la loi de 2018, il englobe les phases de positionnement, de formation, d'évaluation et d'accompagnement.", example: "La formation n'est plus qu'un simple cours, mais un parcours complet avec un suivi." },
+            { term: "Accompagnement", emoji: "🤝", cat: "B2", catName: "Dispositifs & Modalités", def: "Action de soutien intégrée obligatoirement au parcours de formation pour aider l'apprenant à réussir et ne pas décrocher.", example: "Un tuteur désigné pour répondre aux questions du stagiaire en FOAD." },
+            { term: "Loisir (formation de)", emoji: "🎨", cat: "B2", catName: "Dispositifs & Modalités", def: "Action non reliée à une situation de travail. Elle est strictement exclue du champ légal de la formation professionnelle.", example: "Apprendre la poterie pour le plaisir le week-end (non finançable CPF)." },
+            { term: "Formation initiale", emoji: "🏫", cat: "B2", catName: "Dispositifs & Modalités", def: "Scolarité classique suivie sans interruption. Elle est exclue du champ de la formation professionnelle continue.", example: "Un étudiant de 19 ans en licence classique à l'université." },
+            { term: "CPF", emoji: "💳", cat: "B2", catName: "Dispositifs & Modalités", def: "Compte Personnel de Formation. Dispositif universel financé en euros, rattaché à l'individu et mobilisable à son initiative.", example: "Utiliser les euros de son CPF pour payer une formation certifiante en anglais." },
+            { term: "Plan de développement des compétences", emoji: "🗺️", cat: "B2", catName: "Dispositifs & Modalités", def: "Document (ex-plan de formation) regroupant les actions de formation choisies, imposées et financées par l'employeur.", example: "Le plan annuel voté par la direction pour former les commerciaux aux nouveaux produits." },
+            { term: "PTP (Transition Pro)", emoji: "🔄", cat: "B2", catName: "Dispositifs & Modalités", def: "Projet de Transition Professionnelle. Dispositif finançant une formation longue certifiante pour changer de métier (ex-CIF).", example: "Un congé financé d'un an pour qu'un caissier se reconvertisse en développeur web." },
+            { term: "CEP", emoji: "🧭", cat: "B2", catName: "Dispositifs & Modalités", def: "Conseil en Évolution Professionnelle. Accompagnement gratuit pour faire le point sur sa carrière et ses envies.", example: "Rencontrer un conseiller CEP pour l'aider à monter son dossier de financement PTP." },
+            { term: "PRO-A", emoji: "🚀", cat: "B2", catName: "Dispositifs & Modalités", def: "Dispositif de reconversion ou promotion par l'alternance pour les salariés en CDD/CDI dont la qualification est insuffisante.", example: "Un employé non diplômé devient technicien de maintenance via l'alternance PRO-A." },
+            { term: "POEC", emoji: "👥", cat: "B2", catName: "Dispositifs & Modalités", def: "Préparation Opérationnelle à l'Emploi Collective. Formation de groupe pour demandeurs d'emploi sur un métier en tension.", example: "Formation financée par l'OPCO et Pôle Emploi pour 15 futurs caristes." },
+            { term: "POEI", emoji: "👤", cat: "B2", catName: "Dispositifs & Modalités", def: "Préparation Opérationnelle à l'Emploi Individuelle. Formation préalable à une embauche (CDI ou CDD long) pour un candidat spécifique.", example: "Former un DE pendant 400h avant qu'il signe son CDI d'informaticien." },
+            { term: "AFPR", emoji: "🤝", cat: "B2", catName: "Dispositifs & Modalités", def: "Action de Formation Préalable au Recrutement. Formation pour un demandeur d'emploi avant une embauche en CDD court (6 à 12 mois).", example: "Formation d'adaptation de 2 mois financée par Pôle Emploi avant la prise de poste." },
+            { term: "Alternance", emoji: "🔄", cat: "B2", catName: "Dispositifs & Modalités", def: "Système associant apprentissage théorique en centre (CFA/OF) et pratique professionnelle en entreprise.", example: "Le contrat d'apprentissage ou le contrat de professionnalisation." },
+            { term: "Abondement CPF", emoji: "💸", cat: "B2", catName: "Dispositifs & Modalités", def: "Dotation financière supplémentaire (employeur, Pôle Emploi, Région) versée sur le CPF si le solde du salarié est insuffisant.", example: "L'employeur verse 500€ d'abondement pour que son employé puisse payer sa certification." },
+            { term: "Entretien professionnel", emoji: "🗣️", cat: "B2", catName: "Dispositifs & Modalités", def: "Rendez-vous obligatoire tous les 2 ans entre le salarié et l'employeur pour évoquer les perspectives d'évolution pro.", example: "Faire le point sur les besoins en formation du salarié lors de cet entretien spécifique (distinct de l'évaluation)." },
+            { term: "Bilan à 6 ans", emoji: "⏳", cat: "B2", catName: "Dispositifs & Modalités", def: "État des lieux récapitulatif du parcours professionnel du salarié dans l'entreprise, obligatoire légalement tous les 6 ans.", example: "Vérifier que le salarié a bien eu ses entretiens bisannuels et au moins une formation non obligatoire." },
+            { term: "Objectif professionnel", emoji: "🎯", cat: "B2", catName: "Dispositifs & Modalités", def: "Finalité concrète visée par l'action de formation (retour à l'emploi, maintien, évolution). Doit être défini contractuellement.", example: "Savoir utiliser les tableaux croisés dynamiques pour postuler comme assistant comptable." },
+
+            // Catégorie B3 : Règles, Documents & Obligations Administratives
+            { term: "Casier judiciaire n°3", emoji: "📜", cat: "B3", catName: "Obligations Administratives", def: "Document prouvant l'absence de condamnation pour manquement à la probité, exigé pour diriger un organisme de formation.", example: "Le joindre au dossier de déclaration d'activité (NDA)." },
+            { term: "Loi Avenir Professionnel", emoji: "⚖️", cat: "B3", catName: "Obligations Administratives", def: "Loi du 5 septembre 2018 ayant réformé la FP (création de France Compétences, CPF en euros, obligation Qualiopi).", example: "C'est cette loi qui a rendu la certification Qualiopi obligatoire au 1er janvier 2022." },
+            { term: "Convention de formation", emoji: "✍️", cat: "B3", catName: "Obligations Administratives", def: "Document juridique obligatoire liant l'organisme de formation (PAC) et l'entreprise cliente (employeur) ou le financeur.", example: "La convention signée par le DRH pour acter la formation de ses équipes." },
+            { term: "Contrat de formation", emoji: "📄", cat: "B3", catName: "Obligations Administratives", def: "Document juridique obligatoire conclu entre l'organisme de formation et un apprenant particulier qui finance lui-même sa formation.", example: "Le contrat signé par un auto-entrepreneur qui paie la formation sur ses fonds propres." },
+            { term: "Facture", emoji: "💶", cat: "B3", catName: "Obligations Administratives", def: "Document comptable obligatoire émis par l'OF, dont le montant doit correspondre au temps réalisé ou à l'objectif atteint.", example: "La facture émise à l'OPCO après la réalisation complète du parcours de formation." },
+            { term: "Logique de forfait", emoji: "🎯", cat: "B3", catName: "Obligations Administratives", def: "Facturation basée sur l'atteinte d'un objectif ou d'un livrable, indépendamment du temps réellement passé par l'apprenant.", example: "Facturer 1000€ pour l'obtention d'une certification, que l'élève y passe 10h ou 20h en ligne." },
+            { term: "Obligations juridiques", emoji: "⚖️", cat: "B3", catName: "Obligations Administratives", def: "Ensemble des règles strictes du Code du travail qui s'imposent à tout prestataire de formation professionnelle.", example: "L'obligation de rédiger et de remettre un règlement intérieur applicable aux stagiaires." },
+            { term: "Obligations administratives", emoji: "📁", cat: "B3", catName: "Obligations Administratives", def: "Démarches obligatoires pour exister en tant qu'OF et prouver son activité aux contrôleurs de l'État.", example: "Obtenir son NDA et réaliser son Bilan Pédagogique et Financier (BPF) chaque année." },
+            { term: "Obligations comptables", emoji: "📊", cat: "B3", catName: "Obligations Administratives", def: "Règles imposant à l'OF de tracer précisément les produits et charges liés uniquement à son activité de formation.", example: "Avoir un plan comptable séparé si on fait de la formation ET du conseil (qui n'est pas de la FP)." },
+            { term: "NDA", emoji: "🔢", cat: "B3", catName: "Obligations Administratives", def: "Numéro de Déclaration d'Activité. Attribué par le préfet (via la DREETS), il est l'autorisation légale pour faire de la formation pro.", example: "Le numéro '11 75 12345 75' qui doit figurer sur toutes les conventions et factures de l'OF." },
+            { term: "BPF", emoji: "📈", cat: "B3", catName: "Obligations Administratives", def: "Bilan Pédagogique et Financier. Déclaration annuelle obligatoire traçant l'activité (CA, nombre de stagiaires) de l'OF.", example: "Remplir son BPF sur la plateforme Mon Activité Formation avant le 30 avril de chaque année." },
+            { term: "Code du travail", emoji: "⚖️", cat: "B3", catName: "Obligations Administratives", def: "Recueil de lois qui fixe le cadre légal strict de l'activité de formation en France (principalement la 6e partie, Livre VI).", example: "Consulter l'article L6313-1 pour connaître la liste exacte des actions de FP." },
+            { term: "Règlement intérieur OF", emoji: "⚖️", cat: "B3", catName: "Obligations Administratives", def: "Document juridique obligatoire fixant les règles de santé, de sécurité et de discipline applicables aux stagiaires.", example: "Faire signer le règlement intérieur au début du parcours de formation." },
+            { term: "Programme de formation", emoji: "📄", cat: "B3", catName: "Obligations Administratives", def: "Document pré-contractuel détaillant les objectifs, prérequis, durée, modalités et contenu précis de la formation.", example: "Le programme détaillé doit être obligatoirement annexé à la convention de formation." },
+            { term: "Attestation de fin de formation", emoji: "📜", cat: "B3", catName: "Obligations Administratives", def: "Document obligatoire remis au stagiaire prouvant qu'il a suivi l'action et mentionnant les compétences acquises.", example: "Le document remis le dernier jour, mentionnant les résultats de l'évaluation finale." },
+            { term: "Certificat de réalisation", emoji: "✅", cat: "B3", catName: "Obligations Administratives", def: "Document officiel et normé exigé par les OPCO et la CDC pour prouver l'assiduité du stagiaire et déclencher le paiement.", example: "Signer le certificat de réalisation à l'issue de la période de FOAD." },
+            { term: "Feuille d'émargement", emoji: "✍️", cat: "B3", catName: "Obligations Administratives", def: "Document juridique de preuve, signé par demi-journée par le stagiaire et le formateur pour attester de la présence physique.", example: "Faire signer la feuille papier ou électronique à 9h00 puis à 14h00." },
+            { term: "Assiduité", emoji: "⏳", cat: "B3", catName: "Obligations Administratives", def: "Obligation légale du stagiaire d'être présent ou connecté. L'OF a la charge de prouver cette assiduité aux financeurs.", example: "En FOAD, l'assiduité se prouve par les logs de connexion et les temps passés sur le LMS." },
+            { term: "Abandon de formation", emoji: "🚪", cat: "B3", catName: "Obligations Administratives", def: "Arrêt de la formation par le stagiaire avant la fin prévue. Entraîne des conséquences financières et un signalement obligatoire.", example: "Signaler l'abandon à l'OPCO pour stopper la facturation au prorata des heures réalisées." },
+            { term: "Force majeure", emoji: "⛈️", cat: "B3", catName: "Obligations Administratives", def: "Événement imprévisible, extérieur et irrésistible excusant l'absence du stagiaire (permettant d'éviter les pénalités financières).", example: "Une hospitalisation d'urgence justifiant l'interruption immédiate de la formation." },
+            { term: "Délai de rétractation", emoji: "⏱️", def: "Droit légal de 14 jours accordé au particulier (financement propre) pour annuler son inscription sans aucun frais.", example: "L'apprenant annule son inscription 5 jours après avoir signé le contrat de formation.", cat: "B3", catName: "Obligations Administratives" },
+            { term: "Litige", emoji: "⚔️", cat: "B3", catName: "Obligations Administratives", def: "Désaccord d'ordre juridique ou financier entre l'organisme de formation et le client (ou le stagiaire).", example: "Un client refuse de payer la facture car il juge que les objectifs de la formation ne sont pas atteints." },
+            { term: "CGV", emoji: "📜", cat: "B3", catName: "Obligations Administratives", def: "Conditions Générales de Vente. Document juridique encadrant les règles commerciales de l'OF (annulations, paiements).", example: "Les CGV précisent que toute annulation à moins de 7 jours est facturée à 50%." },
+            { term: "Consultation du CSE", emoji: "🗣️", cat: "B3", catName: "Obligations Administratives", def: "Obligation légale pour l'employeur (si +50 salariés) de recueillir l'avis des représentants du personnel sur le plan de formation.", example: "La réunion de décembre pour voter et valider le plan de développement des compétences." },
+            { term: "Taxe d'apprentissage", emoji: "💰", cat: "B3", catName: "Obligations Administratives", def: "Impôt obligatoire dû par les entreprises pour financer les dépenses liées à l'apprentissage et à l'enseignement technologique.", example: "La taxe est versée par l'employeur en fonction du montant de sa masse salariale." },
+            { term: "CFP", emoji: "💶", cat: "B3", catName: "Obligations Administratives", def: "Contribution à la Formation Professionnelle. Taxe obligatoire de tous les employeurs collectée par l'URSSAF.", example: "C'est cette contribution nationale qui alimente les fonds de France Compétences et des OPCO." },
+            { term: "Sanctions pénales", emoji: "⚖️", cat: "B3", catName: "Obligations Administratives", def: "Risques encourus par l'OF en cas d'infraction au Code du travail (amendes, interdiction d'exercer, peines d'emprisonnement).", example: "Une lourde amende pour avoir exercé une activité de formation sans numéro de déclaration." },
+            { term: "Contrôle DREETS", emoji: "🕵️", cat: "B3", catName: "Obligations Administratives", def: "Inspection administrative et financière de l'organisme de formation par l'État pour vérifier la stricte légalité de ses actes.", example: "Un contrôleur vérifie que l'OF a bien conservé les preuves d'évaluation de tous ses stagiaires." },
+            { term: "Frais pédagogiques", emoji: "💶", cat: "B3", catName: "Obligations Administratives", def: "Coût direct de l'enseignement facturé par l'OF (salaire du formateur, ingénierie, supports). Souvent pris en charge par les OPCO.", example: "La facture pédagogique de 1000€ pour les 3 jours de cours." },
+            { term: "Frais annexes", emoji: "🍔", cat: "B3", catName: "Obligations Administratives", def: "Coûts induits par la formation (repas, hébergement, transport). Pris en charge par les financeurs selon des barèmes très stricts.", example: "Le remboursement de la nuit d'hôtel du stagiaire par son OPCO dans la limite de 80€." },
+            { term: "Rémunération du stagiaire", emoji: "💶", cat: "B3", catName: "Obligations Administratives", def: "Indemnité versée à l'apprenant durant sa formation (maintien du salaire par l'employeur ou aide de Pôle Emploi/Région).", example: "Le salarié en formation sur son temps de travail continue de percevoir 100% de son salaire habituel." },
+            { term: "BPI", emoji: "📈", cat: "B3", catName: "Obligations Administratives", def: "Bilan Pédagogique et Financier. Autre acronyme souvent utilisé pour le BPF. Document comptable et statistique annuel.", example: "Obligation légale de le transmettre à la DREETS avant fin avril." },
+
+            // Catégorie B4 : Qualité, Conformité & Certifications
+            { term: "Qualiopi", emoji: "🏅", cat: "B4", catName: "Qualité & Certifications", def: "Marque de certification qualité de l'État, obligatoire pour que les formations soient finançables par des fonds publics ou mutualisés.", example: "Passer l'audit Qualiopi pour que les futurs clients puissent utiliser leur compte CPF." },
+            { term: "RNQ", emoji: "📋", cat: "B4", catName: "Qualité & Certifications", def: "Référentiel National Qualité. Document officiel de l'État regroupant les 7 critères et 32 indicateurs de la certification Qualiopi.", example: "Lire le RNQ pour préparer en détail son audit documentaire." },
+            { term: "Datadock", emoji: "🗑️", cat: "B4", catName: "Qualité & Certifications", def: "Ancien système déclaratif de référencement qualité des OF, rendu totalement obsolète et remplacé par Qualiopi en 2022.", example: "Avant il suffisait d'être datadocké en ligne, aujourd'hui il faut un véritable audit sur site." },
+            { term: "Audit initial", emoji: "🔍", cat: "B4", catName: "Qualité & Certifications", def: "Première évaluation officielle par un organisme certificateur pour vérifier la conformité de l'OF aux exigences du RNQ (Qualiopi).", example: "L'audit d'une journée complète qui permet d'obtenir le précieux certificat Qualiopi." },
+            { term: "Audit de surveillance", emoji: "👀", cat: "B4", catName: "Qualité & Certifications", def: "Audit Qualiopi réalisé environ 18 mois après l'audit initial pour vérifier que la démarche qualité est bien maintenue dans le temps.", example: "L'auditeur revient vérifier que les indicateurs sont toujours respectés sur les nouvelles sessions." },
+            { term: "Audit de renouvellement", emoji: "🔄", cat: "B4", catName: "Qualité & Certifications", def: "Audit complet réalisé tous les 3 ans pour conserver sa certification Qualiopi et son droit d'accès aux fonds publics.", example: "Renouveler son certificat pour continuer à recevoir des financements CPF et OPCO." },
+            { term: "Non-conformité mineure", emoji: "⚠️", cat: "B4", catName: "Qualité & Certifications", def: "Écart léger par rapport à un indicateur Qualiopi n'empêchant pas la délivrance de la certification (nécessite un plan d'action).", example: "Une information incomplète sur le site web de l'OF concernant les délais d'accès." },
+            { term: "Non-conformité majeure", emoji: "❌", cat: "B4", catName: "Qualité & Certifications", def: "Écart grave par rapport à un indicateur Qualiopi qui bloque ou suspend immédiatement la délivrance de la certification.", example: "L'absence totale d'évaluation des acquis des stagiaires en fin de formation." },
+            { term: "Indicateurs Qualiopi", emoji: "📏", cat: "B4", catName: "Qualité & Certifications", def: "Les 32 points de contrôle précis exigés par le Référentiel National Qualité pour prouver la qualité des processus de l'OF.", example: "L'indicateur 1 exige de diffuser publiquement les prérequis, objectifs et tarifs au public." },
+            { term: "CQP", emoji: "📜", cat: "B4", catName: "Qualité & Certifications", def: "Certificat de Qualification Professionnelle. Certification reconnue, créée spécifiquement par une branche métier pour ses besoins.", example: "Le CQP de serveur en restauration ou d'agent de sécurité." },
+            { term: "RNCP", emoji: "🏆", cat: "B4", catName: "Qualité & Certifications", def: "Répertoire National des Certifications Professionnelles. Registre de l'État listant les titres et diplômes reconnus sur le marché du travail.", example: "Le Titre FPA est enregistré au RNCP au niveau 5 (Bac+2)." },
+            { term: "RS", emoji: "📑", cat: "B4", catName: "Qualité & Certifications", def: "Répertoire Spécifique. Registre listant les habilitations ou compétences complémentaires transversales (ex: langues, informatique, sécurité).", example: "La certification Excel TOSA ou le TOEIC sont inscrits au Répertoire Spécifique." },
+            { term: "Accessibilité", emoji: "♿", cat: "B4", catName: "Qualité & Certifications", def: "Obligation légale pour l'OF (renforcée par Qualiopi) d'adapter ses locaux (PMR) et ses méthodes pédagogiques aux PSH.", example: "Proposer un tiers-temps ou des supports en gros caractères à un apprenant dyslexique." },
+            { term: "Avantage fiscal", emoji: "💰", cat: "B4", catName: "Qualité & Certifications", def: "Bénéfice accordé aux entreprises ou dirigeants (ex: crédit d'impôt) lorsqu'ils investissent dans la formation pro de leurs équipes.", example: "Le crédit d'impôt formation pour le chef d'entreprise qui se forme lui-même." },
+            { term: "Exonération de TVA", emoji: "💶", cat: "B4", catName: "Qualité & Certifications", def: "Possibilité légale pour un OF disposant d'un NDA de ne pas facturer la TVA sur ses prestations strictes de formation pro.", example: "Faire la demande du formulaire CERFA auprès des impôts pour être exonéré de TVA (TTC = HT)." },
+            { term: "RGPD", emoji: "🔒", cat: "B4", catName: "Qualité & Certifications", def: "Règlement Général sur la Protection des Données. Loi européenne protégeant les données personnelles collectées sur les stagiaires.", example: "Demander le consentement explicite pour conserver le CV ou les coordonnées d'un stagiaire." },
+            { term: "Propriété intellectuelle", emoji: "©️", cat: "B4", catName: "Qualité & Certifications", def: "Protection juridique des créations (supports de cours, méthodes, vidéos) appartenant à l'OF ou au formateur créateur.", example: "Le client ne peut pas revendre ou distribuer librement le diaporama créé par le formateur." },
+            { term: "Droits d'auteur", emoji: "✍️", cat: "B4", catName: "Qualité & Certifications", def: "Droit exclusif et moral du créateur sur son œuvre pédagogique. Indispensable à mentionner sur tous les supports remis.", example: "Ajouter la mention 'Tous droits réservés - Reproduction interdite' sur les livrets d'apprentissage." },
+            { term: "Plagiat", emoji: "🚫", cat: "B4", catName: "Qualité & Certifications", def: "Fait de copier-coller les ressources, textes ou concepts d'un autre formateur sans son accord explicite (acte illégal).", example: "Un OF lourdement sanctionné pour avoir volé le cours e-learning d'un concurrent." },
+            { term: "Veille légale", emoji: "⚖️", cat: "B4", catName: "Qualité & Certifications", def: "Obligation (Indicateur Qualiopi) de se tenir informé en continu des évolutions de la loi sur la formation professionnelle.", example: "S'abonner à la newsletter juridique de Centre Inffo pour suivre les décrets." },
+            { term: "Veille pédagogique", emoji: "🧠", cat: "B4", catName: "Qualité & Certifications", def: "Obligation Qualiopi de s'informer sur les nouvelles méthodes d'enseignement et d'innovation (neurosciences, IA, ludopédagogie).", example: "Participer à un salon professionnel sur les innovations en Digital Learning." },
+            { term: "Veille technologique", emoji: "💻", cat: "B4", catName: "Qualité & Certifications", def: "Obligation Qualiopi de surveiller l'évolution des outils, logiciels et machines spécifiques au secteur métier enseigné.", example: "Un formateur en informatique qui se forme en continu aux nouveaux langages de code." },
+            { term: "Sécurité", emoji: "🚒", cat: "B4", catName: "Qualité & Certifications", def: "Obligation stricte de l'OF de garantir l'intégrité physique et mentale des stagiaires durant tout le temps de la formation.", example: "Vérifier les consignes d'évacuation incendie de la salle avant de démarrer le cours." },
+            { term: "ERP", emoji: "🏢", cat: "B4", catName: "Qualité & Certifications", def: "Établissement Recevant du Public. Locaux de formation soumis à des normes très strictes de sécurité incendie et d'accessibilité PMR.", example: "L'organisme de formation doit obligatoirement être situé dans des locaux classés ERP (catégorie 5 minimum)." },
+            { term: "Hygiène et sécurité", emoji: "🧼", cat: "B4", catName: "Qualité & Certifications", def: "Règles (souvent issues du Code du Travail) applicables aux stagiaires, obligatoirement mentionnées dans le règlement intérieur de l'OF.", example: "Le port des EPI (Équipements de Protection Individuelle) est obligatoire en atelier pratique." },
+            { term: "FNE-Formation", emoji: "💶", cat: "B4", catName: "Qualité & Certifications", def: "Fonds National de l'Emploi. Aide financière exceptionnelle de l'État pour former les salariés d'entreprises en mutation ou en difficulté.", example: "Une subvention d'État pour aider une entreprise à former ses équipes aux enjeux de la transition écologique." }
+        ];
+
+        // Construction du conteneur HTML
+        const container = document.getElementById('glossaryContainer');
+        const alphabetBox = document.getElementById('alphabetContainer');
+        const searchInput = document.getElementById('searchInput');
+        const countDisplay = document.getElementById('resultCount');
+        const emptyState = document.getElementById('emptyState');
+
+        // Génération de l'alphabet
+        function renderAlphabet() {
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+            alphabetBox.innerHTML = `<button class="alpha-btn active" onclick="filterByLetter(null, this)">ALL</button>`;
+            letters.forEach(l => {
+                alphabetBox.innerHTML += `<button class="alpha-btn" onclick="filterByLetter('${l}', this)">${l}</button>`;
+            });
+        }
+
+        let currentLetter = null;
+        function filterByLetter(l, btn) {
+            document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentLetter = l;
+            renderCards();
+        }
+
+        // Rendu des Cartes avec Style Validé "000/001"
+        function renderCards() {
+            const term = searchInput.value.toLowerCase();
+            container.innerHTML = '';
+
+            const filtered = glossaryData.filter(i => {
+                const matchSearch = i.term.toLowerCase().includes(term) || i.def.toLowerCase().includes(term);
+                const matchLetter = currentLetter ? i.term.toUpperCase().startsWith(currentLetter) : true;
+                return matchSearch && matchLetter;
+            });
+
+            countDisplay.innerText = `${filtered.length} MOTS DÉTECTÉS`;
+
+            if(filtered.length === 0) {
+                emptyState.classList.replace('hidden', 'flex');
+            } else {
+                emptyState.classList.replace('flex', 'hidden');
+
+                filtered.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    // Style strict du document 000 : glass-panel, border-t-2 theme-XX
+                    card.className = `glossary-card glass-panel rounded-2xl p-6 flex flex-col relative overflow-hidden border-t-2 theme-${item.cat}`;
+                    card.style.animationDelay = `${(index % 10) * 0.05}s`;
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4 relative z-10">
+                            <div class="flex items-center gap-4">
+                                <span class="text-3xl bg-[rgba(217,165,38,0.1)] w-12 h-12 flex items-center justify-center rounded-xl border border-[rgba(217,165,38,0.2)] shadow-inner text-[#D9A526]">${item.emoji}</span>
+                                <div>
+                                    <h3 class="font-black text-xl text-white tracking-wide">${item.term}</h3>
+                                    <span class="inline-block mt-1 text-[11px] font-bold px-2 py-0.5 rounded uppercase tracking-widest font-code text-[#B4792A] bg-[rgba(180,121,42,0.1)] border border-[rgba(180,121,42,0.2)]">${item.catName}</span>
+                                </div>
+                            </div>
+                            <button onclick="lireTexte(\`${item.term.replace(/'/g, "\\'")}\`, \`${item.def.replace(/'/g, "\\'")}\`, \`${item.example.replace(/'/g, "\\'")}\`)" class="speaker-card-btn p-2 rounded-full border border-transparent" title="Écouter le mot, la définition et l'exemple">
+                                <i class="fas fa-volume-up text-xl"></i>
+                            </button>
+                        </div>
+
+                        <p class="text-[#F6F2E8] opacity-90 text-[15px] leading-relaxed mb-5 flex-grow relative z-10 font-medium">
+                            ${item.def}
+                        </p>
+
+                        <div class="mt-auto bg-[#0F2C48] border-l-2 border-[#D9A526] p-3 rounded-r-lg relative z-10 shadow-inner">
+                            <p class="text-[11px] text-[#D9A526] font-bold uppercase mb-1 tracking-widest"><i class="fas fa-lightbulb mr-1.5 opacity-80"></i>Exemple / Contexte</p>
+                            <p class="text-[#F6F2E8] text-sm italic opacity-90">${item.example}</p>
+                        </div>
+
+                        <!-- Filigrane Emojis géant -->
+                        <div class="absolute -bottom-8 -right-8 text-9xl opacity-5 rotate-12 pointer-events-none z-0">
+                            ${item.emoji}
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        window.resetFilters = () => {
+            searchInput.value = '';
+            filterByLetter(null, document.querySelector('.alpha-btn'));
+        };
+
+        searchInput.addEventListener('input', renderCards);
+
+        // Init
+        renderAlphabet();
+        renderCards();
+    </script>
+</body>
+</html>

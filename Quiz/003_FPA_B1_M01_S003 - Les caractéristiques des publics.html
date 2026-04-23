@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>003_FPA_B1_M01_S003 - Caractéristiques des publics | PAIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette exacte PAIA */
+            --surface-ivory: #F6F2E8;
+            --title-blue: #0F2C48;
+            --cta-yellow: #D9A526;
+            --alert-bronze: #B4792A;
+            --blanc: #ffffff;
+            --rouge-vies: #e74c3c;
+            --shadow-subtle: 0 4px 20px rgba(15, 44, 72, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+        html { font-size: 16px; transition: font-size 0.2s; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--surface-ivory);
+            color: var(--title-blue);
+            margin: 0; padding: 10px;
+            display: flex; justify-content: center; align-items: flex-start;
+            min-height: 100vh; overflow-x: hidden;
+            transition: all 0.5s ease;
+            padding-bottom: 80px; /* Espace pour la barre de contrôle */
+        }
+
+        /* --- BARRE GLOBALE PAIA (ACCESSIBILITÉ COMPLÈTE) --- */
+        #global-controls-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+            display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap;
+            background: var(--surface-ivory);
+            padding: 10px 15px; box-shadow: 0 -5px 25px rgba(15, 44, 72, 0.1);
+            border-top: 3px solid var(--title-blue);
+        }
+
+        /* --- DARK MODE --- */
+        body.dark-mode {
+            --surface-ivory: #0a1c2e;
+            --blanc: #0F2C48;
+            --title-blue: #F6F2E8;
+            --cta-yellow: #D9A526;
+        }
+        body.dark-mode #global-controls-bar { background: var(--surface-ivory); border-top-color: var(--cta-yellow); }
+        body.dark-mode .config-block, body.dark-mode .glossary-box, body.dark-mode .anecdote-box {
+            background: var(--blanc) !important; border: 1px solid rgba(217, 165, 38, 0.2) !important;
+        }
+        body.dark-mode .opt-btn { background: #153a5e; color: #F6F2E8; border-color: #1a4a7a; }
+        body.dark-mode .diploma { background: var(--blanc); border: 3px solid var(--cta-yellow); color: var(--title-blue); }
+        body.dark-mode .footer-paia { border-top-color: rgba(246, 242, 232, 0.1); }
+
+        /* --- CONTENEUR --- */
+        #quiz-container {
+            background: var(--blanc); max-width: 800px; width: 100%;
+            border-radius: 12px; box-shadow: var(--shadow-subtle);
+            padding: 30px; position: relative; z-index: 10; margin-top: 10px;
+            border: 1px solid rgba(15, 44, 72, 0.1);
+        }
+
+        /* --- HEADER & BRANDING --- */
+        .header-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; }
+        .header-brand { display: flex; align-items: center; gap: 15px; }
+        .header-logo { width: 65px; height: 65px; border-radius: 12px; border: 2px solid var(--title-blue); object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header-titles { text-align: left; }
+        .platform-name { font-family: 'Roboto', sans-serif; font-size: 2rem; font-weight: 900; color: var(--title-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0; line-height: 1; }
+        .platform-sub { color: var(--alert-bronze); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; margin-top: 6px; }
+
+        /* Bouton Teams */
+        .btn-teams {
+            background: linear-gradient(135deg, #464EB8 0%, #E81123 50%, #FFB900 100%);
+            color: #ffffff; padding: 10px 22px; border-radius: 50px; text-decoration: none;
+            font-weight: 700; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s ease, box-shadow 0.2s ease;
+            white-space: nowrap; font-size: 0.95rem;
+        }
+        .btn-teams:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 15px rgba(0,0,0,0.25); color: #ffffff; }
+
+        .module-banner {
+            background: var(--title-blue); color: var(--cta-yellow);
+            padding: 10px 25px; border-radius: 8px; font-weight: 700; margin-bottom: 20px; display: inline-block;
+            border: 1px solid var(--cta-yellow); text-align: center; width: 100%;
+        }
+
+        /* --- ECRANS --- */
+        .screen { display: none; }
+        .active-screen { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .config-block { background: var(--surface-ivory); padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px solid rgba(15, 44, 72, 0.05); }
+        .config-block label { display: block; font-weight: 700; color: var(--title-blue); margin-bottom: 10px; }
+
+        .opt-btn {
+            background: var(--blanc); border: 2px solid rgba(15, 44, 72, 0.2); color: var(--title-blue);
+            padding: 14px 20px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: 500;
+            transition: all 0.2s ease; text-align: left;
+        }
+        .opt-btn:hover:not(:disabled) { border-color: var(--cta-yellow); background-color: rgba(217, 165, 38, 0.05); }
+        .opt-btn.selected-config { background: var(--title-blue); color: var(--cta-yellow); border-color: var(--title-blue); }
+        .compact-btn { padding: 10px 18px; border-radius: 8px; text-align: center; width: auto; flex-grow: 0; font-weight: 700;}
+
+        .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 700;}
+        .timer-box { font-weight: 900; color: var(--alert-bronze); font-size: 1.2rem; }
+
+        .progress-bar { width: 100%; height: 8px; background: rgba(15, 44, 72, 0.1); border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--cta-yellow); width: 0%; transition: width 1s linear; }
+
+        .q-text { font-size: 1.3rem; font-weight: 700; color: var(--title-blue); margin-bottom: 25px; line-height: 1.4; }
+        .options-grid { display: grid; gap: 12px; }
+
+        .feedback { margin-top: 20px; padding: 20px; border-radius: 8px; display: none; font-weight: 500; animation: fadeIn 0.3s; }
+        .success { background: rgba(217, 165, 38, 0.1); color: var(--title-blue); border: 2px solid var(--cta-yellow); }
+        .error { background: #fef2f2; color: #991b1b; border: 2px solid #f87171; }
+
+        .btn-action {
+            background: var(--title-blue); color: var(--surface-ivory); border: 2px solid var(--title-blue); padding: 16px 30px;
+            border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%; margin-top: 20px;
+            transition: all 0.3s ease; text-transform: uppercase;
+        }
+        .btn-action:hover { background: var(--cta-yellow); color: var(--title-blue); border-color: var(--cta-yellow); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(217, 165, 38, 0.3); }
+
+        .glossary-box { margin-top: 25px; padding: 20px; background: var(--surface-ivory); border-radius: 8px; border: 1px dashed var(--cta-yellow); text-align: left; }
+        .glossary-box h3 { color: var(--title-blue); display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; font-weight: 700; margin-top:0;}
+        .glossary-list li { margin-bottom: 12px; padding: 10px; background: var(--blanc); border-radius: 6px; list-style: none; border: 1px solid rgba(15, 44, 72, 0.1); }
+        .glossary-list strong { color: var(--alert-bronze); font-weight: 700; }
+
+        .vocab-diploma { display: none; padding: 25px; background: rgba(217, 165, 38, 0.15); border: 2px solid var(--cta-yellow); border-radius: 8px; text-align: center; margin-top: 20px; font-weight: 700; color: var(--title-blue); }
+        .motivation-banner { margin-top: 20px; padding: 15px; background: rgba(15, 44, 72, 0.05); border-radius: 8px; text-align: center; font-style: italic; font-weight: 500; color: var(--title-blue); border-left: 4px solid var(--alert-bronze); }
+
+        .diploma { text-align: center; }
+
+        /* --- FOOTER PAIA --- */
+        .footer-paia { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(15, 44, 72, 0.1); }
+        .footer-logo { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--cta-yellow); object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .signature { font-size: 11px; color: var(--title-blue); text-align: center; font-weight: 500; line-height: 1.6; opacity: 0.85; }
+
+        .acc-btn { padding: 8px 12px; font-size: 1.1rem; border-radius: 8px; color: var(--title-blue); font-weight: 700; background: transparent; border: none; cursor: pointer; }
+        .control-group-horiz { display: flex; gap: 5px; align-items: center; background: rgba(15, 44, 72, 0.05); padding: 5px 10px; border-radius: 8px; }
+        .divider-vert { width: 1px; height: 25px; background: rgba(15, 44, 72, 0.2); margin: 0 8px; }
+        .hidden-group { display: none !important; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div id="global-controls-bar">
+    <button class="acc-btn" onclick="toggleDarkMode()" id="btn-dark-mode">🌙</button>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="changeFontSize(-1)">A-</button>
+        <button class="acc-btn" onclick="changeFontSize(1)">A+</button>
+    </div>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="toggleMute()" id="btn-mute">🔊</button>
+        <button class="acc-btn" onclick="changeVolume(-0.1)">🔉</button>
+        <button class="acc-btn" onclick="changeVolume(0.1)">🔊</button>
+    </div>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="changeSpeechRate(-0.1)">🗣️-</button>
+        <span id="ui-rate" style="font-weight:700; font-size:0.85rem; min-width:35px; text-align:center;">x1.2</span>
+        <button class="acc-btn" onclick="changeSpeechRate(0.1)">🗣️+</button>
+    </div>
+</div>
+
+<div id="quiz-container">
+    <div class="header">
+        <div class="header-top">
+            <div class="header-brand">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="PAIA Logo" class="header-logo">
+                <div class="header-titles">
+                    <div class="platform-name">Paia</div>
+                    <div class="platform-sub">Adult Learning Hub</div>
+                </div>
+            </div>
+            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgI" target="_blank" class="btn-teams">
+                <span style="font-size:1.2rem;">💬</span> Communauté Teams
+            </a>
+        </div>
+        <div class="module-banner">📌 003_FPA_B1_M01_S003 - Les caractéristiques des publics</div>
+    </div>
+
+    <div id="screen-setup" class="screen active-screen">
+        <div class="config-block">
+            <label>🛠️ Options Accessibilité</label>
+            <div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleDys(this)">🔤 Dys</button>
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleContrast(this)">🌓 Contraste</button>
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleAnimations(this)">🛑 Calme</button>
+            </div>
+        </div>
+
+        <div class="config-block" style="background: var(--blanc);">
+            <div class="config-grid" style="display:grid; gap:15px;">
+                <div class="config-block"><label>📌 Volume de Questions (Aléatoire)</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setQ(10, this)" class="opt-btn compact-btn selected-config">10</button>
+                    <button onclick="setQ(20, this)" class="opt-btn compact-btn">20</button>
+                    <button onclick="setQ(30, this)" class="opt-btn compact-btn">30</button>
+                </div></div>
+                <div class="config-block"><label>🎮 Style de Jeu</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setMode('chrono', this)" class="opt-btn compact-btn selected-config">⏱️ Chrono</button>
+                    <button onclick="setMode('vies', this)" class="opt-btn compact-btn">❤️ Survie</button>
+                </div></div>
+                <div class="config-block" id="chrono-settings"><label>⏳ Temps / Question</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setT(20, this)" class="opt-btn compact-btn">20s</button>
+                    <button onclick="setT(40, this)" class="opt-btn compact-btn selected-config">40s</button>
+                    <button onclick="setT(0, this)" class="opt-btn compact-btn">∞</button>
+                </div></div>
+            </div>
+            <div id="vies-settings" class="hidden-group" style="padding:10px; border-radius:8px; background:rgba(180, 121, 42, 0.1);">
+                <p style="color:var(--alert-bronze); font-size:0.9rem; margin:0;"><b>Mode Survie :</b> 1 vie / 10 Q. Soyez précis, l'erreur est fatale !</p>
+            </div>
+        </div>
+        <div id="ui-motivation-start" class="motivation-banner">
+            Salariés, demandeurs d'emploi, publics spécifiques... Maîtrisez-vous les acteurs de la formation ?
+        </div>
+        <button class="btn-action" onclick="startGame()">DÉMARRER LA SESSION 🚀</button>
+    </div>
+
+    <div id="screen-game" class="screen">
+        <div class="hud">
+            <div id="ui-timer" class="timer-box" style="display:none;">⏱️ --s</div>
+            <div id="ui-hearts" style="display:none; color:var(--rouge-vies); font-size:1.3rem;">❤️❤️❤️</div>
+            <div id="ui-progress" class="vies">📝 Question 1 / --</div>
+            <button class="acc-btn" style="border:1px solid var(--title-blue);" onclick="speakCurrent()">🎤</button>
+        </div>
+        <div class="progress-bar"><div id="ui-bar" class="progress-fill"></div></div>
+        <div id="ui-q-text" class="q-text" tabindex="0">Chargement...</div>
+        <div id="ui-options" class="options-grid"></div>
+        <div id="ui-feedback" class="feedback" tabindex="-1"></div>
+        <button id="btn-next" class="btn-action" style="display:none;" onclick="handleNext()">CONTINUER ➡️</button>
+    </div>
+
+    <div id="screen-result" class="screen diploma">
+        <div class="diploma-content">
+            <span style="font-size: 3.5rem; display:block; margin-bottom:10px;" id="ui-diploma-icon">🎓</span>
+            <h2 id="final-title" style="font-weight:900; text-transform:uppercase;">BILAN DE COMPÉTENCES</h2>
+            <div id="ui-final-score" style="font-size:4rem; font-weight:900; margin:10px 0; color:var(--cta-yellow);">0/0</div>
+            <p id="ui-humor" style="font-weight:500; padding:0 20px;"></p>
+
+            <div class="motivation-banner" style="text-align:left;">
+                <b>💡 Insight FPA :</b><br><span id="ui-anecdote">...</span>
+            </div>
+
+            <div class="glossary-box">
+                <h3>
+                    <span style="display:flex; align-items:center; gap:10px;">
+                        Glossaire Expert
+                        <button class="acc-btn" style="padding:2px 8px; font-size:1.1rem; color:var(--alert-bronze); border:1px solid rgba(180, 121, 42, 0.3);" onclick="speakGlossary()" title="Écouter les termes affichés">🔊</button>
+                    </span>
+                    <span id="ui-glossary-progress" style="font-size:0.85rem; background:var(--title-blue); color:var(--cta-yellow); padding:4px 12px; border-radius:50px;">0 / 12</span>
+                </h3>
+                <ul class="glossary-list" id="ui-glossary-list"></ul>
+                <button id="btn-new-words" class="opt-btn" style="margin-top:15px; text-align:center; background:transparent; font-weight:700; border-style:dashed;" onclick="generateGlossary(true)">🔄 Termes suivants</button>
+                <div id="ui-vocab-diploma" class="vocab-diploma">🏅 Maîtrise Lexicale Confirmée !</div>
+            </div>
+        </div>
+        <button class="btn-action" onclick="location.reload()">NOUVELLE SESSION 🔄</button>
+    </div>
+
+    <div class="footer-paia">
+        <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo MMPA" class="footer-logo">
+        <div class="signature">💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026 Tous droits réservés</div>
+    </div>
+</div>
+
+<script>
+    // --- BANQUE DE 30 QUESTIONS (FICHE 003 CARACTÉRISTIQUES DES PUBLICS) ---
+    const questionBank = [
+        {q: "Combien d'OPCO (Opérateurs de Compétences) existent en France ?", options: ["1 seul, qui gère toutes les branches", "11 OPCO, répartis par secteurs d'activité", "25 OPCO, un par région"], correct: 1, rationale: "Depuis la loi Avenir de 2018, il existe 11 OPCO chargés d'accompagner la formation professionnelle selon les branches d'activité." },
+        {q: "À qui incombe légalement l'obligation d'assurer l'adaptation des salariés à leur poste de travail ?", options: ["À l'employeur", "Au salarié via son CPF", "À Pôle Emploi"], correct: 0, rationale: "L'employeur a l'obligation légale de veiller au maintien de la capacité de ses salariés à occuper un emploi (employabilité)." },
+        {q: "Quel est l'un des principaux rôles de l'AGEFIPH ?", options: ["Financer les formations des fonctionnaires", "Favoriser l'insertion et le maintien dans l'emploi des personnes handicapées (secteur privé)", "Aider à la création d'entreprises pour les jeunes"], correct: 1, rationale: "L'AGEFIPH est l'organisme dédié à l'emploi et à la formation des personnes en situation de handicap dans le secteur privé." },
+        {q: "Quel public spécifique est prioritairement accompagné par les Missions Locales ?", options: ["Les cadres de plus de 50 ans", "Les jeunes de 16 à 25 ans sortis du système scolaire", "Les travailleurs indépendants"], correct: 1, rationale: "Les Missions Locales ont pour mission d'aider les jeunes (16-25 ans) dans leurs démarches d'insertion professionnelle et sociale." },
+        {q: "Que désigne le terme 'Allophone' dans le cadre de la formation ?", options: ["Une personne qui utilise beaucoup son téléphone au travail", "Une personne dont la langue maternelle n'est pas la langue du pays où elle se trouve", "Une personne qui souffre d'un trouble de l'audition"], correct: 1, rationale: "Un public allophone nécessite souvent un accompagnement linguistique spécifique (ex: cours de FLE)." },
+        {q: "Comment se nomme le plan qui regroupe l'ensemble des actions de formation retenues par l'employeur pour ses salariés ?", options: ["Le Plan de Sauvegarde de l'Emploi (PSE)", "Le Plan de Développement des Compétences (PDC)", "Le Compte Personnel de Formation (CPF)"], correct: 1, rationale: "Le PDC (ex-plan de formation) rassemble les formations choisies par l'employeur en fonction des objectifs de l'entreprise." },
+        {q: "Un employeur peut-il obliger un salarié à utiliser son CPF pour financer une formation imposée par l'entreprise ?", options: ["Oui, si l'entreprise est en difficulté", "Non, l'utilisation du CPF relève de l'initiative exclusive du salarié", "Oui, avec l'accord de l'OPCO"], correct: 1, rationale: "Le CPF est un droit attaché à la personne ; son utilisation requiert l'accord exprès de son titulaire." },
+        {q: "Qu'est-ce qu'un CFA dans le monde de la formation professionnelle ?", options: ["Centre de Formation pour Adultes", "Centre de Formation d'Apprentis", "Comité pour la Formation Avancée"], correct: 1, rationale: "Les CFA sont les établissements chargés d'assurer la formation théorique et pratique des apprentis en alternance." },
+        {q: "Que doit faire un organisme de formation (OF) pour exercer légalement son activité (hors Qualiopi) ?", options: ["Rien, il suffit de s'installer", "Obtenir un Numéro de Déclaration d'Activité (NDA) auprès de la DREETS", "S'inscrire au registre des métiers uniquement"], correct: 1, rationale: "La déclaration d'activité (qui aboutit au NDA) est une obligation légale pour toute structure facturant des formations." },
+        {q: "En plus des enjeux légaux, quels sont les autres enjeux de la formation pour un employeur ?", options: ["Essentiellement fiscaux (pour payer moins d'impôts)", "Sociaux (fidélisation, motivation) et économiques (compétitivité)", "Il n'y en a pas d'autres"], correct: 1, rationale: "Former ses salariés permet de les motiver, de les fidéliser et d'améliorer la productivité de l'entreprise." },
+        {q: "Un demandeur d'emploi suivant une formation prescrite par Pôle Emploi est juridiquement considéré comme :", options: ["Un chômeur non-actif", "Un stagiaire de la formation professionnelle", "Un salarié en CDD"], correct: 1, rationale: "Ce statut spécifique lui octroie des droits et une protection sociale pendant la durée de sa formation." },
+        {q: "L'illettrisme qualifie la situation de personnes qui :", options: ["N'ont jamais été scolarisées de leur vie", "Ont été scolarisées en France mais n'ont pas acquis ou ont perdu la maîtrise de la lecture/écriture", "Sont d'origine étrangère et ne parlent pas français"], correct: 1, rationale: "C'est la différence avec l'analphabétisme (personnes jamais scolarisées)." },
+        {q: "Le socle de connaissances et de compétences professionnelles est certifié par :", options: ["Le TOEIC", "Le certificat CléA", "Le B2i"], correct: 1, rationale: "CléA certifie la maîtrise des savoirs de base nécessaires à tout environnement professionnel." },
+        {q: "Quel est l'organisme équivalent à l'AGEFIPH pour la Fonction Publique ?", options: ["Cap Emploi", "Le FIPHFP", "L'URSSAF"], correct: 1, rationale: "Le FIPHFP (Fonds pour l'Insertion des Personnes Handicapées dans la Fonction Publique) accompagne les employeurs publics." },
+        {q: "Une formation imposée par l'employeur peut-elle se dérouler hors du temps de travail ?", options: ["Non, c'est totalement interdit", "Oui, sous certaines conditions, limitées en volume horaire et avec l'accord écrit du salarié", "Oui, à la discrétion totale du manager"], correct: 1, rationale: "Les actions de formation hors temps de travail sont très encadrées par la loi et nécessitent l'assentiment du salarié." },
+        {q: "De quel droit dispose un salarié pour préparer et passer un examen de Validation des Acquis de l'Expérience (VAE) sur son temps de travail ?", options: ["Du congé VAE", "D'un arrêt maladie", "Des congés payés uniquement"], correct: 0, rationale: "Le congé VAE permet de s'absenter jusqu'à 24h d'accompagnement (renouvelable sous conditions)." },
+        {q: "L'apprentissage est généralement accessible pour quelle tranche d'âge ?", options: ["De 18 à 35 ans", "De 16 à 29 ans révolus (sauf dérogations type handicap)", "Uniquement pour les mineurs"], correct: 1, rationale: "La loi a relevé l'âge limite d'entrée en apprentissage à 29 ans révolus (30 ans moins 1 jour)." },
+        {q: "Qu'est-ce que le Conseil en Évolution Professionnelle (CEP) ?", options: ["Un audit financier pour les entreprises", "Un dispositif d'accompagnement gratuit et personnalisé pour faire le point sur sa situation pro", "Une formation obligatoire pour les cadres"], correct: 1, rationale: "Le CEP est un service public accessible à tout actif souhaitant évoluer ou se reconvertir." },
+        {q: "La notion d'individualisation de la formation signifie que :", options: ["Chaque apprenant est seul dans une salle", "Le parcours s'adapte aux acquis, au rythme et aux besoins spécifiques de l'apprenant", "Le formateur ne s'occupe que d'un élève à la fois"], correct: 1, rationale: "C'est l'adaptation de l'ingénierie et de la pédagogie aux caractéristiques propres de l'individu." },
+        {q: "Quel financeur public prend majoritairement en charge la formation des demandeurs d'emploi ?", options: ["La commune", "La Région et Pôle Emploi (France Travail)", "L'OPCO"], correct: 1, rationale: "Les Conseils Régionaux ont la compétence de droit commun pour la formation professionnelle des demandeurs d'emploi." },
+        {q: "Comment se nomme la base de données gérée par France Compétences recensant les diplômes d'État et titres professionnels ?", options: ["Le RNCP", "Le Pôle Emploi", "La DREETS"], correct: 0, rationale: "Le RNCP (Répertoire National des Certifications Professionnelles) classe les diplômes par niveau." },
+        {q: "Les fonctionnaires ont-ils un Compte Personnel de Formation (CPF) ?", options: ["Non", "Oui, mais il est comptabilisé en heures et non en euros", "Oui, exactement identique à celui du secteur privé"], correct: 1, rationale: "Dans la fonction publique, le CPF reste alimenté en heures, contrairement au secteur privé." },
+        {q: "L'accès à la formation des personnes en situation de handicap en OF nécessite :", options: ["Un certificat médical récent", "Un référent handicap au sein de l'organisme de formation", "Le double du prix"], correct: 1, rationale: "La présence d'un référent handicap est par ailleurs un critère évalué dans la certification Qualiopi." },
+        {q: "La formation du public allophone s'appuie souvent sur des modules appelés 'FLE'. Que signifie ce sigle ?", options: ["Formation Linguistique d'Excellence", "Français Langue Étrangère", "Fondamentaux de Lecture et d'Écriture"], correct: 1, rationale: "Le FLE est l'apprentissage du français pour un public dont ce n'est pas la langue maternelle." },
+        {q: "Le réseau 'Cap Emploi' s'occupe de l'accompagnement de quel public ?", options: ["Les cadres supérieurs", "Les jeunes décrocheurs", "Les personnes en situation de handicap (demandeurs d'emploi et salariés)"], correct: 2, rationale: "Cap Emploi est le réseau spécialisé dans l'insertion et le maintien dans l'emploi des travailleurs handicapés." },
+        {q: "L'obligation de l'employeur vis-à-vis du maintien dans l'emploi est considérée par la jurisprudence comme une obligation :", options: ["De résultat (ou de moyens renforcée)", "Facultative", "Exclusivement morale"], correct: 0, rationale: "Les tribunaux sanctionnent l'employeur qui ne forme pas ses salariés face aux évolutions de leur emploi." },
+        {q: "Dans un CFA, la formation de l'apprenti se déroule :", options: ["100% en classe", "En alternance entre le centre de formation et l'entreprise", "Exclusivement chez l'employeur"], correct: 1, rationale: "L'alternance est le principe fondateur du contrat d'apprentissage." },
+        {q: "Un salarié qui utilise son CPF pour une formation se déroulant pendant son temps de travail :", options: ["Voit son salaire suspendu", "Doit demander et obtenir l'accord préalable de son employeur sur le calendrier", "Ne peut le faire qu'en cas de licenciement"], correct: 1, rationale: "Si la formation déborde sur le temps de travail, l'accord de l'employeur est impératif pour maintenir la rémunération." },
+        {q: "En plus des OPCO, quel autre organisme peut cofinancer la formation continue des salariés ?", options: ["Le FSE (Fonds Social Européen)", "La Banque de France", "Le Trésor Public"], correct: 0, rationale: "L'Europe, via le FSE, est un cofinanceur important des politiques de formation professionnelles nationales et régionales." },
+        {q: "Les actions de formation visant spécifiquement les personnes très éloignées de l'emploi ont souvent pour premier objectif :", options: ["De faire de l'argent", "La resocialisation et l'acquisition des savoirs de base avant le métier technique", "Le passage du permis de conduire exclusivement"], correct: 1, rationale: "Pour ces publics, les freins périphériques (social, logement, savoirs de base) doivent être traités en amont." }
+    ];
+
+    const glossaryTerms = [
+        { word: "OPCO", def: "Opérateur de Compétences. Organisme chargé d'accompagner la formation professionnelle selon les branches d'activité (au nombre de 11)." },
+        { word: "DREETS", def: "Direction Régionale de l'Économie, de l'Emploi, du Travail et des Solidarités. Elle gère notamment les déclarations d'activité des formateurs." },
+        { word: "PDC", def: "Plan de Développement des Compétences. Ensemble des actions de formation choisies et financées par l'employeur." },
+        { word: "AGEFIPH", def: "Fonds pour l'insertion des personnes handicapées dans le secteur privé." },
+        { word: "Mission Locale", def: "Structure d'accompagnement dédiée à l'insertion sociale et professionnelle des jeunes de 16 à 25 ans." },
+        { word: "Allophone", def: "Personne dont la langue maternelle n'est pas le français, nécessitant souvent un accompagnement linguistique (FLE)." },
+        { word: "CFA", def: "Centre de Formation d'Apprentis. Organisme dispensant la formation théorique et pratique des jeunes en alternance." },
+        { word: "CEP", def: "Conseil en Évolution Professionnelle. Dispositif gratuit d'accompagnement pour faire le point sur sa carrière." },
+        { word: "CléA", def: "Certificat interprofessionnel attestant la maîtrise du socle de connaissances et de compétences professionnelles de base." },
+        { word: "Employabilité", def: "Capacité d'un individu à conserver son emploi ou à en trouver un autre, que l'employeur a l'obligation de maintenir par la formation." },
+        { word: "Illettrisme", def: "Situation de personnes ayant été scolarisées en France mais n'ayant pas acquis ou ayant perdu la maîtrise de la lecture/écriture." },
+        { word: "Stagiaire de la FP", def: "Statut conférant droits et protection sociale à un demandeur d'emploi lorsqu'il suit une formation." }
+    ];
+
+    const anecdotes = [
+        "Un employeur a une obligation de 'résultat' pour le maintien dans l'emploi : s'il ne forme pas un salarié dont le métier évolue, il est en faute !",
+        "Le public 'allophone' n'est pas synonyme d'illettrisme. Un ingénieur ukrainien arrivant en France est allophone, mais extrêmement qualifié !",
+        "L'âge limite pour l'apprentissage a été relevé à 29 ans révolus, une révolution pour encourager l'alternance chez les jeunes adultes.",
+        "Le CPF est un droit strictement individuel. Aucun employeur ne peut vous forcer à 'cliquer' pour acheter une formation avec votre compte.",
+        "Les 11 OPCO ne gèrent pas l'argent de l'État, ils mutualisent les contributions versées par les entreprises d'une même branche professionnelle."
+    ];
+
+    let gameMode = 'chrono', activeSet = [], current = 0, score = 0, timer, timeLeft, totalQ = 10, lives = 3;
+    let isDarkMode = false, isDys = false, isContrast = false, isCalm = false, isMuted = false, speechRate = 1.2, globalVolume = 1.0;
+
+    let seenGlossaryTerms = new Set(JSON.parse(localStorage.getItem('paia_vocab_003') || '[]'));
+    const maxGlossary = glossaryTerms.length;
+
+    // --- ACCESSIBILITÉ & UI CONTROLS ---
+    function toggleDarkMode() { isDarkMode = !isDarkMode; document.body.classList.toggle('dark-mode', isDarkMode); document.getElementById('btn-dark-mode').innerText = isDarkMode ? "☀️" : "🌙"; }
+    function changeFontSize(s) { let f = parseInt(window.getComputedStyle(document.documentElement).fontSize); document.documentElement.style.fontSize = Math.min(24, Math.max(12, f + (s*2))) + "px"; }
+    function toggleDys(b) { isDys = !isDys; document.body.classList.toggle('dys-mode'); b.classList.toggle('selected-config', isDys); }
+    function toggleContrast(b) { isContrast = !isContrast; document.body.classList.toggle('high-contrast'); b.classList.toggle('selected-config', isContrast); }
+    function toggleAnimations(b) { isCalm = !isCalm; document.body.classList.toggle('no-anim'); b.classList.toggle('selected-config', isCalm); }
+
+    // --- AUDIO CONTROLS ---
+    function changeSpeechRate(s) { speechRate = Math.min(1.5, Math.max(0.5, speechRate + s)); document.getElementById('ui-rate').innerText = "x" + speechRate.toFixed(1); }
+    function changeVolume(v) { globalVolume = Math.min(1, Math.max(0, globalVolume + v)); if(globalVolume > 0 && isMuted) toggleMute(); }
+    function toggleMute() { isMuted = !isMuted; document.getElementById('btn-mute').innerText = isMuted ? "🔇" : "🔊"; if(isMuted) window.speechSynthesis.cancel(); }
+
+    function speak(txt) {
+        if (isMuted) return;
+        window.speechSynthesis.cancel();
+        const m = new SpeechSynthesisUtterance(txt); m.lang = 'fr-FR'; m.rate = speechRate; m.volume = globalVolume; m.pitch = 1.15;
+        window.speechSynthesis.speak(m);
+    }
+    function speakCurrent() {
+        if(!activeSet[current]) return;
+        const d = activeSet[current];
+        let tts = d.q + ". Les propositions sont : ";
+        d.options.forEach((o, i) => tts += `Option ${i+1}, ${o}. `);
+        speak(tts);
+    }
+    function speakGlossary() {
+        let tts = "Glossaire. ";
+        const listItems = document.querySelectorAll('#ui-glossary-list li');
+        if(listItems.length === 0) { tts += "Le glossaire est vide."; }
+        else { listItems.forEach(li => { tts += li.innerText + ". "; }); }
+        speak(tts);
+    }
+
+    // --- GAME LOGIC ---
+    function setMode(mode, btn) {
+        gameMode = mode; highlight(btn);
+        document.getElementById('chrono-settings').classList.toggle('hidden-group', mode === 'vies');
+        document.getElementById('vies-settings').classList.toggle('hidden-group', mode === 'chrono');
+    }
+    function setQ(n, btn) { totalQ = n; highlight(btn); }
+    function setT(n, btn) { timeLimit = n; highlight(btn); }
+    function highlight(btn) { btn.parentNode.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected-config')); btn.classList.add('selected-config'); }
+
+    function startGame() {
+        score = 0; current = 0;
+        if(gameMode === 'vies') { lives = (totalQ <= 10 ? 1 : totalQ <= 20 ? 2 : 3); document.getElementById('ui-hearts').style.display = 'block'; document.getElementById('ui-timer').style.display = 'none'; }
+        else { lives = 99; document.getElementById('ui-hearts').style.display = 'none'; }
+
+        // ALÉATOIRE : Mélange de la banque et extraction
+        activeSet = [...questionBank].sort(() => Math.random() - 0.5).slice(0, totalQ);
+
+        document.getElementById('screen-setup').classList.remove('active-screen');
+        document.getElementById('screen-game').classList.add('active-screen');
+        speak("C'est parti ! Bonne chance.");
+        setTimeout(loadQuestion, 1500);
+    }
+
+    function loadQuestion() {
+        const d = activeSet[current];
+        document.getElementById('ui-q-text').innerText = d.q;
+        document.getElementById('ui-progress').innerText = `📝 Question ${current + 1} / ${totalQ}`;
+        const box = document.getElementById('ui-options'); box.innerHTML = "";
+        document.getElementById('ui-feedback').style.display = "none";
+        document.getElementById('btn-next').style.display = "none";
+        if(gameMode === 'vies') updateHearts();
+
+        let tts = d.q + ". ";
+        d.options.forEach((o, i) => {
+            const b = document.createElement('button'); b.className = "opt-btn"; b.innerText = (i+1) + ". " + o;
+            b.onclick = () => validate(i); box.appendChild(b);
+            tts += `Option ${i+1}, ${o}. `;
+        });
+        speak(tts);
+        if(gameMode === 'chrono' && timeLimit > 0) startTimer();
+    }
+
+    function startTimer() {
+        timeLeft = timeLimit; document.getElementById('ui-timer').style.display = 'block';
+        clearInterval(timer);
+        timer = setInterval(() => {
+            timeLeft--; document.getElementById('ui-timer').innerText = "⏱️ " + timeLeft + "s";
+            document.getElementById('ui-bar').style.width = (timeLeft/timeLimit)*100 + "%";
+            if(timeLeft <= 0) { clearInterval(timer); validate(-1); }
+        }, 1000);
+    }
+
+    function validate(i) {
+        clearInterval(timer);
+        const d = activeSet[current];
+        const f = document.getElementById('ui-feedback');
+        f.style.display = "block";
+        document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+
+        let tts = "";
+        if(i === d.correct) {
+            score++;
+            f.className = "feedback success";
+            f.innerHTML = "✨ <b>Bravo !</b> " + d.rationale;
+            tts = "Excellent ! " + d.rationale;
+            rain();
+        } else {
+            if(gameMode === 'vies') lives--;
+            f.className = "feedback error";
+            tts = (i === -1 ? "Oups, temps écoulé !" : "Erreur !") + " La réponse était : " + d.options[d.correct] + ". " + d.rationale;
+            f.innerHTML = `❌ ${tts}`;
+        }
+        speak(tts);
+        document.getElementById('btn-next').style.display = "block";
+    }
+
+    function updateHearts() { document.getElementById('ui-hearts').innerText = "❤️".repeat(Math.max(0, lives)) + "🖤".repeat(Math.max(0, Math.ceil(totalQ/10) - lives)); }
+
+    function handleNext() {
+        window.speechSynthesis.cancel();
+        current++;
+        if(gameMode === 'vies' && lives <= 0) finish(true);
+        else if(current < activeSet.length) loadQuestion();
+        else finish(false);
+    }
+
+    function generateGlossary(isManual = false) {
+        const listEl = document.getElementById('ui-glossary-list'); listEl.style.opacity = '0.3';
+        setTimeout(() => {
+            let pool = glossaryTerms.filter(t => !seenGlossaryTerms.has(t.word));
+            if(pool.length < 5) { seenGlossaryTerms.clear(); pool = glossaryTerms; }
+            const selection = pool.sort(() => 0.5 - Math.random()).slice(0, 5);
+            selection.forEach(t => seenGlossaryTerms.add(t.word));
+            localStorage.setItem('paia_vocab_003', JSON.stringify([...seenGlossaryTerms]));
+
+            let h = ""; selection.forEach(t => h += `<li><strong>${t.word} :</strong> ${t.def}</li>`);
+            listEl.innerHTML = h; listEl.style.opacity = '1';
+
+            document.getElementById('ui-glossary-progress').innerText = `${seenGlossaryTerms.size} / ${maxGlossary}`;
+            if(seenGlossaryTerms.size >= maxGlossary) {
+                document.getElementById('ui-vocab-diploma').style.display = 'block';
+                document.getElementById('btn-new-words').innerText = "🔄 Revoir les termes";
+            } else {
+                document.getElementById('ui-vocab-diploma').style.display = 'none';
+                document.getElementById('btn-new-words').innerText = "🔄 Termes suivants";
+            }
+            if(isManual) speak("Voici d'autres concepts à maîtriser.");
+        }, 300);
+    }
+
+    function finish(lose) {
+        document.getElementById('screen-game').classList.remove('active-screen');
+        document.getElementById('screen-result').classList.add('active-screen');
+        document.getElementById('ui-final-score').innerText = `${score} / ${lose ? current : totalQ}`;
+        let msg = lose ? "Game Over ! Reprenez les fondamentaux sur les publics et les acteurs." : (score === totalQ ? "Performance exceptionnelle ! L'écosystème de la formation n'a plus de secret pour vous." : "C'est validé ! Vous avez bien cerné les caractéristiques des publics.");
+        document.getElementById('ui-humor').innerText = msg;
+        document.getElementById('ui-anecdote').innerText = anecdotes[Math.floor(Math.random()*anecdotes.length)];
+        generateGlossary(false);
+        speak(`Bilan de session terminé. ${msg}`);
+    }
+
+    function rain() {
+        if(isCalm) return;
+        for(let i=0; i<15; i++) {
+            const e = document.createElement('div'); e.className = 'emoji'; e.innerText = '🎓🌟💎'[Math.floor(Math.random()*3)];
+            e.style.position = 'fixed'; e.style.top = '-50px'; e.style.left = Math.random()*100+'vw'; e.style.zIndex = '9999';
+            e.style.animation = `slideUp ${(Math.random()*3+4)}s linear reverse`;
+            document.body.appendChild(e); setTimeout(()=>e.remove(), 7000);
+        }
+    }
+</script>
+</body>
+</html>

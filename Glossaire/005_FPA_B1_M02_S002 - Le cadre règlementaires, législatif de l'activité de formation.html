@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>005_FPA_B1_M02_S002 - Le cadre règlementaires, législatif de l'activité de formation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Lexend:wght@400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Palette PAIA STRICTE - ZÉRO NOIR / ZÉRO GRIS */
+            --paia-ivory: #F6F2E8;
+            --paia-ivory-dark: #EAE4D3;
+            --paia-blue: #0F2C48;
+            --paia-blue-dark: #0A1C2E;
+            --paia-gold: #D9A526;
+
+            /* Les 3 choix de couleurs Microsoft pour l'aléatoire */
+            --ms-blue: #0078D4;
+            --ms-red: #E81123;
+            --ms-yellow: #FFB900;
+
+            --base-font: 'Poppins', sans-serif;
+            --font-size-base: 16px;
+        }
+
+        * { box-sizing: border-box; }
+        html { font-size: var(--font-size-base); transition: font-size 0.3s ease; }
+
+        /* =========================================
+           MODE CLAIR (Défaut)
+           ========================================= */
+        body {
+            font-family: var(--base-font);
+            background-color: var(--paia-ivory);
+            color: var(--paia-blue);
+            min-height: 100vh; margin: 0; padding-bottom: 110px;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        .compact-header {
+            background-color: var(--paia-ivory-dark);
+            border-bottom: 2px solid var(--paia-blue);
+            position: sticky; top: 0; z-index: 50; transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .search-wrap {
+            background-color: var(--paia-ivory-dark);
+            border-color: rgba(15, 44, 72, 0.2);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .bento-card {
+            background-color: #FFFFFF;
+            color: var(--paia-blue);
+            border: 1px solid rgba(15, 44, 72, 0.1);
+            border-radius: 1.5rem; padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(15, 44, 72, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+            border-top: 4px solid var(--card-accent, var(--ms-blue));
+        }
+
+        /* Boîte exemple - Mode Clair */
+        .example-box {
+            background-color: var(--paia-blue);
+            color: var(--paia-ivory);
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .empty-box {
+            background-color: var(--paia-ivory-dark);
+            border-color: rgba(15, 44, 72, 0.2);
+        }
+
+        /* =========================================
+           MODE SOMBRE (Deep Night PAIA)
+           ========================================= */
+        body.dark-mode {
+            background-color: var(--paia-blue-dark);
+            color: var(--paia-ivory);
+        }
+        body.dark-mode .compact-header {
+            background-color: var(--paia-blue);
+            border-bottom-color: var(--paia-gold);
+        }
+        body.dark-mode .compact-header h1, body.dark-mode .compact-header p {
+            color: var(--paia-ivory);
+        }
+        body.dark-mode .search-wrap {
+            background-color: var(--paia-blue);
+            border-color: rgba(246, 242, 232, 0.1);
+        }
+        body.dark-mode input { color: var(--paia-ivory); }
+
+        body.dark-mode .bento-card {
+            background-color: var(--paia-blue);
+            color: var(--paia-ivory);
+            border-color: rgba(246, 242, 232, 0.05);
+            box-shadow: 0 10px 25px rgba(10, 28, 46, 0.5);
+        }
+
+        /* Boîte exemple - Mode Sombre */
+        body.dark-mode .example-box {
+            background-color: var(--paia-blue-dark);
+            color: var(--paia-ivory);
+        }
+
+        body.dark-mode .alpha-btn {
+            background-color: var(--paia-blue);
+            color: var(--paia-ivory);
+            border-color: rgba(246, 242, 232, 0.1);
+        }
+        body.dark-mode .empty-box {
+            background-color: var(--paia-blue);
+            border-color: var(--paia-gold);
+        }
+
+        .font-code { font-family: 'Space Mono', monospace; }
+
+        /* Scrollbar Tech */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--paia-gold); border-radius: 10px; }
+
+        /* =========================================
+           BOUTONS MULTICOLORES & FILTRES
+           ========================================= */
+        .btn-multicolor {
+            background: linear-gradient(135deg, var(--ms-blue) 0%, var(--ms-red) 50%, var(--ms-yellow) 100%);
+            color: #ffffff !important; border: none; font-weight: 700;
+            box-shadow: 0 4px 15px rgba(15, 44, 72, 0.2);
+        }
+        .btn-multicolor:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(232, 17, 35, 0.4); }
+
+        .alpha-btn {
+            background: var(--paia-ivory-dark);
+            color: var(--paia-blue);
+            border-radius: 0.8rem; width: 42px; height: 42px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; cursor: pointer; transition: all 0.2s ease;
+            border: 1px solid rgba(15, 44, 72, 0.1);
+        }
+        .alpha-btn:hover:not(.active) { transform: translateY(-3px); border-color: var(--ms-blue); color: var(--ms-blue); }
+        .alpha-btn.active {
+            background: linear-gradient(135deg, var(--ms-blue), var(--ms-red), var(--ms-yellow));
+            color: #ffffff !important; border-color: transparent; box-shadow: 0 5px 15px rgba(15, 44, 72, 0.3); transform: scale(1.1);
+        }
+
+        /* =========================================
+           ANIMATIONS CARTES "GLOW & FUN"
+           ========================================= */
+        .bento-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(15, 44, 72, 0.15);
+            border-color: var(--card-accent);
+        }
+
+        .icon-box {
+            width: 44px; height: 44px; border-radius: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(15, 44, 72, 0.05); color: var(--card-accent);
+            font-size: 1.5rem; transition: 0.3s;
+        }
+        body.dark-mode .icon-box { background: rgba(246, 242, 232, 0.05); }
+        .bento-card:hover .icon-box { transform: rotate(12deg) scale(1.1); }
+
+        /* Les 3 Classes Microsoft Aléatoires */
+        .ms-blue { --card-accent: var(--ms-blue); }
+        .ms-red { --card-accent: var(--ms-red); }
+        .ms-yellow { --card-accent: var(--ms-yellow); }
+
+        /* =========================================
+           DOCK ACCESSIBILITÉ FLOTTANT
+           ========================================= */
+        .floating-dock {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--paia-blue); border: 2px solid var(--paia-gold);
+            border-radius: 2.5rem; padding: 0.6rem 1.2rem;
+            display: flex; gap: 0.6rem; align-items: center; z-index: 1000;
+            box-shadow: 0 15px 40px rgba(10, 28, 46, 0.6);
+        }
+        .dock-btn {
+            width: 44px; height: 44px; border-radius: 50%; border: none;
+            background: transparent; color: var(--paia-ivory);
+            cursor: pointer; transition: 0.3s ease; display: flex; align-items: center; justify-content: center;
+        }
+        .dock-btn:hover { background: rgba(246, 242, 232, 0.1); color: var(--paia-gold); transform: scale(1.1); }
+        .dock-btn.active { background: var(--paia-gold); color: var(--paia-blue); }
+
+        /* =========================================
+           MODE DYSLEXIE PURE (Aucun impact sur les couleurs)
+           ========================================= */
+        body.dyslexia-mode {
+            font-family: 'Lexend', sans-serif !important;
+            letter-spacing: 0.08em !important;
+            word-spacing: 0.15em !important;
+            line-height: 1.8 !important;
+        }
+        body.dyslexia-mode p { font-size: 1.05rem; font-weight: 500; }
+        body.dyslexia-mode h3 { font-weight: 700; letter-spacing: 0.05em; }
+
+    </style>
+</head>
+<body class="selection:bg-[#D9A526]/30">
+
+    <!-- Header Compact -->
+    <header class="compact-header py-3 shadow-md">
+        <div class="max-w-[1600px] mx-auto px-4 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 min-w-0 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png"
+                     alt="PAIA Logo" class="w-10 h-10 rounded-xl border-2 border-[#0F2C48] shadow-sm">
+                <div class="min-w-0">
+                    <h1 class="text-sm md:text-xl font-black truncate text-[#0F2C48]" title="005_FPA_B1_M02_S002 - Le cadre règlementaires, législatif de l'activité de formation">
+                        005_FPA_B1_M02_S002 - Le cadre règlementaires, législatif
+                    </h1>
+                </div>
+            </div>
+            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgM" target="_blank"
+               class="btn-multicolor flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full text-xs transition-all shadow-md">
+                <i class="fab fa-microsoft"></i> <span class="hidden sm:inline">Teams</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-[1600px] mx-auto px-4 py-8">
+
+        <!-- Search & Info -->
+        <div class="flex flex-col md:flex-row gap-5 items-center justify-between mb-10">
+            <div class="relative w-full md:max-w-xl group">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0078D4] to-[#FFB900] rounded-2xl blur opacity-5 group-focus-within:opacity-20 transition duration-500"></div>
+                <div class="relative search-wrap flex items-center border-2 rounded-2xl shadow-sm focus-within:border-[#0078D4] transition-all">
+                    <div class="pl-5 flex items-center pointer-events-none"><i class="fas fa-search text-[#D9A526]"></i></div>
+                    <input type="text" id="searchInput" placeholder="Rechercher (Loi Avenir, URSSAF, BPF, CPF...)"
+                        class="w-full bg-transparent py-4 pl-3 pr-4 text-lg font-bold focus:outline-none">
+                </div>
+            </div>
+            <div class="flex items-center gap-3 search-wrap px-6 py-3 rounded-2xl shadow-sm border border-[#0F2C48]/10">
+                <i class="fas fa-balance-scale text-[#0078D4] text-xl animate-pulse"></i>
+                <span id="resultCount" class="font-black text-sm tracking-widest uppercase">105 MOTS DÉTECTÉS</span>
+            </div>
+        </div>
+
+        <!-- Filtre Alphabet Rainbow -->
+        <div class="flex flex-wrap justify-center gap-3 mb-12" id="alphabetContainer"></div>
+
+        <!-- Grille des concepts -->
+        <div id="glossaryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-12"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-box hidden flex-col items-center justify-center py-24 text-center rounded-3xl border-2 border-dashed border-[#0F2C48]/20 mt-4">
+            <div class="text-7xl mb-6">⚖️</div>
+            <h3 class="text-2xl font-black">Aucune notion trouvée...</h3>
+            <button onclick="resetFilters()" class="mt-6 px-8 py-3 btn-multicolor rounded-full">Retour au lexique</button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto py-8 flex flex-col items-center justify-center gap-4 border-t-2 border-[#0F2C48]/10 bg-transparent relative z-10">
+        <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo MMPA" class="w-14 h-14 rounded-full border-2 border-[#D9A526] shadow-md object-cover">
+        <p class="font-bold text-xs md:text-sm text-center px-4 tracking-wide opacity-80 text-[#0F2C48] dark:text-[#F6F2E8]">
+            💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026
+        </p>
+    </footer>
+
+    <!-- Dock Accessibilité (Contrôles bien dissociés) -->
+    <div class="floating-dock">
+        <!-- Sélecteur Thème Clair/Sombre (Couleurs) -->
+        <button class="dock-btn" onclick="toggleTheme()" id="btn-theme" title="Mode Jour/Nuit (Modifie les couleurs)">
+            <i class="fas fa-moon"></i>
+        </button>
+        <!-- Sélecteur Dyslexie (Typographie uniquement) -->
+        <button class="dock-btn" onclick="toggleDyslexia()" id="btn-dys" title="Mode Dyslexie (Modifie l'espacement et la police)">
+            <span class="font-bold font-code">DYS</span>
+        </button>
+        <div class="w-[1px] h-8 bg-[#F6F2E8]/20"></div>
+        <button class="dock-btn" onclick="changeFontSize(-1)" title="Réduire le texte"><i class="fas fa-minus text-xs"></i></button>
+        <button class="dock-btn" onclick="changeFontSize(1)" title="Agrandir le texte"><i class="fas fa-plus text-xs"></i></button>
+        <div class="w-[1px] h-8 bg-[#F6F2E8]/20"></div>
+        <button class="dock-btn" onclick="toggleMute()" id="btn-mute" title="Son Actif/Inactif"><i class="fas fa-volume-up"></i></button>
+        <button class="dock-btn text-xs" onclick="changeSpeechRate(-0.1)" title="Voix plus lente">🐌</button>
+        <span id="ui-rate" class="text-[#F6F2E8] font-code text-xs font-bold w-8 text-center">1.1</span>
+        <button class="dock-btn text-xs" onclick="changeSpeechRate(0.1)" title="Voix plus rapide">🐇</button>
+    </div>
+
+    <script>
+        // Logique UI & Accessibilité
+        let isDark = false, isDys = false, baseFS = 16, isMuted = false, sRate = 1.1; // Vitesse de lecture à 1.1 demandée
+
+        function toggleTheme() {
+            isDark = !isDark;
+            document.body.classList.toggle('dark-mode', isDark);
+            // On change l'icône
+            document.getElementById('btn-theme').innerHTML = isDark ? '<i class="fas fa-sun text-[#D9A526]"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        function toggleDyslexia() {
+            isDys = !isDys;
+            document.body.classList.toggle('dyslexia-mode', isDys);
+            document.getElementById('btn-dys').classList.toggle('active', isDys);
+        }
+
+        function changeFontSize(d) {
+            baseFS = Math.min(22, Math.max(12, baseFS + d*2));
+            document.documentElement.style.setProperty('--font-size-base', baseFS + 'px');
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            document.getElementById('btn-mute').innerHTML = isMuted ? '<i class="fas fa-volume-mute text-[#E81123]"></i>' : '<i class="fas fa-volume-up"></i>';
+            if (isMuted) window.speechSynthesis.cancel();
+        }
+
+        function changeSpeechRate(a) {
+            sRate = Math.min(2.0, Math.max(0.5, sRate + a));
+            document.getElementById('ui-rate').innerText = sRate.toFixed(1);
+        }
+
+        window.lireTexte = function(t, d, e) {
+            if (isMuted) return;
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(`${t}. Définition : ${d}. Exemple : ${e}`);
+            msg.lang = 'fr-FR';
+            msg.rate = sRate;
+            window.speechSynthesis.speak(msg);
+        };
+
+        // --- BASE DE DONNÉES EXACTE : MODULE 005 (105 concepts juridiques et financiers) ---
+        const data = [
+            { term: "Loi Avenir Professionnel", emoji: "📜", def: "Loi du 5 septembre 2018 ayant réformé la formation professionnelle, entrée en vigueur le 1er janvier 2019.", example: "Création de France Compétences, monétisation du CPF en euros." },
+            { term: "Société de compétences", emoji: "🧠", def: "Axe majeur de la loi Avenir visant à faciliter l'accès à la formation et à rendre l'individu acteur de son parcours.", example: "L'application mobile Mon Compte Formation illustre cet axe." },
+            { term: "Indemnisation chômage", emoji: "💶", def: "Réforme intégrée à la loi Avenir pour une indemnisation plus universelle, incluant certains démissionnaires et indépendants.", example: "Un salarié qui démissionne pour créer son entreprise peut désormais toucher le chômage sous conditions." },
+            { term: "Salarié démissionnaire", emoji: "🚪", def: "Personne quittant son emploi volontairement, désormais éligible à l'assurance chômage s'il a un projet de reconversion réel et sérieux.", example: "Une commission paritaire doit valider son projet de formation avant sa démission." },
+            { term: "Travailleur indépendant", emoji: "💼", def: "Professionnel à son compte, qui bénéficie avec la loi Avenir de l'Allocation des Travailleurs Indépendants (ATI) en cas de liquidation.", example: "Un freelance dont l'entreprise ferme peut toucher l'ATI de 800€/mois." },
+            { term: "CPF", emoji: "💳", def: "Compte monétisé en euros, géré directement par le titulaire pour financer des formations certifiantes.", example: "Utiliser ses 2000€ CPF pour passer le TOEIC." },
+            { term: "CPF de transition", emoji: "🔄", def: "Nouveau dispositif (remplaçant le CIF) permettant à un salarié de financer une formation longue pour changer de métier.", example: "Financer un an d'école d'infirmière pour un ancien comptable." },
+            { term: "CEP", emoji: "🧭", def: "Conseil en Évolution Professionnelle. Service gratuit et personnalisé pour accompagner les actifs dans leurs projets de formation.", example: "Obligatoire de le consulter avant de démissionner pour un projet de reconversion." },
+            { term: "Plan de développement des compétences", emoji: "🗺️", def: "Document remplaçant le 'Plan de formation', regroupant les actions choisies par l'employeur pour ses salariés.", example: "L'employeur y intègre une formation obligatoire sur le nouveau logiciel RH." },
+            { term: "Entretien professionnel", emoji: "🗣️", def: "Entretien obligatoire tous les 2 ans consacré aux perspectives d'évolution professionnelle, distinct de l'évaluation du travail.", example: "Faire le point sur les besoins en formation du salarié." },
+            { term: "Bilan à 6 ans", emoji: "⏳", def: "État des lieux obligatoire vérifiant que le salarié a bénéficié de ses entretiens et d'au moins une formation non obligatoire.", example: "Si l'entreprise ne l'a pas fait, elle paie un abondement correctif de 3000€ sur le CPF du salarié." },
+            { term: "Pro-A", emoji: "🚀", def: "Reconversion ou promotion par alternance. Dispositif pour les salariés visant une évolution professionnelle via l'alternance.", example: "Un vendeur non diplômé devient responsable de magasin après une formation Pro-A." },
+            { term: "Apprentissage", emoji: "🛠️", def: "Formation initiale en alternance, réformée en 2018 (âge limite repoussé à 29 ans, aides simplifiées).", example: "Embaucher un jeune de 28 ans en apprentissage." },
+            { term: "CFA", emoji: "🏫", def: "Centre de Formation d'Apprentis. Les conditions de création ont été assouplies par la loi Avenir, tout OF peut devenir CFA.", example: "L'entreprise crée son propre CFA d'entreprise." },
+            { term: "Aide unique apprentissage", emoji: "💰", def: "Aide financière versée aux employeurs de moins de 250 salariés recrutant des apprentis.", example: "Recevoir plusieurs milliers d'euros la première année du contrat d'apprentissage." },
+            { term: "OETH", emoji: "♿", def: "Obligation d'Emploi des Travailleurs Handicapés. La loi Avenir renforce l'obligation d'emploi direct pour les entreprises.", example: "Avoir 6% de travailleurs handicapés dans ses effectifs." },
+            { term: "Entreprise adaptée", emoji: "🏭", def: "Entreprise dont l'effectif est majoritairement composé de travailleurs handicapés. Leur cadre d'intervention a été renforcé.", example: "Sous-traiter la gestion des déchets à une entreprise adaptée." },
+            { term: "Télétravail", emoji: "💻", def: "Mode d'organisation du travail facilité par la loi Avenir, notamment pour les travailleurs handicapés ou proches aidants.", example: "Accorder 3 jours de télétravail à un salarié RQTH." },
+            { term: "Égalité femmes-hommes", emoji: "⚖️", def: "Objectif majeur de la loi Avenir imposant la suppression des écarts de rémunération via un index obligatoire.", example: "L'Index de l'égalité professionnelle à publier chaque année." },
+            { term: "Harcèlement sexuel", emoji: "🛡️", def: "La loi Avenir renforce les obligations de l'employeur (nomination de référents, information) pour lutter contre ce fléau.", example: "Nommer un référent harcèlement au sein du CSE." },
+            { term: "Fraude au travail détaché", emoji: "🚫", def: "Lutte renforcée par la loi Avenir avec de nouveaux pouvoirs de sanction pour l'administration.", example: "Amendes majorées pour les employeurs abusant de travailleurs étrangers sous-payés." },
+            { term: "France Compétences", emoji: "🇫🇷", def: "Autorité nationale publique (créée en 2019) qui régule et finance la formation et l'apprentissage en France.", example: "Organisme qui répartit les 10 milliards d'euros de la formation." },
+            { term: "URSSAF", emoji: "🏢", def: "Organisme chargé (depuis 2022) de la collecte unique des contributions des entreprises pour la formation professionnelle.", example: "L'entreprise paie sa taxe d'apprentissage via sa DSN à l'URSSAF." },
+            { term: "Contribution à la formation professionnelle (CFP)", emoji: "💶", def: "Taxe payée par les entreprises, représentant 0,55% (moins de 11 salariés) ou 1% (plus de 11) de la masse salariale.", example: "L'URSSAF prélève ce 1% chaque mois." },
+            { term: "Taxe d'apprentissage (TA)", emoji: "🏫", def: "Contribution des entreprises équivalant à 0,68% de la masse salariale, dont 87% va à l'URSSAF et 13% aux écoles (solde).", example: "Verser les 13% de solde directement à un lycée professionnel." },
+            { term: "Contribution 1% CDD", emoji: "⏳", def: "Taxe supplémentaire de 1% sur la masse salariale des salariés en CDD pour financer spécifiquement leur CPF.", example: "Une entreprise embauchant des saisonniers paie cette taxe." },
+            { term: "CSA", emoji: "📈", def: "Contribution Supplémentaire à l'Apprentissage, payée par les entreprises de +250 salariés n'ayant pas 5% d'alternants.", example: "Une pénalité financière pour inciter à l'embauche d'apprentis." },
+            { term: "Masse salariale brute", emoji: "💰", def: "Totalité des rémunérations brutes versées par l'entreprise, servant de base de calcul pour les taxes de formation.", example: "Calculer 1% sur 1 million d'euros de salaires annuels." },
+            { term: "PIC", emoji: "🎯", def: "Plan d'Investissement dans les Compétences. Enveloppe budgétaire de l'État pour former les demandeurs d'emploi et jeunes peu qualifiés.", example: "Le PIC finance 100% d'une formation aux métiers du numérique." },
+            { term: "Caisse des Dépôts", emoji: "🏦", def: "Institution publique qui gère les fonds du CPF et paie directement les organismes de formation via la plateforme Mon Compte Formation.", example: "L'OF est payé par la CDC 30 jours après la formation." },
+            { term: "OPCO", emoji: "🏢", def: "Opérateurs de Compétences (au nombre de 11). Ils accompagnent les entreprises, surtout les PME (-50 salariés), et financent l'alternance.", example: "L'OPCO Atlas pour les banques ou l'OPCO Santé pour les cliniques." },
+            { term: "Afdas", emoji: "🎭", def: "OPCO de la culture, des industries créatives, des médias, du sport et du tourisme.", example: "Finance la formation d'un régisseur son." },
+            { term: "Atlas", emoji: "📊", def: "OPCO des services financiers et du conseil.", example: "Finance la formation d'un courtier en assurances." },
+            { term: "Ocapiat", emoji: "🚜", def: "OPCO de l'agriculture, de la pêche et de l'agroalimentaire.", example: "Finance la formation d'un ouvrier viticole." },
+            { term: "Opco Cohésion sociale", emoji: "🤝", def: "OPCO des métiers du social, médico-social et de l'animation.", example: "Finance la formation d'un éducateur spécialisé." },
+            { term: "Constructys", emoji: "🏗️", def: "OPCO de la construction (bâtiment, travaux publics).", example: "Finance la formation d'un chef de chantier." },
+            { term: "Opcommerce", emoji: "🛒", def: "OPCO des entreprises du commerce et de la grande distribution.", example: "Finance la formation d'un chef de rayon." },
+            { term: "Akto", emoji: "🧹", def: "OPCO des services à forte intensité de main-d'œuvre (propreté, travail temporaire).", example: "Finance la formation d'un agent d'entretien." },
+            { term: "Opco 2i", emoji: "🏭", def: "OPCO interindustriel (chimie, plasturgie, métallurgie).", example: "Finance la formation d'un technicien de maintenance." },
+            { term: "Opco Mobilités", emoji: "🚌", def: "OPCO des transports et services de l'automobile.", example: "Finance le permis poids lourd d'un chauffeur." },
+            { term: "Opco EP (Entreprises de proximité)", emoji: "🥖", def: "OPCO de l'artisanat, professions libérales et commerces de proximité.", example: "Finance la formation d'un artisan boulanger." },
+            { term: "Opco Santé", emoji: "🩺", def: "OPCO du secteur privé de la santé.", example: "Finance la formation d'une aide-soignante." },
+            { term: "DREETS", emoji: "🏛️", def: "Directions Régionales de l'Économie, de l'Emploi, du Travail et des Solidarités. Elles délivrent les NDA et contrôlent les OF.", example: "C'est à la DREETS qu'on envoie son BPF annuel." },
+            { term: "NDA", emoji: "🔢", def: "Numéro de Déclaration d'Activité. Attribué par la préfecture via la DREETS dès le premier contrat de formation signé.", example: "Mentionner ce numéro sur toutes ses factures et conventions." },
+            { term: "Délai déclaration d'activité", emoji: "⏱️", def: "L'OF dispose d'un délai strict de 3 mois après la signature de sa première convention pour faire sa demande de NDA.", example: "Si vous dépassez ce délai, l'activité est illégale." },
+            { term: "Casier judiciaire n°3", emoji: "📜", def: "Extrait exigé pour le représentant de l'OF, prouvant l'absence de condamnation pour manquement à la probité ou aux bonnes mœurs.", example: "Document indispensable pour obtenir le NDA." },
+            { term: "BPF", emoji: "📈", def: "Bilan Pédagogique et Financier. Document annuel obligatoire retraçant l'activité de l'OF (effectifs, finances).", example: "À télédéclarer avant le 30 avril sous peine de perdre son NDA." },
+            { term: "Mon Activité Formation", emoji: "💻", def: "Portail gouvernemental où les organismes de formation réalisent leurs démarches (demande de NDA, télé-déclaration du BPF).", example: "Se connecter au portail pour saisir son chiffre d'affaires formation." },
+            { term: "Bilan comptable", emoji: "📊", def: "Obligation légale pour les OF de droit privé d'établir des comptes annuels (bilan, compte de résultat, annexe).", example: "Séparer l'activité de formation de l'activité de conseil dans sa comptabilité." },
+            { term: "Exonération de TVA", emoji: "💶", def: "Possibilité (formulaire 3511/CERFA 10219) pour un OF de facturer sans TVA ses prestations de formation professionnelle continue.", example: "Facturer 1000€ net de taxes (HT = TTC)." },
+            { term: "Convention de formation", emoji: "✍️", def: "Contrat juridique conclu entre l'organisme de formation et une entreprise (personne morale) pour financer la formation de ses salariés.", example: "Convention signée par le DRH de l'entreprise cliente." },
+            { term: "Contrat de formation", emoji: "📄", def: "Contrat juridique conclu entre l'organisme de formation et une personne physique (un particulier) qui paie la formation elle-même.", example: "Contrat signé par un freelance qui finance sa formation sur ses deniers." },
+            { term: "Délai de rétractation", emoji: "⏳", def: "Délai légal de 14 jours accordé aux particuliers (contrat de formation) pour se désister sans frais.", example: "L'apprenant annule sa formation 5 jours après la signature." },
+            { term: "Mentions obligatoires", emoji: "📋", def: "Informations imposées par la loi (L.6353-1) sur la convention : objectifs, contenu, moyens, durée, modalités de suivi et d'évaluation, prix.", example: "Préciser que la formation dure 14 heures et coûte 1200€." },
+            { term: "Règlement intérieur OF", emoji: "⚖️", def: "Document écrit obligatoire encadrant la santé, la sécurité, la discipline et la représentation des stagiaires.", example: "Il doit être remis au stagiaire avant son inscription définitive." },
+            { term: "Amende pénale", emoji: "❌", def: "Sanction de 4500€ prévue par le Code du travail si l'organisme de formation n'a pas rédigé de règlement intérieur (dans les 3 mois).", example: "Un OF contrôlé sans règlement intérieur reçoit cette amende." },
+            { term: "Feuille d'émargement", emoji: "✍️", def: "Document juridique prouvant l'assiduité, à faire signer par demi-journée par le stagiaire et le formateur.", example: "Signature requise à 9h00 et à 14h00 pour justifier la présence." },
+            { term: "Assiduité", emoji: "⏱️", def: "Preuve de la participation effective du stagiaire, indispensable pour la facturation aux OPCO ou au CPF.", example: "Fournir les logs de connexion (temps passé) pour une formation en ligne (FOAD)." },
+            { term: "Évaluation à chaud", emoji: "🔥", def: "Enquête de satisfaction (non liée aux acquis pédagogiques) mesurant l'appréciation des stagiaires sur l'animation, les locaux, etc.", example: "Le questionnaire rempli la dernière heure du stage." },
+            { term: "Attestation de fin de formation", emoji: "📜", def: "Document remis à l'apprenant en fin de parcours, précisant les objectifs, la durée et les résultats de l'évaluation des acquis.", example: "Sert de preuve de la montée en compétences du salarié pour son employeur." },
+            { term: "Obligation d'information", emoji: "📢", def: "Devoir de l'OF de remettre au stagiaire, avant l'inscription, le programme, les tarifs, la liste des formateurs et le règlement intérieur.", example: "Envoyer un livret d'accueil complet au stagiaire." },
+            { term: "Conditions de cessation anticipée", emoji: "🛑", def: "Clauses financières obligatoires dans le contrat d'un particulier encadrant les cas d'abandon ou d'interruption.", example: "Préciser que toute formation commencée est due à 100% (sauf force majeure)." },
+            { term: "Action de formation", emoji: "📚", def: "Un des 4 types d'actions définis par le Code du travail. C'est un parcours pédagogique visant l'atteinte d'un objectif professionnel.", example: "Une formation qualifiante sur les techniques de vente." },
+            { term: "Bilan de compétences (Loi)", emoji: "🧭", def: "Action relevant de la FP, encadrée par la loi, pour analyser compétences et motivations en vue d'un projet pro.", example: "Prestation réalisée en 3 phases sur une durée max de 24 heures." },
+            { term: "VAE (Loi)", emoji: "🏅", def: "Validation des Acquis de l'Expérience. Action légale de la FP pour faire reconnaître son expérience par un diplôme.", example: "Accompagnement financé par le CPF pour la rédaction du livret VAE." },
+            { term: "Action d'apprentissage", emoji: "🎒", def: "Action de formation en alternance permettant à un jeune d'acquérir une qualification reconnue.", example: "Le cursus au CFA financé au coût-contrat par l'OPCO." },
+            { term: "Formation de loisir", emoji: "🎨", def: "Formation exclue du champ de la formation professionnelle car non liée à un projet professionnel actuel ou à venir.", example: "Des cours de piano pour le plaisir du week-end (non finançables)." },
+            { term: "Formation initiale (Exclusion)", emoji: "🏫", def: "Parcours scolaire ou universitaire continu, légalement exclu du champ de la Formation Professionnelle Continue (FPC).", example: "Un jeune bachelier qui entre directement en licence universitaire." },
+            { term: "Parcours pédagogique", emoji: "🛤️", def: "Concept intégré par la loi Avenir : la formation n'est plus un simple cours, mais un parcours incluant positionnement, apprentissage et évaluation.", example: "L'ingénierie doit prévoir l'amont et l'aval de la session en salle." },
+            { term: "Positionnement", emoji: "📍", def: "Phase légale et obligatoire du parcours permettant d'évaluer le niveau et les prérequis de l'apprenant avant la formation.", example: "Un QCM de niveau d'anglais avant de valider l'inscription." },
+            { term: "Accompagnement (Parcours)", emoji: "🤝", def: "Mesure de soutien intégrée au parcours de formation pour éviter les décrochages, exigée notamment en FOAD.", example: "Le suivi par un tuteur technique via chat ou forum." },
+            { term: "FOAD (Loi)", emoji: "💻", def: "Formation Ouverte et À Distance. Modalité d'apprentissage reconnue par le Code du travail (Art. L6313-2).", example: "L'OF doit prouver l'assistance pédagogique et technique pour cette modalité." },
+            { term: "AFEST (Loi)", emoji: "🛠️", def: "Action de Formation En Situation de Travail. Intégrée au Code du travail en 2018, elle alterne mises en situation et phases réflexives.", example: "Former un employé sur la chaîne de production avec un formateur-tuteur." },
+            { term: "Avenant", emoji: "📝", def: "Document juridique modifiant une convention de formation (ex: ajustement du prix si le temps de parcours a varié).", example: "Un avenant pour ajouter 2 heures d'accompagnement supplémentaires." },
+            { term: "Logique de forfait", emoji: "🎯", def: "Facturation d'un parcours basée sur l'atteinte de l'objectif (ex: obtenir la certification) et non sur la durée réelle passée.", example: "Facturer 2000€ le parcours certifiant, que l'élève y passe 50h ou 100h." },
+            { term: "Obligation de moyens", emoji: "🛡️", def: "Engagement de l'organisme de formation à mettre en œuvre tout ce qui est nécessaire (formateur, locaux, supports) pour faire apprendre.", example: "Fournir un ordinateur performant pour le cours de montage vidéo." },
+            { term: "Obligation de résultats", emoji: "✅", def: "Engagement contractuel (plus rare et souvent couplé au forfait) garantissant l'obtention d'une certification ou d'un bloc de compétences.", example: "Remboursement de la formation si l'apprenant rate l'examen." },
+            { term: "Contrôle de la DREETS", emoji: "🕵️", def: "Vérification administrative et financière par les inspecteurs de l'État du respect du Code du Travail par l'organisme de formation.", example: "Un contrôle sur place pour vérifier l'exactitude du BPF et des conventions." },
+            { term: "Sanctions financières (OF)", emoji: "💸", def: "Pénalités (souvent le reversement au Trésor Public des sommes indûment perçues) si l'OF facture des prestations hors cadre légal.", example: "Rembourser l'OPCO si les feuilles d'émargement sont fausses." },
+            { term: "Fonds publics ou mutualisés", emoji: "💶", def: "Ensemble des financements issus de l'État, des Régions, de France Travail, des OPCO ou du CPF.", example: "Nécessite la certification Qualiopi pour que l'OF puisse les encaisser." },
+            { term: "Qualiopi", emoji: "🏅", def: "Marque de certification qualité de l'État, obligatoire (loi Avenir) depuis le 1er janvier 2022 pour accéder aux financements publics.", example: "L'OF a passé l'audit Qualiopi et peut désormais proposer ses formations sur Mon Compte Formation." },
+            { term: "Référentiel National Qualité (RNQ)", emoji: "📋", def: "Document de l'État définissant les 7 critères et 32 indicateurs à respecter pour obtenir Qualiopi.", example: "L'indicateur 1 exige l'information transparente du public sur les résultats (taux de réussite)." },
+            { term: "Datadock", emoji: "🗑️", def: "Ancien système de référencement qualité des OF (sur déclaration), rendu obsolète et remplacé par l'audit Qualiopi.", example: "Une plateforme qui n'est plus utilisée depuis le 1er janvier 2022." },
+            { term: "Code du Travail (Livre VI)", emoji: "⚖️", def: "Partie de la loi française qui encadre strictement la formation professionnelle tout au long de la vie.", example: "C'est là qu'on trouve les obligations relatives au BPF et au NDA." },
+            { term: "CQP", emoji: "📜", def: "Certificat de Qualification Professionnelle. Certification spécifique à une branche professionnelle.", example: "Un diplôme reconnu par la convention collective de la métallurgie." },
+            { term: "Titre Professionnel (TP)", emoji: "🏆", def: "Certification de l'État, délivrée par le Ministère du Travail, centrée sur la maîtrise de gestes professionnels.", example: "Le Titre Pro Formateur d'Adultes (FPA)." },
+            { term: "RNCP", emoji: "📚", def: "Répertoire National des Certifications Professionnelles. Enregistre les diplômes et titres reconnus par l'État par niveau.", example: "Requis pour que la formation soit éligible au financement CPF." },
+            { term: "Répertoire Spécifique (RS)", emoji: "📑", def: "Recense les certifications et habilitations correspondant à des compétences transversales complémentaires.", example: "Les certifications informatiques TOSA ou le certificat Voltaire pour les langues." },
+            { term: "Bloc de compétences", emoji: "🧱", def: "Ensemble homogène de compétences certifiables, introduit massivement par la loi Avenir pour découper les diplômes.", example: "Valider uniquement le Bloc 2 (Animation) du Titre FPA." },
+            { term: "Certificat de réalisation", emoji: "✅", def: "Document officiel harmonisé exigé par les OPCO et la CDC (CPF) attestant que l'apprenant a bien suivi la formation.", example: "Document remplaçant l'attestation de présence pour le paiement." },
+            { term: "Force majeure", emoji: "⛈️", def: "Événement imprévisible, irrésistible et extérieur justifiant l'annulation ou l'interruption d'une formation sans pénalités.", example: "Une hospitalisation d'urgence du stagiaire justifiant son absence." },
+            { term: "CGV", emoji: "📄", def: "Conditions Générales de Vente. Document contractuel encadrant les modalités commerciales de l'OF (annulation, paiement).", example: "Clause stipulant que toute annulation à J-7 entraîne la facturation intégrale." },
+            { term: "RGPD", emoji: "🔒", def: "Règlement européen imposant aux OF la protection, la sécurité et l'accord explicite pour la gestion des données des stagiaires.", example: "Informer les stagiaires de la durée de conservation de leurs évaluations." },
+            { term: "DPO", emoji: "🛡️", def: "Délégué à la Protection des Données. Référent (interne ou externe) s'assurant que l'OF respecte les lois sur la vie privée.", example: "Il gère les demandes de suppression de données des anciens apprenants." },
+            { term: "Propriété intellectuelle", emoji: "©️", def: "Droits protégeant les supports de cours, méthodes et créations pédagogiques de l'organisme de formation ou du formateur.", example: "Interdiction pour le client de diffuser le support PowerPoint en interne sans accord." },
+            { term: "Sous-traitance", emoji: "🤝", def: "Fait pour un OF de déléguer l'animation d'une formation à un formateur indépendant. Très encadré par le compte CPF.", example: "Signer un contrat de prestation de services avec un formateur expert." },
+            { term: "Veille légale", emoji: "📡", def: "Obligation Qualiopi imposant à l'OF de se tenir informé en continu des évolutions de la loi sur la formation.", example: "S'abonner à la veille juridique de Centre Inffo." },
+            { term: "Consultation du CSE", emoji: "🗣️", def: "Obligation de l'employeur (si >50 salariés) de soumettre le plan de développement des compétences pour avis aux élus du personnel.", example: "La réunion annuelle de présentation des orientations de la formation." },
+            { term: "Frais pédagogiques", emoji: "💶", def: "Coûts directs de la conception et de l'animation de la formation. Partie de la facture potentiellement prise en charge par l'OPCO.", example: "Les honoraires du formateur pour ses jours d'intervention." },
+            { term: "Frais annexes", emoji: "🍔", def: "Frais de restauration, d'hébergement ou de transport du stagiaire, remboursés selon des barèmes légaux stricts par les OPCO.", example: "Le forfait repas plafonné à 15€ par jour de formation." },
+            { term: "Rémunération du stagiaire", emoji: "💰", def: "Maintien du salaire par l'employeur ou versement d'une indemnité par Pôle Emploi/Région pendant le temps de la formation.", example: "Le salarié en formation sur ses heures de travail garde son salaire normal." },
+            { term: "Accessibilité handicap", emoji: "♿", def: "Obligation légale (et indicateur Qualiopi) pour l'OF d'adapter ses prestations, locaux et supports aux personnes en situation de handicap.", example: "Mentionner les coordonnées du référent handicap sur le programme de formation." }
+        ];
+
+        // --- MOTEUR DE RENDU ET LOGIQUE DE RECHERCHE ---
+        const container = document.getElementById('glossaryContainer');
+        const alphabetBox = document.getElementById('alphabetContainer');
+        const searchInput = document.getElementById('searchInput');
+        const countDisplay = document.getElementById('resultCount');
+        const emptyState = document.getElementById('emptyState');
+
+        // Couleurs Microsoft aléatoires (pour les bordures et icônes)
+        const msColors = ['ms-blue', 'ms-red', 'ms-yellow'];
+
+        function renderAlphabet() {
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+            alphabetBox.innerHTML = `<button class="alpha-btn active" onclick="filterByLetter(null, this)">ALL</button>`;
+            letters.forEach(l => {
+                alphabetBox.innerHTML += `<button class="alpha-btn" onclick="filterByLetter('${l}', this)">${l}</button>`;
+            });
+        }
+
+        let currentLetter = null;
+        function filterByLetter(l, btn) {
+            document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentLetter = l;
+            renderCards();
+        }
+
+        function renderCards() {
+            const term = searchInput.value.toLowerCase();
+            container.innerHTML = '';
+
+            const filtered = data.filter(i => {
+                const matchSearch = i.term.toLowerCase().includes(term) || i.def.toLowerCase().includes(term);
+                const matchLetter = currentLetter ? i.term.toUpperCase().startsWith(currentLetter) : true;
+                return matchSearch && matchLetter;
+            });
+
+            countDisplay.innerText = `${filtered.length} MOTS DÉTECTÉS`;
+
+            if(filtered.length === 0) {
+                emptyState.classList.replace('hidden', 'flex');
+            } else {
+                emptyState.classList.replace('flex', 'hidden');
+
+                filtered.forEach((i, idx) => {
+                    const randomColor = msColors[Math.floor(Math.random() * msColors.length)];
+
+                    const card = document.createElement('div');
+                    card.className = `bento-card ${randomColor}`;
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="icon-box">${i.emoji}</div>
+                                <h3 class="font-black text-sm md:text-base leading-tight tracking-tight">${i.term}</h3>
+                            </div>
+                            <button onclick="lireTexte(\`${i.term}\`, \`${i.def.replace(/'/g, "\\'")}\`, \`${i.example.replace(/'/g, "\\'")}\`)" class="dock-btn !text-[var(--card-accent)] opacity-60 hover:opacity-100 hover:scale-110 transition-all" style="background:transparent" title="Écouter la carte complète"><i class="fas fa-volume-up"></i></button>
+                        </div>
+                        <p class="text-[13px] leading-relaxed mb-5 flex-grow font-medium opacity-90">${i.def}</p>
+                        <div class="mt-auto example-box border-l-4 border-[var(--card-accent)] p-3 rounded-r-xl shadow-inner transition-colors duration-400">
+                            <p class="text-[10px] text-[var(--card-accent)] font-black uppercase mb-1">Exemple / Contexte</p>
+                            <p class="text-[12px] italic opacity-90 leading-snug example-text">${i.example}</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        window.resetFilters = () => {
+            searchInput.value = '';
+            filterByLetter(null, document.querySelector('.alpha-btn'));
+        };
+
+        searchInput.addEventListener('input', renderCards);
+
+        // Initialisation
+        data.sort((a,b) => a.term.localeCompare(b.term));
+        renderAlphabet();
+        renderCards();
+    </script>
+</body>
+</html>

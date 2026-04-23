@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>006_FPA_B1_M02_S003 - Obligations administratives | PAIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette exacte PAIA */
+            --surface-ivory: #F6F2E8;
+            --title-blue: #0F2C48;
+            --cta-yellow: #D9A526;
+            --alert-bronze: #B4792A;
+            --blanc: #ffffff;
+            --rouge-vies: #e74c3c;
+            --shadow-subtle: 0 4px 20px rgba(15, 44, 72, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+        html { font-size: 16px; transition: font-size 0.2s; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--surface-ivory);
+            color: var(--title-blue);
+            margin: 0; padding: 10px;
+            display: flex; justify-content: center; align-items: flex-start;
+            min-height: 100vh; overflow-x: hidden;
+            transition: all 0.5s ease;
+            padding-bottom: 80px;
+        }
+
+        /* --- BARRE GLOBALE PAIA (ACCESSIBILITÉ COMPLÈTE) --- */
+        #global-controls-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+            display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap;
+            background: var(--surface-ivory);
+            padding: 10px 15px; box-shadow: 0 -5px 25px rgba(15, 44, 72, 0.1);
+            border-top: 3px solid var(--title-blue);
+        }
+
+        /* --- DARK MODE --- */
+        body.dark-mode {
+            --surface-ivory: #0a1c2e;
+            --blanc: #0F2C48;
+            --title-blue: #F6F2E8;
+            --cta-yellow: #D9A526;
+        }
+        body.dark-mode #global-controls-bar { background: var(--surface-ivory); border-top-color: var(--cta-yellow); }
+        body.dark-mode .config-block, body.dark-mode .glossary-box, body.dark-mode .anecdote-box {
+            background: var(--blanc) !important; border: 1px solid rgba(217, 165, 38, 0.2) !important;
+        }
+        body.dark-mode .opt-btn { background: #153a5e; color: #F6F2E8; border-color: #1a4a7a; }
+        body.dark-mode .diploma { background: var(--blanc); border: 3px solid var(--cta-yellow); color: var(--title-blue); }
+        body.dark-mode .footer-paia { border-top-color: rgba(246, 242, 232, 0.1); }
+
+        /* --- CONTENEUR --- */
+        #quiz-container {
+            background: var(--blanc); max-width: 800px; width: 100%;
+            border-radius: 12px; box-shadow: var(--shadow-subtle);
+            padding: 30px; position: relative; z-index: 10; margin-top: 10px;
+            border: 1px solid rgba(15, 44, 72, 0.1);
+        }
+
+        /* --- HEADER & BRANDING --- */
+        .header-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; }
+        .header-brand { display: flex; align-items: center; gap: 15px; }
+        .header-logo { width: 65px; height: 65px; border-radius: 12px; border: 2px solid var(--title-blue); object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header-titles { text-align: left; }
+        .platform-name { font-family: 'Roboto', sans-serif; font-size: 2rem; font-weight: 900; color: var(--title-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0; line-height: 1; }
+        .platform-sub { color: var(--alert-bronze); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; margin-top: 6px; }
+
+        /* Bouton Teams */
+        .btn-teams {
+            background: linear-gradient(135deg, #464EB8 0%, #E81123 50%, #FFB900 100%);
+            color: #ffffff; padding: 10px 22px; border-radius: 50px; text-decoration: none;
+            font-weight: 700; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s ease, box-shadow 0.2s ease;
+            white-space: nowrap; font-size: 0.95rem;
+        }
+        .btn-teams:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 15px rgba(0,0,0,0.25); color: #ffffff; }
+
+        .module-banner {
+            background: var(--title-blue); color: var(--cta-yellow);
+            padding: 10px 25px; border-radius: 8px; font-weight: 700; margin-bottom: 20px; display: inline-block;
+            border: 1px solid var(--cta-yellow); text-align: center; width: 100%;
+        }
+
+        /* --- ECRANS --- */
+        .screen { display: none; }
+        .active-screen { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .config-block { background: var(--surface-ivory); padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px solid rgba(15, 44, 72, 0.05); }
+        .config-block label { display: block; font-weight: 700; color: var(--title-blue); margin-bottom: 10px; }
+
+        .opt-btn {
+            background: var(--blanc); border: 2px solid rgba(15, 44, 72, 0.2); color: var(--title-blue);
+            padding: 14px 20px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: 500;
+            transition: all 0.2s ease; text-align: left;
+        }
+        .opt-btn:hover:not(:disabled) { border-color: var(--cta-yellow); background-color: rgba(217, 165, 38, 0.05); }
+        .opt-btn.selected-config { background: var(--title-blue); color: var(--cta-yellow); border-color: var(--title-blue); }
+        .compact-btn { padding: 10px 18px; border-radius: 8px; text-align: center; width: auto; flex-grow: 0; font-weight: 700;}
+
+        .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 700;}
+        .timer-box { font-weight: 900; color: var(--alert-bronze); font-size: 1.2rem; }
+
+        .progress-bar { width: 100%; height: 8px; background: rgba(15, 44, 72, 0.1); border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--cta-yellow); width: 0%; transition: width 1s linear; }
+
+        .q-text { font-size: 1.3rem; font-weight: 700; color: var(--title-blue); margin-bottom: 25px; line-height: 1.4; }
+        .options-grid { display: grid; gap: 12px; }
+
+        .feedback { margin-top: 20px; padding: 20px; border-radius: 8px; display: none; font-weight: 500; animation: fadeIn 0.3s; }
+        .success { background: rgba(217, 165, 38, 0.1); color: var(--title-blue); border: 2px solid var(--cta-yellow); }
+        .error { background: #fef2f2; color: #991b1b; border: 2px solid #f87171; }
+
+        .btn-action {
+            background: var(--title-blue); color: var(--surface-ivory); border: 2px solid var(--title-blue); padding: 16px 30px;
+            border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%; margin-top: 20px;
+            transition: all 0.3s ease; text-transform: uppercase;
+        }
+        .btn-action:hover { background: var(--cta-yellow); color: var(--title-blue); border-color: var(--cta-yellow); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(217, 165, 38, 0.3); }
+
+        .glossary-box { margin-top: 25px; padding: 20px; background: var(--surface-ivory); border-radius: 8px; border: 1px dashed var(--cta-yellow); text-align: left; }
+        .glossary-box h3 { color: var(--title-blue); display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; font-weight: 700; margin-top:0;}
+        .glossary-list li { margin-bottom: 12px; padding: 10px; background: var(--blanc); border-radius: 6px; list-style: none; border: 1px solid rgba(15, 44, 72, 0.1); }
+        .glossary-list strong { color: var(--alert-bronze); font-weight: 700; }
+
+        .vocab-diploma { display: none; padding: 25px; background: rgba(217, 165, 38, 0.15); border: 2px solid var(--cta-yellow); border-radius: 8px; text-align: center; margin-top: 20px; font-weight: 700; color: var(--title-blue); }
+        .motivation-banner { margin-top: 20px; padding: 15px; background: rgba(15, 44, 72, 0.05); border-radius: 8px; text-align: center; font-style: italic; font-weight: 500; color: var(--title-blue); border-left: 4px solid var(--alert-bronze); }
+
+        .diploma { text-align: center; }
+
+        /* --- FOOTER PAIA --- */
+        .footer-paia { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(15, 44, 72, 0.1); }
+        .footer-logo { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--cta-yellow); object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .signature { font-size: 11px; color: var(--title-blue); text-align: center; font-weight: 500; line-height: 1.6; opacity: 0.85; }
+
+        .acc-btn { padding: 8px 12px; font-size: 1.1rem; border-radius: 8px; color: var(--title-blue); font-weight: 700; background: transparent; border: none; cursor: pointer; }
+        .control-group-horiz { display: flex; gap: 5px; align-items: center; background: rgba(15, 44, 72, 0.05); padding: 5px 10px; border-radius: 8px; }
+        .divider-vert { width: 1px; height: 25px; background: rgba(15, 44, 72, 0.2); margin: 0 8px; }
+        .hidden-group { display: none !important; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div id="global-controls-bar">
+    <button class="acc-btn" onclick="toggleDarkMode()" id="btn-dark-mode">🌙</button>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="changeFontSize(-1)">A-</button>
+        <button class="acc-btn" onclick="changeFontSize(1)">A+</button>
+    </div>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="toggleMute()" id="btn-mute">🔊</button>
+        <button class="acc-btn" onclick="changeVolume(-0.1)">🔉</button>
+        <button class="acc-btn" onclick="changeVolume(0.1)">🔊</button>
+    </div>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="changeSpeechRate(-0.1)">🗣️-</button>
+        <span id="ui-rate" style="font-weight:700; font-size:0.85rem; min-width:35px; text-align:center;">x1.2</span>
+        <button class="acc-btn" onclick="changeSpeechRate(0.1)">🗣️+</button>
+    </div>
+</div>
+
+<div id="quiz-container">
+    <div class="header">
+        <div class="header-top">
+            <div class="header-brand">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="PAIA Logo" class="header-logo">
+                <div class="header-titles">
+                    <div class="platform-name">Paia</div>
+                    <div class="platform-sub">Adult Learning Hub</div>
+                </div>
+            </div>
+            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgI" target="_blank" class="btn-teams">
+                <span style="font-size:1.2rem;">💬</span> Communauté Teams
+            </a>
+        </div>
+        <div class="module-banner">📌 006_FPA_B1_M02_S003 - Obligations administratives des OF</div>
+    </div>
+
+    <div id="screen-setup" class="screen active-screen">
+        <div class="config-block">
+            <label>🛠️ Options Accessibilité</label>
+            <div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleDys(this)">🔤 Dys</button>
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleContrast(this)">🌓 Contraste</button>
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleAnimations(this)">🛑 Calme</button>
+            </div>
+        </div>
+
+        <div class="config-block" style="background: var(--blanc);">
+            <div class="config-grid" style="display:grid; gap:15px;">
+                <div class="config-block"><label>📌 Volume de Questions (Aléatoire)</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setQ(10, this)" class="opt-btn compact-btn selected-config">10</button>
+                    <button onclick="setQ(20, this)" class="opt-btn compact-btn">20</button>
+                    <button onclick="setQ(30, this)" class="opt-btn compact-btn">30</button>
+                </div></div>
+                <div class="config-block"><label>🎮 Style de Jeu</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setMode('chrono', this)" class="opt-btn compact-btn selected-config">⏱️ Chrono</button>
+                    <button onclick="setMode('vies', this)" class="opt-btn compact-btn">❤️ Survie</button>
+                </div></div>
+                <div class="config-block" id="chrono-settings"><label>⏳ Temps / Question</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setT(20, this)" class="opt-btn compact-btn">20s</button>
+                    <button onclick="setT(40, this)" class="opt-btn compact-btn selected-config">40s</button>
+                    <button onclick="setT(0, this)" class="opt-btn compact-btn">∞</button>
+                </div></div>
+            </div>
+            <div id="vies-settings" class="hidden-group" style="padding:10px; border-radius:8px; background:rgba(180, 121, 42, 0.1);">
+                <p style="color:var(--alert-bronze); font-size:0.9rem; margin:0;"><b>Mode Survie :</b> 1 vie / 10 Q. Soyez précis, l'erreur est fatale !</p>
+            </div>
+        </div>
+        <div id="ui-motivation-start" class="motivation-banner">
+            NDA, BPF, exonération de TVA et documents contractuels : maîtrisez-vous la gestion d'un OF ?
+        </div>
+        <button class="btn-action" onclick="startGame()">DÉMARRER LA SESSION 🚀</button>
+    </div>
+
+    <div id="screen-game" class="screen">
+        <div class="hud">
+            <div id="ui-timer" class="timer-box" style="display:none;">⏱️ --s</div>
+            <div id="ui-hearts" style="display:none; color:var(--rouge-vies); font-size:1.3rem;">❤️❤️❤️</div>
+            <div id="ui-progress" class="vies">📝 Question 1 / --</div>
+            <button class="acc-btn" style="border:1px solid var(--title-blue);" onclick="speakCurrent()">🎤</button>
+        </div>
+        <div class="progress-bar"><div id="ui-bar" class="progress-fill"></div></div>
+        <div id="ui-q-text" class="q-text" tabindex="0">Chargement...</div>
+        <div id="ui-options" class="options-grid"></div>
+        <div id="ui-feedback" class="feedback" tabindex="-1"></div>
+        <button id="btn-next" class="btn-action" style="display:none;" onclick="handleNext()">CONTINUER ➡️</button>
+    </div>
+
+    <div id="screen-result" class="screen diploma">
+        <div class="diploma-content">
+            <span style="font-size: 3.5rem; display:block; margin-bottom:10px;" id="ui-diploma-icon">🎓</span>
+            <h2 id="final-title" style="font-weight:900; text-transform:uppercase;">BILAN DE GESTION</h2>
+            <div id="ui-final-score" style="font-size:4rem; font-weight:900; margin:10px 0; color:var(--cta-yellow);">0/0</div>
+            <p id="ui-humor" style="font-weight:500; padding:0 20px;"></p>
+
+            <div class="motivation-banner" style="text-align:left;">
+                <b>💡 Insight FPA :</b><br><span id="ui-anecdote">...</span>
+            </div>
+
+            <div class="glossary-box">
+                <h3>
+                    <span style="display:flex; align-items:center; gap:10px;">
+                        Glossaire Expert
+                        <button class="acc-btn" style="padding:2px 8px; font-size:1.1rem; color:var(--alert-bronze); border:1px solid rgba(180, 121, 42, 0.3);" onclick="speakGlossary()" title="Écouter les termes affichés">🔊</button>
+                    </span>
+                    <span id="ui-glossary-progress" style="font-size:0.85rem; background:var(--title-blue); color:var(--cta-yellow); padding:4px 12px; border-radius:50px;">0 / 12</span>
+                </h3>
+                <ul class="glossary-list" id="ui-glossary-list"></ul>
+                <button id="btn-new-words" class="opt-btn" style="margin-top:15px; text-align:center; background:transparent; font-weight:700; border-style:dashed;" onclick="generateGlossary(true)">🔄 Termes suivants</button>
+                <div id="ui-vocab-diploma" class="vocab-diploma">🏅 Maîtrise Lexicale Confirmée !</div>
+            </div>
+        </div>
+        <button class="btn-action" onclick="location.reload()">NOUVELLE SESSION 🔄</button>
+    </div>
+
+    <div class="footer-paia">
+        <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo MMPA" class="footer-logo">
+        <div class="signature">💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026 Tous droits réservés</div>
+    </div>
+</div>
+
+<script>
+    // --- BANQUE DE 30 QUESTIONS (FICHE 006) ---
+    const questionBank = [
+        {q: "Quel est le délai maximum pour déposer sa déclaration d'activité après la première convention ?", options: ["Dans les 30 jours", "Dans les 3 mois", "Dans l'année civile"], correct: 1, rationale: "L'organisme doit envoyer sa demande de NDA à la DREETS au plus tard 3 mois après la signature de la 1ère convention." },
+        {q: "Auprès de quel organisme effectue-t-on sa demande d'exonération de TVA ?", options: ["L'URSSAF", "La DREETS via un Cerfa spécifique", "Le service des impôts des entreprises (SIE) uniquement"], correct: 1, rationale: "L'OF doit envoyer le Cerfa 10663 à la DREETS pour obtenir l'attestation fiscale d'exonération." },
+        {q: "Quel document est obligatoirement signé entre un OF et un acheteur professionnel (entreprise) ?", options: ["Le contrat de formation", "La convention de formation", "Un simple accord par mail"], correct: 1, rationale: "La convention est le cadre contractuel légal pour les prestations B2B." },
+        {q: "Le bon de commande peut-il remplacer une convention de formation ?", options: ["Non, jamais", "Oui, s'il contient toutes les mentions obligatoires d'une convention", "Seulement pour les montants inférieurs à 500€"], correct: 1, rationale: "Un bon de commande ou une facture valant convention est accepté s'il comporte les mentions légales requises." },
+        {q: "Quel document doit être remis au stagiaire avant toute inscription définitive ?", options: ["La facture", "Le programme de formation et le règlement intérieur", "Le RIB de l'organisme"], correct: 1, rationale: "C'est une obligation d'information précontractuelle pour garantir la transparence." },
+        {q: "Le règlement intérieur des stagiaires est-il obligatoire pour une formation 100% à distance ?", options: ["Non, c'est pour les locaux physiques", "Oui, il doit être adapté aux spécificités du digital", "Seulement si la formation dure plus de 30h"], correct: 1, rationale: "Tout organisme de formation doit avoir un règlement intérieur, même s'il n'a pas de locaux physiques (discipline, hygiène, sécurité)." },
+        {q: "Une modification d'adresse ou de gérant de l'OF doit être signalée à la DREETS sous quel délai ?", options: ["15 jours", "30 jours", "3 mois"], correct: 1, rationale: "Tout changement des éléments de la déclaration initiale doit être notifié dans les 30 jours." },
+        {q: "Quel document est utilisé pour un particulier finançant lui-même sa formation ?", options: ["Une convention de formation", "Un contrat de formation professionnelle", "Une attestation d'engagement"], correct: 1, rationale: "Le contrat de formation professionnelle (B2C) protège le consommateur individuel." },
+        {q: "Un sous-traitant en formation doit-il posséder son propre NDA ?", options: ["Non, il utilise celui du donneur d'ordre", "Oui, c'est obligatoire pour facturer des actions de formation", "Seulement s'il a des salariés"], correct: 1, rationale: "Tout prestataire effectuant des actions de formation doit détenir un Numéro de Déclaration d'Activité." },
+        {q: "L'attestation d'assiduité (ou de présence) est-elle exigée par les financeurs ?", options: ["Non, l'émargement suffit", "Oui, elle permet de justifier la réalisation effective de l'action", "Uniquement pour les examens"], correct: 1, rationale: "C'est le document clé pour obtenir le paiement de la part des OPCO ou de Pôle Emploi." },
+        {q: "Quelle mention fiscale doit figurer sur une facture exonérée de TVA ?", options: ["'Exonéré de TVA'", "'Exonération de TVA en application de l'article 261-4-4° du CGI'", "'TVA non applicable'"], correct: 1, rationale: "La référence exacte au Code Général des Impôts est une mention obligatoire sur les factures." },
+        {q: "L'organisme de formation doit-il tenir une comptabilité séparée pour son activité de formation ?", options: ["Non, tout est mélangé", "Oui, il doit y avoir un suivi distinct si l'OF a d'autres activités", "Seulement s'il est en société"], correct: 1, rationale: "Même avec un seul bilan, les produits et charges de l'activité formation doivent être identifiables séparément." },
+        {q: "Que vérifie la DREETS lors d'un contrôle administratif et financier ?", options: ["Le style de pédagogie", "La réalité des prestations et la conformité des documents (NDA, BPF, factures)", "La qualité des locaux uniquement"], correct: 1, rationale: "Le contrôle porte sur les pièces justificatives prouvant la réalité de l'action et l'usage des fonds." },
+        {q: "L'attestation de fin de formation doit mentionner :", options: ["La note de l'examen uniquement", "Les objectifs, la nature et la durée de l'action ainsi que les résultats de l'évaluation", "Le prix payé"], correct: 1, rationale: "Elle certifie que l'apprenant a suivi le parcours et précise les acquis évalués." },
+        {q: "Un organisme peut-il perdre son NDA s'il n'a eu aucune activité pendant un an ?", options: ["Non, c'est acquis à vie", "Oui, le NDA devient caduc", "Seulement s'il ne paie pas sa taxe"], correct: 1, rationale: "L'absence d'activité (ou de BPF) entraîne la caducité du numéro de déclaration." },
+        {q: "Le programme de formation doit obligatoirement inclure :", options: ["Le nom du traiteur", "Les objectifs, prérequis, durée, modalités d'évaluation et public visé", "L'historique de l'entreprise"], correct: 1, rationale: "Ce sont les 5 éléments fondamentaux requis par le Code du travail pour informer l'apprenant." },
+        {q: "L'émargement (signature par demi-journée) est-il obligatoire en distanciel ?", options: ["Non, c'est impossible", "Oui, sous forme de signatures électroniques ou de logs de connexion", "Uniquement pour le présentiel"], correct: 1, rationale: "La preuve de présence est requise quelle que soit la modalité." },
+        {q: "Pour obtenir un NDA, le dirigeant doit-il fournir son casier judiciaire ?", options: ["Non, ce n'est pas demandé", "Oui, le bulletin n°3 doit être vierge de certaines condamnations", "Seulement s'il forme des enfants"], correct: 1, rationale: "C'est la condition d'honorabilité prévue à l'article L6352-1." },
+        {q: "Le Cerfa utilisé pour la déclaration d'activité est le numéro :", options: ["14734", "10663", "12156"], correct: 0, rationale: "Le formulaire 14734*10 est le document officiel de demande de NDA." },
+        {q: "Qui peut signer une convention de formation ?", options: ["Uniquement le gérant", "Le représentant légal de l'OF et celui de l'entreprise cliente", "Le stagiaire"], correct: 1, rationale: "C'est un contrat entre deux personnes morales ou représentants d'entités." },
+        {q: "En cas de sous-traitance, qui est responsable de la qualité vis-à-vis du financeur ?", options: ["Le sous-traitant", "Le donneur d'ordre (l'OF qui a signé la convention)", "L'OPCO"], correct: 1, rationale: "Le donneur d'ordre reste le seul interlocuteur responsable devant le client et le financeur." },
+        {q: "Quelle mention est interdite sur les documents d'un OF ?", options: ["'Organisme de formation n°...'", "'Organisme agréé par l'État'", "'Certifié Qualiopi'"], correct: 1, rationale: "Le terme 'agréé' est illégal car le NDA n'est qu'un enregistrement administratif." },
+        {q: "Une facture de formation doit-elle comporter le numéro NDA ?", options: ["Oui, obligatoirement", "Non, c'est pour les conventions uniquement", "Seulement pour les gros montants"], correct: 0, rationale: "Le NDA doit figurer sur tous les documents contractuels et commerciaux (conventions, factures)." },
+        {q: "Le délai de rétractation de 10 jours pour un contrat individuel commence quand ?", options: ["À la fin de la formation", "À compter de la signature du contrat", "À la première heure de cours"], correct: 1, rationale: "Le stagiaire dispose de 10 jours après signature pour se rétracter sans frais." },
+        {q: "Si la formation a lieu à distance, le règlement intérieur doit préciser :", options: ["L'adresse de l'OF", "Les modalités d'accès à la plateforme et les règles de comportement en visio", "Le débit internet minimum"], correct: 1, rationale: "Il doit être adapté à l'environnement numérique de travail." },
+        {q: "L'OF doit informer les stagiaires de la liste des formateurs.", options: ["Vrai", "Faux, c'est secret", "Uniquement si on le demande"], correct: 0, rationale: "C'est une obligation légale de transparence sur les intervenants." },
+        {q: "Le BPF (Bilan Pédagogique et Financier) est-il public ?", options: ["Oui, tout le monde peut le lire", "Non, il est transmis uniquement à l'administration (DREETS)", "Oui, mais seulement la partie financière"], correct: 1, rationale: "C'est une déclaration administrative confidentielle." },
+        {q: "Une entreprise peut-elle être co-contractante avec une autre entreprise pour former ?", options: ["Non, c'est de la sous-traitance obligatoirement", "Oui, c'est la co-traitance (groupement momentané d'entreprises)", "Uniquement dans le bâtiment"], correct: 1, rationale: "La co-traitance permet à plusieurs OF de répondre ensemble à un gros projet." },
+        {q: "En cas de cessation d'activité, que devient le NDA ?", options: ["Il est transmis au successeur", "Il devient caduc dès la notification à la DREETS", "Il reste actif pendant 2 ans"], correct: 1, rationale: "L'OF doit informer la DREETS de l'arrêt de son activité de formation sous 30 jours." },
+        {q: "L'attestation fiscale d'exonération de TVA est-elle valable à vie ?", options: ["Oui", "Non, elle doit être renouvelée tous les ans", "Oui, tant que l'OF conserve son NDA"], correct: 2, rationale: "L'exonération est liée à la détention d'un NDA valide et à l'absence de caducité." }
+    ];
+
+    const glossaryTerms = [
+        { word: "NDA", def: "Numéro de Déclaration d'Activité. Enregistrement obligatoire auprès de la DREETS pour facturer des prestations de formation." },
+        { word: "BPF", def: "Bilan Pédagogique et Financier. Rapport annuel obligatoire détaillant l'activité de formation et les fonds utilisés." },
+        { word: "Cerfa 10663", def: "Formulaire officiel pour demander l'exonération de TVA pour les activités de formation professionnelle." },
+        { word: "Convention de formation", def: "Contrat entre l'OF et un client professionnel (entreprise, association) pour l'achat d'une formation." },
+        { word: "Contrat de formation", def: "Contrat liant l'OF à un particulier (personne physique) finançant sa formation sur ses propres deniers." },
+        { word: "Caducité", def: "Perte de validité automatique d'un NDA (par exemple en cas de non-transmission du BPF)." },
+        { word: "DREETS", def: "Direction Régionale de l'Économie, de l'Emploi, du Travail et des Solidarités (interlocuteur officiel des OF)." },
+        { word: "Attestation de fin de formation", def: "Document obligatoire remis au stagiaire certifiant les acquis et la réalisation du parcours." },
+        { word: "Règlement intérieur", def: "Document fixant les règles de vie, de discipline et de sécurité au sein de l'organisme de formation." },
+        { word: "Sous-traitance", def: "Action par laquelle un OF (donneur d'ordre) confie la réalisation d'une formation à un autre prestataire (sous-traitant)." },
+        { word: "Honorabilité", def: "Obligation pour le dirigeant d'OF de ne pas avoir subi de condamnations pénales spécifiques." },
+        { word: "Émargement", def: "Document (papier ou numérique) prouvant la présence du stagiaire par signature à chaque demi-journée." }
+    ];
+
+    const anecdotes = [
+        "Un simple oubli de BPF au 30 avril peut anéantir un organisme de formation florissant en quelques jours : c'est la caducité immédiate du NDA !",
+        "L'exonération de TVA n'est pas automatique : sans l'envoi du Cerfa 10663 à la DREETS, vous devez facturer 20% de plus à vos clients.",
+        "Même si vous formez depuis votre salon en visio, vous devez avoir un règlement intérieur qui définit les règles de 'netiquette' et de discipline numérique.",
+        "Le NDA n'est pas un diplôme ni un label. Si vous écrivez 'OF agréé' sur votre site, vous risquez une amende salée pour publicité trompeuse.",
+        "Un gérant d'OF doit être 'honorable' : son casier judiciaire est la première chose que la préfecture vérifie."
+    ];
+
+    let gameMode = 'chrono', activeSet = [], current = 0, score = 0, timer, timeLeft, totalQ = 10, lives = 3;
+    let isDarkMode = false, isDys = false, isContrast = false, isCalm = false, isMuted = false, speechRate = 1.2, globalVolume = 1.0;
+
+    let seenGlossaryTerms = new Set(JSON.parse(localStorage.getItem('paia_vocab_006') || '[]'));
+    const maxGlossary = glossaryTerms.length;
+
+    // --- ACCESSIBILITÉ & UI CONTROLS ---
+    function toggleDarkMode() { isDarkMode = !isDarkMode; document.body.classList.toggle('dark-mode', isDarkMode); document.getElementById('btn-dark-mode').innerText = isDarkMode ? "☀️" : "🌙"; }
+    function changeFontSize(s) { let f = parseInt(window.getComputedStyle(document.documentElement).fontSize); document.documentElement.style.fontSize = Math.min(24, Math.max(12, f + (s*2))) + "px"; }
+    function toggleDys(b) { isDys = !isDys; document.body.classList.toggle('dys-mode'); b.classList.toggle('selected-config', isDys); }
+    function toggleContrast(b) { isContrast = !isContrast; document.body.classList.toggle('high-contrast'); b.classList.toggle('selected-config', isContrast); }
+    function toggleAnimations(b) { isCalm = !isCalm; document.body.classList.toggle('no-anim'); b.classList.toggle('selected-config', isCalm); }
+
+    // --- AUDIO CONTROLS ---
+    function changeSpeechRate(s) { speechRate = Math.min(1.5, Math.max(0.5, speechRate + s)); document.getElementById('ui-rate').innerText = "x" + speechRate.toFixed(1); }
+    function changeVolume(v) { globalVolume = Math.min(1, Math.max(0, globalVolume + v)); if(globalVolume > 0 && isMuted) toggleMute(); }
+    function toggleMute() { isMuted = !isMuted; document.getElementById('btn-mute').innerText = isMuted ? "🔇" : "🔊"; if(isMuted) window.speechSynthesis.cancel(); }
+
+    function speak(txt) {
+        if (isMuted) return;
+        window.speechSynthesis.cancel();
+        const m = new SpeechSynthesisUtterance(txt); m.lang = 'fr-FR'; m.rate = speechRate; m.volume = globalVolume; m.pitch = 1.15;
+        window.speechSynthesis.speak(m);
+    }
+    function speakCurrent() {
+        if(!activeSet[current]) return;
+        const d = activeSet[current];
+        let tts = d.q + ". Les propositions sont : ";
+        d.options.forEach((o, i) => tts += `Option ${i+1}, ${o}. `);
+        speak(tts);
+    }
+    function speakGlossary() {
+        let tts = "Glossaire. ";
+        const listItems = document.querySelectorAll('#ui-glossary-list li');
+        if(listItems.length === 0) { tts += "Le glossaire est vide."; }
+        else { listItems.forEach(li => { tts += li.innerText + ". "; }); }
+        speak(tts);
+    }
+
+    // --- GAME LOGIC ---
+    function setMode(mode, btn) {
+        gameMode = mode; highlight(btn);
+        document.getElementById('chrono-settings').classList.toggle('hidden-group', mode === 'vies');
+        document.getElementById('vies-settings').classList.toggle('hidden-group', mode === 'chrono');
+    }
+    function setQ(n, btn) { totalQ = n; highlight(btn); }
+    function setT(n, btn) { timeLimit = n; highlight(btn); }
+    function highlight(btn) { btn.parentNode.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected-config')); btn.classList.add('selected-config'); }
+
+    function startGame() {
+        score = 0; current = 0;
+        if(gameMode === 'vies') { lives = (totalQ <= 10 ? 1 : totalQ <= 20 ? 2 : 3); document.getElementById('ui-hearts').style.display = 'block'; document.getElementById('ui-timer').style.display = 'none'; }
+        else { lives = 99; document.getElementById('ui-hearts').style.display = 'none'; }
+
+        // ALÉATOIRE : Mélange de la banque et extraction
+        activeSet = [...questionBank].sort(() => Math.random() - 0.5).slice(0, totalQ);
+
+        document.getElementById('screen-setup').classList.remove('active-screen');
+        document.getElementById('screen-game').classList.add('active-screen');
+        speak("C'est parti ! Bonne chance.");
+        setTimeout(loadQuestion, 1500);
+    }
+
+    function loadQuestion() {
+        const d = activeSet[current];
+        document.getElementById('ui-q-text').innerText = d.q;
+        document.getElementById('ui-progress').innerText = `📝 Question ${current + 1} / ${totalQ}`;
+        const box = document.getElementById('ui-options'); box.innerHTML = "";
+        document.getElementById('ui-feedback').style.display = "none";
+        document.getElementById('btn-next').style.display = "none";
+        if(gameMode === 'vies') updateHearts();
+
+        let tts = d.q + ". ";
+        d.options.forEach((o, i) => {
+            const b = document.createElement('button'); b.className = "opt-btn"; b.innerText = (i+1) + ". " + o;
+            b.onclick = () => validate(i); box.appendChild(b);
+            tts += `Option ${i+1}, ${o}. `;
+        });
+        speak(tts);
+        if(gameMode === 'chrono' && timeLimit > 0) startTimer();
+    }
+
+    function startTimer() {
+        timeLeft = timeLimit; document.getElementById('ui-timer').style.display = 'block';
+        clearInterval(timer);
+        timer = setInterval(() => {
+            timeLeft--; document.getElementById('ui-timer').innerText = "⏱️ " + timeLeft + "s";
+            document.getElementById('ui-bar').style.width = (timeLeft/timeLimit)*100 + "%";
+            if(timeLeft <= 0) { clearInterval(timer); validate(-1); }
+        }, 1000);
+    }
+
+    function validate(i) {
+        clearInterval(timer);
+        const d = activeSet[current];
+        const f = document.getElementById('ui-feedback');
+        f.style.display = "block";
+        document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+
+        let tts = "";
+        if(i === d.correct) {
+            score++;
+            f.className = "feedback success";
+            f.innerHTML = "✨ <b>Bravo !</b> " + d.rationale;
+            tts = "Excellent ! " + d.rationale;
+            rain();
+        } else {
+            if(gameMode === 'vies') lives--;
+            f.className = "feedback error";
+            tts = (i === -1 ? "Oups, temps écoulé !" : "Erreur !") + " La réponse était : " + d.options[d.correct] + ". " + d.rationale;
+            f.innerHTML = `❌ ${tts}`;
+        }
+        speak(tts);
+        document.getElementById('btn-next').style.display = "block";
+    }
+
+    function updateHearts() { document.getElementById('ui-hearts').innerText = "❤️".repeat(Math.max(0, lives)) + "🖤".repeat(Math.max(0, Math.ceil(totalQ/10) - lives)); }
+
+    function handleNext() {
+        window.speechSynthesis.cancel();
+        current++;
+        if(gameMode === 'vies' && lives <= 0) finish(true);
+        else if(current < activeSet.length) loadQuestion();
+        else finish(false);
+    }
+
+    function generateGlossary(isManual = false) {
+        const listEl = document.getElementById('ui-glossary-list'); listEl.style.opacity = '0.3';
+        setTimeout(() => {
+            let pool = glossaryTerms.filter(t => !seenGlossaryTerms.has(t.word));
+            if(pool.length < 4) { seenGlossaryTerms.clear(); pool = glossaryTerms; }
+            const selection = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
+            selection.forEach(t => seenGlossaryTerms.add(t.word));
+            localStorage.setItem('paia_vocab_006', JSON.stringify([...seenGlossaryTerms]));
+
+            let h = ""; selection.forEach(t => h += `<li><strong>${t.word} :</strong> ${t.def}</li>`);
+            listEl.innerHTML = h; listEl.style.opacity = '1';
+
+            document.getElementById('ui-glossary-progress').innerText = `${seenGlossaryTerms.size} / ${maxGlossary}`;
+            if(seenGlossaryTerms.size >= maxGlossary) {
+                document.getElementById('ui-vocab-diploma').style.display = 'block';
+                document.getElementById('btn-new-words').innerText = "🔄 Revoir les termes";
+            } else {
+                document.getElementById('ui-vocab-diploma').style.display = 'none';
+                document.getElementById('btn-new-words').innerText = "🔄 Termes suivants";
+            }
+            if(isManual) speak("Voici d'autres concepts administratifs.");
+        }, 300);
+    }
+
+    function finish(lose) {
+        document.getElementById('screen-game').classList.remove('active-screen');
+        document.getElementById('screen-result').classList.add('active-screen');
+        document.getElementById('ui-final-score').innerText = `${score} / ${lose ? current : totalQ}`;
+        let msg = lose ? "Game Over ! Reprenez les fondamentaux de la gestion (NDA, BPF, Conventions)." : (score === totalQ ? "Performance exceptionnelle ! L'administration de l'OF n'a plus de secret pour vous." : "C'est validé ! Vous avez bien cerné les obligations administratives.");
+        document.getElementById('ui-humor').innerText = msg;
+        document.getElementById('ui-anecdote').innerText = anecdotes[Math.floor(Math.random()*anecdotes.length)];
+        generateGlossary(false);
+        speak(`Bilan de session terminé. ${msg}`);
+    }
+
+    function rain() {
+        if(isCalm) return;
+        for(let i=0; i<15; i++) {
+            const e = document.createElement('div'); e.className = 'emoji'; e.innerText = '📂📜⚖️'[Math.floor(Math.random()*3)];
+            e.style.position = 'fixed'; e.style.top = '-50px'; e.style.left = Math.random()*100+'vw'; e.style.zIndex = '9999';
+            e.style.animation = `slideUp ${(Math.random()*3+4)}s linear reverse`;
+            document.body.appendChild(e); setTimeout(()=>e.remove(), 7000);
+        }
+    }
+</script>
+</body>
+</html>

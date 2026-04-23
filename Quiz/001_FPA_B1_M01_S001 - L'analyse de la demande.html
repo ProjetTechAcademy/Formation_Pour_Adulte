@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>001_FPA_B1_M01_S001 - Analyse de la demande | PAIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette exacte PAIA */
+            --surface-ivory: #F6F2E8;
+            --title-blue: #0F2C48;
+            --cta-yellow: #D9A526;
+            --alert-bronze: #B4792A;
+            --blanc: #ffffff;
+            --rouge-vies: #e74c3c;
+            --shadow-subtle: 0 4px 20px rgba(15, 44, 72, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+        html { font-size: 16px; transition: font-size 0.2s; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--surface-ivory);
+            color: var(--title-blue);
+            margin: 0; padding: 10px;
+            display: flex; justify-content: center; align-items: flex-start;
+            min-height: 100vh; overflow-x: hidden;
+            transition: all 0.5s ease;
+            padding-bottom: 80px; /* Espace pour la barre de contrôle */
+        }
+
+        /* --- BARRE GLOBALE PAIA (ACCESSIBILITÉ COMPLÈTE) --- */
+        #global-controls-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+            display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap;
+            background: var(--surface-ivory);
+            padding: 10px 15px; box-shadow: 0 -5px 25px rgba(15, 44, 72, 0.1);
+            border-top: 3px solid var(--title-blue);
+        }
+
+        /* --- DARK MODE --- */
+        body.dark-mode {
+            --surface-ivory: #0a1c2e;
+            --blanc: #0F2C48;
+            --title-blue: #F6F2E8;
+            --cta-yellow: #D9A526;
+        }
+        body.dark-mode #global-controls-bar { background: var(--surface-ivory); border-top-color: var(--cta-yellow); }
+        body.dark-mode .config-block, body.dark-mode .glossary-box, body.dark-mode .anecdote-box {
+            background: var(--blanc) !important; border: 1px solid rgba(217, 165, 38, 0.2) !important;
+        }
+        body.dark-mode .opt-btn { background: #153a5e; color: #F6F2E8; border-color: #1a4a7a; }
+        body.dark-mode .diploma { background: var(--blanc); border: 3px solid var(--cta-yellow); color: var(--title-blue); }
+        body.dark-mode .footer-paia { border-top-color: rgba(246, 242, 232, 0.1); }
+
+        /* --- CONTENEUR --- */
+        #quiz-container {
+            background: var(--blanc); max-width: 800px; width: 100%;
+            border-radius: 12px; box-shadow: var(--shadow-subtle);
+            padding: 30px; position: relative; z-index: 10; margin-top: 10px;
+            border: 1px solid rgba(15, 44, 72, 0.1);
+        }
+
+        /* --- HEADER & BRANDING --- */
+        .header-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; }
+        .header-brand { display: flex; align-items: center; gap: 15px; }
+        .header-logo { width: 65px; height: 65px; border-radius: 12px; border: 2px solid var(--title-blue); object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header-titles { text-align: left; }
+        .platform-name { font-family: 'Roboto', sans-serif; font-size: 2rem; font-weight: 900; color: var(--title-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0; line-height: 1; }
+        .platform-sub { color: var(--alert-bronze); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; margin-top: 6px; }
+
+        /* Bouton Teams */
+        .btn-teams {
+            background: linear-gradient(135deg, #464EB8 0%, #E81123 50%, #FFB900 100%);
+            color: #ffffff; padding: 10px 22px; border-radius: 50px; text-decoration: none;
+            font-weight: 700; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s ease, box-shadow 0.2s ease;
+            white-space: nowrap; font-size: 0.95rem;
+        }
+        .btn-teams:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 15px rgba(0,0,0,0.25); color: #ffffff; }
+
+        .module-banner {
+            background: var(--title-blue); color: var(--cta-yellow);
+            padding: 10px 25px; border-radius: 8px; font-weight: 700; margin-bottom: 20px; display: inline-block;
+            border: 1px solid var(--cta-yellow); text-align: center; width: 100%;
+        }
+
+        /* --- ECRANS --- */
+        .screen { display: none; }
+        .active-screen { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .config-block { background: var(--surface-ivory); padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px solid rgba(15, 44, 72, 0.05); }
+        .config-block label { display: block; font-weight: 700; color: var(--title-blue); margin-bottom: 10px; }
+
+        .opt-btn {
+            background: var(--blanc); border: 2px solid rgba(15, 44, 72, 0.2); color: var(--title-blue);
+            padding: 14px 20px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: 500;
+            transition: all 0.2s ease; text-align: left;
+        }
+        .opt-btn:hover:not(:disabled) { border-color: var(--cta-yellow); background-color: rgba(217, 165, 38, 0.05); }
+        .opt-btn.selected-config { background: var(--title-blue); color: var(--cta-yellow); border-color: var(--title-blue); }
+        .compact-btn { padding: 10px 18px; border-radius: 8px; text-align: center; width: auto; flex-grow: 0; font-weight: 700;}
+
+        .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 700;}
+        .timer-box { font-weight: 900; color: var(--alert-bronze); font-size: 1.2rem; }
+
+        .progress-bar { width: 100%; height: 8px; background: rgba(15, 44, 72, 0.1); border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--cta-yellow); width: 0%; transition: width 1s linear; }
+
+        .q-text { font-size: 1.3rem; font-weight: 700; color: var(--title-blue); margin-bottom: 25px; line-height: 1.4; }
+        .options-grid { display: grid; gap: 12px; }
+
+        .feedback { margin-top: 20px; padding: 20px; border-radius: 8px; display: none; font-weight: 500; animation: fadeIn 0.3s; }
+        .success { background: rgba(217, 165, 38, 0.1); color: var(--title-blue); border: 2px solid var(--cta-yellow); }
+        .error { background: #fef2f2; color: #991b1b; border: 2px solid #f87171; }
+
+        .btn-action {
+            background: var(--title-blue); color: var(--surface-ivory); border: 2px solid var(--title-blue); padding: 16px 30px;
+            border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%; margin-top: 20px;
+            transition: all 0.3s ease; text-transform: uppercase;
+        }
+        .btn-action:hover { background: var(--cta-yellow); color: var(--title-blue); border-color: var(--cta-yellow); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(217, 165, 38, 0.3); }
+
+        .glossary-box { margin-top: 25px; padding: 20px; background: var(--surface-ivory); border-radius: 8px; border: 1px dashed var(--cta-yellow); text-align: left; }
+        .glossary-box h3 { color: var(--title-blue); display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; font-weight: 700; margin-top:0;}
+        .glossary-list li { margin-bottom: 12px; padding: 10px; background: var(--blanc); border-radius: 6px; list-style: none; border: 1px solid rgba(15, 44, 72, 0.1); }
+        .glossary-list strong { color: var(--alert-bronze); font-weight: 700; }
+
+        .vocab-diploma { display: none; padding: 25px; background: rgba(217, 165, 38, 0.15); border: 2px solid var(--cta-yellow); border-radius: 8px; text-align: center; margin-top: 20px; font-weight: 700; color: var(--title-blue); }
+        .motivation-banner { margin-top: 20px; padding: 15px; background: rgba(15, 44, 72, 0.05); border-radius: 8px; text-align: center; font-style: italic; font-weight: 500; color: var(--title-blue); border-left: 4px solid var(--alert-bronze); }
+
+        .diploma { text-align: center; }
+
+        /* --- FOOTER PAIA --- */
+        .footer-paia { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(15, 44, 72, 0.1); }
+        .footer-logo { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--cta-yellow); object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .signature { font-size: 11px; color: var(--title-blue); text-align: center; font-weight: 500; line-height: 1.6; opacity: 0.85; }
+
+        .acc-btn { padding: 8px 12px; font-size: 1.1rem; border-radius: 8px; color: var(--title-blue); font-weight: 700; background: transparent; border: none; cursor: pointer; }
+        .control-group-horiz { display: flex; gap: 5px; align-items: center; background: rgba(15, 44, 72, 0.05); padding: 5px 10px; border-radius: 8px; }
+        .divider-vert { width: 1px; height: 25px; background: rgba(15, 44, 72, 0.2); margin: 0 8px; }
+        .hidden-group { display: none !important; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div id="global-controls-bar">
+    <button class="acc-btn" onclick="toggleDarkMode()" id="btn-dark-mode">🌙</button>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="changeFontSize(-1)">A-</button>
+        <button class="acc-btn" onclick="changeFontSize(1)">A+</button>
+    </div>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="toggleMute()" id="btn-mute">🔊</button>
+        <button class="acc-btn" onclick="changeVolume(-0.1)">🔉</button>
+        <button class="acc-btn" onclick="changeVolume(0.1)">🔊</button>
+    </div>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="changeSpeechRate(-0.1)">🗣️-</button>
+        <span id="ui-rate" style="font-weight:700; font-size:0.85rem; min-width:35px; text-align:center;">x1.2</span>
+        <button class="acc-btn" onclick="changeSpeechRate(0.1)">🗣️+</button>
+    </div>
+</div>
+
+<div id="quiz-container">
+    <div class="header">
+        <div class="header-top">
+            <div class="header-brand">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="PAIA Logo" class="header-logo">
+                <div class="header-titles">
+                    <div class="platform-name">Paia</div>
+                    <div class="platform-sub">Adult Learning Hub</div>
+                </div>
+            </div>
+            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgI" target="_blank" class="btn-teams">
+                <span style="font-size:1.2rem;">💬</span> Communauté Teams
+            </a>
+        </div>
+        <div class="module-banner">📌 001_FPA_B1_M01_S001 - L'analyse de la demande</div>
+    </div>
+
+    <div id="screen-setup" class="screen active-screen">
+        <div class="config-block">
+            <label>🛠️ Options Accessibilité</label>
+            <div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleDys(this)">🔤 Dys</button>
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleContrast(this)">🌓 Contraste</button>
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleAnimations(this)">🛑 Calme</button>
+            </div>
+        </div>
+
+        <div class="config-block" style="background: var(--blanc);">
+            <div class="config-grid" style="display:grid; gap:15px;">
+                <div class="config-block"><label>📌 Volume de Questions (Aléatoire)</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setQ(10, this)" class="opt-btn compact-btn selected-config">10</button>
+                    <button onclick="setQ(20, this)" class="opt-btn compact-btn">20</button>
+                    <button onclick="setQ(30, this)" class="opt-btn compact-btn">30</button>
+                </div></div>
+                <div class="config-block"><label>🎮 Style de Jeu</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setMode('chrono', this)" class="opt-btn compact-btn selected-config">⏱️ Chrono</button>
+                    <button onclick="setMode('vies', this)" class="opt-btn compact-btn">❤️ Survie</button>
+                </div></div>
+                <div class="config-block" id="chrono-settings"><label>⏳ Temps / Question</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setT(20, this)" class="opt-btn compact-btn">20s</button>
+                    <button onclick="setT(40, this)" class="opt-btn compact-btn selected-config">40s</button>
+                    <button onclick="setT(0, this)" class="opt-btn compact-btn">∞</button>
+                </div></div>
+            </div>
+            <div id="vies-settings" class="hidden-group" style="padding:10px; border-radius:8px; background:rgba(180, 121, 42, 0.1);">
+                <p style="color:var(--alert-bronze); font-size:0.9rem; margin:0;"><b>Mode Survie :</b> 1 vie / 10 Q. Soyez précis, l'erreur est fatale !</p>
+            </div>
+        </div>
+        <div id="ui-motivation-start" class="motivation-banner">
+            L'analyse est la fondation de l'ingénierie. Prêt à tester vos acquis ?
+        </div>
+        <button class="btn-action" onclick="startGame()">DÉMARRER LA SESSION 🚀</button>
+    </div>
+
+    <div id="screen-game" class="screen">
+        <div class="hud">
+            <div id="ui-timer" class="timer-box" style="display:none;">⏱️ --s</div>
+            <div id="ui-hearts" style="display:none; color:var(--rouge-vies); font-size:1.3rem;">❤️❤️❤️</div>
+            <div id="ui-progress" class="vies">📝 Question 1 / --</div>
+            <button class="acc-btn" style="border:1px solid var(--title-blue);" onclick="speakCurrent()">🎤</button>
+        </div>
+        <div class="progress-bar"><div id="ui-bar" class="progress-fill"></div></div>
+        <div id="ui-q-text" class="q-text" tabindex="0">Chargement...</div>
+        <div id="ui-options" class="options-grid"></div>
+        <div id="ui-feedback" class="feedback" tabindex="-1"></div>
+        <button id="btn-next" class="btn-action" style="display:none;" onclick="handleNext()">CONTINUER ➡️</button>
+    </div>
+
+    <div id="screen-result" class="screen diploma">
+        <div class="diploma-content">
+            <span style="font-size: 3.5rem; display:block; margin-bottom:10px;" id="ui-diploma-icon">🎓</span>
+            <h2 id="final-title" style="font-weight:900; text-transform:uppercase;">BILAN D'ANALYSE</h2>
+            <div id="ui-final-score" style="font-size:4rem; font-weight:900; margin:10px 0; color:var(--cta-yellow);">0/0</div>
+            <p id="ui-humor" style="font-weight:500; padding:0 20px;"></p>
+
+            <div class="motivation-banner" style="text-align:left;">
+                <b>💡 Insight FPA :</b><br><span id="ui-anecdote">...</span>
+            </div>
+
+            <div class="glossary-box">
+                <h3>
+                    <span style="display:flex; align-items:center; gap:10px;">
+                        Glossaire Expert
+                        <button class="acc-btn" style="padding:2px 8px; font-size:1.1rem; color:var(--alert-bronze); border:1px solid rgba(180, 121, 42, 0.3);" onclick="speakGlossary()" title="Écouter les termes affichés">🔊</button>
+                    </span>
+                    <span id="ui-glossary-progress" style="font-size:0.85rem; background:var(--title-blue); color:var(--cta-yellow); padding:4px 12px; border-radius:50px;">0 / 12</span>
+                </h3>
+                <ul class="glossary-list" id="ui-glossary-list"></ul>
+                <button id="btn-new-words" class="opt-btn" style="margin-top:15px; text-align:center; background:transparent; font-weight:700; border-style:dashed;" onclick="generateGlossary(true)">🔄 Termes suivants</button>
+                <div id="ui-vocab-diploma" class="vocab-diploma">🏅 Maîtrise Lexicale Confirmée !</div>
+            </div>
+        </div>
+        <button class="btn-action" onclick="location.reload()">NOUVELLE SESSION 🔄</button>
+    </div>
+
+    <div class="footer-paia">
+        <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo MMPA" class="footer-logo">
+        <div class="signature">💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026 Tous droits réservés</div>
+    </div>
+</div>
+
+<script>
+    // --- BANQUE DE 30 QUESTIONS (FICHE 001 L'ANALYSE DE LA DEMANDE) ---
+    const questionBank = [
+        {q: "Qu'est-ce qu'un parcours de formation multimodale ?", options: ["Une formation 100% en salle", "Un projet combinant plusieurs modalités (présentiel, distanciel, etc.)", "Une formation sans formateur"], correct: 1, rationale: "La multimodalité combine différentes situations d'apprentissage (présentiel, distanciel, expérientiel) pour optimiser le parcours." },
+        {q: "Laquelle de ces affirmations décrit le mieux la conception multimodale ?", options: ["C'est l'équivalent d'une simple préparation de cours", "C'est la gestion d'un projet complet d'ingénierie", "C'est une démarche réservée aux ingénieurs informatiques"], correct: 1, rationale: "Piloter un projet de formation multimodale demande de gérer des étapes d'ingénierie de formation complexes." },
+        {q: "Qu'appelle-t-on un 'livrable' dans un projet de formation ?", options: ["Le repas fourni aux stagiaires", "Un document produit à une étape clé du projet", "Le colis contenant les ordinateurs"], correct: 1, rationale: "Un livrable est un document concret issu du travail d'ingénierie (ex: cahier des charges, scénario, bilan)." },
+        {q: "À quoi sert principalement la méthode QQOQCPC ?", options: ["À mémoriser les prénoms des apprenants", "À structurer un entretien pour n'oublier aucun aspect de la demande", "À calculer le budget final de l'action"], correct: 1, rationale: "C'est un guide de questionnement exhaustif essentiel lors de l'entretien d'explicitation." },
+        {q: "Que cherche-t-on à identifier avec la question 'Qui' (QQOQCPC) ?", options: ["Le montant de la prestation", "Les acteurs impliqués et le public cible", "Le lieu de la formation"], correct: 1, rationale: "Le 'Qui' permet d'identifier le commanditaire, les apprenants, les intervenants, etc." },
+        {q: "Dans la méthode QQOQCPC, que représente le premier 'Q' (Quoi) ?", options: ["La date et l'heure", "L'objet, l'action, la matière à traiter", "La raison de la formation"], correct: 1, rationale: "Le 'Quoi' cerne le sujet central de la demande de formation." },
+        {q: "Quelle question de la méthode QQOQCPC permet d'identifier les ressources financières et temporelles ?", options: ["Comment ?", "Combien ?", "Pourquoi ?"], correct: 1, rationale: "Le 'Combien' évalue les coûts, la durée, et le nombre de participants." },
+        {q: "Pourquoi est-il crucial de poser la question 'Pourquoi' ?", options: ["Pour justifier le prix", "Pour comprendre les enjeux, la finalité et le sens du projet", "Pour contredire le commanditaire"], correct: 1, rationale: "Comprendre le 'Pourquoi' permet de s'assurer que la formation est bien la réponse adaptée au problème posé." },
+        {q: "Quelle posture le formateur doit-il adopter lors de l'entretien d'explicitation ?", options: ["Directive et autoritaire", "Une écoute active et bienveillante", "Commerciale et expéditive"], correct: 1, rationale: "L'écoute active et la neutralité permettent de faire émerger le vrai besoin derrière la demande initiale." },
+        {q: "Qu'est-ce que l'entretien d'explicitation ?", options: ["Un entretien de recrutement pour les formateurs", "Une discussion visant à rendre clair un besoin souvent exprimé de façon floue", "Une réunion budgétaire"], correct: 1, rationale: "L'explicitation aide le commanditaire à clarifier sa demande et ses attentes profondes." },
+        {q: "La formation présentielle se déroule :", options: ["En salle physique, de manière synchrone", "Via une plateforme en ligne", "Uniquement sur le poste de travail"], correct: 0, rationale: "Le présentiel implique la présence physique simultanée du formateur et des apprenants." },
+        {q: "La modalité 'distancielle' peut prendre quelles formes ?", options: ["Uniquement synchrone (classe virtuelle)", "Synchrone ou asynchrone (e-learning)", "Seulement asynchrone (lecture de PDF)"], correct: 1, rationale: "Le distanciel englobe le temps réel (synchrone) et le temps différé (asynchrone)." },
+        {q: "Qu'entend-on par 'modalité expérientielle' ?", options: ["Une expérience scientifique en laboratoire", "L'apprentissage par la pratique en situation réelle (ex: AFEST, stage)", "L'utilisation de la réalité virtuelle exclusivement"], correct: 1, rationale: "C'est l'apprentissage ancré dans l'action et la pratique professionnelle." },
+        {q: "Pourquoi différencier la 'Demande' du 'Besoin' ?", options: ["Ce sont exactement les mêmes choses", "La demande est ce qui est exprimé, le besoin est la nécessité réelle à combler", "C'est une obligation légale de Qualiopi"], correct: 1, rationale: "L'analyse sert justement à passer de la demande (l'envie) au besoin (l'écart de compétences)." },
+        {q: "Qui est le 'commanditaire' dans un projet de formation ?", options: ["La personne physique qui suit la formation", "La personne ou l'entité qui initie la demande et fixe les enjeux stratégiques", "Le formateur indépendant"], correct: 1, rationale: "Le commanditaire (souvent un manager ou RH) pilote la demande côté client." },
+        {q: "Qu'est-ce qu'une formation 'inter-entreprises' ?", options: ["Une formation réservée aux salariés d'une même entreprise", "Une session regroupant des apprenants de différentes structures", "Une formation à l'étranger"], correct: 1, rationale: "L'inter-entreprises favorise la mutualisation des coûts et les échanges entre pairs de divers horizons." },
+        {q: "Qu'est-ce qu'une formation 'intra-entreprise' ?", options: ["Une formation spécifique organisée pour les salariés d'une seule entité", "Une formation en e-learning ouvert à tous", "Une réunion syndicale"], correct: 0, rationale: "L'intra-entreprise est du sur-mesure pour une organisation donnée." },
+        {q: "Que signifie piloter un projet de formation ?", options: ["Conduire le bus des stagiaires", "Coordonner l'ensemble des étapes, de l'analyse jusqu'au bilan final", "Seulement écrire le diaporama"], correct: 1, rationale: "L'ingénierie de formation est une gestion de projet globale." },
+        {q: "Dans la méthode QQOQCPC, que permet d'élucider le 'Où' ?", options: ["La plateforme LMS ou les locaux physiques", "Le budget", "Les objectifs"], correct: 0, rationale: "Le 'Où' concerne les lieux et environnements d'apprentissage." },
+        {q: "Dans la méthode QQOQCPC, à quoi répond le 'Comment' ?", options: ["Aux raisons de la formation", "Aux moyens, méthodes et modalités pédagogiques envisagées", "Au public cible"], correct: 1, rationale: "Il définit l'approche pédagogique et logistique." },
+        {q: "Pourquoi interroge-t-on également les apprenants (si possible) lors de l'analyse ?", options: ["Pour court-circuiter le commanditaire", "Pour identifier leurs prérequis, attentes et freins potentiels", "C'est inutile, seul le manager décide"], correct: 1, rationale: "L'apprenant est au centre du dispositif ; comprendre son point de départ est vital." },
+        {q: "Quel est l'un des livrables possibles issus de l'analyse de la demande ?", options: ["Le cahier des charges de la réponse", "L'attestation de présence", "Le diplôme"], correct: 0, rationale: "L'analyse aboutit souvent à une proposition pédagogique et commerciale ou à un cahier des charges." },
+        {q: "Que se passe-t-il si l'analyse de la demande est bâclée ?", options: ["La formation coûtera moins cher", "Le formateur risque de proposer une solution inadaptée au vrai problème", "Les apprenants seront ravis"], correct: 1, rationale: "Sans analyse, on traite souvent le symptôme sans soigner la cause du manque de compétences." },
+        {q: "La phase d'analyse de la demande correspond à :", options: ["L'ingénierie pédagogique pure", "L'ingénierie de formation (phase de diagnostic)", "L'évaluation à chaud"], correct: 1, rationale: "Elle se situe en tout début de chaîne (macro-conception)." },
+        {q: "Que signifie la reformulation dans un entretien d'explicitation ?", options: ["Répéter bêtement ce que dit le client", "Redire avec ses propres mots pour vérifier la bonne compréhension", "Contredire systématiquement"], correct: 1, rationale: "C'est une technique clé de l'écoute active pour valider les éléments recueillis." },
+        {q: "L'analyse de la demande se fait idéalement :", options: ["Après avoir signé le devis", "Avant la conception de la formation", "Pendant l'animation en salle"], correct: 1, rationale: "C'est le fondement sur lequel tout le projet sera construit." },
+        {q: "L'outil principal de l'entretien d'explicitation est :", options: ["Le questionnaire à choix multiples", "Le questionnement ouvert", "Le monologue du formateur"], correct: 1, rationale: "Les questions ouvertes permettent à l'interlocuteur de s'exprimer librement et en détail." },
+        {q: "Un parcours qui mixe e-learning asynchrone et regroupements physiques est dit :", options: ["Digital", "Blended Learning (ou hybride / multimodal)", "Expérientiel"], correct: 1, rationale: "C'est la définition classique d'un parcours mixte." },
+        {q: "Quel élément fait partie du 'Quand' dans l'analyse ?", options: ["Les dates, la durée totale, les horaires", "Le nom du formateur", "Le tarif horaire"], correct: 0, rationale: "Il définit toutes les contraintes temporelles." },
+        {q: "L'analyse permet de vérifier si la formation est la bonne solution. Parfois, le problème est organisationnel.", options: ["Faux, la formation résout tout", "Vrai, tout écart de performance n'est pas lié à un manque de compétences"], correct: 1, rationale: "Si le problème vient des outils ou de l'organisation, la formation ne servira à rien." }
+    ];
+
+    const glossaryTerms = [
+        { word: "Multimodalité", def: "Combinaison de plusieurs modalités d'apprentissage (présentiel, distanciel, terrain) dans un même parcours." },
+        { word: "Ingénierie de formation", def: "Démarche globale de pilotage de projet, de l'analyse du besoin jusqu'à l'évaluation des impacts." },
+        { word: "Livrable", def: "Document concret marquant l'aboutissement d'une étape du projet (ex: cahier des charges, bilan)." },
+        { word: "QQOQCPC", def: "Outil de questionnement exhaustif : Qui, Quoi, Où, Quand, Comment, Pourquoi, Combien." },
+        { word: "Entretien d'explicitation", def: "Technique d'échange visant à clarifier et détailler une demande initiale parfois floue." },
+        { word: "Commanditaire", def: "Personne ou entité qui initie la demande de formation et en définit les enjeux stratégiques." },
+        { word: "Besoin de formation", def: "L'écart identifié entre les compétences actuelles et celles requises pour une situation." },
+        { word: "Présentiel", def: "Situation de formation où formateur et apprenants sont réunis dans un même lieu physique." },
+        { word: "Distanciel", def: "Apprentissage via des outils numériques, pouvant être synchrone (en direct) ou asynchrone (en différé)." },
+        { word: "Expérientiel", def: "Apprentissage par la pratique et la mise en situation réelle (ex: AFEST)." },
+        { word: "Écoute active", def: "Posture d'attention totale, incluant le questionnement ouvert et la reformulation." },
+        { word: "Inter-entreprises", def: "Formation regroupant des participants issus de différentes organisations." }
+    ];
+
+    const anecdotes = [
+        "Un bon formateur passe parfois plus de temps à analyser la demande qu'à concevoir le contenu : c'est la garantie du succès !",
+        "La méthode QQOQCPC est l'arme fatale pour s'assurer qu'aucun détail logistique ou pédagogique n'a été oublié.",
+        "Parfois, lors de l'explicitation, le client se rend compte que son problème n'est pas un besoin de formation, mais un problème d'organisation interne.",
+        "Le 'livrable' n'est pas un concept abstrait : c'est votre contrat de confiance avec le commanditaire.",
+        "La multimodalité, c'est l'art de choisir le bon format (salle, ligne, terrain) pour le bon objectif pédagogique."
+    ];
+
+    let gameMode = 'chrono', activeSet = [], current = 0, score = 0, timer, timeLeft, totalQ = 10, lives = 3;
+    let isDarkMode = false, isDys = false, isContrast = false, isCalm = false, isMuted = false, speechRate = 1.2, globalVolume = 1.0;
+
+    let seenGlossaryTerms = new Set(JSON.parse(localStorage.getItem('paia_vocab_001') || '[]'));
+    const maxGlossary = glossaryTerms.length;
+
+    // --- ACCESSIBILITÉ & UI CONTROLS ---
+    function toggleDarkMode() { isDarkMode = !isDarkMode; document.body.classList.toggle('dark-mode', isDarkMode); document.getElementById('btn-dark-mode').innerText = isDarkMode ? "☀️" : "🌙"; }
+    function changeFontSize(s) { let f = parseInt(window.getComputedStyle(document.documentElement).fontSize); document.documentElement.style.fontSize = Math.min(24, Math.max(12, f + (s*2))) + "px"; }
+    function toggleDys(b) { isDys = !isDys; document.body.classList.toggle('dys-mode'); b.classList.toggle('selected-config', isDys); }
+    function toggleContrast(b) { isContrast = !isContrast; document.body.classList.toggle('high-contrast'); b.classList.toggle('selected-config', isContrast); }
+    function toggleAnimations(b) { isCalm = !isCalm; document.body.classList.toggle('no-anim'); b.classList.toggle('selected-config', isCalm); }
+
+    // --- AUDIO CONTROLS ---
+    function changeSpeechRate(s) { speechRate = Math.min(1.5, Math.max(0.5, speechRate + s)); document.getElementById('ui-rate').innerText = "x" + speechRate.toFixed(1); }
+    function changeVolume(v) { globalVolume = Math.min(1, Math.max(0, globalVolume + v)); if(globalVolume > 0 && isMuted) toggleMute(); }
+    function toggleMute() { isMuted = !isMuted; document.getElementById('btn-mute').innerText = isMuted ? "🔇" : "🔊"; if(isMuted) window.speechSynthesis.cancel(); }
+
+    function speak(txt) {
+        if (isMuted) return;
+        window.speechSynthesis.cancel();
+        const m = new SpeechSynthesisUtterance(txt); m.lang = 'fr-FR'; m.rate = speechRate; m.volume = globalVolume; m.pitch = 1.15;
+        window.speechSynthesis.speak(m);
+    }
+    function speakCurrent() {
+        if(!activeSet[current]) return;
+        const d = activeSet[current];
+        let tts = d.q + ". Les propositions sont : ";
+        d.options.forEach((o, i) => tts += `Option ${i+1}, ${o}. `);
+        speak(tts);
+    }
+    function speakGlossary() {
+        let tts = "Glossaire. ";
+        const listItems = document.querySelectorAll('#ui-glossary-list li');
+        if(listItems.length === 0) { tts += "Le glossaire est vide."; }
+        else { listItems.forEach(li => { tts += li.innerText + ". "; }); }
+        speak(tts);
+    }
+
+    // --- GAME LOGIC ---
+    function setMode(mode, btn) {
+        gameMode = mode; highlight(btn);
+        document.getElementById('chrono-settings').classList.toggle('hidden-group', mode === 'vies');
+        document.getElementById('vies-settings').classList.toggle('hidden-group', mode === 'chrono');
+    }
+    function setQ(n, btn) { totalQ = n; highlight(btn); }
+    function setT(n, btn) { timeLimit = n; highlight(btn); }
+    function highlight(btn) { btn.parentNode.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected-config')); btn.classList.add('selected-config'); }
+
+    function startGame() {
+        score = 0; current = 0;
+        if(gameMode === 'vies') { lives = (totalQ <= 10 ? 1 : totalQ <= 20 ? 2 : 3); document.getElementById('ui-hearts').style.display = 'block'; document.getElementById('ui-timer').style.display = 'none'; }
+        else { lives = 99; document.getElementById('ui-hearts').style.display = 'none'; }
+
+        // ALÉATOIRE : Mélange de la banque et extraction
+        activeSet = [...questionBank].sort(() => Math.random() - 0.5).slice(0, totalQ);
+
+        document.getElementById('screen-setup').classList.remove('active-screen');
+        document.getElementById('screen-game').classList.add('active-screen');
+        speak("C'est parti ! Bonne chance.");
+        setTimeout(loadQuestion, 1500);
+    }
+
+    function loadQuestion() {
+        const d = activeSet[current];
+        document.getElementById('ui-q-text').innerText = d.q;
+        document.getElementById('ui-progress').innerText = `📝 Question ${current + 1} / ${totalQ}`;
+        const box = document.getElementById('ui-options'); box.innerHTML = "";
+        document.getElementById('ui-feedback').style.display = "none";
+        document.getElementById('btn-next').style.display = "none";
+        if(gameMode === 'vies') updateHearts();
+
+        let tts = d.q + ". ";
+        d.options.forEach((o, i) => {
+            const b = document.createElement('button'); b.className = "opt-btn"; b.innerText = (i+1) + ". " + o;
+            b.onclick = () => validate(i); box.appendChild(b);
+            tts += `Option ${i+1}, ${o}. `;
+        });
+        speak(tts);
+        if(gameMode === 'chrono' && timeLimit > 0) startTimer();
+    }
+
+    function startTimer() {
+        timeLeft = timeLimit; document.getElementById('ui-timer').style.display = 'block';
+        clearInterval(timer);
+        timer = setInterval(() => {
+            timeLeft--; document.getElementById('ui-timer').innerText = "⏱️ " + timeLeft + "s";
+            document.getElementById('ui-bar').style.width = (timeLeft/timeLimit)*100 + "%";
+            if(timeLeft <= 0) { clearInterval(timer); validate(-1); }
+        }, 1000);
+    }
+
+    function validate(i) {
+        clearInterval(timer);
+        const d = activeSet[current];
+        const f = document.getElementById('ui-feedback');
+        f.style.display = "block";
+        document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+
+        let tts = "";
+        if(i === d.correct) {
+            score++;
+            f.className = "feedback success";
+            f.innerHTML = "✨ <b>Bravo !</b> " + d.rationale;
+            tts = "Excellent ! " + d.rationale;
+            rain();
+        } else {
+            if(gameMode === 'vies') lives--;
+            f.className = "feedback error";
+            tts = (i === -1 ? "Oups, temps écoulé !" : "Erreur !") + " La réponse était : " + d.options[d.correct] + ". " + d.rationale;
+            f.innerHTML = `❌ ${tts}`;
+        }
+        speak(tts);
+        document.getElementById('btn-next').style.display = "block";
+    }
+
+    function updateHearts() { document.getElementById('ui-hearts').innerText = "❤️".repeat(Math.max(0, lives)) + "🖤".repeat(Math.max(0, Math.ceil(totalQ/10) - lives)); }
+
+    function handleNext() {
+        window.speechSynthesis.cancel();
+        current++;
+        if(gameMode === 'vies' && lives <= 0) finish(true);
+        else if(current < activeSet.length) loadQuestion();
+        else finish(false);
+    }
+
+    function generateGlossary(isManual = false) {
+        const listEl = document.getElementById('ui-glossary-list'); listEl.style.opacity = '0.3';
+        setTimeout(() => {
+            let pool = glossaryTerms.filter(t => !seenGlossaryTerms.has(t.word));
+            if(pool.length < 5) { seenGlossaryTerms.clear(); pool = glossaryTerms; }
+            const selection = pool.sort(() => 0.5 - Math.random()).slice(0, 5);
+            selection.forEach(t => seenGlossaryTerms.add(t.word));
+            localStorage.setItem('paia_vocab_001', JSON.stringify([...seenGlossaryTerms]));
+
+            let h = ""; selection.forEach(t => h += `<li><strong>${t.word} :</strong> ${t.def}</li>`);
+            listEl.innerHTML = h; listEl.style.opacity = '1';
+
+            document.getElementById('ui-glossary-progress').innerText = `${seenGlossaryTerms.size} / ${maxGlossary}`;
+            if(seenGlossaryTerms.size >= maxGlossary) {
+                document.getElementById('ui-vocab-diploma').style.display = 'block';
+                document.getElementById('btn-new-words').innerText = "🔄 Revoir les termes";
+            } else {
+                document.getElementById('ui-vocab-diploma').style.display = 'none';
+                document.getElementById('btn-new-words').innerText = "🔄 Termes suivants";
+            }
+            if(isManual) speak("Voici d'autres concepts à maîtriser.");
+        }, 300);
+    }
+
+    function finish(lose) {
+        document.getElementById('screen-game').classList.remove('active-screen');
+        document.getElementById('screen-result').classList.add('active-screen');
+        document.getElementById('ui-final-score').innerText = `${score} / ${lose ? current : totalQ}`;
+        let msg = lose ? "Game Over ! Reprenez les fondamentaux de l'analyse avec le QQOQCPC." : (score === totalQ ? "Performance exceptionnelle ! L'ingénierie de formation n'a plus de secret pour vous." : "C'est validé ! Vous avez bien cerné l'importance de l'analyse.");
+        document.getElementById('ui-humor').innerText = msg;
+        document.getElementById('ui-anecdote').innerText = anecdotes[Math.floor(Math.random()*anecdotes.length)];
+        generateGlossary(false);
+        speak(`Bilan de session terminé. ${msg}`);
+    }
+
+    function rain() {
+        if(isCalm) return;
+        for(let i=0; i<15; i++) {
+            const e = document.createElement('div'); e.className = 'emoji'; e.innerText = '🎓🌟💎'[Math.floor(Math.random()*3)];
+            e.style.position = 'fixed'; e.style.top = '-50px'; e.style.left = Math.random()*100+'vw'; e.style.zIndex = '9999';
+            e.style.animation = `slideUp ${(Math.random()*3+4)}s linear reverse`;
+            document.body.appendChild(e); setTimeout(()=>e.remove(), 7000);
+        }
+    }
+</script>
+</body>
+</html>

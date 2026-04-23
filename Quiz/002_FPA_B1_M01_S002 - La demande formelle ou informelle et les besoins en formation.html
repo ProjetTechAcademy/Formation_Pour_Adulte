@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>002_FPA_B1_M01_S002 - Demande & Besoins | PAIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette exacte PAIA */
+            --surface-ivory: #F6F2E8;
+            --title-blue: #0F2C48;
+            --cta-yellow: #D9A526;
+            --alert-bronze: #B4792A;
+            --blanc: #ffffff;
+            --rouge-vies: #e74c3c;
+            --shadow-subtle: 0 4px 20px rgba(15, 44, 72, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+        html { font-size: 16px; transition: font-size 0.2s; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--surface-ivory);
+            color: var(--title-blue);
+            margin: 0; padding: 10px;
+            display: flex; justify-content: center; align-items: flex-start;
+            min-height: 100vh; overflow-x: hidden;
+            transition: all 0.5s ease;
+            padding-bottom: 80px;
+        }
+
+        /* --- BARRE GLOBALE PAIA --- */
+        #global-controls-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+            display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap;
+            background: var(--surface-ivory);
+            padding: 10px 15px; box-shadow: 0 -5px 25px rgba(15, 44, 72, 0.1);
+            border-top: 3px solid var(--title-blue);
+        }
+
+        /* --- DARK MODE --- */
+        body.dark-mode {
+            --surface-ivory: #0a1c2e;
+            --blanc: #0F2C48;
+            --title-blue: #F6F2E8;
+            --cta-yellow: #D9A526;
+        }
+        body.dark-mode #global-controls-bar { background: var(--surface-ivory); border-top-color: var(--cta-yellow); }
+        body.dark-mode .config-block, body.dark-mode .glossary-box, body.dark-mode .anecdote-box {
+            background: var(--blanc) !important; border: 1px solid rgba(217, 165, 38, 0.2) !important;
+        }
+        body.dark-mode .opt-btn { background: #153a5e; color: #F6F2E8; border-color: #1a4a7a; }
+        body.dark-mode .diploma { background: var(--blanc); border: 3px solid var(--cta-yellow); color: var(--title-blue); }
+        body.dark-mode .footer-paia { border-top-color: rgba(246, 242, 232, 0.1); }
+
+        /* --- CONTENEUR --- */
+        #quiz-container {
+            background: var(--blanc); max-width: 800px; width: 100%;
+            border-radius: 12px; box-shadow: var(--shadow-subtle);
+            padding: 30px; position: relative; z-index: 10; margin-top: 10px;
+            border: 1px solid rgba(15, 44, 72, 0.1);
+        }
+
+        /* --- HEADER & BRANDING --- */
+        .header-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; }
+        .header-brand { display: flex; align-items: center; gap: 15px; }
+        .header-logo { width: 65px; height: 65px; border-radius: 12px; border: 2px solid var(--title-blue); object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header-titles { text-align: left; }
+        .platform-name { font-family: 'Roboto', sans-serif; font-size: 2rem; font-weight: 900; color: var(--title-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0; line-height: 1; }
+        .platform-sub { color: var(--alert-bronze); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; margin-top: 6px; }
+
+        /* Bouton Teams */
+        .btn-teams {
+            background: linear-gradient(135deg, #464EB8 0%, #E81123 50%, #FFB900 100%);
+            color: #ffffff; padding: 10px 22px; border-radius: 50px; text-decoration: none;
+            font-weight: 700; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s ease, box-shadow 0.2s ease;
+            white-space: nowrap; font-size: 0.95rem;
+        }
+        .btn-teams:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 15px rgba(0,0,0,0.25); color: #ffffff; }
+
+        .module-banner {
+            background: var(--title-blue); color: var(--cta-yellow);
+            padding: 10px 25px; border-radius: 8px; font-weight: 700; margin-bottom: 20px; display: inline-block;
+            border: 1px solid var(--cta-yellow); text-align: center; width: 100%;
+        }
+
+        /* --- ECRANS --- */
+        .screen { display: none; }
+        .active-screen { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .config-block { background: var(--surface-ivory); padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px solid rgba(15, 44, 72, 0.05); }
+        .config-block label { display: block; font-weight: 700; color: var(--title-blue); margin-bottom: 10px; }
+
+        .opt-btn {
+            background: var(--blanc); border: 2px solid rgba(15, 44, 72, 0.2); color: var(--title-blue);
+            padding: 14px 20px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: 500;
+            transition: all 0.2s ease; text-align: left;
+        }
+        .opt-btn:hover:not(:disabled) { border-color: var(--cta-yellow); background-color: rgba(217, 165, 38, 0.05); }
+        .opt-btn.selected-config { background: var(--title-blue); color: var(--cta-yellow); border-color: var(--title-blue); }
+        .compact-btn { padding: 10px 18px; border-radius: 8px; text-align: center; width: auto; flex-grow: 0; font-weight: 700;}
+
+        .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 700;}
+        .timer-box { font-weight: 900; color: var(--alert-bronze); font-size: 1.2rem; }
+
+        .progress-bar { width: 100%; height: 8px; background: rgba(15, 44, 72, 0.1); border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--cta-yellow); width: 100%; transition: width 1s linear; }
+
+        .q-text { font-size: 1.3rem; font-weight: 700; color: var(--title-blue); margin-bottom: 25px; line-height: 1.4; }
+        .options-grid { display: grid; gap: 12px; }
+
+        .feedback { margin-top: 20px; padding: 20px; border-radius: 8px; display: none; font-weight: 500; animation: fadeIn 0.3s; }
+        .success { background: rgba(217, 165, 38, 0.1); color: var(--title-blue); border: 2px solid var(--cta-yellow); }
+        .error { background: #fef2f2; color: #991b1b; border: 2px solid #f87171; }
+
+        .btn-action {
+            background: var(--title-blue); color: var(--surface-ivory); border: 2px solid var(--title-blue); padding: 16px 30px;
+            border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%; margin-top: 20px;
+            transition: all 0.3s ease; text-transform: uppercase;
+        }
+        .btn-action:hover { background: var(--cta-yellow); color: var(--title-blue); border-color: var(--cta-yellow); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(217, 165, 38, 0.3); }
+
+        .glossary-box { margin-top: 25px; padding: 20px; background: var(--surface-ivory); border-radius: 8px; border: 1px dashed var(--cta-yellow); text-align: left; }
+        .glossary-box h3 { color: var(--title-blue); display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; font-weight: 700; margin-top:0;}
+        .glossary-list li { margin-bottom: 12px; padding: 10px; background: var(--blanc); border-radius: 6px; list-style: none; border: 1px solid rgba(15, 44, 72, 0.1); }
+        .glossary-list strong { color: var(--alert-bronze); font-weight: 700; }
+
+        .vocab-diploma { display: none; padding: 25px; background: rgba(217, 165, 38, 0.15); border: 2px solid var(--cta-yellow); border-radius: 8px; text-align: center; margin-top: 20px; font-weight: 700; color: var(--title-blue); }
+        .motivation-banner { margin-top: 20px; padding: 15px; background: rgba(15, 44, 72, 0.05); border-radius: 8px; text-align: center; font-style: italic; font-weight: 500; color: var(--title-blue); border-left: 4px solid var(--alert-bronze); }
+
+        .diploma { text-align: center; }
+
+        /* --- FOOTER PAIA --- */
+        .footer-paia { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(15, 44, 72, 0.1); }
+        .footer-logo { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--cta-yellow); object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .signature { font-size: 11px; color: var(--title-blue); text-align: center; font-weight: 500; line-height: 1.6; opacity: 0.85; }
+
+        .acc-btn { padding: 8px 12px; font-size: 1.1rem; border-radius: 8px; color: var(--title-blue); font-weight: 700; background: transparent; border: none; cursor: pointer; }
+        .control-group-horiz { display: flex; gap: 5px; align-items: center; background: rgba(15, 44, 72, 0.05); padding: 5px 10px; border-radius: 8px; }
+        .divider-vert { width: 1px; height: 25px; background: rgba(15, 44, 72, 0.2); margin: 0 8px; }
+        .hidden-group { display: none !important; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div id="global-controls-bar">
+    <button class="acc-btn" onclick="toggleDarkMode()" id="btn-dark-mode">🌙</button>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="changeFontSize(-1)">A-</button>
+        <button class="acc-btn" onclick="changeFontSize(1)">A+</button>
+    </div>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="toggleMute()" id="btn-mute">🔊</button>
+        <button class="acc-btn" onclick="changeVolume(-0.1)">🔉</button>
+        <button class="acc-btn" onclick="changeVolume(0.1)">🔊</button>
+    </div>
+    <div class="divider-vert"></div>
+    <div class="control-group-horiz">
+        <button class="acc-btn" onclick="changeSpeechRate(-0.1)">🗣️-</button>
+        <span id="ui-rate" style="font-weight:700; font-size:0.85rem; min-width:35px; text-align:center;">x1.2</span>
+        <button class="acc-btn" onclick="changeSpeechRate(0.1)">🗣️+</button>
+    </div>
+</div>
+
+<div id="quiz-container">
+    <div class="header">
+        <div class="header-top">
+            <div class="header-brand">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="PAIA Logo" class="header-logo">
+                <div class="header-titles">
+                    <div class="platform-name">Paia</div>
+                    <div class="platform-sub">Adult Learning Hub</div>
+                </div>
+            </div>
+            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgI" target="_blank" class="btn-teams">
+                <span style="font-size:1.2rem;">💬</span> Communauté Teams
+            </a>
+        </div>
+        <div class="module-banner">📌 002_FPA_B1_M01_S002 - Demande & Besoins en formation</div>
+    </div>
+
+    <div id="screen-setup" class="screen active-screen">
+        <div class="config-block">
+            <label>🛠️ Options Accessibilité</label>
+            <div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleDys(this)">🔤 Dys</button>
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleContrast(this)">🌓 Contraste</button>
+                <button class="opt-btn acc-btn compact-btn" onclick="toggleAnimations(this)">🛑 Calme</button>
+            </div>
+        </div>
+
+        <div class="config-block" style="background: var(--blanc);">
+            <div class="config-grid" style="display:grid; gap:15px;">
+                <div class="config-block"><label>📌 Volume de Questions</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setQ(10, this)" class="opt-btn compact-btn selected-config">10</button>
+                    <button onclick="setQ(15, this)" class="opt-btn compact-btn">15</button>
+                    <button onclick="setQ(20, this)" class="opt-btn compact-btn">20</button>
+                </div></div>
+                <div class="config-block"><label>🎮 Style de Jeu</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setMode('chrono', this)" class="opt-btn compact-btn selected-config">⏱️ Chrono</button>
+                    <button onclick="setMode('vies', this)" class="opt-btn compact-btn">❤️ Survie</button>
+                </div></div>
+                <div class="config-block" id="chrono-settings"><label>⏳ Temps / Question</label><div class="btn-group" style="display:flex; gap:10px; justify-content:center;">
+                    <button onclick="setT(20, this)" class="opt-btn compact-btn">20s</button>
+                    <button onclick="setT(40, this)" class="opt-btn compact-btn selected-config">40s</button>
+                    <button onclick="setT(0, this)" class="opt-btn compact-btn">∞</button>
+                </div></div>
+            </div>
+            <div id="vies-settings" class="hidden-group" style="padding:10px; border-radius:8px; background:rgba(180, 121, 42, 0.1);">
+                <p style="color:var(--alert-bronze); font-size:0.9rem; margin:0;"><b>Mode Survie :</b> 1 vie / 10 Q. Soyez précis, l'erreur est fatale !</p>
+            </div>
+        </div>
+        <div id="ui-motivation-start" class="motivation-banner">...</div>
+        <button class="btn-action" onclick="startGame()">DÉMARRER LA SESSION 🚀</button>
+    </div>
+
+    <div id="screen-game" class="screen">
+        <div class="hud">
+            <div id="ui-timer" class="timer-box" style="display:none;">⏱️ --s</div>
+            <div id="ui-hearts" style="display:none; color:var(--rouge-vies); font-size:1.3rem;">❤️❤️❤️</div>
+            <div id="ui-progress" class="vies">📝 Question 1 / 10</div>
+            <button class="acc-btn" style="border:1px solid var(--title-blue);" onclick="speakCurrent()">🎤</button>
+        </div>
+        <div class="progress-bar"><div id="ui-bar" class="progress-fill"></div></div>
+        <div id="ui-q-text" class="q-text" tabindex="0">Chargement...</div>
+        <div id="ui-options" class="options-grid"></div>
+        <div id="ui-feedback" class="feedback" tabindex="-1"></div>
+        <button id="btn-next" class="btn-action" style="display:none;" onclick="handleNext()">CONTINUER ➡️</button>
+    </div>
+
+    <div id="screen-result" class="screen diploma">
+        <div class="diploma-content">
+            <span style="font-size: 3.5rem; display:block; margin-bottom:10px;" id="ui-diploma-icon">🎓</span>
+            <h2 id="final-title" style="font-weight:900; text-transform:uppercase;">BILAN DE COMPÉTENCES</h2>
+            <div id="ui-final-score" style="font-size:4rem; font-weight:900; margin:10px 0; color:var(--cta-yellow);">0/0</div>
+            <p id="ui-humor" style="font-weight:500; padding:0 20px;"></p>
+
+            <div class="motivation-banner" style="text-align:left;">
+                <b>💡 Insight FPA :</b><br><span id="ui-anecdote">...</span>
+            </div>
+
+            <div class="glossary-box">
+                <h3>Glossaire Expert <span id="ui-glossary-progress" style="font-size:0.85rem; background:var(--title-blue); color:var(--cta-yellow); padding:4px 12px; border-radius:50px;">0 / 22</span></h3>
+                <ul class="glossary-list" id="ui-glossary-list"></ul>
+                <button id="btn-new-words" class="opt-btn" style="margin-top:15px; text-align:center; background:transparent; font-weight:700; border-style:dashed;" onclick="generateGlossary(true)">🔄 Termes suivants</button>
+                <div id="ui-vocab-diploma" class="vocab-diploma">🏅 Maîtrise Lexicale Confirmée !</div>
+            </div>
+        </div>
+        <button class="btn-action" onclick="location.reload()">NOUVELLE SESSION 🔄</button>
+    </div>
+
+    <div class="footer-paia">
+        <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo MMPA" class="footer-logo">
+        <div class="signature">💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026 Tous droits réservés</div>
+    </div>
+</div>
+
+<script>
+    // --- QUESTIONS EXTRAITES DU PDF 002 ---
+    const allQuestions = [
+        {q: "Qu'est-ce qu'un besoin en formation ?", options: ["Une demande budgétaire des RH", "L'écart entre les compétences actuelles et celles requises", "Une évaluation des performances"], correct: 1, rationale: "C'est une lacune identifiée dans les compétences ou les connaissances nécessitant une formation pour être comblée." },
+        {q: "D'où provient généralement une demande formelle de formation ?", options: ["Exclusivement d'une rumeur interne", "De l'organisation ou de la direction", "Uniquement des stagiaires"], correct: 1, rationale: "Elle découle souvent de l'organisation pour atteindre ses objectifs stratégiques, bien qu'elle puisse aussi provenir des employés de manière documentée." },
+        {q: "Une demande informelle de formation est souvent motivée par :", options: ["Les objectifs stratégiques de la direction", "L'intérêt personnel d'un employé", "Un audit qualité obligatoire"], correct: 1, rationale: "Elle provient souvent des employés eux-mêmes, cherchant à développer une expertise dans un domaine qui les passionne ou pour rester compétitifs." },
+        {q: "Comment est-il recommandé de traiter une demande informelle exprimée oralement ?", options: ["L'ignorer car elle n'a pas de valeur juridique", "La documenter par la suite", "Exiger un rapport de 10 pages immédiatement"], correct: 1, rationale: "Même exprimée verbalement (ex: lors d'une réunion), il est recommandé de la documenter si elle nécessite des actions ultérieures." },
+        {q: "Sur quoi se concentre l'identification des besoins d'accompagnement en formation ?", options: ["La création du cahier des charges", "Les connaissances théoriques à mémoriser", "Les obstacles à l'apprentissage et le soutien nécessaire"], correct: 2, rationale: "Cela englobe les facteurs qui entravent l'efficacité de l'apprentissage (motivation, temps) et le soutien nécessaire (tutorat, coaching)." },
+        {q: "Que désigne l'identification des besoins des savoirs à acquérir ?", options: ["L'analyse des compétences et la définition des objectifs d'apprentissage", "La réservation de la salle de formation", "Le calcul du retour sur investissement"], correct: 0, rationale: "Elle se concentre sur les connaissances et aptitudes spécifiques que les apprenants doivent acquérir." },
+        {q: "Quelle est l'une des caractéristiques principales d'une demande de formation formelle ?", options: ["Elle offre une totale flexibilité et autonomie à l'employé", "Elle est basée sur une évaluation systématique des besoins", "Elle ne nécessite pas de budget dédié"], correct: 1, rationale: "Une demande formelle implique une planification, un budget, des objectifs organisationnels et une autorisation de la direction." },
+        {q: "Laquelle de ces motivations n'est pas typiquement à l'origine d'un besoin en formation (selon la fiche) ?", options: ["Changements organisationnels (fusion)", "Évolution des technologies", "L'envie de réduire les effectifs"], correct: 2, rationale: "Les motivations réelles sont l'évolution technologique, le changement, la performance individuelle, le réglementaire et les besoins du marché." },
+        {q: "Face à un besoin en formation, adopter une posture d''écoute active' signifie :", options: ["Accepter immédiatement la demande sans discuter", "Porter une attention particulière aux besoins exprimés en posant des questions", "Déléguer la demande aux RH"], correct: 1, rationale: "Il faut écouter attentivement les préoccupations et poser des questions pour clarifier et approfondir sa compréhension." },
+        {q: "Quelle est la principale différence entre un appel d'offres et un appel à projets en formation ?", options: ["L'appel à projets cherche des propositions innovantes, l'appel d'offres répond à un besoin précis", "L'appel d'offres est uniquement pour le secteur privé", "L'appel à projets ne nécessite aucun financement"], correct: 0, rationale: "L'appel à projets est plus souple et favorise la créativité, tandis que l'appel d'offres est plus structuré, contractuel et formel." },
+        {q: "Le cahier des charges de la réponse est rédigé par :", options: ["Le client (l'entreprise)", "Le prestataire de formation", "L'OPCO"], correct: 1, rationale: "C'est le document où le prestataire détaille sa méthodologie, ses moyens et son budget pour répondre à l'offre." },
+        {q: "Lors d'une demande formelle par e-mail, la justification du besoin doit être :", options: ["Complète, détaillée et expliquer en profondeur le besoin", "Succincte et orientée vers une discussion initiale", "Remplacée par un appel téléphonique"], correct: 0, rationale: "Une demande formelle doit expliquer en profondeur pourquoi la formation est nécessaire, les objectifs et les résultats attendus." },
+        {q: "Quel est l'enjeu principal d'une demande de formation ?", options: ["La gestion des conflits", "L'amélioration des compétences et des connaissances des participants", "La rétention des talents uniquement"], correct: 1, rationale: "Bien que la rétention des talents soit un enjeu, l'enjeu principal et direct est l'amélioration des compétences (techniques ou professionnelles)." },
+        {q: "Dans l'élaboration d'un appel d'offres formel, quelle est la première étape ?", options: ["Évaluation des offres", "Préparation du cahier des charges", "Diffusion de l'appel d'offres"], correct: 1, rationale: "Il faut d'abord que l'organisation définisse les critères, objectifs et spécifications (le cahier des charges) avant de le diffuser." },
+        {q: "Une session de formation pour s'adapter à une nouvelle réglementation sur la protection des données répond à un besoin de type :", options: ["Performance individuelle", "Adaptation aux exigences réglementaires ou légales", "Besoins des clients"], correct: 1, rationale: "L'obligation de se conformer à une nouvelle loi (ex: RGPD) déclenche automatiquement ce type de besoin en formation." },
+        {q: "Le cahier des charges de l'offre (rédigé par l'entreprise) inclut généralement :", options: ["Le CV détaillé des formateurs du prestataire", "Les objectifs, le budget, le public cible et les modalités d'organisation", "La signature des stagiaires"], correct: 1, rationale: "C'est le document qui définit les besoins précis de l'entreprise avant que les prestataires ne fassent leurs propositions." },
+        {q: "Une demande de formation informelle requiert-elle les mêmes formalités administratives qu'une formelle ?", options: ["Oui, c'est une obligation légale", "Non, elle peut ne pas nécessiter d'approbation hiérarchique complexe", "Oui, mais uniquement si elle dépasse 1000€"], correct: 1, rationale: "La demande informelle est plus libre, conversationnelle et moins axée sur les lourdeurs administratives." },
+        {q: "La rétention des talents est-elle un enjeu d'une demande de formation ?", options: ["Non, ça n'a aucun lien", "Oui, en offrant des opportunités de développement aux employés", "Uniquement pour les cadres dirigeants"], correct: 1, rationale: "La formation fidélise les employés en leur permettant d'évoluer dans leur carrière au sein de l'organisation." },
+        {q: "Dans l'évaluation des offres de formation (étape 4), l'organisation :", options: ["Choisit le moins cher obligatoirement", "Examine les offres selon les critères définis dans le cahier des charges", "Fait passer un test aux formateurs"], correct: 1, rationale: "L'organisation sélectionne le prestataire le plus approprié en fonction des spécifications techniques et exigences initiales." },
+        {q: "La posture 'Adaptation au contexte' lors de l'analyse d'un besoin consiste à :", options: ["Changer de salle de formation", "Comprendre les contraintes organisationnelles et les priorités stratégiques de l'entreprise", "Proposer la même formation à toutes les entreprises"], correct: 1, rationale: "Il est crucial de chercher des solutions qui s'alignent avec les ressources et les enjeux opérationnels spécifiques de l'entreprise." }
+    ];
+
+    // --- GLOSSAIRE EXTRAIT DU PDF 002 ---
+    const allGlossaryTerms = [
+        { word: "Besoin en formation", def: "Écart identifié entre les compétences/connaissances actuelles d'un individu et celles requises pour atteindre un objectif." },
+        { word: "Demande formelle", def: "Demande officielle, alignée sur les objectifs stratégiques, nécessitant planification, budget et autorisation de la direction." },
+        { word: "Demande informelle", def: "Expression d'intérêt plus souple, souvent motivée par l'employé lui-même, nécessitant d'être documentée par la suite." },
+        { word: "Besoins des savoirs", def: "Connaissances, compétences et aptitudes spécifiques que les apprenants doivent acquérir." },
+        { word: "Besoins d'accompagnement", def: "Soutien et encadrement nécessaires pour lever les obstacles à l'apprentissage (motivation, temps, etc.)." },
+        { word: "Posture : Écoute active", def: "Attitude consistant à prêter une attention particulière aux besoins exprimés, en posant des questions pour clarifier." },
+        { word: "Posture : Adaptation au contexte", def: "Prise en compte des contraintes organisationnelles, ressources disponibles et priorités de l'entreprise." },
+        { word: "Enjeu : Rétention des talents", def: "Utiliser la formation comme levier pour fidéliser les employés en leur offrant des opportunités d'évolution." },
+        { word: "Appel d'offres", def: "Procédure formelle sollicitant des propositions de prestataires répondant à des besoins précis et contractuels." },
+        { word: "Appel à projets", def: "Procédure plus souple axée sur la recherche de propositions innovantes et créatives de la part des prestataires." },
+        { word: "Cahier des charges de l'offre", def: "Document rédigé par l'entreprise définissant ses attentes (objectifs, public, budget, modalités)." },
+        { word: "Cahier des charges de la réponse", def: "Proposition rédigée par le prestataire détaillant sa méthodologie, ses moyens et budget." },
+        { word: "Évaluation des besoins", def: "Processus systématique (enquêtes, retours) à la base d'une demande formelle de formation." },
+        { word: "Auto-identification des besoins", def: "Capacité d'un employé à identifier lui-même ses lacunes pour formuler une demande informelle." },
+        { word: "Demande par mail formelle", def: "Message structuré, précis, avec un langage professionnel, justifiant en profondeur le besoin." },
+        { word: "Demande par mail informelle", def: "Message conversationnel, succinct, visant souvent à amorcer une discussion avec un responsable." },
+        { word: "Changements organisationnels", def: "Fusions, restructurations ou nouvelles stratégies nécessitant d'adapter les compétences des employés." },
+        { word: "Évaluation continue", def: "Mesure régulière de l'efficacité de la formation pour y apporter des ajustements." },
+        { word: "Critères de sélection", def: "Éléments (expérience, pédagogie, budget) utilisés par l'entreprise pour choisir le bon prestataire." },
+        { word: "Modalités d'organisation", def: "Format, durée, planning, lieu (présentiel, distanciel) définis dans un cahier des charges." },
+        { word: "Négociation et finalisation", def: "Dernière étape de l'appel d'offres visant à établir un contrat formel entre les deux parties." },
+        { word: "Performance organisationnelle", def: "Amélioration de la productivité globale de l'entreprise, souvent un objectif majeur des formations formelles." }
+    ];
+
+    const anecdotes = [
+        "Un besoin en formation n'est pas une envie, c'est l'écart précis entre ce qu'un employé sait faire et ce qu'il doit faire.",
+        "Même lors d'une discussion informelle à la machine à café, une demande de formation gagne à être tracée par écrit !",
+        "L'appel à projets est le terrain de jeu des organismes de formation pour proposer des idées totalement innovantes.",
+        "Un cahier des charges incomplet, c'est la garantie de recevoir des offres qui répondent à côté du besoin de l'entreprise.",
+        "L'identification des besoins ne s'arrête pas aux savoirs : si l'apprenant manque de temps (besoin d'accompagnement), la formation échouera."
+    ];
+
+    // --- LOGIQUE CORE PAIA ---
+    let gameMode = 'chrono', activeSet = [], current = 0, score = 0, timeLimit = 40, timer, timeLeft, totalQ = 10, lives = 3, isDarkMode = false, isDys = false, isContrast = false, isCalm = false, isMuted = false, speechRate = 1.2, globalVolume = 1.0;
+    let seenGlossaryTerms = new Set(JSON.parse(localStorage.getItem('paia_vocab_002_new') || '[]'));
+    const maxGlossary = allGlossaryTerms.length;
+
+    function toggleDarkMode() { isDarkMode = !isDarkMode; document.body.classList.toggle('dark-mode', isDarkMode); document.getElementById('btn-dark-mode').innerText = isDarkMode ? "☀️" : "🌙"; }
+    function changeSpeechRate(s) { speechRate = Math.min(1.5, Math.max(0.5, speechRate + s)); document.getElementById('ui-rate').innerText = "x" + speechRate.toFixed(1); }
+    function changeVolume(v) { globalVolume = Math.min(1, Math.max(0, globalVolume + v)); if(globalVolume > 0 && isMuted) toggleMute(); }
+    function toggleMute() { isMuted = !isMuted; document.getElementById('btn-mute').innerText = isMuted ? "🔇" : "🔊"; if(isMuted) speechSynthesis.cancel(); }
+
+    function speak(txt) {
+        if (isMuted) return; speechSynthesis.cancel();
+        const m = new SpeechSynthesisUtterance(txt); m.lang = 'fr-FR'; m.rate = speechRate; m.volume = globalVolume; m.pitch = 1.15;
+        speechSynthesis.speak(m);
+    }
+
+    function setMode(mode, btn) {
+        gameMode = mode; highlight(btn);
+        document.getElementById('chrono-settings').classList.toggle('hidden-group', mode === 'vies');
+        document.getElementById('vies-settings').classList.toggle('hidden-group', mode === 'chrono');
+    }
+    function setQ(n, btn) { totalQ = Math.min(n, allQuestions.length); highlight(btn); }
+    function setT(n, btn) { timeLimit = n; highlight(btn); }
+    function highlight(btn) { btn.parentNode.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected-config')); btn.classList.add('selected-config'); }
+
+    function startGame() {
+        score = 0; current = 0;
+        if(gameMode === 'vies') { lives = (totalQ <= 10 ? 1 : totalQ <= 20 ? 2 : 3); document.getElementById('ui-hearts').style.display = 'block'; document.getElementById('ui-timer').style.display = 'none'; }
+        else { lives = 99; document.getElementById('ui-hearts').style.display = 'none'; }
+        activeSet = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, totalQ);
+        document.getElementById('screen-setup').classList.remove('active-screen');
+        document.getElementById('screen-game').classList.add('active-screen');
+        speak("C'est parti ! Bonne chance.");
+        setTimeout(load, 2500);
+    }
+
+    function load() {
+        const d = activeSet[current];
+        document.getElementById('ui-q-text').innerText = d.q;
+        const box = document.getElementById('ui-options'); box.innerHTML = "";
+        document.getElementById('ui-feedback').style.display = "none";
+        document.getElementById('btn-next').style.display = "none";
+        document.getElementById('ui-progress').innerText = `📝 Question ${current + 1} / ${totalQ}`;
+        if(gameMode === 'vies') updateHearts();
+
+        let tts = d.q + ". Les propositions sont : ";
+        d.options.forEach((o, i) => {
+            const b = document.createElement('button'); b.className = "opt-btn"; b.innerText = (i+1) + ". " + o;
+            b.onclick = () => validate(i); box.appendChild(b);
+            tts += `Option ${i+1}, ${o}. `;
+        });
+        speak(tts);
+        if(gameMode === 'chrono' && timeLimit > 0) startTimer();
+    }
+
+    function startTimer() {
+        timeLeft = timeLimit; document.getElementById('ui-timer').style.display = 'block';
+        clearInterval(timer);
+        timer = setInterval(() => {
+            timeLeft--; document.getElementById('ui-timer').innerText = "⏱️ " + timeLeft + "s";
+            document.getElementById('ui-bar').style.width = (timeLeft/timeLimit)*100 + "%";
+            if(timeLeft <= 0) { clearInterval(timer); validate(-1); }
+        }, 1000);
+    }
+
+    function validate(i) {
+        clearInterval(timer); const d = activeSet[current]; const f = document.getElementById('ui-feedback');
+        f.style.display = "block"; document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+        let tts = "";
+        if(i === d.correct) { score++; f.className = "feedback success"; f.innerHTML = "✨ <b>Bravo !</b> " + d.rationale; tts = "Excellent ! " + d.rationale; rain(); }
+        else {
+            if(gameMode === 'vies') lives--;
+            f.className = "feedback error";
+            tts = (i === -1 ? "Oups, temps écoulé !" : "Erreur !") + " La réponse était : " + d.options[d.correct] + ". " + d.rationale;
+            f.innerHTML = `❌ ${tts}`;
+        }
+        speak(tts); document.getElementById('btn-next').style.display = "block";
+    }
+
+    function updateHearts() { document.getElementById('ui-hearts').innerText = "❤️".repeat(Math.max(0, lives)) + "🖤".repeat(Math.max(0, Math.ceil(totalQ/10) - lives)); }
+
+    function handleNext() {
+        speechSynthesis.cancel(); current++;
+        if(gameMode === 'vies' && lives <= 0) finish(true);
+        else if(current < activeSet.length) load();
+        else finish(false);
+    }
+
+    function generateGlossary(isManual = false) {
+        const listEl = document.getElementById('ui-glossary-list'); listEl.style.opacity = '0.3';
+        setTimeout(() => {
+            let pool = allGlossaryTerms.filter(t => !seenGlossaryTerms.has(t.word));
+            if(pool.length < 5) { seenGlossaryTerms.clear(); pool = allGlossaryTerms; }
+            const selection = pool.sort(() => 0.5 - Math.random()).slice(0, 5);
+            selection.forEach(t => seenGlossaryTerms.add(t.word));
+            localStorage.setItem('paia_vocab_002_new', JSON.stringify([...seenGlossaryTerms]));
+
+            let h = ""; selection.forEach(t => h += `<li><strong>${t.word} :</strong> ${t.def}</li>`);
+            listEl.innerHTML = h; listEl.style.opacity = '1';
+
+            document.getElementById('ui-glossary-progress').innerText = `${seenGlossaryTerms.size} / ${maxGlossary}`;
+            if(seenGlossaryTerms.size >= maxGlossary) {
+                document.getElementById('ui-vocab-diploma').style.display = 'block';
+                document.getElementById('btn-new-words').innerText = "🔄 Revoir les termes";
+            } else {
+                document.getElementById('ui-vocab-diploma').style.display = 'none';
+                document.getElementById('btn-new-words').innerText = "🔄 Termes suivants";
+            }
+            if(isManual) speak("Voici d'autres concepts à maîtriser.");
+        }, 300);
+    }
+
+    function finish(lose) {
+        document.getElementById('screen-game').classList.remove('active-screen');
+        document.getElementById('screen-result').classList.add('active-screen');
+        document.getElementById('ui-final-score').innerText = `${score} / ${lose ? current : totalQ}`;
+        let msg = lose ? "Game Over ! Relisez bien la fiche sur l'analyse de la demande." : (score === totalQ ? "Performance exceptionnelle ! Vous maîtrisez les enjeux des besoins en formation." : "C'est validé ! Vous progressez vers l'expertise de l'ingénierie de formation.");
+        document.getElementById('ui-humor').innerText = msg;
+        document.getElementById('ui-anecdote').innerText = anecdotes[Math.floor(Math.random()*anecdotes.length)];
+        generateGlossary(false);
+        speak(`Bilan de session terminé. ${msg} Glossaire mis à jour.`);
+    }
+
+    function speakCurrent() { const d = activeSet[current]; let tts = d.q + ". Les propositions sont : "; d.options.forEach((o, i) => tts += `Option ${i+1}, ${o}. `); speak(tts); }
+    function changeFontSize(s) { baseFontSize = Math.min(24, Math.max(12, baseFontSize + (s*2))); document.documentElement.style.fontSize = baseFontSize + 'px'; }
+    let baseFontSize = 16;
+    function toggleDys(b) { isDys = !isDys; document.body.classList.toggle('dys-mode'); b.classList.toggle('selected-config', isDys); }
+    function toggleContrast(b) { isContrast = !isContrast; document.body.classList.toggle('high-contrast'); b.classList.toggle('selected-config', isContrast); }
+    function toggleAnimations(b) { isCalm = !isCalm; document.body.classList.toggle('no-anim'); b.classList.toggle('selected-config', isCalm); }
+    function rain() { if(isCalm) return; for(let i=0; i<15; i++) { const e = document.createElement('div'); e.className = 'emoji'; e.innerText = '🎓🌟💎'[Math.floor(Math.random()*3)]; e.style.position = 'fixed'; e.style.top = '-50px'; e.style.left = Math.random()*100+'vw'; e.style.animation = `slideUp ${(Math.random()*3+4)}s linear reverse`; document.body.appendChild(e); setTimeout(()=>e.remove(), 7000); } }
+</script>
+</body>
+</html>
