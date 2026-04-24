@@ -79,6 +79,23 @@
       .btn-eval { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 6px 15px rgba(5, 150, 105, 0.4); }
       .btn-teams-round { background: linear-gradient(135deg, #464eb8 0%, #e81123 100%); box-shadow: 0 6px 15px rgba(70, 78, 184, 0.4); }
 
+      /* --- NOUVEAU BOUTON CONTACT (Animation Rebond) --- */
+      .btn-contact {
+        background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); /* Rose fuschia chic (Pas de vert !) */
+        box-shadow: 0 6px 15px rgba(190, 24, 93, 0.4);
+        animation: softBounce 3s infinite; /* Animation de rebond léger */
+      }
+
+      @keyframes softBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-6px); }
+      }
+      .btn-contact:hover {
+        animation: none; /* Stoppe le rebond au survol */
+        transform: translateY(-5px) scale(1.1);
+      }
+
+
       /* --- Onglets --- */
       .tab-btn {
         background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px);
@@ -208,6 +225,12 @@
 
         <div class="flex items-center gap-3">
           <div class="flex justify-center items-center gap-2 hidden md:flex">
+            <!-- NOUVEAU BOUTON CONTACT -->
+            <a href="Card.html" target="_blank" class="btn-nav-round btn-contact group">
+              <i class="fas fa-id-card text-[1.1rem]"></i>
+              <span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50 transform group-hover:-translate-y-1">Contact</span>
+            </a>
+
             <a href="https://app.studi.fr/v3/blog" target="_blank" class="btn-nav-round btn-news group">
               <span>📰</span><span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50 transform group-hover:-translate-y-1">Newsletter</span>
             </a>
