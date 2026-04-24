@@ -418,83 +418,95 @@
       }
 
       // ==============================================================
-      // AUDIO INTÉGRÉ GLAMOUR (Widget Style)
+      // PREVIEW INLINE UNIVERSEL (PDF / LIENS / DRIVE)
       // ==============================================================
-      window.toggleInlineAudio = function(id, url, titre) {
+      window.toggleInlineContent = function(id, url, type) {
           const container = document.getElementById(`inline-media-${id}`);
 
+          if (!url) return;
+
+          // Toggle OFF si même contenu
           if (!container.classList.contains('hidden') && container.dataset.currentUrl === url) {
               container.classList.add('hidden');
-              container.classList.remove('inline-media-player');
               container.innerHTML = '';
               container.dataset.currentUrl = '';
               return;
           }
 
-          document.querySelectorAll('.inline-media-player').forEach(el => {
+          // Fermer les autres previews
+          document.querySelectorAll('[id^="inline-media-"]').forEach(el => {
               el.innerHTML = '';
               el.classList.add('hidden');
-              el.classList.remove('inline-media-player');
               el.dataset.currentUrl = '';
           });
 
           let finalUrl = url;
-          let isDrive = finalUrl.includes("drive.google.com");
+          let isEmbeddable = true;
 
-          if (isDrive) {
-              let match = finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-              if (match && match[1]) {
+          // Google Drive fix
+          if (url.includes("drive.google.com")) {
+              const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+              if (match) {
                   finalUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
-              } else {
-                  finalUrl = finalUrl.replace("/view", "/preview").replace("?usp=sharing", "");
-                  if (!finalUrl.includes("/preview")) finalUrl += "/preview";
               }
+          }
+
+          // Types connus bloqués
+          if (type === "web") {
+              // Beaucoup de sites refusent iframe
+              isEmbeddable = false;
           }
 
           let contentHtml = '';
 
-          // Design premium du widget audio interne
-          if (isDrive) {
+          if (isEmbeddable) {
               contentHtml = `
-                <div class="mt-4 bg-white/50 backdrop-blur-xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.05)] rounded-2xl p-4 w-full animate-slideIn">
-                    <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shrink-0">
-                            <i class="fas fa-podcast text-lg"></i>
-                        </div>
-                        <div class="flex-grow flex flex-col justify-center">
-                            <p class="text-[10px] font-black text-purple-600 uppercase tracking-widest mb-2">Lecture en cours</p>
-                            <!-- Hauteur augmentée à 100px pour afficher correctement le bouton Play de Google Drive -->
-                            <iframe src="${finalUrl}" class="w-full h-[100px] border-none rounded-lg bg-white/50" allow="autoplay"></iframe>
-                        </div>
-                        <a href="${url}" target="_blank" class="w-10 h-10 bg-white hover:bg-gray-50 rounded-full flex items-center justify-center text-indigo-600 shadow-sm border border-gray-100 transition-transform hover:scale-110 shrink-0" title="Détacher">
-                            <i class="fas fa-external-link-alt text-xs"></i>
-                        </a>
-                    </div>
-                </div>`;
+                  <div class="mt-4 bg-white/60 backdrop-blur-xl rounded-2xl p-4 border shadow animate-slideIn">
+                      <iframe
+                          src="${finalUrl}"
+                          class="w-full h-[500px] rounded-xl border-none"
+                          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                      ></iframe>
+
+                      <div class="mt-3 text-right">
+                          <a href="${url}" target="_blank" class="text-xs font-bold text-blue-600 hover:underline">
+                              Ouvrir dans un nouvel onglet ↗
+                          </a>
+                      </div>
+                  </div>
+              `;
           } else {
               contentHtml = `
-                <div class="w-full mt-4 p-4 bg-white/60 backdrop-blur-md rounded-2xl border border-white shadow-sm animate-slideIn">
-                    <audio controls autoplay class="w-full h-10 outline-none" src="${url}"></audio>
-                </div>`;
+                  <div class="mt-4 bg-white/60 backdrop-blur-xl rounded-2xl p-4 border shadow animate-slideIn text-center">
+                      <p class="text-sm font-bold text-gray-600 mb-3">
+                          🔒 Ce contenu ne peut pas être affiché ici
+                      </p>
+                      <a href="${url}" target="_blank"
+                         class="inline-block bg-[#0F2C48] text-white px-4 py-2 rounded-lg text-xs font-bold hover:shadow-lg">
+                          Ouvrir le contenu ↗
+                      </a>
+                  </div>
+              `;
           }
 
           container.innerHTML = contentHtml;
           container.dataset.currentUrl = url;
           container.classList.remove('hidden');
-          container.classList.add('inline-media-player');
       };
 
       // ==============================================================
       // SYSTÈME DE PROTECTION DES PDF PAR CODE PIN
       // ==============================================================
       let pendingPdfUrl = "";
+      let pendingPdfId = "";
 
-      window.handleProtectedClick = function(url) {
+      window.handleProtectedClick = function(url, id) {
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
           if (isUnlocked) {
-              window.open(url, '_blank');
+              toggleInlineContent(id, url, 'pdf');
           } else {
               pendingPdfUrl = url;
+              pendingPdfId = id;
               document.getElementById('pinModal').style.display = 'flex';
               setTimeout(() => {
                   document.getElementById('pinModalContent').classList.remove('scale-95');
@@ -521,7 +533,11 @@
 
               afficherModules(document.getElementById("searchInput").value, false);
 
-              if (pendingPdfUrl) {
+              if (pendingPdfUrl && pendingPdfId) {
+                  toggleInlineContent(pendingPdfId, pendingPdfUrl, 'pdf');
+                  pendingPdfUrl = "";
+                  pendingPdfId = "";
+              } else if (pendingPdfUrl) {
                   window.open(pendingPdfUrl, '_blank');
                   pendingPdfUrl = "";
               }
@@ -588,15 +604,28 @@
              return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
           }
 
-          const safeUrl = url.replace(/'/g, "\\'");
-          const safeTitre = (titre || "").replace(/'/g, "\\'");
+          let finalUrl = url;
+          if (finalUrl.includes("drive.google.com")) {
+              let match = finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+              if (match && match[1]) {
+                  finalUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
+              } else {
+                  finalUrl = finalUrl.replace("/view", "/preview").replace("?usp=sharing", "");
+                  if (!finalUrl.includes("/preview")) finalUrl += "/preview";
+              }
+          }
 
-          if (type === 'audio') {
-              return { tag: "div", action: `onclick="toggleInlineAudio('${id}', '${safeUrl}', '${safeTitre}')" style="cursor:pointer;"` };
-          } else if (type === 'pdf') {
-              return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}')" style="cursor:pointer;"` };
+          const safeUrl = finalUrl.replace(/'/g, "\\'");
+          const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
+
+          if (type === 'pdf') {
+              if (!isUnlocked) {
+                  return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}')" style="cursor:pointer;"` };
+              } else {
+                  return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', 'pdf')" style="cursor:pointer;"` };
+              }
           } else {
-              return { tag: "a", action: `href="${url}" target="_blank"` };
+              return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}')" style="cursor:pointer;"` };
           }
       }
 
@@ -682,8 +711,7 @@
                     </button>
                 </div>
             </div>
-
-            <!-- Conteneur AUDIO -->
+            <!-- Conteneur INLINE MEDIA -->
             <div id="inline-media-${id}" class="hidden w-full" data-current-url=""></div>
           `;
           list.appendChild(card);
