@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mathilde Martine PAISLEY - Infographic Hub</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Mathilde Martine PAISLEY - Hub</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Polices et Icônes -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+
     <style>
-        /* --- VARIABLES --- */
         :root {
             --python: #be185d;
             --paie: #eab308;
             --strat: #3b82f6;
-            --dark: #1e293b;
+            --dark: #0f2c48;
             --light: #f8fafc;
         }
 
@@ -24,580 +29,189 @@
         }
 
         body {
-            /* Image de fond : Logo MMPA */
-            background-color: #f8fafc;
+            background-color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        /* --- Image de Fond avec Filtre Sombre --- */
+        .bg-image {
+            position: absolute;
+            inset: 0;
             background-image: url('https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
-            min-height: 100vh;
-            color: var(--dark);
-            padding: 40px 20px;
-            display: flex;
-            justify-content: center;
-            position: relative;
-            overflow-x: hidden; /* Empêche le scroll horizontal à cause de la pluie */
-        }
-
-        /* Calque blanc par-dessus l'image de fond */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 255, 255, 0.90); /* Un peu plus opaque pour bien voir la pluie */
             z-index: 0;
-            backdrop-filter: blur(4px);
+            filter: blur(15px) brightness(0.4);
+            transform: scale(1.1); /* Evite les bords blancs dus au flou */
         }
 
-        /* --- CONTENEUR PLUIE MAGIQUE --- */
-        #magic-rain {
-            position: fixed;
+        /* --- La Pluie Magique (Ton Code JS Adapté) --- */
+        #rain-container {
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* Juste au-dessus du fond blanc, mais sous le contenu */
-            pointer-events: none; /* La souris passe au travers */
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
             overflow: hidden;
         }
 
         .rain-item {
             position: absolute;
-            top: -100px; /* Départ hors écran */
-            animation-name: fall;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-            opacity: 0.6;
-            z-index: 1;
+            top: -50px;
+            animation: fall linear infinite;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
         @keyframes fall {
-            0% {
-                transform: translateY(-10vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(110vh) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(-50px) rotate(0deg) scale(0.8); opacity: 0; }
+            10% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg) scale(1.2); opacity: 0; }
         }
 
-        /* --- CONTAINER PRINCIPAL --- */
-        .infographic-wrapper {
-            width: 100%;
-            max-width: 1000px;
+        /* --- Carte Glassmorphism --- */
+        .business-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            animation: floatCard 6s ease-in-out infinite;
+        }
+
+        @keyframes floatCard {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .avatar-container {
             position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 10; /* Bien au-dessus de la pluie */
         }
-
-        /* --- LIGNE CENTRALE --- */
-        .central-line {
-            position: absolute;
-            top: 100px;
-            bottom: 100px;
-            width: 4px;
-            background: repeating-linear-gradient(to bottom, #94a3b8 0, #94a3b8 10px, transparent 10px, transparent 20px);
-            z-index: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0.6;
-        }
-
-        /* --- HEADER NODE --- */
-        .header-node {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            padding: 40px 30px 30px 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            text-align: center;
-            z-index: 2;
-            width: 100%;
-            max-width: 600px;
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.6);
-            margin-bottom: 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Connecteur sous le header */
-        .header-node::after {
+        .avatar-container::after {
             content: '';
             position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            background: var(--dark);
+            inset: -4px;
             border-radius: 50%;
-            border: 4px solid white;
-            box-shadow: 0 0 0 4px #e2e8f0;
+            background: linear-gradient(135deg, var(--paie), var(--python), var(--strat));
+            z-index: -1;
+            animation: spinBg 4s linear infinite;
+        }
+        @keyframes spinBg {
+            100% { transform: rotate(360deg); }
         }
 
-        /* Image Principale (Maintenant Logo MMPA) */
-        .main-logo-img {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            border: 5px solid white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-top: -10px;
-            background: white;
-            object-fit: cover;
-        }
-
-        .name {
-            font-size: 2.2rem;
-            font-weight: 900;
-            margin: 15px 0 5px;
-            background: linear-gradient(90deg, var(--python), var(--strat));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-        }
-
-        .tagline {
-            font-size: 1.1rem;
-            color: #475569;
-            font-weight: 600;
-            background: rgba(241, 245, 249, 0.8);
-            padding: 8px 25px;
-            border-radius: 30px;
-            display: inline-block;
-            margin-top: 10px;
-            border: 1px solid white;
-        }
-
-        /* --- MANIFESTO BUBBLE --- */
-        .manifesto-node {
-            background: rgba(30, 41, 59, 0.95);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 25px 40px;
-            border-radius: 16px;
-            max-width: 700px;
-            text-align: center;
-            z-index: 2;
-            position: relative;
-            margin-bottom: 60px;
-            box-shadow: 0 15px 30px rgba(30, 41, 59, 0.2);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .manifesto-text {
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        .manifesto-text b { color: var(--paie); }
-
-        /* --- GRID DES UNIVERS --- */
-        .universes-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 50px;
-            width: 100%;
-            z-index: 2;
-            margin-bottom: 60px;
-        }
-
-        .universe-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            width: 100%;
-        }
-
-        .universe-card {
+        /* --- Boutons de Contact --- */
+        .contact-btn {
             background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            width: 100%;
-            max-width: 800px;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            position: relative;
-            transition: transform 0.3s ease;
-            display: grid;
-            grid-template-columns: 80px 1fr 200px;
-            gap: 20px;
-            align-items: center;
-            border-left: 8px solid transparent;
-            overflow: hidden;
-            border-top: 1px solid rgba(255,255,255,0.5);
-            border-right: 1px solid rgba(255,255,255,0.5);
-            border-bottom: 1px solid rgba(255,255,255,0.5);
-        }
-
-        .universe-card:hover { transform: translateY(-5px); }
-
-        .u-python { border-left-color: var(--python); }
-        .u-paie { border-left-color: var(--paie); }
-        .u-strat { border-left-color: var(--strat); }
-
-        .u-number {
-            font-size: 3.5rem;
-            font-weight: 900;
-            opacity: 0.15;
-            line-height: 1;
-        }
-        .u-python .u-number { color: var(--python); }
-        .u-paie .u-number { color: var(--paie); }
-        .u-strat .u-number { color: var(--strat); }
-
-        .u-content h3 {
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin-bottom: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.9);
             color: var(--dark);
-            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .u-content .badge {
-            display: inline-block;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 4px 10px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-        }
-        .u-python .badge { background: rgba(190, 24, 93, 0.1); color: var(--python); }
-        .u-paie .badge { background: rgba(234, 179, 8, 0.1); color: var(--paie); }
-        .u-strat .badge { background: rgba(59, 130, 246, 0.1); color: var(--strat); }
-
-        .u-content p {
-            font-size: 0.95rem;
-            color: #475569;
-            line-height: 1.4;
-        }
-
-        .u-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .action-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: white;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .action-btn:hover { transform: scale(1.05); }
-
-        .btn-wa { background: #22c55e; }
-        .btn-dc { background: #5865f2; }
-        .btn-notion { background: var(--dark); }
-
-        /* Connecteur Rond */
-        .connector-dot {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 30px;
+        .contact-btn:hover {
             background: white;
-            border-radius: 50%;
-            border: 6px solid #cbd5e1;
-            z-index: 1;
-        }
-        .dot-python { border-color: var(--python); }
-        .dot-paie { border-color: var(--paie); }
-        .dot-strat { border-color: var(--strat); }
-
-
-        /* --- FOOTER INFOGRAPHIE --- */
-        .footer-node {
-            width: 100%;
-            max-width: 900px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 20px 40px;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 2;
-            position: relative;
-        }
-
-        .footer-left {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        .contact-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--dark);
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 1rem;
-        }
-        .contact-row:hover { color: var(--python); }
-
-        .footer-right {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-pill {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            transition: transform 0.2s;
-            text-decoration: none;
-        }
-        .social-pill:hover { transform: translateY(-5px) rotate(5deg); }
-
-        .sp-linkedin { background: #0077b5; }
-        .sp-tiktok { background: #000000; }
-        .sp-insta { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
-
-        /* Style pour la zone Copyright + Logo PAIA */
-        .copyright-row {
-            margin-top: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            z-index: 2;
-        }
-
-        .footer-logo-paia {
-            height: 40px;
-            width: auto;
-        }
-
-        .copyright-text {
-            font-size: 0.9rem;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 900px) {
-            .universe-card { grid-template-columns: 1fr; text-align: center; gap: 15px; }
-            .u-actions { flex-direction: row; justify-content: center; }
-            .u-number { display: none; }
-            .central-line { left: 20px; }
-            .connector-dot { left: 20px; }
-            .universes-grid { padding-left: 40px; }
-        }
-
-        @media (max-width: 600px) {
-            .name { font-size: 1.6rem; }
-            .u-actions { flex-direction: column; }
-            .footer-node { flex-direction: column; gap: 20px; text-align: center; }
-            .universes-grid { padding-left: 0; }
-            .central-line { display: none; }
-            .connector-dot { display: none; }
-            .copyright-row { flex-direction: column; gap: 5px; }
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
     </style>
 </head>
 <body>
 
-    <!-- Container pour la pluie magique -->
-    <div id="magic-rain"></div>
+    <!-- Arrière-plan -->
+    <div class="bg-image"></div>
 
-    <div class="infographic-wrapper">
+    <!-- Conteneur de la pluie magique -->
+    <div id="rain-container"></div>
 
-        <!-- Ligne Centrale -->
-        <div class="central-line"></div>
+    <!-- Carte de Visite Centrale -->
+    <div class="business-card w-full max-w-sm rounded-[2.5rem] p-8 md:p-10 flex flex-col items-center text-center text-white relative">
 
-        <!-- 1. Header Node -->
-        <div class="header-node">
-            <!-- Image Principale (REMPLACÉE PAR LOGO MMPA) -->
-            <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Mathilde Martine PAISLEY" class="main-logo-img" onerror="this.src='https://via.placeholder.com/130/be185d/ffffff?text=MMPA'">
-
-            <h1 class="name">Mathilde Martine PAISLEY</h1>
-            <span class="tagline">Infographic Hub • Connectons-nous !</span>
+        <!-- Avatar -->
+        <div class="avatar-container w-36 h-36 rounded-full mb-8 mt-2">
+            <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Mathilde Martine PAISLEY" class="w-full h-full object-cover rounded-full border-4 border-white relative z-10" />
         </div>
 
-        <!-- 2. Manifesto Node -->
-        <div class="manifesto-node">
-            <div class="manifesto-text">
-                🎯 <b>OBJECTIF</b> : Monter en compétence, créer un réseau pro solide et s'entraider. Rejoins nos 3 écosystèmes pour échanger et grandir ensemble. Pas de blabla, que du concret !
-            </div>
-        </div>
+        <!-- Identité Épurée -->
+        <h1 class="text-2xl md:text-3xl font-black mb-8 tracking-tight leading-tight">Mathilde Martine<br>PAISLEY</h1>
 
-        <!-- 3. The Grid -->
-        <div class="universes-grid">
+        <!-- Coordonnées directes -->
+        <div class="w-full flex flex-col gap-4 mb-2">
 
-            <!-- Row 1: Python -->
-            <div class="universe-row">
-                <div class="connector-dot dot-python"></div>
-                <div class="universe-card u-python">
-                    <div class="u-number">01</div>
-                    <div class="u-content">
-                        <span class="badge">Code & Investissement</span>
-                        <h3>The Dev Elite Club 💔</h3>
-                        <p>Le spot pour tous les profils techs ! Développeur Web, Python ou autre techno. Viens coder et debugger avec nous.</p>
-                    </div>
-                    <div class="u-actions">
-                        <a href="https://chat.whatsapp.com/IoMXFl4o2otExYKCPVj22b" target="_blank" class="action-btn btn-wa"><i data-lucide="message-circle" width="16"></i> WhatsApp</a>
-                        <a href="https://discord.gg/cSa67tPEUZ" target="_blank" class="action-btn btn-dc"><i data-lucide="gamepad-2" width="16"></i> Discord</a>
-                        <a href="https://earthy-comb-d06.notion.site/25bbc1d274088098abeed940a15d53c3?v=25bbc1d274088140888e000c5dfbfe15&source=copy_link" target="_blank" class="action-btn btn-notion"><i data-lucide="file-text" width="16"></i> Notion</a>
-                    </div>
+            <!-- Email -->
+            <a href="mailto:mathilde.martine.paisley@gmail.com" class="contact-btn w-full p-4 rounded-2xl font-bold flex items-center gap-4 group">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#0F2C48] to-[#1a4a78] flex items-center justify-center text-white shrink-0 shadow-inner">
+                    <span class="text-lg">✉️</span>
                 </div>
-            </div>
+                <span class="text-xs md:text-sm break-all text-left">mathilde.martine.paisley@gmail.com</span>
+            </a>
 
-            <!-- Row 2: Paie -->
-            <div class="universe-row">
-                <div class="connector-dot dot-paie"></div>
-                <div class="universe-card u-paie">
-                    <div class="u-number">02</div>
-                    <div class="u-content">
-                        <span class="badge">Gestionnaire de Paie</span>
-                        <h3>Payroll Boss Elite 👑</h3>
-                        <p>Le QG pour réussir ta formation Gestionnaire de Paie ! Montée en compétence et entraide pour devenir un Boss.</p>
-                    </div>
-                    <div class="u-actions">
-                        <a href="https://chat.whatsapp.com/EtV0ux5ipAG5JDhopzo0ut" target="_blank" class="action-btn btn-wa"><i data-lucide="message-circle" width="16"></i> WhatsApp</a>
-
-                        <a href="https://earthy-comb-d06.notion.site/25bbc1d274088098abeed940a15d53c3?v=25bbc1d274088140888e000c5dfbfe15&source=copy_link" target="_blank" class="action-btn btn-notion"><i data-lucide="file-text" width="16"></i> Notion</a>
-                    </div>
+            <!-- Téléphone -->
+            <a href="tel:+33685900887" class="contact-btn w-full p-4 rounded-2xl font-bold flex items-center gap-4 group">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFB900] to-[#eab308] flex items-center justify-center text-white shrink-0 shadow-inner">
+                    <span class="text-lg">📞</span>
                 </div>
-            </div>
+                <span class="text-sm md:text-base tracking-[0.1em] text-left">06 85 90 08 87</span>
+            </a>
 
-            <!-- Row 3: Strat -->
-            <div class="universe-row">
-                <div class="connector-dot dot-strat"></div>
-                <div class="universe-card u-strat">
-                    <div class="u-number">03</div>
-                    <div class="u-content">
-                        <span class="badge">Expert Stratégie Digitale</span>
-                        <h3>Boost your MBA CDO & SD 🚀</h3>
-                        <p>Objectif : Valider votre formation Expert Stratégie Digitale haut la main. Entraide & Motivation !</p>
-                    </div>
-                    <div class="u-actions">
-                        <a href="https://chat.whatsapp.com/LHiRDN32feFCEko7VxH5oz" target="_blank" class="action-btn btn-wa"><i data-lucide="message-circle" width="16"></i> WhatsApp</a>
-                        <a href="https://discord.gg/puA7V2yydG" target="_blank" class="action-btn btn-dc"><i data-lucide="gamepad-2" width="16"></i> Discord</a>
-                        <a href="https://earthy-comb-d06.notion.site/25bbc1d274088098abeed940a15d53c3?v=25bbc1d274088140888e000c5dfbfe15&source=copy_link" target="_blank" class="action-btn btn-notion"><i data-lucide="file-text" width="16"></i> Notion</a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- 4. Footer Node -->
-        <div class="footer-node">
-            <div class="footer-left">
-                <div style="font-size:0.8rem; text-transform:uppercase; color:#94a3b8; font-weight:700; margin-bottom:5px;">Contact Direct</div>
-                <a href="mailto:Mathilde.martine.paisley@gmail.com" class="contact-row">
-                    <i data-lucide="mail" color="#be185d"></i> Mathilde.martine.paisley@gmail.com
-                </a>
-                <a href="tel:0685900887" class="contact-row">
-                    <i data-lucide="phone" color="#be185d"></i> 06 85 90 08 87
-                </a>
-            </div>
-
-            <div class="footer-right">
-                <a href="https://www.linkedin.com/in/mathilde-martine-paisley-1a4422382/" target="_blank" class="social-pill sp-linkedin" title="LinkedIn">
-                    <i data-lucide="linkedin"></i>
-                </a>
-                <a href="https://www.tiktok.com/@enervyx" target="_blank" class="social-pill sp-tiktok" title="TikTok">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
-                    </svg>
-                </a>
-                <a href="https://www.instagram.com/enervyx/" target="_blank" class="social-pill sp-insta" title="Instagram">
-                    <i data-lucide="instagram"></i>
-                </a>
-            </div>
-        </div>
-
-        <div class="copyright-row">
-            <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="PAIA Logo" class="footer-logo-paia">
-            <div class="copyright-text">💫PAIA✨ By Mathilde Martine PAISLEY🌹</div>
         </div>
 
     </div>
 
-    <!-- SCRIPT POUR LA PLUIE ET LES ICONES -->
+    <!-- Script de la Pluie Magique -->
     <script>
-        // Activer les icones Lucide
-        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('rain-container');
+            const magicItems = [
+                { type: 'text', content: '🎓' },
+                { type: 'text', content: '💻' },
+                { type: 'text', content: '📊' },
+                { type: 'text', content: '✨' },
+                { type: 'text', content: '🚀' },
+                { type: 'text', content: '🧠' },
+                { type: 'img', src: 'https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png' } // Ton logo Paia
+            ];
 
-        // Script de Pluie Magique
-        const rainContainer = document.getElementById('magic-rain');
+            // Créer 25 éléments tombants
+            for (let i = 0; i < 25; i++) {
+                const el = document.createElement('div');
+                el.classList.add('rain-item');
 
-        // Eléments à faire tomber
-        const magicItems = [
-            { type: 'img', src: 'https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg' },
-            { type: 'img', src: 'https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png' },
-            { type: 'text', content: '💫' },
-            { type: 'text', content: '✨' },
-            { type: 'text', content: '🌹' }
-        ];
+                const item = magicItems[Math.floor(Math.random() * magicItems.length)];
 
-        function createRainDrop() {
-            const el = document.createElement('div');
-            el.classList.add('rain-item');
+                if (item.type === 'img') {
+                    const img = document.createElement('img');
+                    img.src = item.src;
+                    const size = Math.random() * 20 + 20; // 20px à 40px
+                    img.style.width = size + 'px';
+                    img.style.height = size + 'px';
+                    img.style.borderRadius = '50%';
+                    img.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+                    el.appendChild(img);
+                } else {
+                    el.innerText = item.content;
+                    el.style.fontSize = (Math.random() * 15 + 15) + 'px'; // 15px à 30px
+                }
 
-            // Choisir un item au hasard
-            const item = magicItems[Math.floor(Math.random() * magicItems.length)];
+                // Randomisation de la position et de l'animation
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration = (Math.random() * 7 + 8) + 's'; // 8s à 15s
+                el.style.animationDelay = (Math.random() * 5) + 's'; // Décalage pour ne pas tout faire tomber d'un coup
 
-            if (item.type === 'img') {
-                const img = document.createElement('img');
-                img.src = item.src;
-                // Taille aléatoire pour les logos (20px à 40px)
-                const size = Math.random() * 20 + 20;
-                img.style.width = size + 'px';
-                img.style.height = size + 'px';
-                img.style.borderRadius = '50%';
-                img.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-                el.appendChild(img);
-            } else {
-                el.innerText = item.content;
-                // Taille aléatoire pour les émojis (15px à 30px)
-                el.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                container.appendChild(el);
             }
-
-            // Position horizontale aléatoire (0 à 100vw)
-            el.style.left = Math.random() * 100 + 'vw';
-
-            // Durée de chute aléatoire (plus lent = plus doux, entre 8s et 15s)
-            el.style.animationDuration = (Math.random() * 7 + 8) + 's';
-
-            // Délai aléatoire pour ne pas que tout tombe en même temps
-            el.style.animationDelay = (Math.random() * 5) + 's';
-
-            rainContainer.appendChild(el);
-        }
-
-        // Créer 40 éléments de pluie
-        for (let i = 0; i < 40; i++) {
-            createRainDrop();
-        }
+        });
     </script>
 </body>
 </html>
