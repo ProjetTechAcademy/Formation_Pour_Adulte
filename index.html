@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Base de données FPA pour formation des adultes - V1.5</title>
+    <title>Base de données FPA pour formation des adultes - V1.6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire ta Base_FPA -->
@@ -100,7 +100,7 @@
     <div id="loader">
       <div class="spinner"></div>
       <p class="mt-4 font-black uppercase text-xs tracking-widest text-blue-900">Synchronisation Base_FPA...</p>
-      <p class="text-[10px] mt-2 opacity-50 font-bold">MATHILDE MARTINE PAISLEY - V1.5</p>
+      <p class="text-[10px] mt-2 opacity-50 font-bold">MATHILDE MARTINE PAISLEY - V1.6</p>
     </div>
 
     <header class="bg-white/95 backdrop-blur-md border-b-2 border-blue-900 sticky top-0 z-50 p-4 shadow-sm">
@@ -108,8 +108,8 @@
         <div class="flex items-center gap-4">
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" class="w-14 h-14 rounded-xl border-2 border-blue-900" alt="Logo" />
           <div>
-            <h1 class="text-xl font-black uppercase leading-tight text-blue-900">Paia Hub</h1>
-            <p class="text-[10px] font-bold text-yellow-600 uppercase tracking-widest">Base de données FPA</p>
+            <h1 class="text-xl font-black uppercase leading-tight text-blue-900">Formation Pour Adultes</h1>
+            <p class="text-[10px] font-bold text-yellow-600 uppercase tracking-widest">Programme FPA</p>
           </div>
         </div>
 
@@ -118,12 +118,22 @@
                 <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 opacity-30"></i>
                 <input type="text" id="searchInput" placeholder="Rechercher une codification..." class="w-full bg-gray-100 border-none rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-yellow-500" />
             </div>
-            <button onclick="document.body.classList.toggle('dys-mode')" class="bg-white border px-4 py-2 rounded-xl text-[10px] font-bold uppercase">Mode DYS</button>
+            <button onclick="document.body.classList.toggle('dys-mode')" class="bg-white border px-4 py-2 rounded-xl text-[10px] font-bold uppercase hover:bg-gray-50">Mode DYS</button>
         </div>
       </div>
     </header>
 
     <main class="max-w-7xl mx-auto p-6">
+
+      <!-- Les 3 ONGLETS transverses pointant vers la racine de GitHub Pages -->
+      <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+        <div class="flex flex-wrap gap-3">
+          <a href="Examen.html" class="bg-purple-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase shadow-sm hover:scale-105 transition-transform">Examen</a>
+          <a href="Évaluations_par_Bloc.html" class="bg-green-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase shadow-sm hover:scale-105 transition-transform">Tableau de bord</a>
+          <a href="https://app.studi.fr/v3/blog" class="bg-blue-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase shadow-sm hover:scale-105 transition-transform">Newsletter
+</a>
+        </div>
+      </div>
 
       <!-- Barre de Progression -->
       <div class="bg-white p-6 rounded-2xl shadow-sm border border-black/5 mb-8 flex flex-col md:flex-row items-center gap-6">
@@ -211,9 +221,7 @@
               // ==========================================
               // LOGIQUE MATHILDE (Optimisée GitHub Pages)
               // ==========================================
-              // On assemble Code et Titre
               const baseFileName = `${item.Code} - ${item.Titre}`;
-              // L'encodeURIComponent transforme les espaces en %20, garantissant que GitHub sur Mac ou PC trouve le fichier
               const safeFileName = encodeURIComponent(baseFileName) + '.html';
 
               const isValidated = userProgress[item.Code] || false;
@@ -229,15 +237,12 @@
 
                     <div class="flex flex-wrap justify-center md:justify-start gap-3 mt-5">
 
-                        <!-- LIENS VERS TES DOSSIERS LOCAUX (Sécurisés pour GitHub Pages) -->
+                        <!-- LIENS VERS TES DOSSIERS LOCAUX -->
                         <a href="Quiz/${safeFileName}" target="_blank" class="btn-resource bg-quiz" title="Quiz">⚡</a>
-
-                        <!-- Note: GitHub accepte les espaces dans les dossiers si on les encode bien (Carte%20Mentale) -->
                         <a href="Carte%20Mentale/${safeFileName}" target="_blank" class="btn-resource bg-map" title="Carte Mentale">🧠</a>
-
                         <a href="Glossaire/${safeFileName}" target="_blank" class="btn-resource bg-glo" title="Lexique">📚</a>
 
-                        <!-- LIENS DYNAMIQUES DEPUIS TON TABLEAU CSV (Base_FPA) -->
+                        <!-- LIENS DYNAMIQUES DEPUIS TON TABLEAU CSV -->
                         ${item.Cours ? `<a href="${item.Cours}" target="_blank" class="btn-resource bg-pdf" title="Cours">📄</a>` : ''}
                         ${item.Audio ? `<a href="${item.Audio}" target="_blank" class="btn-resource bg-audio" title="Audio">🎧</a>` : ''}
                         ${item.Excel ? `<a href="${item.Excel}" target="_blank" class="btn-resource bg-excel" title="Excel">📊</a>` : ''}
