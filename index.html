@@ -168,41 +168,7 @@
         border-bottom: 4px solid #064e3b !important;
       }
 
-      /* --- Nouveaux Boutons Ronds 2026 avec Rebond --- */
-      .btn-nav-round {
-        width: 46px;
-        height: 46px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        color: white !important;
-        position: relative;
-        text-decoration: none;
-        border: 2px solid rgba(255,255,255,0.4);
-        /* Animation "Rebond" fluide */
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
-      .btn-nav-round:hover {
-        transform: translateY(-5px) scale(1.1);
-        border-color: rgba(255,255,255,0.8);
-      }
-
-      .btn-news {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
-      }
-      .btn-exam {
-        background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
-        box-shadow: 0 6px 15px rgba(126, 34, 206, 0.4);
-      }
-      .btn-eval {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        box-shadow: 0 6px 15px rgba(5, 150, 105, 0.4);
-      }
-
-      /* --- Menu Vertical Flottant Ultra-Fin (Accessibilité & Défilement) --- */
+      /* --- Menu Vertical Flottant ABAISSÉ (Accessibilité & Défilement) --- */
       @keyframes floatUpDown {
         0% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
@@ -212,8 +178,7 @@
       .floating-side-menu {
         position: fixed;
         right: 10px;
-        top: 50%;
-        margin-top: -100px;
+        bottom: 30px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -326,6 +291,15 @@
         from { transform: translateY(15px); opacity: 0; }
         to { transform: translateY(0); opacity: 1; }
       }
+
+      /* Animation légère pour l'icône de musique */
+      @keyframes pulse-soft {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); box-shadow: 0 0 10px rgba(99, 102, 241, 0.5); }
+      }
+      .animate-music-pulse {
+        animation: pulse-soft 2s infinite;
+      }
     </style>
   </head>
   <body>
@@ -364,7 +338,7 @@
           </div>
         </div>
 
-        <!-- Barre de recherche réduite pour le responsive -->
+        <!-- Barre de recherche -->
         <div class="relative w-full max-w-[200px] lg:max-w-xs hidden md:block">
           <i
             class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[#0F2C48]/50 text-xs"
@@ -378,7 +352,7 @@
         </div>
 
         <div class="flex items-center gap-3">
-          <!-- Les 4 Boutons Ronds (Maintenant avec Teams) -->
+          <!-- Les 4 Boutons Ronds de navigation haute -->
           <div class="flex justify-center items-center gap-2 hidden md:flex">
             <a href="https://app.studi.fr/v3/blog" target="_blank" class="btn-nav-round btn-news group">
               <span>📰</span>
@@ -392,7 +366,6 @@
               <span>📊</span>
               <span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-md z-50">Évaluations</span>
             </a>
-            <!-- Le nouveau bouton Teams en rond avec ton style -->
             <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="btn-nav-round btn-teams-round group">
               <i class="fab fa-microsoft text-[1.2rem]"></i>
               <span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-md z-50">Communauté</span>
@@ -516,6 +489,7 @@
       </button>
     </div>
 
+    <!-- Modale pour les travaux en cours (Pop-up classique) -->
     <div
       id="modalTravaux"
       class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[2000]"
@@ -538,6 +512,7 @@
         </button>
       </div>
     </div>
+
     <div
       id="toastContainer"
       class="fixed bottom-10 right-10 flex flex-col gap-3 pointer-events-none z-[3000]"
@@ -616,7 +591,6 @@
       let currentMod = "ALL";
 
       window.onload = () => {
-          // Mise à jour visuelle des préférences audio au chargement
           document.getElementById("audioIcon").innerText = isVoice ? "🔊" : "🔇";
           document.getElementById("audioLabel").innerText = isVoice ? "Audio ON" : "Audio OFF";
 
@@ -628,7 +602,7 @@
                   database = results.data;
                   document.getElementById('loader').style.opacity = '0';
                   setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
-                  filtrerBloc("ALL"); // Lance le premier affichage dynamique
+                  filtrerBloc("ALL");
               },
               error: (err) => {
                   console.error("Erreur de chargement du CSV:", err);
@@ -647,7 +621,6 @@
       function lire(txt) {
         if (!isVoice) return;
         window.speechSynthesis.cancel();
-        // Retire les emojis du texte pour éviter qu'ils ne soient lus par la synthèse vocale
         const txtSansEmoji = txt.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '');
         const u = new SpeechSynthesisUtterance(txtSansEmoji.trim());
         u.lang = "fr-FR";
@@ -733,15 +706,13 @@
         afficherModules(document.getElementById("searchInput").value, false);
       };
 
-      // Fonction d'aide pour générer le bon comportement (Lien ou Modal)
-      function getActionLink(url, isLocal, titre) {
-          if (isLocal) return { tag: "a", action: `href="${url}" target="_blank"` };
-
-          if (url && url.trim() !== "" && (url.startsWith("http") || url.startsWith("Slides/"))) {
-              return { tag: "a", action: `href="${url}" target="_blank"` };
+      // RETOUR À LA SIMPLICITÉ : Tout s'ouvre proprement dans un nouvel onglet
+      function getActionLink(url, isLocal, titre, type) {
+          if (!url || url.trim() === "") {
+             return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
           }
 
-          return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
+          return { tag: "a", action: `href="${url}" target="_blank"` };
       }
 
       function afficherModules(filtre = "", anim = true) {
@@ -760,23 +731,21 @@
           const fullItemName = `${id} - ${titre}`;
           const safeFileName = encodeURIComponent(fullItemName) + '.html';
 
-          // Filtres de recherche et d'onglets
           if (!fullItemName.toLowerCase().includes(filtre.toLowerCase())) return;
           if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
-          // Mapping dynamique depuis les colonnes du CSV
           const res = [
-            { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio },
-            { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours },
-            { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien", url: itemObj.Lien_Studi },
-            { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel },
-            { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie },
-            { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null },
-            { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo },
-            { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, isLocal: true },
-            { id: "map", em: "🧠", n: "Carte", b: "bg-map", url: `Carte Mentale/${safeFileName}`, isLocal: true },
-            { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, isLocal: true },
+            { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "audio" },
+            { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours, type: "doc" },
+            { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "link" },
+            { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel, type: "doc" },
+            { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie, type: "doc" },
+            { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null, type: "doc" },
+            { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo, type: "video" },
+            { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, isLocal: true, type: "doc" },
+            { id: "map", em: "🧠", n: "Carte", b: "bg-map", url: `Carte Mentale/${safeFileName}`, isLocal: true, type: "doc" },
+            { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, isLocal: true, type: "doc" },
           ];
 
           let lineChecked = 0;
@@ -789,8 +758,7 @@
             }
             const checkC = isV ? "bg-green-500 text-white" : "bg-white text-gray-200";
 
-            // Utilisation de la fonction d'aide pour déterminer si c'est un vrai lien ou la Pop-up
-            const linkProps = getActionLink(r.url, r.isLocal, titre);
+            const linkProps = getActionLink(r.url, r.isLocal, titre, r.type);
 
             return `<div class="relative tooltip-container">
                         <${linkProps.tag} ${linkProps.action} class="btn-resource ${r.b}" onmouseenter="lire('${r.n}')"><span>${r.em}</span></${linkProps.tag}>
@@ -846,7 +814,7 @@
 
       const sE = document.getElementById("searchInput");
       if (sE) {
-        sE.addEventListener("input", (e) => afficherModules(e.target.value, false)); // false pour éviter que ça rebondisse à chaque lettre tapée
+        sE.addEventListener("input", (e) => afficherModules(e.target.value, false));
       }
 
     </script>
