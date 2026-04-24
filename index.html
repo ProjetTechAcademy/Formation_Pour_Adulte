@@ -333,7 +333,7 @@
     <div id="toastContainer" class="fixed bottom-10 right-10 flex flex-col gap-3 pointer-events-none z-[7000]"></div>
 
     <script>
-      const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSJuJce5_6A5Yd0xbYLhb4OZRZ4dyvi0oArF2a_Ks1U_dvGflru_lb8XLgLVs6NApu6cJUS_C6GYU71/pub?output=csv";
+      const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSJuJce5_6A5Yd0xbYLhb4OZRZ4dyvi0oArF2a_Ks1U_dvGflru_lb8XLgLVs6NApu6cJUS_C6GYU71/pub?gid=842464760&single=true&output=csv";
       let database = [];
       const SECRET_PIN = "2026";
 
@@ -457,13 +457,14 @@
           if (isDrive) {
               contentHtml = `
                 <div class="mt-4 bg-white/50 backdrop-blur-xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.05)] rounded-2xl p-4 w-full animate-slideIn">
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-start gap-4">
                         <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shrink-0">
                             <i class="fas fa-podcast text-lg"></i>
                         </div>
                         <div class="flex-grow flex flex-col justify-center">
-                            <p class="text-[10px] font-black text-purple-600 uppercase tracking-widest mb-1">Lecture en cours</p>
-                            <iframe src="${finalUrl}" class="w-full h-[40px] border-none" allow="autoplay"></iframe>
+                            <p class="text-[10px] font-black text-purple-600 uppercase tracking-widest mb-2">Lecture en cours</p>
+                            <!-- Hauteur augmentée à 100px pour afficher correctement le bouton Play de Google Drive -->
+                            <iframe src="${finalUrl}" class="w-full h-[100px] border-none rounded-lg bg-white/50" allow="autoplay"></iframe>
                         </div>
                         <a href="${url}" target="_blank" class="w-10 h-10 bg-white hover:bg-gray-50 rounded-full flex items-center justify-center text-indigo-600 shadow-sm border border-gray-100 transition-transform hover:scale-110 shrink-0" title="Détacher">
                             <i class="fas fa-external-link-alt text-xs"></i>
@@ -587,10 +588,13 @@
              return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
           }
 
+          const safeUrl = url.replace(/'/g, "\\'");
+          const safeTitre = (titre || "").replace(/'/g, "\\'");
+
           if (type === 'audio') {
-              return { tag: "div", action: `onclick="toggleInlineAudio('${id}', '${url}', '${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
+              return { tag: "div", action: `onclick="toggleInlineAudio('${id}', '${safeUrl}', '${safeTitre}')" style="cursor:pointer;"` };
           } else if (type === 'pdf') {
-              return { tag: "div", action: `onclick="handleProtectedClick('${url}')" style="cursor:pointer;"` };
+              return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}')" style="cursor:pointer;"` };
           } else {
               return { tag: "a", action: `href="${url}" target="_blank"` };
           }
