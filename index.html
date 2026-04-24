@@ -108,8 +108,8 @@
         <div class="flex items-center gap-4">
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" class="w-14 h-14 rounded-xl border-2 border-blue-900" alt="Logo" />
           <div>
-            <h1 class="text-xl font-black uppercase leading-tight text-blue-900">Formation Pour Adultes</h1>
-            <p class="text-[10px] font-bold text-yellow-600 uppercase tracking-widest">Programme FPA</p>
+            <h1 class="text-xl font-black uppercase leading-tight text-blue-900">Paia Hub</h1>
+            <p class="text-[10px] font-bold text-yellow-600 uppercase tracking-widest">Base de données FPA</p>
           </div>
         </div>
 
@@ -129,9 +129,8 @@
       <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
         <div class="flex flex-wrap gap-3">
           <a href="Examen.html" class="bg-purple-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase shadow-sm hover:scale-105 transition-transform">Examen</a>
-          <a href="Évaluations_par_Bloc.html" class="bg-green-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase shadow-sm hover:scale-105 transition-transform">Tableau de bord</a>
-          <a href="https://app.studi.fr/v3/blog" class="bg-blue-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase shadow-sm hover:scale-105 transition-transform">Newsletter
-</a>
+          <!-- CORRECTION WEB : L'accent É est traduit en %C3%89 pour que GitHub Pages ne plante pas -->
+          <a href="%C3%89valuations_par_Bloc.html" class="bg-green-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase shadow-sm hover:scale-105 transition-transform">Tableau de bord</a>
         </div>
       </div>
 
@@ -164,13 +163,13 @@
 
     <script>
       // ==========================================
-      // CONFIGURATION SOURCE : TON LIEN CSV
+      // CONFIGURATION SOURCE : TON LIEN CSV (Corrigé pour GitHub)
       // ==========================================
-      const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSJuJce5_6A5Yd0xbYLhb4OZRZ4dyvi0oArF2a_Ks1U_dvGflru_lb8XLgLVs6NApu6cJUS_C6GYU71/pub?gid=842464760&single=true&output=csv";
+      const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSJuJce5_6A5Yd0xbYLhb4OZRZ4dyvi0oArF2a_Ks1U_dvGflru_lb8XLgLVs6NApu6cJUS_C6GYU71/pub?output=csv";
 
       let database = [];
       let currentFilter = "ALL";
-      let userProgress = JSON.parse(localStorage.getItem('fpa_progress_v15')) || {};
+      let userProgress = JSON.parse(localStorage.getItem('fpa_progress_v16')) || {};
 
       window.onload = () => {
           Papa.parse(CSV_URL, {
@@ -182,6 +181,10 @@
                   document.getElementById('loader').style.opacity = '0';
                   setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
                   render();
+              },
+              error: (err) => {
+                  console.error("Erreur de chargement du CSV:", err);
+                  document.getElementById('loader').innerHTML = "<div class='p-4 text-center text-red-500 font-bold'>Erreur de chargement de la base.</div>";
               }
           });
       };
