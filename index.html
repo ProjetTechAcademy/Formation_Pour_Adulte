@@ -3,25 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Base de données FPA pour formation des adultes - V1.6</title>
+    <title>Formation Pour Adulte</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- Moteur PapaParse pour lire ta Base_FPA -->
+    <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&family=Open+Dyslexic&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       :root {
         --surface-ivory: #f6f2e8;
         --title-blue: #0f2c48;
-        --gold-paia: #d9a526;
-      }
-      body {
-        font-family: 'Roboto', sans-serif;
-        background-color: var(--surface-ivory);
-        color: var(--title-blue);
-        min-height: 100vh;
+        --cta-yellow: #ffb900;
+        --cta-orange: #ff8c00;
+        --ms-red: #f25022;
+        --ms-green: #7fba00;
+        --ms-blue: #00a4ef;
+        --ms-yellow: #ffb900;
       }
 
       /* Loader */
@@ -34,6 +39,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        transition: opacity 0.5s;
       }
       .spinner {
         width: 50px;
@@ -45,7 +51,104 @@
       }
       @keyframes spin { to { transform: rotate(360deg); } }
 
-      /* Boutons Ressources */
+      body.dys-mode {
+        font-family: "Open Dyslexic", sans-serif !important;
+      }
+      body.dys-mode * {
+        font-family: "Open Dyslexic", sans-serif !important;
+      }
+
+      body.high-contrast {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+      }
+      body.high-contrast header {
+        background-color: #1a1a1a !important;
+        border-bottom: 2px solid #ffffff !important;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: var(--surface-ivory);
+        color: var(--title-blue);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* --- Teams Microsoft --- */
+      .btn-teams-ms {
+        background: linear-gradient(
+          90deg,
+          var(--ms-red) 0%,
+          var(--ms-green) 33%,
+          var(--ms-blue) 66%,
+          var(--ms-yellow) 100%
+        );
+        background-size: 200% auto;
+        transition: 0.4s;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: none;
+      }
+      .btn-teams-ms:hover {
+        background-position: right center;
+        transform: translateY(-2px) scale(1.05);
+      }
+
+      /* --- Onglets --- */
+      .tab-btn {
+        background-color: #ffffff;
+        color: var(--title-blue);
+        border: 2px solid rgba(15, 44, 72, 0.1);
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-weight: 700;
+        transition: 0.3s;
+      }
+      .tab-btn.active {
+        background: linear-gradient(135deg, #464eb8 0%, #e81123 100%);
+        color: white;
+        border-color: transparent;
+      }
+
+      /* --- Bouton Valider Solaire 3D --- */
+      .btn-valider-3d {
+        background: linear-gradient(
+          135deg,
+          #ffeb3b 0%,
+          #ffb900 50%,
+          #ff8c00 100%
+        );
+        color: #0f2c48 !important;
+        border-bottom: 4px solid #b4792a !important;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+      .btn-valider-3d:hover {
+        transform: translateY(-2px);
+        border-bottom-width: 6px !important;
+        filter: brightness(1.05);
+      }
+      .btn-valider-3d:active {
+        transform: translateY(2px);
+        border-bottom-width: 1px !important;
+      }
+
+      .btn-success-line {
+        background: linear-gradient(
+          135deg,
+          #10b981 0%,
+          #059669 100%
+        ) !important;
+        color: #0f2c48 !important;
+        border-bottom: 4px solid #064e3b !important;
+      }
+
+      /* --- Ressources --- */
       .btn-resource {
         width: 44px;
         height: 44px;
@@ -54,44 +157,74 @@
         align-items: center;
         justify-content: center;
         font-size: 1.2rem;
-        transition: 0.2s;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        border: 1px solid rgba(0,0,0,0.05);
+        transition: 0.3s;
+        position: relative;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.05);
       }
-      .btn-resource:hover { transform: translateY(-3px); filter: brightness(1.1); }
+      .btn-resource:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      }
 
       .bg-audio { background: #667eea; color: white; }
-      .bg-pdf   { background: #0f2c48; color: #ffb900; }
-      .bg-studi { background: #0078d4; color: white; }
+      .bg-pdf { background: #0f2c48; color: #d9a526; }
+      .bg-lien { background: #0078d4; color: white; }
       .bg-excel { background: #107c41; color: white; }
-      .bg-info  { background: #e81123; color: white; }
+      .bg-infog { background: #e81123; color: white; }
       .bg-slide { background: #d83b01; color: white; }
-      .bg-video { background: #ff0000; color: white; }
-      .bg-quiz  { background: #b4792a; color: white; }
-      .bg-map   { background: #ffb900; color: #0f2c48; }
-      .bg-glo   { background: #4a5568; color: white; }
+      .bg-video { background: #e52d27; color: white; }
+      .bg-glo { background: #4a5568; color: white; }
+      .bg-map { background: #ffb900; color: #0f2c48; }
+      .bg-quiz { background: #b4792a; color: white; }
 
-      .tab-btn {
-        background: white;
-        padding: 10px 20px;
-        border-radius: 10px;
-        font-weight: 800;
-        border: 2px solid rgba(0,0,0,0.05);
-        transition: 0.3s;
-        text-transform: uppercase;
-        font-size: 11px;
-      }
-      .tab-btn.active {
-        background: linear-gradient(135deg, #464eb8, #e81123);
+      .tooltip-container .tooltip {
+        position: absolute;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #0f2c48;
         color: white;
-        border-color: transparent;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.2s;
+        z-index: 100;
+        border: 1px solid var(--ms-yellow);
+        pointer-events: none;
+      }
+      .tooltip-container:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
       }
 
-      .card-module {
-        animation: fadeIn 0.4s ease-out forwards;
+      .check-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-animate {
+        animation: slideIn 0.4s ease-out forwards;
         opacity: 0;
       }
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes slideIn {
+        from { transform: translateY(15px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
     </style>
   </head>
   <body>
@@ -100,76 +233,286 @@
     <div id="loader">
       <div class="spinner"></div>
       <p class="mt-4 font-black uppercase text-xs tracking-widest text-blue-900">Synchronisation Base_FPA...</p>
-      <p class="text-[10px] mt-2 opacity-50 font-bold">MATHILDE MARTINE PAISLEY - V1.6</p>
+      <p class="text-[10px] mt-2 opacity-50 font-bold">MATHILDE MARTINE PAISLEY</p>
     </div>
 
-    <header class="bg-white/95 backdrop-blur-md border-b-2 border-blue-900 sticky top-0 z-50 p-4 shadow-sm">
-      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="flex items-center gap-4">
-          <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" class="w-14 h-14 rounded-xl border-2 border-blue-900" alt="Logo" />
+    <header
+      class="bg-[#F6F2E8] border-b-2 border-[#0F2C48] h-[90px] flex items-center sticky top-0 z-[100] shadow-sm"
+    >
+      <div
+        class="w-full max-w-[1600px] mx-auto px-6 flex items-center justify-between"
+      >
+        <div
+          class="flex items-center gap-4 cursor-pointer"
+          onclick="location.reload()"
+        >
+          <img
+            src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png"
+            alt="Logo Paia Hub"
+            class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover"
+          />
           <div>
-            <h1 class="text-xl font-black uppercase leading-tight text-blue-900">Formation Pour Adulte</h1>
-            <p class="text-[10px] font-bold text-yellow-600 uppercase tracking-widest">Programme FPA</p>
+            <h1 class="text-xl font-black uppercase text-[#0F2C48]">
+              Formation Pour Adulte
+            </h1>
+            <p
+              class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest"
+            >
+              Base de données FPA • Version 10.1 Complète
+            </p>
           </div>
         </div>
 
-        <div class="flex items-center gap-4 w-full md:w-auto">
-            <div class="relative flex-grow md:w-80">
-                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 opacity-30"></i>
-                <input type="text" id="searchInput" placeholder="Rechercher une codification..." class="w-full bg-gray-100 border-none rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-yellow-500" />
-            </div>
-            <button onclick="document.body.classList.toggle('dys-mode')" class="bg-white border px-4 py-2 rounded-xl text-[10px] font-bold uppercase hover:bg-gray-50">Mode DYS</button>
+        <div class="relative w-full max-w-sm hidden lg:block">
+          <i
+            class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-[#0F2C48]/50"
+          ></i>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Chercher un mot ou un code..."
+            class="w-full bg-white border border-[#0F2C48]/30 rounded-lg py-2 pl-10 pr-4 text-[#0F2C48] text-sm focus:outline-none shadow-inner"
+          />
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ"
+            target="_blank"
+            class="btn-teams-ms flex items-center gap-3 px-6 py-3 rounded-full font-black text-xs text-white"
+          >
+            <i class="fab fa-microsoft text-sm"></i> COMMUNAUTÉ TEAMS
+          </a>
         </div>
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto p-6">
-
-      <!-- Les 3 ONGLETS transverses pointant vers la racine de GitHub Pages -->
-      <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-        <div class="flex flex-wrap gap-3">
-          <a href="Examen.html" class="bg-purple-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase shadow-sm hover:scale-105 transition-transform">Examen</a>
-          <!-- CORRECTION WEB : L'accent É est traduit en %C3%89 pour que GitHub Pages ne plante pas -->
-          <a href="%C3%89valuations_par_Bloc.html" class="bg-green-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase shadow-sm hover:scale-105 transition-transform">Tableau de bord</a>
+    <main class="flex-grow w-full max-w-[1600px] mx-auto px-6 py-8">
+      <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
+        <div class="flex gap-2">
+          <a
+            href="https://app.studi.fr/v3/blog"
+            target="_blank"
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg text-xs font-black shadow-sm hover:bg-blue-600"
+            >NEWSLETTER</a
+          >
+          <a
+            href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/Examen/Examen.html"
+            target="_blank"
+            class="px-4 py-2 bg-purple-600 text-white rounded-lg text-xs font-black shadow-sm hover:bg-purple-700"
+            >EXAMEN</a
+          >
+          <a
+            href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/Tableau_de_Bord_FPA/Évaluations_par_Bloc.html"
+            target="_blank"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg text-xs font-black shadow-sm hover:bg-green-700"
+            >TABLEAU DE BORD</a
+          >
+        </div>
+        <div class="access-bar flex gap-3">
+          <button
+            onclick="toggleAudio()"
+            id="audioBtn"
+            class="p-2 px-4 rounded-full bg-white border border-gray-200 font-bold text-[10px] shadow-sm"
+          >
+            Audio : OFF
+          </button>
+          <button
+            onclick="document.body.classList.toggle('dys-mode')"
+            class="p-2 px-4 rounded-full bg-white border border-gray-200 font-bold text-[10px] shadow-sm"
+          >
+            Mode DYS
+          </button>
+          <button
+            onclick="document.body.classList.toggle('high-contrast')"
+            class="p-2 px-4 rounded-full bg-white border border-gray-200 font-bold text-[10px] shadow-sm"
+          >
+            Contraste
+          </button>
         </div>
       </div>
 
-      <!-- Barre de Progression -->
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-black/5 mb-8 flex flex-col md:flex-row items-center gap-6">
-        <div class="text-center md:text-left">
-          <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Progression Globale</p>
-          <div class="text-3xl font-black text-blue-900" id="progressPct">0%</div>
+      <div class="tabs-container mb-8" id="tabsMenu">
+        <button
+          class="tab-btn active"
+          id="tab-ALL"
+          onclick="filtrerBloc('ALL')"
+        >
+          Vue Globale
+        </button>
+        <button class="tab-btn" id="tab-B0" onclick="filtrerBloc('B0')">
+          B0: Fondamentaux
+        </button>
+        <button class="tab-btn" id="tab-B1" onclick="filtrerBloc('B1')">
+          B1: Concevoir
+        </button>
+        <button class="tab-btn" id="tab-B2" onclick="filtrerBloc('B2')">
+          B2: Animer
+        </button>
+        <button class="tab-btn" id="tab-B3" onclick="filtrerBloc('B3')">
+          B3: Accompagner
+        </button>
+        <button class="tab-btn" id="tab-B4" onclick="filtrerBloc('B4')">
+          B4: Qualité & RSE
+        </button>
+      </div>
+
+      <div
+        class="bg-white rounded-2xl p-6 shadow-sm border border-black/5 mb-8 flex items-center gap-6"
+      >
+        <div class="flex flex-col">
+          <span
+            class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
+            >Votre Progression Totale</span
+          >
+          <div class="text-3xl font-black text-[#D9A526]" id="progressText">
+            0%
+          </div>
         </div>
-        <div class="flex-grow bg-gray-100 h-3 rounded-full overflow-hidden relative">
-          <div id="progressBar" class="h-full bg-green-500 transition-all duration-1000" style="width: 0%"></div>
+        <div
+          class="flex-grow bg-gray-100 h-4 rounded-full overflow-hidden relative"
+        >
+          <div
+            id="progressBar"
+            class="h-full absolute left-0 bg-green-500"
+            style="width: 0%; transition: width 0.5s ease"
+          ></div>
         </div>
-        <div class="text-right text-xs font-bold text-gray-500">
-          <span id="validCount">0</span> / <span id="totalCountDisplay">0</span><br/>Modules validés
+        <div class="text-right font-bold text-xs">
+          <span id="compteurResVue">0</span> /
+          <span id="compteurResTotal">0</span><br />Éléments validés
         </div>
       </div>
 
-      <!-- Filtres par Blocs -->
-      <div id="tabsMenu" class="flex flex-wrap gap-2 mb-8">
-        <button class="tab-btn active" onclick="filtrerBloc('ALL')">VUE GLOBALE</button>
-        <button class="tab-btn" onclick="filtrerBloc('B0')">B0</button>
-        <button class="tab-btn" onclick="filtrerBloc('B1')">B1</button>
-        <button class="tab-btn" onclick="filtrerBloc('B2')">B2</button>
-        <button class="tab-btn" onclick="filtrerBloc('B3')">B3</button>
-        <button class="tab-btn" onclick="filtrerBloc('B4')">B4</button>
-      </div>
-
-      <div id="listContainer" class="grid gap-4 pb-24"></div>
+      <div id="subTabsContainer" class="sub-tabs-container hidden"></div>
+      <div id="listContainer" class="flex flex-col gap-4 pb-12"></div>
     </main>
+
+    <footer
+      class="py-10 flex flex-col items-center gap-4 bg-white/30 border-t border-black/5"
+    >
+      <img
+        src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg"
+        alt="Logo Mathilde Martine PAISLEY"
+        class="w-16 h-16 rounded-full border-2 border-[#D9A526] object-cover"
+      />
+      <p
+        class="text-[10px] font-bold opacity-50 uppercase tracking-widest text-center"
+      >
+        💫 PAIA ✨ Platform Automation & Intelligent Architecture<br />By
+        Mathilde Martine PAISLEY - © 2026
+      </p>
+      <button
+        onclick="
+          if (confirm('Tout réinitialiser?')) {
+            localStorage.clear();
+            location.reload();
+          }
+        "
+        class="text-red-400 font-bold text-[9px] uppercase hover:text-red-600"
+      >
+        Réinitialiser le parcours
+      </button>
+    </footer>
+
+    <div
+      id="modalTravaux"
+      class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[2000]"
+    >
+      <div
+        class="bg-white p-10 rounded-2xl border-4 border-[#0F2C48] shadow-[10px_10px_0_#FFB900] text-center max-w-md"
+      >
+        <div class="text-4xl mb-4">🚧</div>
+        <h2 class="font-black text-[#0F2C48] uppercase mb-2">
+          Bientôt disponible
+        </h2>
+        <p id="modalTxt" class="text-gray-500 text-sm mb-6 font-bold"></p>
+        <button
+          onclick="
+            document.getElementById('modalTravaux').style.display = 'none'
+          "
+          class="bg-[#0F2C48] text-white px-8 py-2 rounded-lg font-bold"
+        >
+          D'ACCORD
+        </button>
+      </div>
+    </div>
+    <div
+      id="toastContainer"
+      class="fixed bottom-10 right-10 flex flex-col gap-3 pointer-events-none z-[3000]"
+    ></div>
 
     <script>
       // ==========================================
-      // CONFIGURATION SOURCE : TON LIEN CSV (Corrigé pour GitHub)
+      // CONNEXION À TON GOOGLE SHEETS VIA PAPAPARSE
       // ==========================================
       const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSJuJce5_6A5Yd0xbYLhb4OZRZ4dyvi0oArF2a_Ks1U_dvGflru_lb8XLgLVs6NApu6cJUS_C6GYU71/pub?output=csv";
-
       let database = [];
-      let currentFilter = "ALL";
-      let userProgress = JSON.parse(localStorage.getItem('fpa_progress_v16')) || {};
+
+      // Structure pour les sous-onglets
+      const configStructure = {
+        B0: [
+          { id: "M01", nom: "M01" },
+          { id: "M02", nom: "M02" },
+          { id: "M03", nom: "M03" },
+        ],
+        B1: [
+          { id: "M01", nom: "M01" },
+          { id: "M02", nom: "M02" },
+          { id: "M03", nom: "M03" },
+          { id: "M04", nom: "M04" },
+          { id: "M05", nom: "M05" },
+          { id: "M06", nom: "M06" },
+          { id: "M07", nom: "M07" },
+          { id: "M08", nom: "M08" },
+          { id: "M09", nom: "M09" },
+          { id: "M10", nom: "M10" },
+          { id: "M11", nom: "M11" },
+          { id: "M12", nom: "M12" },
+          { id: "M13", nom: "M13" },
+          { id: "M14", nom: "M14" },
+        ],
+        B2: [
+          { id: "M01", nom: "M01" },
+          { id: "M02", nom: "M02" },
+          { id: "M03", nom: "M03" },
+          { id: "M04", nom: "M04" },
+          { id: "M05", nom: "M05" },
+          { id: "M06", nom: "M06" },
+          { id: "M07", nom: "M07" },
+          { id: "M08", nom: "M08" },
+          { id: "M09", nom: "M09" },
+        ],
+        B3: [
+          { id: "M01", nom: "M01" },
+          { id: "M02", nom: "M02" },
+          { id: "M03", nom: "M03" },
+          { id: "M04", nom: "M04" },
+          { id: "M05", nom: "M05" },
+          { id: "M06", nom: "M06" },
+          { id: "M07", nom: "M07" },
+          { id: "M08", nom: "M08" },
+          { id: "M09", nom: "M09" },
+          { id: "M10", nom: "M10" },
+          { id: "M11", nom: "M11" },
+          { id: "M12", nom: "M12" },
+        ],
+        B4: [
+          { id: "M01", nom: "M01" },
+          { id: "M02", nom: "M02" },
+          { id: "M03", nom: "M03" },
+          { id: "M04", nom: "M04" },
+          { id: "M05", nom: "M05" },
+        ],
+      };
+
+      // ==========================================
+      // ⚙️ LOGIQUE & ÉTAT
+      // ==========================================
+      let progressRes = JSON.parse(localStorage.getItem("paia_p_v10")) || {};
+      let isVoice = localStorage.getItem("paia_voice") === "true";
+      let currentBloc = "ALL";
+      let currentMod = "ALL";
 
       window.onload = () => {
           Papa.parse(CSV_URL, {
@@ -180,7 +523,7 @@
                   database = results.data;
                   document.getElementById('loader').style.opacity = '0';
                   setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
-                  render();
+                  filtrerBloc("ALL"); // Lance le premier affichage dynamique
               },
               error: (err) => {
                   console.error("Erreur de chargement du CSV:", err);
@@ -189,92 +532,217 @@
           });
       };
 
+      function toggleAudio() {
+        isVoice = !isVoice;
+        localStorage.setItem("paia_voice", isVoice);
+        document.getElementById("audioBtn").innerText = isVoice
+          ? "Audio : ON"
+          : "Audio : OFF";
+      }
+
+      function lire(txt) {
+        if (!isVoice) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(txt);
+        u.lang = "fr-FR";
+        window.speechSynthesis.speak(u);
+      }
+
       function filtrerBloc(bloc) {
-          currentFilter = bloc;
-          document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-          event.target.classList.add('active');
-          render();
+        currentBloc = bloc;
+        currentMod = "ALL";
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        document.getElementById("tab-" + bloc)?.classList.add("active");
+        renderSubTabs();
+        afficherModules(
+          document.getElementById("searchInput")
+            ? document.getElementById("searchInput").value
+            : "",
+        );
       }
 
-      function toggleValidation(code) {
-          userProgress[code] = !userProgress[code];
-          localStorage.setItem('fpa_progress_v15', JSON.stringify(userProgress));
-          if(userProgress[code]) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-          render();
+      function renderSubTabs() {
+        const sub = document.getElementById("subTabsContainer");
+        sub.innerHTML = "";
+        if (currentBloc === "ALL") {
+          sub.classList.add("hidden");
+          return;
+        }
+        sub.classList.remove("hidden");
+        const mods = configStructure[currentBloc] || [];
+        const allBtn = document.createElement("button");
+        allBtn.className = `tab-btn text-[10px] ${currentMod === "ALL" ? "active" : ""} px-4 py-2 font-bold rounded shadow-sm border mb-2`;
+        allBtn.innerText = "TOUT " + currentBloc;
+        allBtn.onclick = () => {
+          currentMod = "ALL";
+          renderSubTabs();
+          afficherModules(document.getElementById("searchInput").value, false);
+        };
+        sub.appendChild(allBtn);
+        mods.forEach((m) => {
+          const btn = document.createElement("button");
+          btn.className = `tab-btn text-[10px] ${currentMod === m.id ? "active" : ""} px-4 py-2 font-bold rounded shadow-sm border ml-2 mb-2`;
+          btn.innerText = m.id;
+          btn.onclick = () => {
+            currentMod = m.id;
+            renderSubTabs();
+            afficherModules(document.getElementById("searchInput").value, false);
+          };
+          sub.appendChild(btn);
+        });
       }
 
-      function render() {
-          const container = document.getElementById('listContainer');
-          container.innerHTML = "";
-          const search = document.getElementById('searchInput').value.toLowerCase();
-          let validated = 0;
+      window.toggleRes = function (id, rid) {
+        const key = `${id}-${rid}`;
+        progressRes[key] = !progressRes[key];
+        localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
+        if (progressRes[key])
+          confetti({ particleCount: 30, spread: 50, origin: { y: 0.9 } });
+        afficherModules(document.getElementById("searchInput").value, false);
+      };
 
-          database.forEach((item, index) => {
-              if (!item.Code) return;
+      window.toggleLine = function (id) {
+        const rids = [
+          "audio",
+          "pdf",
+          "lien",
+          "excel",
+          "infog",
+          "slide",
+          "video",
+          "glo",
+          "map",
+          "quiz",
+        ];
+        const keys = rids.map((rid) => `${id}-${rid}`);
+        const isAll = keys.every((k) => progressRes[k]);
+        keys.forEach((k) => (progressRes[k] = !isAll));
+        localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
+        if (!isAll) {
+          confetti({ particleCount: 150 });
+          afficherToast("Ligne Validée ! ✅");
+        }
+        afficherModules(document.getElementById("searchInput").value, false);
+      };
 
-              // 1. Filtrage par bloc (B0, B1, B2...)
-              if (currentFilter !== "ALL" && !item.Code.includes(`_${currentFilter}_`)) return;
+      // Fonction d'aide pour générer le bon comportement (Lien ou Modal)
+      function getActionLink(url, isLocal, titre) {
+          if (isLocal) return { tag: "a", action: `href="${url}" target="_blank"` };
 
-              // 2. Filtrage par recherche (Code ou Titre)
-              const searchStr = `${item.Code} ${item.Titre}`.toLowerCase();
-              if (!searchStr.includes(search)) return;
+          if (url && url.trim() !== "" && (url.startsWith("http") || url.startsWith("Slides/"))) {
+              return { tag: "a", action: `href="${url}" target="_blank"` };
+          }
 
-              if (userProgress[item.Code]) validated++;
+          return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
+      }
 
-              // ==========================================
-              // LOGIQUE MATHILDE (Optimisée GitHub Pages)
-              // ==========================================
-              const baseFileName = `${item.Code} - ${item.Titre}`;
-              const safeFileName = encodeURIComponent(baseFileName) + '.html';
+      function afficherModules(filtre = "", anim = true) {
+        const list = document.getElementById("listContainer");
+        if (!list) return;
+        list.innerHTML = "";
+        let vueCount = 0,
+            totalCount = 0,
+            cardIdx = 0;
 
-              const isValidated = userProgress[item.Code] || false;
+        database.forEach((itemObj) => {
+          if (!itemObj.Code) return; // Ignore les lignes vides du CSV
 
-              const card = document.createElement('div');
-              card.className = `card-module p-6 rounded-2xl border flex flex-col md:flex-row justify-between items-center gap-6 transition-all ${isValidated ? 'bg-green-50 border-green-200' : 'bg-white border-gray-100 shadow-sm hover:shadow-md'}`;
-              card.style.animationDelay = `${index * 0.01}s`;
+          const id = itemObj.Code;
+          const titre = itemObj.Titre || "Sans titre";
+          const fullItemName = `${id} - ${titre}`;
+          const safeFileName = encodeURIComponent(fullItemName) + '.html';
 
-              card.innerHTML = `
-                <div class="flex-grow text-center md:text-left">
-                    <span class="text-[10px] font-black text-yellow-600 uppercase tracking-widest">${item.Code}</span>
-                    <h3 class="text-lg font-bold text-blue-900 leading-tight mt-1">${item.Titre || 'Sans titre'}</h3>
+          // Filtres de recherche et d'onglets
+          if (!fullItemName.toLowerCase().includes(filtre.toLowerCase())) return;
+          if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
+          if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
-                    <div class="flex flex-wrap justify-center md:justify-start gap-3 mt-5">
+          // Mapping dynamique depuis les colonnes du CSV
+          const res = [
+            { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio },
+            { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours },
+            { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien", url: itemObj.Lien_Studi },
+            { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel },
+            { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie },
+            { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null },
+            { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo },
+            { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, isLocal: true },
+            { id: "map", em: "🧠", n: "Carte", b: "bg-map", url: `Carte Mentale/${safeFileName}`, isLocal: true },
+            { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, isLocal: true },
+          ];
 
-                        <!-- LIENS VERS TES DOSSIERS LOCAUX -->
-                        <a href="Quiz/${safeFileName}" target="_blank" class="btn-resource bg-quiz" title="Quiz">⚡</a>
-                        <a href="Carte%20Mentale/${safeFileName}" target="_blank" class="btn-resource bg-map" title="Carte Mentale">🧠</a>
-                        <a href="Glossaire/${safeFileName}" target="_blank" class="btn-resource bg-glo" title="Lexique">📚</a>
+          let lineChecked = 0;
+          const htmlRes = res.map((r) => {
+            totalCount++;
+            const isV = progressRes[`${id}-${r.id}`];
+            if (isV) {
+              vueCount++;
+              lineChecked++;
+            }
+            const checkC = isV ? "bg-green-500 text-white" : "bg-white text-gray-200";
 
-                        <!-- LIENS DYNAMIQUES DEPUIS TON TABLEAU CSV -->
-                        ${item.Cours ? `<a href="${item.Cours}" target="_blank" class="btn-resource bg-pdf" title="Cours">📄</a>` : ''}
-                        ${item.Audio ? `<a href="${item.Audio}" target="_blank" class="btn-resource bg-audio" title="Audio">🎧</a>` : ''}
-                        ${item.Excel ? `<a href="${item.Excel}" target="_blank" class="btn-resource bg-excel" title="Excel">📊</a>` : ''}
-                        ${item.Infographie ? `<a href="${item.Infographie}" target="_blank" class="btn-resource bg-info" title="Infographie">🖼️</a>` : ''}
-                        ${item.Slides ? `<a href="${item.Slides.startsWith('http') ? item.Slides : `Slides/${item.Slides}`}" target="_blank" class="btn-resource bg-slide" title="Slides">📽️</a>` : ''}
-                        ${item.Vidéo ? `<a href="${item.Vidéo}" target="_blank" class="btn-resource bg-video" title="Vidéo">🎬</a>` : ''}
-                        ${item.Lien_Studi ? `<a href="${item.Lien_Studi}" target="_blank" class="btn-resource bg-studi" title="Studi">🎓</a>` : ''}
+            // Utilisation de la fonction d'aide pour déterminer si c'est un vrai lien ou la Pop-up
+            const linkProps = getActionLink(r.url, r.isLocal, titre);
+
+            return `<div class="relative tooltip-container">
+                        <${linkProps.tag} ${linkProps.action} class="btn-resource ${r.b}" onmouseenter="lire('${r.n}')"><span>${r.em}</span></${linkProps.tag}>
+                        <button onclick="toggleRes('${id}','${r.id}')" class="check-badge ${checkC}"><i class="fas fa-check"></i></button>
+                        <span class="tooltip">${r.n}</span>
+                    </div>`;
+          }).join("");
+
+          const isFull = lineChecked === res.length;
+          const card = document.createElement("div");
+          card.className = `flex flex-col md:flex-row gap-4 p-5 bg-white border border-[#0F2C48]/10 rounded-xl shadow-sm mb-4 ${anim ? "card-animate" : ""} ${isFull ? "bg-green-50" : ""}`;
+          if (anim) card.style.animationDelay = `${cardIdx * 0.04}s`;
+
+          card.innerHTML = `<div class="flex-grow">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="text-black font-black text-2xl pr-2">${id.split("_")[0]}</span>
+                        <h3 class="font-bold text-lg text-[#0F2C48] leading-tight">${titre}</h3>
                     </div>
+                    <p class="text-[9px] text-[#B4792A] font-code uppercase mb-4 tracking-tighter opacity-70">${id}</p>
+                    <div class="flex flex-wrap gap-3">${htmlRes}</div>
                 </div>
-
-                <div class="flex flex-col gap-2 min-w-[140px]">
-                    <button onclick="toggleValidation('${item.Code}')" class="w-full py-3 rounded-xl font-black text-xs uppercase transition-all shadow-sm ${isValidated ? 'bg-green-500 text-white' : 'bg-gray-100 text-blue-900 hover:bg-blue-900 hover:text-white'}">
-                        ${isValidated ? 'Terminé' : 'Valider'}
+                <div class="flex flex-col items-center justify-center min-w-[150px] border-t md:border-t-0 md:border-l pt-4 md:pt-0 md:pl-4 border-gray-100">
+                    <button onclick="toggleLine('${id}')" class="btn-to-validate btn-valider-3d px-6 py-3 rounded-xl text-xs w-full ${isFull ? "btn-success-line" : ""}">
+                         ${isFull ? "Terminé ✅" : "Valider"}
                     </button>
-                </div>
-              `;
-              container.appendChild(card);
-          });
+                </div>`;
+          list.appendChild(card);
+          cardIdx++;
+        });
 
-          // Mise à jour progression
-          const total = database.filter(i => i.Code).length;
-          const pct = total === 0 ? 0 : Math.round((validated / total) * 100);
-          document.getElementById('progressPct').innerText = pct + "%";
-          document.getElementById('progressBar').style.width = pct + "%";
-          document.getElementById('validCount').innerText = validated;
-          document.getElementById('totalCountDisplay').innerText = total;
+        const gP = totalCount === 0 ? 0 : Math.round((vueCount / totalCount) * 100);
+        document.getElementById("progressBar").style.width = gP + "%";
+        document.getElementById("progressText").innerText = gP + "%";
+        document.getElementById("compteurResVue").innerText = vueCount;
+        document.getElementById("compteurResTotal").innerText = totalCount;
       }
 
-      document.getElementById('searchInput').addEventListener('input', render);
+      function afficherToast(m) {
+        const c = document.getElementById("toastContainer");
+        const t = document.createElement("div");
+        t.className = "toast-notification show p-3 bg-white border-l-4 border-green-500 shadow-lg rounded-lg flex items-center gap-3 pointer-events-auto";
+        t.innerHTML = `<span class="text-xl">✨</span><span class="text-[#0F2C48] font-bold text-sm">${m}</span>`;
+        c.appendChild(t);
+        setTimeout(() => {
+          t.remove();
+        }, 3000);
+      }
+
+      function afficherTravaux(n) {
+        document.getElementById("modalTxt").innerText = n;
+        document.getElementById("modalTravaux").style.display = "flex";
+      }
+
+      const sE = document.getElementById("searchInput");
+      if (sE) {
+        sE.addEventListener("input", (e) => afficherModules(e.target.value, false)); // false pour éviter que ça rebondisse à chaque lettre tapée
+      }
+
     </script>
   </body>
 </html>
