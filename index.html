@@ -76,20 +76,42 @@
         flex-direction: column;
       }
 
-      /* --- Teams Microsoft --- */
-      .btn-teams-ms {
-        background: #ffffff;
-        color: var(--title-blue);
-        border: 1px solid rgba(15, 44, 72, 0.1);
-        box-shadow: 0 4px 0 rgba(15, 44, 72, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
-        transition: all 0.2s ease;
+      /* --- Boutons Ronds de Navigation --- */
+      .btn-nav-round {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: white !important;
+        position: relative;
+        text-decoration: none;
+        border: 2px solid rgba(255,255,255,0.4);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
-      .btn-teams-ms:hover {
-        transform: translateY(2px);
-        box-shadow: 0 2px 0 rgba(15, 44, 72, 0.1), 0 2px 5px rgba(0, 0, 0, 0.05);
+      .btn-nav-round:hover {
+        transform: translateY(-5px) scale(1.1);
+        border-color: rgba(255,255,255,0.8);
       }
-      .btn-teams-ms i {
-        color: #5c5fc8;
+
+      .btn-news {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+      }
+      .btn-exam {
+        background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
+        box-shadow: 0 6px 15px rgba(126, 34, 206, 0.4);
+      }
+      .btn-eval {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 6px 15px rgba(5, 150, 105, 0.4);
+      }
+      /* Nouveau Bouton Teams en rond avec ton dégradé Vue Globale */
+      .btn-teams-round {
+        background: linear-gradient(135deg, #464eb8 0%, #e81123 100%);
+        box-shadow: 0 6px 15px rgba(70, 78, 184, 0.4);
       }
 
       /* --- Onglets --- */
@@ -103,77 +125,129 @@
         transition: 0.3s;
       }
       .tab-btn.active {
-        background-color: var(--title-blue);
-        color: var(--cta-yellow);
-        border-color: var(--title-blue);
-        box-shadow: 0 4px 15px rgba(15, 44, 72, 0.2);
+        background: linear-gradient(135deg, #464eb8 0%, #e81123 100%);
+        color: white;
+        border-color: transparent;
       }
 
       /* --- Bouton Valider Solaire 3D --- */
       .btn-valider-3d {
-        background: #ffffff;
-        color: var(--title-blue) !important;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        background: linear-gradient(
+          135deg,
+          #ffeb3b 0%,
+          #ffb900 50%,
+          #ff8c00 100%
+        );
+        color: #0f2c48 !important;
+        border: none;
+        border-bottom: 4px solid #b4792a !important;
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 1px;
         transition: all 0.2s ease;
-        box-shadow: 0 4px 0 var(--cta-yellow), 0 5px 10px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         cursor: pointer;
       }
       .btn-valider-3d:hover {
-        transform: translateY(2px);
-        box-shadow: 0 2px 0 var(--cta-yellow), 0 3px 5px rgba(0, 0, 0, 0.05);
+        transform: translateY(-2px);
+        border-bottom-width: 6px !important;
+        filter: brightness(1.05);
       }
       .btn-valider-3d:active {
-        transform: translateY(4px);
-        box-shadow: 0 0 0 var(--cta-yellow);
+        transform: translateY(2px);
+        border-bottom-width: 1px !important;
       }
 
       .btn-success-line {
-        background: #ecfdf5 !important;
-        color: #064e3b !important;
-        border-color: #34d399 !important;
-        box-shadow: 0 4px 0 #34d399, 0 5px 10px rgba(0, 0, 0, 0.05) !important;
-      }
-      .btn-success-line:hover {
-        box-shadow: 0 2px 0 #34d399, 0 3px 5px rgba(0, 0, 0, 0.05) !important;
-      }
-      .btn-success-line:active {
-        box-shadow: 0 0 0 #34d399 !important;
+        background: linear-gradient(
+          135deg,
+          #10b981 0%,
+          #059669 100%
+        ) !important;
+        color: #0f2c48 !important;
+        border-bottom: 4px solid #064e3b !important;
       }
 
-      /* --- Boutons de Navigation 3D (Examen / Eval) --- */
-      .btn-nav-3d {
-        background: #ffffff;
-        color: var(--title-blue) !important;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        transition: all 0.2s ease;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        border-radius: 12px;
-        display: inline-flex;
+      /* --- Nouveaux Boutons Ronds 2026 avec Rebond --- */
+      .btn-nav-round {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 1.2rem;
+        color: white !important;
+        position: relative;
+        text-decoration: none;
+        border: 2px solid rgba(255,255,255,0.4);
+        /* Animation "Rebond" fluide */
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
+      .btn-nav-round:hover {
+        transform: translateY(-5px) scale(1.1);
+        border-color: rgba(255,255,255,0.8);
+      }
+
       .btn-news {
-        box-shadow: 0 4px 0 #bfdbfe, 0 5px 10px rgba(0, 0, 0, 0.05);
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
       }
-      .btn-news:hover { transform: translateY(2px); box-shadow: 0 2px 0 #bfdbfe, 0 3px 5px rgba(0, 0, 0, 0.05); }
-      .btn-news:active { transform: translateY(4px); box-shadow: 0 0 0 #bfdbfe; }
-
       .btn-exam {
-        box-shadow: 0 4px 0 #e9d5ff, 0 5px 10px rgba(0, 0, 0, 0.05);
+        background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
+        box-shadow: 0 6px 15px rgba(126, 34, 206, 0.4);
       }
-      .btn-exam:hover { transform: translateY(2px); box-shadow: 0 2px 0 #e9d5ff, 0 3px 5px rgba(0, 0, 0, 0.05); }
-      .btn-exam:active { transform: translateY(4px); box-shadow: 0 0 0 #e9d5ff; }
-
       .btn-eval {
-        box-shadow: 0 4px 0 #a7f3d0, 0 5px 10px rgba(0, 0, 0, 0.05);
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 6px 15px rgba(5, 150, 105, 0.4);
       }
-      .btn-eval:hover { transform: translateY(2px); box-shadow: 0 2px 0 #a7f3d0, 0 3px 5px rgba(0, 0, 0, 0.05); }
-      .btn-eval:active { transform: translateY(4px); box-shadow: 0 0 0 #a7f3d0; }
+
+      /* --- Menu Vertical Flottant Ultra-Fin (Accessibilité & Défilement) --- */
+      @keyframes floatUpDown {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+      }
+
+      .floating-side-menu {
+        position: fixed;
+        right: 10px;
+        top: 50%;
+        margin-top: -100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(12px);
+        padding: 6px 4px;
+        width: 36px;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255,255,255,0.9);
+        animation: floatUpDown 6s ease-in-out infinite;
+      }
+
+      .btn-fab {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        border: 1px solid rgba(0,0,0,0.05);
+        position: relative;
+      }
+      .btn-fab:hover {
+        transform: scale(1.15) translateX(-3px);
+        box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+      }
 
       /* --- Ressources --- */
       .btn-resource {
@@ -290,75 +364,45 @@
           </div>
         </div>
 
-        <div class="relative w-full max-w-sm hidden lg:block">
+        <!-- Barre de recherche réduite pour le responsive -->
+        <div class="relative w-full max-w-[200px] lg:max-w-xs hidden md:block">
           <i
-            class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-[#0F2C48]/50"
+            class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[#0F2C48]/50 text-xs"
           ></i>
           <input
             type="text"
             id="searchInput"
-            placeholder="Chercher un mot ou un code..."
-            class="w-full bg-white border border-[#0F2C48]/30 rounded-lg py-2 pl-10 pr-4 text-[#0F2C48] text-sm focus:outline-none shadow-inner"
+            placeholder="Rechercher..."
+            class="w-full bg-white border border-[#0F2C48]/30 rounded-lg py-1.5 pl-8 pr-3 text-[#0F2C48] text-xs focus:outline-none shadow-inner"
           />
         </div>
 
         <div class="flex items-center gap-3">
-          <a
-            href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ"
-            target="_blank"
-            class="btn-teams-ms flex items-center gap-3 px-6 py-3 rounded-full font-black text-xs"
-          >
-            <i class="fab fa-microsoft text-sm"></i> COMMUNAUTÉ TEAMS
-          </a>
+          <!-- Les 4 Boutons Ronds (Maintenant avec Teams) -->
+          <div class="flex justify-center items-center gap-2 hidden md:flex">
+            <a href="https://app.studi.fr/v3/blog" target="_blank" class="btn-nav-round btn-news group">
+              <span>📰</span>
+              <span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-md z-50">Newsletter</span>
+            </a>
+            <a href="Examen.html" target="_blank" class="btn-nav-round btn-exam group">
+              <span>🎓</span>
+              <span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-md z-50">Examen</span>
+            </a>
+            <a href="%C3%89valuations.html" target="_blank" class="btn-nav-round btn-eval group">
+              <span>📊</span>
+              <span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-md z-50">Évaluations</span>
+            </a>
+            <!-- Le nouveau bouton Teams en rond avec ton style -->
+            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="btn-nav-round btn-teams-round group">
+              <i class="fab fa-microsoft text-[1.2rem]"></i>
+              <span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-md z-50">Communauté</span>
+            </a>
+          </div>
         </div>
       </div>
     </header>
 
     <main class="flex-grow w-full max-w-[1600px] mx-auto px-6 py-8">
-      <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
-        <div class="flex flex-wrap gap-3">
-          <a
-            href="https://app.studi.fr/v3/blog"
-            target="_blank"
-            class="btn-nav-3d btn-news px-5 py-2.5 rounded-xl text-xs gap-2"
-            ><span class="text-base">📰</span> NEWSLETTER</a
-          >
-          <a
-            href="Examen.html"
-            target="_blank"
-            class="btn-nav-3d btn-exam px-5 py-2.5 rounded-xl text-xs gap-2"
-            ><span class="text-base">🎓</span> EXAMEN</a
-          >
-          <a
-            href="%C3%89valuations.html"
-            target="_blank"
-            class="btn-nav-3d btn-eval px-5 py-2.5 rounded-xl text-xs gap-2"
-            ><span class="text-base">📊</span> ÉVALUATION</a
-          >
-        </div>
-        <div class="access-bar flex gap-3">
-          <button
-            onclick="toggleAudio()"
-            id="audioBtn"
-            class="p-2 px-4 rounded-full bg-white border border-gray-200 font-bold text-[10px] shadow-sm"
-          >
-            Audio : OFF
-          </button>
-          <button
-            onclick="document.body.classList.toggle('dys-mode')"
-            class="p-2 px-4 rounded-full bg-white border border-gray-200 font-bold text-[10px] shadow-sm"
-          >
-            Mode DYS
-          </button>
-          <button
-            onclick="document.body.classList.toggle('high-contrast')"
-            class="p-2 px-4 rounded-full bg-white border border-gray-200 font-bold text-[10px] shadow-sm"
-          >
-            Contraste
-          </button>
-        </div>
-      </div>
-
       <div class="tabs-container mb-8" id="tabsMenu">
         <button
           class="tab-btn active"
@@ -441,6 +485,36 @@
         Réinitialiser le parcours
       </button>
     </footer>
+
+    <!-- Menu Accessibilité Vertical Affiné avec Flèches de défilement -->
+    <div class="floating-side-menu">
+      <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn-fab group">
+        <span>⬆️</span>
+        <span class="absolute right-full mr-3 bg-[#0F2C48] text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Haut de page</span>
+      </button>
+
+      <div class="w-full h-[1px] bg-[#0F2C48]/10 my-1"></div>
+
+      <button onclick="toggleAudio()" class="btn-fab group">
+        <span id="audioIcon">🔇</span>
+        <span id="audioLabel" class="absolute right-full mr-3 bg-[#0F2C48] text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Audio OFF</span>
+      </button>
+      <button onclick="document.body.classList.toggle('dys-mode')" class="btn-fab group">
+        <span>👓</span>
+        <span class="absolute right-full mr-3 bg-[#0F2C48] text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Mode DYS</span>
+      </button>
+      <button onclick="document.body.classList.toggle('high-contrast')" class="btn-fab group">
+        <span>🌗</span>
+        <span class="absolute right-full mr-3 bg-[#0F2C48] text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Contraste</span>
+      </button>
+
+      <div class="w-full h-[1px] bg-[#0F2C48]/10 my-1"></div>
+
+      <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" class="btn-fab group">
+        <span>⬇️</span>
+        <span class="absolute right-full mr-3 bg-[#0F2C48] text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Bas de page</span>
+      </button>
+    </div>
 
     <div
       id="modalTravaux"
@@ -542,6 +616,10 @@
       let currentMod = "ALL";
 
       window.onload = () => {
+          // Mise à jour visuelle des préférences audio au chargement
+          document.getElementById("audioIcon").innerText = isVoice ? "🔊" : "🔇";
+          document.getElementById("audioLabel").innerText = isVoice ? "Audio ON" : "Audio OFF";
+
           Papa.parse(CSV_URL, {
               download: true,
               header: true,
@@ -562,9 +640,8 @@
       function toggleAudio() {
         isVoice = !isVoice;
         localStorage.setItem("paia_voice", isVoice);
-        document.getElementById("audioBtn").innerText = isVoice
-          ? "Audio : ON"
-          : "Audio : OFF";
+        document.getElementById("audioIcon").innerText = isVoice ? "🔊" : "🔇";
+        document.getElementById("audioLabel").innerText = isVoice ? "Audio ON" : "Audio OFF";
       }
 
       function lire(txt) {
