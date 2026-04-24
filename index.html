@@ -231,14 +231,6 @@
       .card-animate { animation: slideIn 0.4s ease-out forwards; opacity: 0; }
       @keyframes slideIn { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-      /* --- PANNEAU LATÉRAL "SPLIT VIEW" 3/4 --- */
-      #sidePanelBackdrop {
-        transition: opacity 0.4s ease;
-      }
-      #sidePanel {
-        transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-        /* 75% width sur écran moyen/grand, 100% sur petit écran */
-      }
     </style>
   </head>
   <body class="relative">
@@ -255,7 +247,7 @@
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo Paia Hub" class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover" />
           <div>
             <h1 class="text-xl font-black uppercase text-[#0F2C48]">Formation Pour Adulte</h1>
-            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base de données FPA • V12 (Split View)</p>
+            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base de données FPA • V14 (Inline Media)</p>
           </div>
         </div>
 
@@ -284,7 +276,7 @@
     </header>
 
     <main class="flex-grow w-full max-w-[1600px] mx-auto px-6 py-8">
-      <div class="tabs-container mb-8" id="tabsMenu">
+      <div class="tabs-container mb-6" id="tabsMenu">
         <button class="tab-btn active" id="tab-ALL" onclick="filtrerBloc('ALL')">Vue Globale</button>
         <button class="tab-btn" id="tab-B0" onclick="filtrerBloc('B0')">B0: Fondamentaux</button>
         <button class="tab-btn" id="tab-B1" onclick="filtrerBloc('B1')">B1: Concevoir</button>
@@ -293,26 +285,26 @@
         <button class="tab-btn" id="tab-B4" onclick="filtrerBloc('B4')">B4: Qualité & RSE</button>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 shadow-sm border border-black/5 mb-8 flex items-center gap-6">
-        <div class="flex flex-col">
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-black/5 mb-6 flex flex-col md:flex-row items-center gap-6">
+        <div class="flex flex-col text-center md:text-left">
           <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Votre Progression Totale</span>
           <div class="text-3xl font-black text-[#D9A526]" id="progressText">0%</div>
         </div>
-        <div class="flex-grow bg-gray-100 h-4 rounded-full overflow-hidden relative">
+        <div class="flex-grow w-full bg-gray-100 h-4 rounded-full overflow-hidden relative">
           <div id="progressBar" class="h-full absolute left-0 bg-green-500" style="width: 0%; transition: width 0.5s ease"></div>
         </div>
-        <div class="text-right font-bold text-xs">
-          <span id="compteurResVue">0</span> / <span id="compteurResTotal">0</span><br />Éléments validés
+        <div class="text-right font-bold text-xs whitespace-nowrap hidden md:block">
+          <span id="compteurResVue">0</span> / <span id="compteurResTotal">0</span><br />Validés
         </div>
       </div>
 
-      <div id="subTabsContainer" class="sub-tabs-container hidden"></div>
+      <div id="subTabsContainer" class="sub-tabs-container hidden mb-6"></div>
 
       <!-- Liste des modules -->
-      <div id="listContainer" class="flex flex-col gap-4 pb-12"></div>
+      <div id="listContainer" class="flex flex-col gap-4 pb-12 w-full"></div>
     </main>
 
-    <footer class="py-10 flex flex-col items-center gap-4 bg-white/30 border-t border-black/5">
+    <footer class="py-10 flex flex-col items-center gap-4 bg-white/30 border-t border-black/5 mt-auto">
       <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo Mathilde Martine PAISLEY" class="w-16 h-16 rounded-full border-2 border-[#D9A526] object-cover" />
       <p class="text-[10px] font-bold opacity-50 uppercase tracking-widest text-center">💫 PAIA ✨ Platform Automation & Intelligent Architecture<br />By Mathilde Martine PAISLEY - © 2026</p>
       <button onclick="if (confirm('Tout réinitialiser?')) { localStorage.clear(); location.reload(); }" class="text-red-400 font-bold text-[9px] uppercase hover:text-red-600">Réinitialiser le parcours</button>
@@ -348,42 +340,6 @@
         <button onclick="document.getElementById('modalTravaux').style.display = 'none'" class="bg-[#0F2C48] text-white px-8 py-2 rounded-lg font-bold">D'ACCORD</button>
       </div>
     </div>
-
-    <!-- ============================================================== -->
-    <!-- LE PANNEAU LATÉRAL (SPLIT VIEW 3/4) -->
-    <!-- ============================================================== -->
-
-    <!-- Fond noir semi-transparent (Backdrop) -->
-    <div id="sidePanelBackdrop" class="fixed inset-0 bg-[#0F2C48]/40 backdrop-blur-sm z-[4000] opacity-0 pointer-events-none transition-opacity duration-400" onclick="closeSidePanel()"></div>
-
-    <!-- Le Panneau qui glisse de la droite (75% de largeur sur desktop, 100% sur mobile) -->
-    <div id="sidePanel" class="fixed top-0 right-0 w-full md:w-3/4 lg:w-[75%] h-full bg-white shadow-[-20px_0_50px_rgba(0,0,0,0.3)] z-[4010] transform translate-x-full flex flex-col overflow-hidden">
-
-      <!-- En-tête du panneau -->
-      <div class="bg-[#0F2C48] px-6 py-4 flex justify-between items-center shrink-0 border-b-4 border-[#FFB900]">
-        <div class="flex items-center gap-3 overflow-hidden">
-            <span id="sideIcon" class="text-2xl">📄</span>
-            <h2 id="sideTitle" class="font-black text-white uppercase tracking-wider text-sm md:text-base truncate">Chargement...</h2>
-        </div>
-
-        <div class="flex items-center gap-4 shrink-0">
-            <!-- BOUTON DE SECOURS -->
-            <a id="sideExternalLink" href="#" target="_blank" class="hidden md:flex items-center gap-2 text-[10px] uppercase font-bold bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg transition-colors border border-white/20" title="Ouvrir dans un autre onglet">
-                <i class="fas fa-external-link-alt"></i> Détacher
-            </a>
-            <!-- Bouton Fermer -->
-            <button onclick="closeSidePanel()" class="w-10 h-10 bg-white/10 hover:bg-red-500 text-white rounded-full flex items-center justify-center transition-colors shadow-inner">
-                <i class="fas fa-arrow-right text-xl"></i>
-            </button>
-        </div>
-      </div>
-
-      <!-- Zone de contenu (Iframe) -->
-      <div class="flex-grow w-full bg-gray-100 relative">
-          <iframe id="sideIframe" src="" class="w-full h-full border-none" allow="autoplay; fullscreen" allowfullscreen></iframe>
-      </div>
-    </div>
-    <!-- ============================================================== -->
 
     <div id="toastContainer" class="fixed bottom-10 right-10 flex flex-col gap-3 pointer-events-none z-[6000]"></div>
 
@@ -442,29 +398,51 @@
       }
 
       // ==============================================================
-      // AUDIO INTÉGRÉ DANS LA CARTE (INLINE)
+      // MULTIMÉDIA INTÉGRÉ DANS LA CARTE (INLINE AUDIO ET VIDÉO)
       // ==============================================================
-      window.toggleInlineAudio = function(id, url) {
-          const container = document.getElementById(`inline-audio-${id}`);
+      window.toggleInlineMedia = function(id, url, type) {
+          const container = document.getElementById(`inline-media-${id}`);
 
-          if (container.classList.contains('hidden')) {
-              // 1. Fermer les autres audios ouverts pour éviter la cacophonie
-              document.querySelectorAll('.inline-audio-player').forEach(el => {
-                  el.innerHTML = '';
-                  el.classList.add('hidden');
-                  el.classList.remove('inline-audio-player');
-              });
+          // Si c'est déjà ouvert avec cette URL, on referme tout.
+          if (!container.classList.contains('hidden') && container.dataset.currentUrl === url) {
+              container.classList.add('hidden');
+              container.classList.remove('inline-media-player');
+              container.innerHTML = '';
+              container.dataset.currentUrl = '';
+              return;
+          }
 
-              // 2. Formater l'URL (Hack Google Drive)
-              let finalUrl = url;
-              if (finalUrl.includes("drive.google.com/file/d/")) {
+          // 1. Fermer les autres médias ouverts (audio ou vidéo) pour éviter les sons superposés
+          document.querySelectorAll('.inline-media-player').forEach(el => {
+              el.innerHTML = '';
+              el.classList.add('hidden');
+              el.classList.remove('inline-media-player');
+              el.dataset.currentUrl = '';
+          });
+
+          // 2. Formatage Google Drive
+          let finalUrl = url;
+          let isDrive = finalUrl.includes("drive.google.com");
+
+          if (isDrive) {
+              // Extraction hyper-propre de l'ID Drive
+              let match = finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+              if (match && match[1]) {
+                  finalUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
+              } else {
                   finalUrl = finalUrl.replace("/view", "/preview").replace("?usp=sharing", "");
                   if (!finalUrl.includes("/preview")) finalUrl += "/preview";
+              }
+          }
 
-                  // Affichage lecteur Google Drive + Lien secours
-                  container.innerHTML = `
+          let contentHtml = '';
+
+          // 3. Rendu HTML en fonction du type
+          if (type === 'audio') {
+              if (isDrive) {
+                  contentHtml = `
                     <div class="flex items-center gap-3 bg-[#F6F2E8] p-3 rounded-xl border border-[#0F2C48]/10 shadow-inner w-full mt-4">
-                        <div class="bg-indigo-500 w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0 shadow-sm">
+                        <div class="bg-indigo-500 w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0 shadow-sm animate-pulse">
                             <i class="fas fa-headphones"></i>
                         </div>
                         <iframe src="${finalUrl}" class="flex-grow h-[50px] border-none rounded-lg" allow="autoplay"></iframe>
@@ -473,70 +451,33 @@
                         </a>
                     </div>`;
               } else {
-                  // Lecteur Audio Standard pour les .mp3 directs
-                  container.innerHTML = `
+                  contentHtml = `
                     <div class="w-full mt-4 p-3 bg-[#F6F2E8] rounded-xl border border-[#0F2C48]/10 shadow-inner">
                         <audio controls autoplay class="w-full h-10 outline-none" src="${url}"></audio>
                     </div>`;
               }
-
-              container.classList.remove('hidden');
-              container.classList.add('inline-audio-player');
-          } else {
-              // Si c'est déjà ouvert, on le ferme
-              container.classList.add('hidden');
-              container.classList.remove('inline-audio-player');
-              container.innerHTML = ''; // Coupe le son
+          } else if (type === 'video') {
+              if (isDrive) {
+                  contentHtml = `
+                    <div class="w-full mt-4 bg-black rounded-xl overflow-hidden relative shadow-lg border border-gray-800">
+                        <iframe src="${finalUrl}" class="w-full h-[300px] md:h-[450px] border-none" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                        <a href="${url}" target="_blank" class="absolute top-2 right-2 bg-black/50 hover:bg-black/80 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1.5 rounded-full transition-all flex items-center gap-2 border border-white/20 shadow-lg group z-50">
+                            <span class="group-hover:scale-110 transition-transform">⚠️</span> Écran noir ? Ouvrir
+                        </a>
+                    </div>`;
+              } else {
+                  contentHtml = `
+                    <div class="w-full mt-4 bg-black rounded-xl overflow-hidden shadow-lg border border-gray-800">
+                        <video controls autoplay class="w-full max-h-[500px] outline-none" src="${url}"></video>
+                    </div>`;
+              }
           }
+
+          container.innerHTML = contentHtml;
+          container.dataset.currentUrl = url;
+          container.classList.remove('hidden');
+          container.classList.add('inline-media-player');
       };
-
-      // ==============================================================
-      // PANNEAU LATÉRAL "SPLIT VIEW" 3/4
-      // ==============================================================
-      function openInSidePanel(url, type, titre, emoji) {
-          const panel = document.getElementById("sidePanel");
-          const backdrop = document.getElementById("sidePanelBackdrop");
-          const iframe = document.getElementById("sideIframe");
-
-          document.getElementById("sideTitle").innerText = titre;
-          document.getElementById("sideIcon").innerText = emoji;
-          document.getElementById("sideExternalLink").href = url;
-
-          let finalUrl = url;
-          if (finalUrl.includes("drive.google.com/file/d/")) {
-              finalUrl = finalUrl.replace("/view", "/preview").replace("?usp=sharing", "");
-              if (!finalUrl.includes("/preview")) finalUrl += "/preview";
-          }
-
-          iframe.src = finalUrl;
-
-          // Animation d'ouverture
-          backdrop.classList.remove("opacity-0", "pointer-events-none");
-          backdrop.classList.add("opacity-100", "pointer-events-auto");
-
-          panel.classList.remove("translate-x-full");
-          panel.classList.add("translate-x-0");
-
-          document.body.style.overflow = "hidden"; // Empêche de scroller le fond
-      }
-
-      function closeSidePanel() {
-          const panel = document.getElementById("sidePanel");
-          const backdrop = document.getElementById("sidePanelBackdrop");
-          const iframe = document.getElementById("sideIframe");
-
-          // Animation de fermeture
-          panel.classList.remove("translate-x-0");
-          panel.classList.add("translate-x-full");
-
-          backdrop.classList.remove("opacity-100", "pointer-events-auto");
-          backdrop.classList.add("opacity-0", "pointer-events-none");
-
-          setTimeout(() => {
-              iframe.src = "";
-              document.body.style.overflow = "auto";
-          }, 400);
-      }
       // ==============================================================
 
       function filtrerBloc(bloc) {
@@ -589,22 +530,18 @@
         afficherModules(document.getElementById("searchInput").value, false);
       };
 
-      // GESTION INTELLIGENTE DES CLICS (Vidéo = Onglet, Audio = Inline, Reste = Split View)
+      // GESTION DES CLICS : Vidéo & Audio -> Inline | Tout le reste -> Nouvel Onglet (Plein écran)
       function getActionLink(url, titre, type, emoji, id) {
           if (!url || url.trim() === "") {
              return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
           }
-          const safeTitre = (titre || "").replace(/'/g, "\\'");
 
-          if (type === 'video') {
-              // Vidéo -> S'ouvre dans un nouvel onglet
-              return { tag: "a", action: `href="${url}" target="_blank"` };
-          } else if (type === 'audio') {
-              // Audio -> Ouvre le lecteur interne dans la carte
-              return { tag: "div", action: `onclick="toggleInlineAudio('${id}', '${url}')" style="cursor:pointer;"` };
+          if (type === 'video' || type === 'audio') {
+              // Audio ET Vidéo s'ouvrent à l'intérieur de la carte !
+              return { tag: "div", action: `onclick="toggleInlineMedia('${id}', '${url}', '${type}')" style="cursor:pointer;"` };
           } else {
-              // Tout le reste (PDF, Quiz, Lexique) -> S'ouvre dans le panneau 3/4
-              return { tag: "div", action: `onclick="openInSidePanel('${url}', '${type}', '${safeTitre}', '${emoji}')" style="cursor:pointer;"` };
+              // Tout le reste (PDF, Quiz, Lexique) s'ouvre normalement dans un nouvel onglet
+              return { tag: "a", action: `href="${url}" target="_blank"` };
           }
       }
 
@@ -646,7 +583,7 @@
             if (isV) { vueCount++; lineChecked++; }
             const checkC = isV ? "bg-green-500 text-white" : "bg-white text-gray-200";
 
-            // On passe l'ID du module pour le lecteur audio interne
+            // On passe le type exact pour déclencher la bonne fonction (Inline ou Target _Blank)
             const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
 
             return `<div class="relative tooltip-container">
@@ -658,10 +595,10 @@
 
           const isFull = lineChecked === res.length;
           const card = document.createElement("div");
-          card.className = `flex flex-col gap-0 p-5 bg-white border border-[#0F2C48]/10 rounded-xl shadow-sm mb-4 transition-colors ${anim ? "card-animate" : ""} ${isFull ? "bg-green-50" : ""}`;
+
+          card.className = `p-5 bg-white border border-[#0F2C48]/10 rounded-xl shadow-sm mb-4 transition-colors ${anim ? "card-animate" : ""} ${isFull ? "bg-green-50" : ""}`;
           if (anim) card.style.animationDelay = `${cardIdx * 0.04}s`;
 
-          // Structure de la carte avec l'espace audio caché en bas
           card.innerHTML = `
             <div class="flex flex-col md:flex-row gap-4">
                 <div class="flex-grow">
@@ -672,14 +609,16 @@
                     <p class="text-[9px] text-[#B4792A] font-code uppercase mb-4 tracking-tighter opacity-70">${id}</p>
                     <div class="flex flex-wrap gap-3">${htmlRes}</div>
                 </div>
+
                 <div class="flex flex-col items-center justify-center min-w-[150px] border-t md:border-t-0 md:border-l pt-4 md:pt-0 md:pl-4 border-gray-100">
-                    <button onclick="toggleLine('${id}')" class="btn-to-validate btn-valider-3d px-6 py-3 rounded-xl text-xs w-full ${isFull ? "btn-success-line" : ""}">
+                    <button onclick="toggleLine('${id}')" class="btn-valider-3d px-6 py-3 rounded-xl text-xs w-full ${isFull ? "btn-success-line" : ""}">
                          ${isFull ? "Terminé ✅" : "Valider"}
                     </button>
                 </div>
             </div>
-            <!-- Conteneur Audio Invisible par défaut -->
-            <div id="inline-audio-${id}" class="hidden transition-all w-full"></div>
+
+            <!-- Conteneur MULTIMEDIA Invisible par défaut (Audio ou Vidéo ira ici) -->
+            <div id="inline-media-${id}" class="hidden transition-all w-full" data-current-url=""></div>
           `;
           list.appendChild(card);
           cardIdx++;
