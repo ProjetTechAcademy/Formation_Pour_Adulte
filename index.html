@@ -78,21 +78,18 @@
 
       /* --- Teams Microsoft --- */
       .btn-teams-ms {
-        background: linear-gradient(
-          90deg,
-          var(--ms-red) 0%,
-          var(--ms-green) 33%,
-          var(--ms-blue) 66%,
-          var(--ms-yellow) 100%
-        );
-        background-size: 200% auto;
-        transition: 0.4s;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        border: none;
+        background: #ffffff;
+        color: var(--title-blue);
+        border: 1px solid rgba(15, 44, 72, 0.1);
+        box-shadow: 0 4px 0 rgba(15, 44, 72, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
       }
       .btn-teams-ms:hover {
-        background-position: right center;
-        transform: translateY(-2px) scale(1.05);
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 rgba(15, 44, 72, 0.1), 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+      .btn-teams-ms i {
+        color: #5c5fc8;
       }
 
       /* --- Onglets --- */
@@ -106,47 +103,77 @@
         transition: 0.3s;
       }
       .tab-btn.active {
-        background: linear-gradient(135deg, #464eb8 0%, #e81123 100%);
-        color: white;
-        border-color: transparent;
+        background-color: var(--title-blue);
+        color: var(--cta-yellow);
+        border-color: var(--title-blue);
+        box-shadow: 0 4px 15px rgba(15, 44, 72, 0.2);
       }
 
       /* --- Bouton Valider Solaire 3D --- */
       .btn-valider-3d {
-        background: linear-gradient(
-          135deg,
-          #ffeb3b 0%,
-          #ffb900 50%,
-          #ff8c00 100%
-        );
-        color: #0f2c48 !important;
-        border-bottom: 4px solid #b4792a !important;
+        background: #ffffff;
+        color: var(--title-blue) !important;
+        border: 1px solid rgba(0, 0, 0, 0.05);
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 1px;
         transition: all 0.2s ease;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 0 var(--cta-yellow), 0 5px 10px rgba(0, 0, 0, 0.05);
         cursor: pointer;
       }
       .btn-valider-3d:hover {
-        transform: translateY(-2px);
-        border-bottom-width: 6px !important;
-        filter: brightness(1.05);
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 var(--cta-yellow), 0 3px 5px rgba(0, 0, 0, 0.05);
       }
       .btn-valider-3d:active {
-        transform: translateY(2px);
-        border-bottom-width: 1px !important;
+        transform: translateY(4px);
+        box-shadow: 0 0 0 var(--cta-yellow);
       }
 
       .btn-success-line {
-        background: linear-gradient(
-          135deg,
-          #10b981 0%,
-          #059669 100%
-        ) !important;
-        color: #0f2c48 !important;
-        border-bottom: 4px solid #064e3b !important;
+        background: #ecfdf5 !important;
+        color: #064e3b !important;
+        border-color: #34d399 !important;
+        box-shadow: 0 4px 0 #34d399, 0 5px 10px rgba(0, 0, 0, 0.05) !important;
       }
+      .btn-success-line:hover {
+        box-shadow: 0 2px 0 #34d399, 0 3px 5px rgba(0, 0, 0, 0.05) !important;
+      }
+      .btn-success-line:active {
+        box-shadow: 0 0 0 #34d399 !important;
+      }
+
+      /* --- Boutons de Navigation 3D (Examen / Eval) --- */
+      .btn-nav-3d {
+        background: #ffffff;
+        color: var(--title-blue) !important;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.2s ease;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn-news {
+        box-shadow: 0 4px 0 #bfdbfe, 0 5px 10px rgba(0, 0, 0, 0.05);
+      }
+      .btn-news:hover { transform: translateY(2px); box-shadow: 0 2px 0 #bfdbfe, 0 3px 5px rgba(0, 0, 0, 0.05); }
+      .btn-news:active { transform: translateY(4px); box-shadow: 0 0 0 #bfdbfe; }
+
+      .btn-exam {
+        box-shadow: 0 4px 0 #e9d5ff, 0 5px 10px rgba(0, 0, 0, 0.05);
+      }
+      .btn-exam:hover { transform: translateY(2px); box-shadow: 0 2px 0 #e9d5ff, 0 3px 5px rgba(0, 0, 0, 0.05); }
+      .btn-exam:active { transform: translateY(4px); box-shadow: 0 0 0 #e9d5ff; }
+
+      .btn-eval {
+        box-shadow: 0 4px 0 #a7f3d0, 0 5px 10px rgba(0, 0, 0, 0.05);
+      }
+      .btn-eval:hover { transform: translateY(2px); box-shadow: 0 2px 0 #a7f3d0, 0 3px 5px rgba(0, 0, 0, 0.05); }
+      .btn-eval:active { transform: translateY(4px); box-shadow: 0 0 0 #a7f3d0; }
 
       /* --- Ressources --- */
       .btn-resource {
@@ -279,7 +306,7 @@
           <a
             href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ"
             target="_blank"
-            class="btn-teams-ms flex items-center gap-3 px-6 py-3 rounded-full font-black text-xs text-white"
+            class="btn-teams-ms flex items-center gap-3 px-6 py-3 rounded-full font-black text-xs"
           >
             <i class="fab fa-microsoft text-sm"></i> COMMUNAUTÉ TEAMS
           </a>
@@ -289,24 +316,24 @@
 
     <main class="flex-grow w-full max-w-[1600px] mx-auto px-6 py-8">
       <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
-        <div class="flex gap-2">
+        <div class="flex flex-wrap gap-3">
           <a
             href="https://app.studi.fr/v3/blog"
             target="_blank"
-            class="px-4 py-2 bg-blue-500 text-white rounded-lg text-xs font-black shadow-sm hover:bg-blue-600"
-            >NEWSLETTER</a
+            class="btn-nav-3d btn-news px-5 py-2.5 rounded-xl text-xs gap-2"
+            ><span class="text-base">📰</span> NEWSLETTER</a
           >
           <a
-            href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/Examen/Examen.html"
+            href="Examen.html"
             target="_blank"
-            class="px-4 py-2 bg-purple-600 text-white rounded-lg text-xs font-black shadow-sm hover:bg-purple-700"
-            >EXAMEN</a
+            class="btn-nav-3d btn-exam px-5 py-2.5 rounded-xl text-xs gap-2"
+            ><span class="text-base">🎓</span> EXAMEN</a
           >
           <a
-            href="https://projettechacademy.github.io/Paia---Adult-Learning-Hub/Tableau_de_Bord_FPA/Évaluations_par_Bloc.html"
+            href="%C3%89valuations.html"
             target="_blank"
-            class="px-4 py-2 bg-green-600 text-white rounded-lg text-xs font-black shadow-sm hover:bg-green-700"
-            >TABLEAU DE BORD</a
+            class="btn-nav-3d btn-eval px-5 py-2.5 rounded-xl text-xs gap-2"
+            ><span class="text-base">📊</span> ÉVALUATION</a
           >
         </div>
         <div class="access-bar flex gap-3">
@@ -543,7 +570,9 @@
       function lire(txt) {
         if (!isVoice) return;
         window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(txt);
+        // Retire les emojis du texte pour éviter qu'ils ne soient lus par la synthèse vocale
+        const txtSansEmoji = txt.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '');
+        const u = new SpeechSynthesisUtterance(txtSansEmoji.trim());
         u.lang = "fr-FR";
         window.speechSynthesis.speak(u);
       }
