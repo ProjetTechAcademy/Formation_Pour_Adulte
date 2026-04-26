@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V13</title>
+    <title>Formation Pour Adulte - V16 (Smart Learning)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -238,6 +238,8 @@
       }
       @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
+      /* Animation des Confettis Toast */
+      .toast-msg { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
   </head>
   <body class="relative">
@@ -260,7 +262,7 @@
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo Paia Hub" class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover shadow-md" />
           <div>
             <h1 class="text-xl font-black uppercase text-[#0F2C48] drop-shadow-sm">Formation Pour Adulte</h1>
-            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base FPA • V18 (Glamour)</p>
+            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base FPA • V18 (Smart Learning)</p>
           </div>
         </div>
 
@@ -271,7 +273,7 @@
 
         <div class="flex items-center gap-3">
           <div class="flex justify-center items-center gap-3 hidden md:flex">
-            <!-- BOUTON CONTACT MODIFIÉ : Emoji plus humain et chaleureux 👋 au lieu de l'icône admin -->
+            <!-- BOUTON CONTACT 👋 -->
             <a href="Card.html" target="_blank" class="btn-nav-app btn-contact group">
               <span class="text-[1.6rem]">👋</span>
               <span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Contact</span>
@@ -331,7 +333,7 @@
       </p>
 
       <div class="flex gap-4 mt-2 bg-white/50 px-6 py-2 rounded-full shadow-inner border border-white">
-          <button onclick="if (confirm('Êtes-vous sûre de vouloir réinitialiser tout votre parcours ?')) { localStorage.removeItem('paia_p_v10'); location.reload(); }" class="text-gray-500 font-black text-[9px] uppercase hover:text-red-500 transition-colors">Réinitialiser le parcours</button>
+          <button onclick="if (confirm('Êtes-vous sûre de vouloir réinitialiser tout votre parcours ?')) { localStorage.removeItem('paia_p_v10'); localStorage.removeItem('paia_revisions'); location.reload(); }" class="text-gray-500 font-black text-[9px] uppercase hover:text-red-500 transition-colors">Réinitialiser le parcours</button>
           <span class="text-gray-300 text-[9px]">|</span>
           <button id="lockBtn" onclick="toggleLockSession()" class="text-gray-500 font-black text-[9px] uppercase hover:text-[#0F2C48] transition-colors">Vérifier statut session</button>
       </div>
@@ -376,12 +378,93 @@
       </div>
     </div>
 
+    <!-- MODALE : SMART RECALL (Répétition Espacée) -->
+    <div id="srModal" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
+      <div class="bg-white p-8 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-md w-full mx-4 transform scale-95 transition-transform duration-300 relative overflow-hidden" id="srModalContent">
+
+        <!-- Étape 1 : Choix du J0 -->
+        <div id="sr-step-1">
+            <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-blue-200">
+                <span class="text-3xl">🚀</span>
+            </div>
+            <h2 class="font-black text-[#0F2C48] text-2xl mb-1 tracking-tight">Smart Recall</h2>
+            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest mb-4">Planification des révisions</p>
+
+            <div class="bg-blue-50 text-blue-800 text-xs p-4 rounded-xl mb-6 text-left border border-blue-100">
+                <p class="mb-2 font-bold text-sm"><i class="fas fa-brain mr-1"></i> Pourquoi cette méthode ?</p>
+                <p class="opacity-80 italic mb-2">"L'apprentissage ce n'est pas du bourrage de crâne, c'est l'art de la répétition espacée. L'objectif est d'ancrer l'information à long terme en revoyant les notions à des intervalles précis."</p>
+                <p class="text-right font-black text-[#B4792A] mb-3">- Mathilde Martine PAISLEY 💫</p>
+                <p class="opacity-80">Générez 6 rappels automatiques (J+3, J+7, J+10, J+30, J+60, J+90) pour :</p>
+                <p class="font-black mt-2 text-[#0F2C48]" id="sr-module-title"></p>
+                <span id="sr-module-id" class="hidden"></span>
+            </div>
+
+            <div class="text-left mb-6">
+              <label class="text-gray-600 text-xs font-bold mb-2 block">Choisissez votre Jour 0 (Première lecture) :</label>
+              <input type="date" id="sr-start-date" class="w-full bg-white border-2 border-gray-200 text-[#0F2C48] px-4 py-3 rounded-xl font-black text-sm focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all shadow-inner">
+            </div>
+
+            <button onclick="calculateAndShowDates()" class="w-full bg-gradient-to-r from-[#0F2C48] to-[#1a4b7c] text-white px-4 py-3.5 rounded-xl font-black text-xs hover:shadow-[0_10px_20px_rgba(15,44,72,0.3)] transition-all transform hover:-translate-y-1 mb-3">Calculer mes révisions</button>
+            <button onclick="closeSpacedRepetitionModal()" class="text-gray-400 text-xs font-bold hover:text-red-500 transition-colors underline">Annuler</button>
+        </div>
+
+        <!-- Étape 2 : Téléchargement ICS -->
+        <div id="sr-step-2" class="hidden">
+            <div class="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-green-200">
+                <span class="text-3xl">✅</span>
+            </div>
+            <h2 class="font-black text-[#0F2C48] text-xl mb-1 tracking-tight">Planning prêt !</h2>
+            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-4">Téléchargez votre fichier Agenda</p>
+
+            <!-- Conteneur des dates calculées -->
+            <div id="sr-links-container" class="mb-6 max-h-[200px] overflow-y-auto pr-1"></div>
+
+            <button onclick="downloadICS()" class="w-full bg-green-500 text-white px-4 py-3.5 rounded-xl font-black text-xs hover:bg-green-600 shadow-[0_5px_15px_rgba(16,185,129,0.4)] transition-all transform hover:-translate-y-1 mb-3"><i class="fas fa-calendar-check mr-2"></i> Ajouter à mon Agenda (.ics)</button>
+            <button onclick="closeSpacedRepetitionModal()" class="text-gray-400 text-xs font-bold hover:text-[#0F2C48] transition-colors underline">Fermer sans sauvegarder</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODALE : ALERTE RÉVISIONS DU JOUR -->
+    <div id="dailyRevisionsModal" class="fixed inset-0 bg-[#0F2C48]/95 backdrop-blur-md hidden items-center justify-center z-[8000]">
+      <div class="bg-white p-8 rounded-[30px] border border-white/20 shadow-[0_30px_80px_rgba(0,0,0,0.8)] text-center max-w-lg w-full mx-4 transform scale-95 transition-transform duration-300 relative overflow-hidden" id="dailyRevisionsContent">
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 via-yellow-500 to-red-500"></div>
+        <div class="w-20 h-20 bg-gradient-to-br from-red-100 to-orange-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-red-200 animate-bounce mt-2">
+            <span class="text-4xl">🔔</span>
+        </div>
+        <h2 class="font-black text-[#0F2C48] text-2xl mb-1 tracking-tight">Rappels du jour !</h2>
+        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-6">Avant de commencer de nouveaux cours...</p>
+
+        <p class="text-sm font-medium text-gray-600 mb-4 px-4">L'art de l'apprentissage est la répétition. Voici les notions que vous devez revoir aujourd'hui pour les ancrer à long terme :</p>
+
+        <div id="daily-revisions-list" class="flex flex-col gap-3 mb-8 max-h-[300px] overflow-y-auto pr-2 text-left">
+            <!-- Liste injectée en JS -->
+        </div>
+
+        <button onclick="closeDailyRevisionsModal()" class="w-full bg-[#0F2C48] text-white px-4 py-4 rounded-xl font-black text-sm hover:shadow-[0_10px_20px_rgba(15,44,72,0.4)] transition-all transform hover:-translate-y-1">C'est noté, je m'y mets ! 💪</button>
+      </div>
+    </div>
+
     <div id="toastContainer" class="fixed bottom-10 right-10 flex flex-col gap-3 pointer-events-none z-[7000]"></div>
 
     <script>
       const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSJuJce5_6A5Yd0xbYLhb4OZRZ4dyvi0oArF2a_Ks1U_dvGflru_lb8XLgLVs6NApu6cJUS_C6GYU71/pub?gid=842464760&single=true&output=csv";
       let database = [];
       const SECRET_PIN = "2026";
+
+      // Citations de motivation Mathilde PAISLEY
+      const motivationalQuotes = [
+          "« Le succès n'est pas final, l'échec n'est pas fatal : c'est le courage de continuer qui compte. » – Winston Churchill 👑",
+          "« La folie, c’est de faire toujours la même chose et de s’attendre à un résultat différent. » – Albert Einstein 💡",
+          "« Croyez en vous-même et en tout ce que vous êtes. Il y a quelque chose à l'intérieur de vous de plus grand que n'importe quel obstacle. » – Christian D. Larson 🌟",
+          "« L'éducation est l'arme la plus puissante qu'on puisse utiliser pour changer le monde. » – Nelson Mandela 🌍",
+          "« Ne regardez pas l'horloge ; faites comme elle. Continuez d'avancer. » – Sam Levenson ⏳",
+          "« Le plus grand secret pour le bonheur, c'est d'être bien avec soi. » – Fontenelle ✨",
+          "« Il n'y a qu'une façon d'échouer, c'est d'abandonner avant d'avoir réussi. » – Georges Clemenceau 🚀",
+          "« Votre temps est limité, ne le gâchez pas en menant une existence qui n'est pas la vôtre. » – Steve Jobs 🎯",
+          "« Un voyage de mille lieues commence toujours par un premier pas. » – Lao Tseu 👣",
+          "« L'expert en tout a un jour été un débutant. » – Helen Hayes 🌱"
+      ];
 
       const configStructure = {
         B0: [{ id: "M01" }, { id: "M02" }, { id: "M03" }],
@@ -411,6 +494,9 @@
                   document.getElementById('loader').style.opacity = '0';
                   setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
                   filtrerBloc("ALL");
+
+                  // Vérifier les rappels du jour au lancement
+                  checkDailyRevisions();
               },
               error: (err) => {
                   console.error("Erreur chargement CSV:", err);
@@ -425,6 +511,76 @@
               }
           });
       };
+
+      // ==============================================================
+      // GESTION DES RAPPELS (POPUP DU JOUR)
+      // ==============================================================
+      function checkDailyRevisions() {
+          let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
+          // Obtenir la date du jour au format YYYY-MM-DD
+          const todayDate = new Date();
+          const todayStr = todayDate.getFullYear() + "-" + String(todayDate.getMonth() + 1).padStart(2, '0') + "-" + String(todayDate.getDate()).padStart(2, '0');
+
+          // Filtrer celles qui ne sont pas faites ET dont la date est passée ou égale à aujourd'hui
+          const dueRevisions = savedRevisions.filter(r => !r.done && r.dateStr <= todayStr);
+
+          if (dueRevisions.length > 0) {
+              let html = '';
+              dueRevisions.forEach(rev => {
+                  // Déterminer si c'est en retard ou aujourd'hui
+                  const isLate = rev.dateStr < todayStr;
+                  const tagClass = isLate ? "bg-red-100 text-red-600 border-red-200" : "bg-yellow-100 text-yellow-700 border-yellow-200";
+                  const tagText = isLate ? "En retard" : "Aujourd'hui";
+
+                  html += `
+                      <div id="rev-item-${rev.id}" class="flex items-center justify-between bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm transition-all">
+                          <div class="flex flex-col pr-4">
+                              <div class="flex items-center gap-2 mb-1">
+                                  <span class="px-2 py-0.5 text-[9px] font-black uppercase rounded-md border ${tagClass}">${tagText}</span>
+                                  <span class="text-[10px] font-black text-[#B4792A] uppercase">${rev.label}</span>
+                              </div>
+                              <span class="text-sm font-bold text-[#0F2C48] leading-tight">${rev.moduleId}</span>
+                              <span class="text-xs text-gray-500 truncate max-w-[200px]">${rev.titre}</span>
+                          </div>
+                          <button onclick="markRevisionDone('${rev.id}')" class="shrink-0 bg-white border-2 border-gray-200 text-gray-400 hover:text-green-500 hover:border-green-400 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm hover:shadow-md">
+                              <i class="fas fa-check"></i>
+                          </button>
+                      </div>
+                  `;
+              });
+
+              document.getElementById('daily-revisions-list').innerHTML = html;
+              document.getElementById('dailyRevisionsModal').style.display = 'flex';
+              setTimeout(() => {
+                  document.getElementById('dailyRevisionsContent').classList.remove('scale-95');
+                  document.getElementById('dailyRevisionsContent').classList.add('scale-100');
+              }, 10);
+          }
+      }
+
+      window.markRevisionDone = function(id) {
+          let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
+          savedRevisions = savedRevisions.map(r => {
+              if(r.id === id) r.done = true;
+              return r;
+          });
+          localStorage.setItem('paia_revisions', JSON.stringify(savedRevisions));
+
+          const el = document.getElementById(`rev-item-${id}`);
+          if(el) {
+              el.classList.add('opacity-0', 'scale-95');
+              setTimeout(() => { el.remove(); }, 300);
+          }
+
+          confetti({ particleCount: 30, spread: 40, origin: { y: 0.8 } });
+      };
+
+      window.closeDailyRevisionsModal = function() {
+          document.getElementById('dailyRevisionsContent').classList.remove('scale-100');
+          document.getElementById('dailyRevisionsContent').classList.add('scale-95');
+          setTimeout(() => { document.getElementById('dailyRevisionsModal').style.display = 'none'; }, 200);
+      };
+
 
       function updateLockBtnUI() {
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
@@ -463,70 +619,52 @@
         window.speechSynthesis.speak(u);
       }
 
-      // 🔥 1. FONCTION DE NORMALISATION DES LIENS
       function normalizeUrl(url) {
         if (!url) return "";
-
-        // Google Drive (open?id=)
         if (url.includes("open?id=")) {
           const id = url.split("open?id=")[1].split("&")[0];
           return `https://drive.google.com/file/d/${id}/preview`;
         }
-
-        // Google Drive (déjà en /d/)
         if (url.includes("drive.google.com/file/d/")) {
           const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-          if (match) {
-            return `https://drive.google.com/file/d/${match[1]}/preview`;
-          }
+          if (match) return `https://drive.google.com/file/d/${match[1]}/preview`;
         }
-
-        // YouTube classique
-        if (url.includes("youtube.com/watch")) {
-          return url.replace("watch?v=", "embed/");
-        }
-
-        // YouTube short
+        if (url.includes("youtube.com/watch")) return url.replace("watch?v=", "embed/");
         if (url.includes("youtu.be/")) {
           const id = url.split("youtu.be/")[1];
           return `https://www.youtube.com/embed/${id}`;
         }
-
-        // Sinon → retourne tel quel
         return url;
       }
 
-      // 🎬 2. LECTEUR INTÉGRÉ ADAPTATIF (Pleine largeur, Ratios parfaits, Skeleton Loader)
       function buildMiniPlayer(url, originalUrl, type, titre) {
         const finalUrl = normalizeUrl(url);
-
-        // CSS 2026 : On utilise des "Aspect Ratios" (proportions) ou des Viewport Heights (vh)
-        let containerClass = "w-full aspect-video"; // Par défaut: 16/9 fluide parfait
+        let containerClass = "w-full aspect-video";
         let headerBg = "bg-[#f6f2e8]/40";
         let iconEmoji = "🎬";
         let titleText = "Lecteur Vidéo - " + titre;
         let pulseColor = "bg-[#10b981]";
 
         if (type === 'embed-pdf') {
-            containerClass = "w-full h-[65vh] min-h-[500px]"; // PDF: Haut pour pouvoir lire/scroller
+            containerClass = "w-full h-[65vh] min-h-[500px]";
             headerBg = "bg-blue-100/40";
             iconEmoji = "📄";
             titleText = "Document PDF - " + titre;
             pulseColor = "bg-[#0F2C48]";
         } else if (type === 'embed-presentation') {
-            containerClass = "w-full aspect-video"; // 16:9 parfait = 0 bande noire !
+            containerClass = "w-full aspect-video";
             headerBg = "bg-orange-100/40";
             iconEmoji = "📽️";
             titleText = "Diaporama - " + titre;
             pulseColor = "bg-[#d83b01]";
         } else if (type === 'embed-image') {
-            containerClass = "w-full aspect-[4/3] md:aspect-video"; // Plus adaptatif
+            containerClass = "w-full aspect-[4/3] md:aspect-video";
             headerBg = "bg-red-100/40";
             iconEmoji = "🖼️";
             titleText = "Infographie - " + titre;
             pulseColor = "bg-[#e81123]";
         } else if (type === 'embed-doc') {
-            containerClass = "w-full h-[50vh] min-h-[400px]"; // Excel nécessite du scroll
+            containerClass = "w-full h-[50vh] min-h-[400px]";
             headerBg = "bg-green-100/40";
             iconEmoji = "📊";
             titleText = "Document Excel - " + titre;
@@ -544,20 +682,17 @@
             titleText = "Lexique - " + titre;
             pulseColor = "bg-[#4a5568]";
         } else if (type === 'embed-map') {
-            containerClass = "w-full aspect-video"; // Mindmap en 16:9, c'est idéal
+            containerClass = "w-full aspect-video";
             headerBg = "bg-yellow-100/40";
             iconEmoji = "🧠";
             titleText = "Carte Mentale - " + titre;
             pulseColor = "bg-[#ffb900]";
         }
 
-        // ID unique pour le skeleton loader
         const iframeId = 'iframe-' + Math.random().toString(36).substr(2, 9);
 
         return `
           <div class="mt-4 w-full rounded-[24px] overflow-hidden bg-white/30 backdrop-blur-3xl border border-white/40 shadow-[0_10px_40px_rgba(15,44,72,0.06)] animate-slideIn p-2.5 transition-all hover:shadow-[0_20px_50px_rgba(15,44,72,0.1)]">
-
-              <!-- HEADER COLORÉ ET DYNAMIQUE (Ultra épuré) -->
               <div class="flex items-center justify-between mb-2.5 px-4 pt-2.5 ${headerBg} rounded-2xl pb-2.5 border border-white/30 shadow-sm">
                   <div class="flex items-center gap-3">
                       <span class="text-xl drop-shadow-md">${iconEmoji}</span>
@@ -567,23 +702,16 @@
                   </div>
                   <div class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm border border-white/60">
                       <div class="w-2 h-2 rounded-full ${pulseColor} animate-pulse shadow-[0_0_5px_currentColor]"></div>
-                      <span class="text-[9px] font-black uppercase tracking-widest text-[#0F2C48]/80">
-                          Ouvert
-                      </span>
+                      <span class="text-[9px] font-black uppercase tracking-widest text-[#0F2C48]/80">Ouvert</span>
                   </div>
               </div>
 
-              <!-- PLAYER (Ratios parfaits, Skeleton Loader) -->
               <div class="${containerClass} relative rounded-2xl overflow-hidden bg-[#f6f2e8]/50 shadow-inner border border-[#0F2C48]/5 flex items-center justify-center group">
-
-                  <!-- Skeleton Loader 2026 -->
                   <div id="loader-${iframeId}" class="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/60 to-transparent skeleton-loader w-full h-full"></div>
                   <div id="icon-${iframeId}" class="absolute z-0 flex flex-col items-center justify-center opacity-50">
                       <i class="fas fa-circle-notch fa-spin text-3xl text-[#0F2C48]/30 mb-2"></i>
                       <span class="text-[9px] font-bold text-[#0F2C48]/40 uppercase tracking-widest">Connexion sécurisée...</span>
                   </div>
-
-                  <!-- Iframe avec disparition du loader au onload -->
                   <iframe
                       id="${iframeId}"
                       onload="document.getElementById('loader-${iframeId}').style.opacity='0'; document.getElementById('icon-${iframeId}').style.opacity='0'; setTimeout(()=>{document.getElementById('loader-${iframeId}').style.display='none'; document.getElementById('icon-${iframeId}').style.display='none';}, 500);"
@@ -594,7 +722,6 @@
                   ></iframe>
               </div>
 
-              <!-- FOOTER / ACTION BUTTON BEAU GOSSE -->
               <div class="mt-3 mb-1 px-3 flex items-center justify-between">
                   <div class="flex gap-2 hidden md:flex opacity-80">
                       <div class="w-2 h-2 rounded-full bg-[#F25022] shadow-sm"></div>
@@ -612,10 +739,6 @@
         `;
       }
 
-
-      // ==============================================================
-      // FONCTION POUR BASCULER ENTRE LES VUES (COMBO MULTI-VISUELS)
-      // ==============================================================
       window.switchComboVisual = function(moduleId, visualId) {
           const visuals = ['slide', 'infog', 'excel', 'map', 'glo', 'pdf'];
           visuals.forEach(v => {
@@ -635,15 +758,10 @@
           });
       };
 
-      // ==============================================================
-      // PREVIEW INLINE UNIVERSEL (ESPACE INTERACTIF UNIFIÉ ET PLIABLE)
-      // ==============================================================
       window.toggleInlineContent = function(id, url, type, titre) {
           const container = document.getElementById(`inline-media-${id}`);
-
           if (!url) return;
 
-          // Toggle OFF si même contenu
           if (!container.classList.contains('hidden') && container.dataset.currentUrl === url) {
               container.classList.add('hidden');
               container.innerHTML = '';
@@ -651,7 +769,6 @@
               return;
           }
 
-          // Fermer les autres previews
           document.querySelectorAll('[id^="inline-media-"]').forEach(el => {
               el.innerHTML = '';
               el.classList.add('hidden');
@@ -660,15 +777,10 @@
 
           let contentHtml = '';
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
-
-          // On vérifie si c'est un type qui mérite le Mode "Espace Interactif"
           const comboEligibleTypes = ['embed-audio', 'embed-presentation', 'embed-image', 'embed-doc', 'embed-glo', 'embed-map', 'embed-pdf'];
 
           if (comboEligibleTypes.includes(type)) {
-
               const itemObj = database.find(d => d.Code === id);
-
-              // Recréer les URL pour la carte mentale et le lexique
               const fullItemName = `${id} - ${titre}`;
               const safeFileName = encodeURIComponent(fullItemName) + '.html';
               let gloUrl = `Glossaire/${safeFileName}`;
@@ -709,29 +821,22 @@
 
                   let comboHtml = '';
 
-                  // 1. Audio
                   if (hasAudio) {
                       comboHtml += buildMiniPlayer(audioUrl, audioUrl, 'embed-audio', titre);
                   }
 
-                  // 2. Visuels et Accordéon CSS Fluid (Design 2026)
                   if (visuals.length > 0) {
                       comboHtml += `
                       <div class="flex flex-col items-center justify-center mt-6 mb-[-5px] w-full">
-
-                          <!-- BOUTON ACCORDÉON (Micro-interaction & Glassmorphism) -->
                           <button onclick="document.getElementById('workspace-wrapper-${id}').classList.toggle('open'); document.getElementById('icon-toggle-${id}').classList.toggle('rotate-180');"
                                   class="flex items-center justify-center gap-2 text-[#0F2C48] text-[10px] font-black uppercase tracking-widest opacity-90 mb-3 bg-white/70 hover:bg-white backdrop-blur-md px-6 py-2.5 rounded-full shadow-[0_4px_15px_rgba(15,44,72,0.05)] border border-white/80 transition-all cursor-pointer z-10 relative hover:shadow-[0_8px_25px_rgba(15,44,72,0.1)] hover:-translate-y-0.5">
                              <i class="fas fa-layer-group text-[#B4792A]"></i>
                              <span>Espace de travail interactif</span>
                              <i id="icon-toggle-${id}" class="fas fa-chevron-down ml-2 transition-transform duration-500 rotate-180"></i>
                           </button>
-
-                          <!-- CONTENEUR PLIABLE DU VISUEL (CSS Grid Transition) -->
                           <div id="workspace-wrapper-${id}" class="accordion-content open w-full">
                               <div class="accordion-inner flex flex-col items-center pb-2">`;
 
-                      // Menu de sélection ultra-doux
                       if (visuals.length > 1) {
                           comboHtml += `<div class="flex flex-wrap justify-center gap-2 bg-white/40 backdrop-blur-xl p-1.5 rounded-xl shadow-inner border border-white/60 mb-4 mt-1">`;
                           visuals.forEach(v => {
@@ -746,7 +851,6 @@
                           comboHtml += `</div>`;
                       }
 
-                      // Lecteurs
                       visuals.forEach(v => {
                           const isHidden = v.id === activeVisualId ? '' : 'hidden';
                           comboHtml += `
@@ -754,12 +858,10 @@
                               ${buildMiniPlayer(v.url, v.url, v.type, titre)}
                           </div>`;
                       });
-
-                      comboHtml += `</div></div></div>`; // Fin inner et content
+                      comboHtml += `</div></div></div>`;
                   } else if (!hasAudio) {
                      comboHtml += buildMiniPlayer(url, url, type, titre);
                   }
-
                   contentHtml = comboHtml;
               }
           } else if (type.startsWith("embed-")) {
@@ -767,13 +869,8 @@
           } else {
               contentHtml = `
                   <div class="mt-4 bg-white/60 backdrop-blur-xl rounded-2xl p-4 border border-white/80 shadow animate-slideIn text-center w-full">
-                      <p class="text-sm font-bold text-[#0F2C48]/80 mb-3">
-                          🔒 Ce contenu s'ouvre dans une nouvelle page.
-                      </p>
-                      <a href="${url}" target="_blank"
-                         class="inline-block bg-[#0F2C48] text-white px-6 py-2.5 rounded-full text-xs font-bold hover:shadow-[0_10px_20px_rgba(15,44,72,0.3)] transition-all hover:-translate-y-1">
-                          Ouvrir le contenu ↗
-                      </a>
+                      <p class="text-sm font-bold text-[#0F2C48]/80 mb-3">🔒 Ce contenu s'ouvre dans une nouvelle page.</p>
+                      <a href="${url}" target="_blank" class="inline-block bg-[#0F2C48] text-white px-6 py-2.5 rounded-full text-xs font-bold hover:shadow-[0_10px_20px_rgba(15,44,72,0.3)] transition-all hover:-translate-y-1">Ouvrir le contenu ↗</a>
                   </div>
               `;
           }
@@ -821,14 +918,11 @@
               closePinModal();
               afficherToast("Authentification réussie 🔓");
               updateLockBtnUI();
-
               afficherModules(document.getElementById("searchInput").value, false);
 
               if (pendingPdfUrl && pendingPdfId) {
                   toggleInlineContent(pendingPdfId, pendingPdfUrl, 'embed-pdf', pendingPdfTitre);
-                  pendingPdfUrl = "";
-                  pendingPdfId = "";
-                  pendingPdfTitre = "";
+                  pendingPdfUrl = ""; pendingPdfId = ""; pendingPdfTitre = "";
               } else if (pendingPdfUrl) {
                   window.open(pendingPdfUrl, '_blank');
                   pendingPdfUrl = "";
@@ -841,6 +935,134 @@
           }
       };
 
+      // ==============================================================
+      // SMART RECALL : MÉTHODE DES RÉPÉTITIONS ESPACÉES (.ICS)
+      // ==============================================================
+      window.openSpacedRepetitionModal = function(id, titre) {
+          document.getElementById('sr-module-id').innerText = id;
+          document.getElementById('sr-module-title').innerText = titre;
+          document.getElementById('sr-start-date').valueAsDate = new Date();
+
+          document.getElementById('sr-step-1').classList.remove('hidden');
+          document.getElementById('sr-step-2').classList.add('hidden');
+
+          document.getElementById('srModal').style.display = 'flex';
+          setTimeout(() => {
+              document.getElementById('srModalContent').classList.remove('scale-95');
+              document.getElementById('srModalContent').classList.add('scale-100');
+          }, 10);
+      };
+
+      window.closeSpacedRepetitionModal = function() {
+          document.getElementById('srModalContent').classList.remove('scale-100');
+          document.getElementById('srModalContent').classList.add('scale-95');
+          setTimeout(() => { document.getElementById('srModal').style.display = 'none'; }, 200);
+      };
+
+      window.calculateAndShowDates = function() {
+          const startStr = document.getElementById('sr-start-date').value;
+          if(!startStr) { alert("Veuillez choisir une date."); return; }
+
+          const startDate = new Date(startStr);
+          // Règle Mathilde : J+3, J+7, J+10, J+30, J+60, J+90
+          const intervals = [3, 7, 10, 30, 60, 90];
+          let html = '<div class="text-left mb-4"><p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">Planning calculé automatiquement :</p><div class="flex flex-col gap-2.5 h-[200px] overflow-y-auto pr-2">';
+
+          window.currentSrDates = [];
+
+          intervals.forEach((days, index) => {
+              const revDate = new Date(startDate);
+              revDate.setDate(startDate.getDate() + days);
+              window.currentSrDates.push({ days: days, num: index + 1, date: revDate });
+
+              html += `
+                  <div class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-200 rounded-xl shadow-sm hover:border-blue-300 transition-colors">
+                      <span class="text-[10px] font-black text-[#B4792A] uppercase w-14">Rév ${index+1}</span>
+                      <span class="text-[10px] font-black text-white bg-[#0F2C48] px-2.5 py-1 rounded shadow-inner">J+${days}</span>
+                      <span class="text-xs font-bold text-[#0F2C48] flex-1 text-right capitalize">${revDate.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                  </div>
+              `;
+          });
+          html += '</div></div>';
+
+          document.getElementById('sr-links-container').innerHTML = html;
+          document.getElementById('sr-step-1').classList.add('hidden');
+          document.getElementById('sr-step-2').classList.remove('hidden');
+      };
+
+      // Sauvegarde des rappels dans le LocalStorage pour l'alerte du matin
+      function saveRevisionsLocally(moduleId, titre, datesArray) {
+           let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
+           // On enlève les anciens rappels pour ce module précis (pour éviter les doublons si recalculé)
+           savedRevisions = savedRevisions.filter(r => r.moduleId !== moduleId);
+
+           datesArray.forEach(d => {
+               // formater en YYYY-MM-DD
+               const yyyy = d.date.getFullYear();
+               const mm = String(d.date.getMonth() + 1).padStart(2, '0');
+               const dd = String(d.date.getDate()).padStart(2, '0');
+
+               savedRevisions.push({
+                   id: Math.random().toString(36).substr(2, 9),
+                   moduleId: moduleId,
+                   titre: titre,
+                   dateStr: `${yyyy}-${mm}-${dd}`,
+                   label: `J+${d.days}`,
+                   done: false
+               });
+           });
+           localStorage.setItem('paia_revisions', JSON.stringify(savedRevisions));
+      }
+
+      window.downloadICS = function() {
+          const id = document.getElementById('sr-module-id').innerText;
+          const titre = document.getElementById('sr-module-title').innerText;
+
+          // Sauvegarde locale pour le Tracker interne
+          saveRevisionsLocally(id, titre, window.currentSrDates);
+
+          // Génération du ICS Google Agenda
+          let icsContent = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//PAIA Hub//Smart Recall//FR\r\nCALSCALE:GREGORIAN\r\n";
+
+          window.currentSrDates.forEach(item => {
+              const eventDate = item.date;
+              const dateStr = eventDate.toISOString().replace(/-|:|\.\d\d\d/g, "").substring(0, 8);
+              const nextDay = new Date(eventDate);
+              nextDay.setDate(eventDate.getDate() + 1);
+              const nextDateStr = nextDay.toISOString().replace(/-|:|\.\d\d\d/g, "").substring(0, 8);
+
+              const uid = `${Date.now()}-${item.num}@paiahub.com`;
+              const safeTitre = titre.replace(/,/g, '\\,');
+              const summary = `Révision ${item.num}/6 : ${id} - ${safeTitre}`;
+              const description = `Rappel d'apprentissage espacé (J+${item.days}).\\n\\nModule : ${id} - ${safeTitre}\\nObjectif : Consolider la mémoire à long terme !`;
+
+              icsContent += "BEGIN:VEVENT\r\n";
+              icsContent += `DTSTART;VALUE=DATE:${dateStr}\r\n`;
+              icsContent += `DTEND;VALUE=DATE:${nextDateStr}\r\n`;
+              icsContent += `UID:${uid}\r\n`;
+              icsContent += `SUMMARY:${summary}\r\n`;
+              icsContent += `DESCRIPTION:${description}\r\n`;
+              icsContent += "BEGIN:VALARM\r\nTRIGGER:-PT15H\r\nACTION:DISPLAY\r\nDESCRIPTION:Rappel de révision\r\nEND:VALARM\r\n";
+              icsContent += "END:VEVENT\r\n";
+          });
+
+          icsContent += "END:VCALENDAR\r\n";
+
+          const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+          const link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = `Revisions_${id}.ics`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          closeSpacedRepetitionModal();
+          afficherToast("Planning généré ! Les dates sont ajoutées à tes rappels internes. 📅");
+      };
+
+      // ==============================================================
+      // GESTION DU FILTRE & AFFICHAGE GLOBAL
+      // ==============================================================
       function filtrerBloc(bloc) {
         currentBloc = bloc;
         currentMod = "ALL";
@@ -870,11 +1092,48 @@
         });
       }
 
-      window.toggleRes = function (id, rid) {
+      // ==============================================================
+      // MÉDAILLES, CONFETTIS & FEU D'ARTIFICE
+      // ==============================================================
+
+      // La belle fonction pour la validation TOTALE du module
+      function shootFireworks() {
+        var duration = 4 * 1000;
+        var animationEnd = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9000 };
+
+        function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+        var interval = setInterval(function() {
+          var timeLeft = animationEnd - Date.now();
+          if (timeLeft <= 0) { return clearInterval(interval); }
+          var particleCount = 50 * (timeLeft / duration);
+          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+        }, 250);
+      }
+
+      window.toggleRes = function (id, rid, emoji) {
         const key = `${id}-${rid}`;
         progressRes[key] = !progressRes[key];
         localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
-        if (progressRes[key]) confetti({ particleCount: 30, spread: 50, origin: { y: 0.9 } });
+
+        if (progressRes[key]) {
+            confetti({ particleCount: 50, spread: 60, origin: { y: 0.9 } });
+
+            // Sélection aléatoire d'une citation motivante
+            const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+            const icon = emoji || "🏅";
+
+            const toastHtml = `
+              <div class="flex flex-col gap-1 w-[280px]">
+                <div class="text-xs font-black uppercase text-[#B4792A] tracking-widest mb-1 flex items-center gap-1">${icon} Ressource validée !</div>
+                <div class="text-[11px] font-medium text-[#0F2C48] leading-snug italic">${quote}</div>
+                <div class="text-[9px] font-black text-right text-gray-400 mt-1">- Mathilde Martine PAISLEY 💫</div>
+              </div>
+            `;
+            afficherToastCustom(toastHtml);
+        }
         afficherModules(document.getElementById("searchInput").value, false);
       };
 
@@ -884,24 +1143,47 @@
         const isAll = keys.every((k) => progressRes[k]);
         keys.forEach((k) => (progressRes[k] = !isAll));
         localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
+
         if (!isAll) {
-          confetti({ particleCount: 150 });
-          afficherToast("Ligne Validée ! ✅");
+          // Si on valide tout : GRAND FEU D'ARTIFICE FIESTA !
+          shootFireworks();
+
+          const toastHtml = `
+              <div class="flex flex-col gap-2 w-[300px]">
+                <div class="text-sm font-black uppercase text-green-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
+                <div class="text-[12px] font-bold text-[#0F2C48] leading-snug">Félicitations ! Tu viens de franchir une étape majeure. La persévérance est la clé de la réussite.</div>
+                <div class="text-[10px] font-black text-right text-[#B4792A] mt-1">- Mathilde Martine PAISLEY 💫</div>
+              </div>
+          `;
+          afficherToastCustom(toastHtml);
         }
         afficherModules(document.getElementById("searchInput").value, false);
       };
 
+      function afficherToastCustom(htmlContent) {
+        const c = document.getElementById("toastContainer");
+        const t = document.createElement("div");
+        t.className = "toast-msg p-5 bg-white/90 backdrop-blur-xl border-l-[5px] border-green-500 shadow-2xl rounded-xl flex items-start gap-3 pointer-events-auto z-[7000]";
+        t.innerHTML = htmlContent;
+        c.appendChild(t);
+        setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 6000); // Reste 6 secondes pour lire
+      }
+
+      function afficherToast(m) {
+        afficherToastCustom(`<span class="text-xl">✨</span><span class="text-[#0F2C48] font-bold text-sm mt-1">${m}</span>`);
+      }
+
+      // ==============================================================
+      // GÉNÉRATION DES CARTES MODULES
+      // ==============================================================
       function getActionLink(url, titre, type, emoji, id) {
-          if (!url || url.trim() === "") {
-             return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
-          }
+          if (!url || url.trim() === "") return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
 
           let finalUrl = url;
           if (finalUrl.includes("drive.google.com")) {
               let match = finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-              if (match && match[1]) {
-                  finalUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
-              } else {
+              if (match && match[1]) finalUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
+              else {
                   finalUrl = finalUrl.replace("/view", "/preview").replace("?usp=sharing", "");
                   if (!finalUrl.includes("/preview")) finalUrl += "/preview";
               }
@@ -911,15 +1193,8 @@
           const safeTitre = (titre || "").replace(/'/g, "\\'");
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
 
-          // Les éléments externes
-          if (type === 'external') {
-              return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
-          }
-
-          // PDF Protégé
-          if (type === 'embed-pdf' && !isUnlocked) {
-              return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
-          }
+          if (type === 'external') return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
+          if (type === 'embed-pdf' && !isUnlocked) return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
 
           return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"` };
       }
@@ -929,7 +1204,6 @@
         if (!list) return;
         list.innerHTML = "";
         let vueCount = 0, totalCount = 0, cardIdx = 0;
-
         const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
 
         database.forEach((itemObj) => {
@@ -958,7 +1232,7 @@
           ];
 
           let lineChecked = 0;
-          const htmlRes = res.map((r) => {
+          let htmlRes = res.map((r) => {
             totalCount++;
             const isV = progressRes[`${id}-${r.id}`];
             if (isV) { vueCount++; lineChecked++; }
@@ -971,27 +1245,40 @@
             let btnClass = r.b;
 
             if (r.type === 'embed-pdf' && !isUnlocked && r.url) {
-                displayEmoji = "🔒";
-                tooltipText = "Accès Restreint";
-                btnClass = "bg-locked";
+                displayEmoji = "🔒"; tooltipText = "Accès Restreint"; btnClass = "bg-locked";
             }
 
             return `<div class="relative tooltip-container">
                         <${linkProps.tag} ${linkProps.action} class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText.replace(/'/g, "\\'")}')"><span>${displayEmoji}</span></${linkProps.tag}>
-                        <button onclick="toggleRes('${id}','${r.id}')" class="check-badge ${checkC}"><i class="fas fa-check"></i></button>
+                        <button onclick="toggleRes('${id}','${r.id}','${displayEmoji}')" class="check-badge ${checkC}"><i class="fas fa-check"></i></button>
                         <span class="tooltip">${tooltipText}</span>
                     </div>`;
           }).join("");
+
+          // SÉPARATEUR FUN ET BOUTON SMART RECALL
+          htmlRes += `
+            <div class="flex items-center justify-center px-1">
+                <div class="w-[2px] h-8 bg-gray-300 border-l-[3px] border-dotted border-gray-400/50 rounded-full opacity-60 relative group cursor-help transition-all hover:border-blue-400">
+                    <span class="absolute -top-8 left-1/2 -translate-x-1/2 text-[9px] font-black text-[#B4792A] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all whitespace-nowrap bg-white px-3 py-1.5 rounded-lg shadow-md pointer-events-none z-50">Zone Bonus</span>
+                </div>
+            </div>
+
+            <div class="relative tooltip-container">
+                <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource bg-gradient-to-br from-[#4285F4] to-[#8A2BE2] text-white border-b-[#303F9F] shadow-[0_5px_15px_rgba(66,133,244,0.3)]">
+                    <span>🚀</span>
+                </button>
+                <span class="tooltip text-nowrap">Planifier Répétition</span>
+            </div>
+          `;
 
           const isFull = lineChecked === res.length;
           const linePercent = res.length > 0 ? Math.round((lineChecked / res.length) * 100) : 0;
 
           const card = document.createElement("div");
-
           card.className = `card-module p-6 rounded-2xl mb-3 ${isFull ? "border-green-400/50 bg-green-50/80" : ""} ${anim ? "card-animate" : ""}`;
           if (anim) card.style.animationDelay = `${cardIdx * 0.03}s`;
 
-          // NOUVELLE STRUCTURE SANS L'ESPACE VIDE SUR LA DROITE
+          // L'ÎLOT DE VALIDATION (Socle très visible et bien séparé)
           card.innerHTML = `
             <div class="flex flex-col relative z-10">
                 <!-- TOP : En-tête du module -->
@@ -1006,25 +1293,31 @@
                 </div>
 
                 <!-- MIDDLE : Ressources (Emojis) -->
-                <div class="flex flex-wrap gap-3 mb-6">
+                <div class="flex flex-wrap items-center gap-3">
                     ${htmlRes}
                 </div>
 
-                <!-- BOTTOM : Footer avec Barre de progression et Bouton Valider -->
-                <div class="flex flex-wrap md:flex-nowrap items-center justify-between pt-4 border-t border-gray-200/50 gap-4">
-                    <!-- Barre de progression -->
-                    <div class="w-full md:max-w-[300px]">
-                        <div class="flex justify-between items-end mb-1.5">
-                            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Avancement du module</span>
-                            <span class="text-[10px] font-black ${isFull ? 'text-green-500' : 'text-[#0F2C48]'}">${linePercent}%</span>
+                <!-- BOTTOM : L'Îlot de Validation (Boîte Blanche Super Visible) -->
+                <div class="mt-6 p-4 rounded-2xl bg-white border border-[#0F2C48]/10 shadow-[0_5px_20px_rgba(15,44,72,0.08)] flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+
+                    <!-- Barre de progression plus épaisse -->
+                    <div class="w-full md:flex-grow">
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-[10px] font-black text-[#0F2C48]/60 uppercase tracking-widest">Avancement du module</span>
+                            <span class="text-sm font-black ${isFull ? 'text-green-500' : 'text-[#0F2C48]'}">${linePercent}%</span>
                         </div>
-                        <div class="w-full bg-gray-200/60 h-2 rounded-full overflow-hidden shadow-inner">
-                            <div class="h-full bg-gradient-to-r from-[#10b981] to-[#34d399] rounded-full transition-all duration-700 ease-out" style="width: ${linePercent}%;"></div>
+                        <!-- Track gris clair -->
+                        <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden shadow-inner border border-gray-300">
+                            <!-- Remplissage dégradé vert -->
+                            <div class="h-full bg-gradient-to-r from-[#10b981] to-[#34d399] rounded-full transition-all duration-700 ease-out shadow-[0_0_10px_rgba(16,185,129,0.4)] relative" style="width: ${linePercent}%;">
+                                <!-- Petit reflet diagonal décoratif dans la barre -->
+                                <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwTDggOFpNOCAwTDAgOFoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuMiIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] opacity-50"></div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Bouton -->
-                    <button onclick="toggleLine('${id}')" class="btn-valider-3d px-8 py-3 rounded-xl text-xs w-full md:w-auto md:min-w-[160px] whitespace-nowrap ${isFull ? "btn-success-line" : ""}">
+                    <!-- Bouton Valider -->
+                    <button onclick="toggleLine('${id}')" class="btn-valider-3d px-8 py-3.5 rounded-xl text-xs w-full md:w-auto md:min-w-[180px] whitespace-nowrap relative z-10 ${isFull ? "btn-success-line" : ""}">
                          ${isFull ? "Terminé ✅" : "Valider tout"}
                     </button>
                 </div>
@@ -1041,15 +1334,6 @@
         document.getElementById("progressText").innerText = gP + "%";
         document.getElementById("compteurResVue").innerText = vueCount;
         document.getElementById("compteurResTotal").innerText = totalCount;
-      }
-
-      function afficherToast(m) {
-        const c = document.getElementById("toastContainer");
-        const t = document.createElement("div");
-        t.className = "p-4 bg-white/90 backdrop-blur-xl border-l-4 border-green-500 shadow-2xl rounded-xl flex items-center gap-3 pointer-events-auto animate-slideIn";
-        t.innerHTML = `<span class="text-xl">✨</span><span class="text-[#0F2C48] font-bold text-sm">${m}</span>`;
-        c.appendChild(t);
-        setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 3000);
       }
 
       function afficherTravaux(n) {
