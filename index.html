@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mon Parcours FPA - V24 (Secured Edition)</title>
+    <title>Mon Parcours FPA - V25 (Corrected & Timeline)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -171,7 +171,6 @@
       .bg-map { background: linear-gradient(135deg, #ffb900 0%, #cc9400 100%); color: #0f2c48; }
       .bg-quiz { background: linear-gradient(135deg, #b4792a 0%, #906122 100%); color: white; }
       .bg-locked { background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important; color: #94a3b8 !important; border-color: #94a3b8 !important; box-shadow: none !important;}
-      .bg-calendar { background: linear-gradient(135deg, #4285F4 0%, #8A2BE2 100%); color: white; }
 
       /* Cartes avec effet 3D doux */
       .card-module {
@@ -209,9 +208,6 @@
       .card-animate { animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
       @keyframes slideIn { from { transform: translateY(20px) scale(0.98); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
 
-      @keyframes glassShine { 100% { transform: translateX(100%); } }
-      .group-hover\:animate-glassShine:hover { animation: glassShine 0.6s forwards; }
-
       .accordion-content {
         display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       }
@@ -226,7 +222,7 @@
 
       .toast-msg { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-      /* Custom scrollbar class for horizontal timeline */
+      /* Horizontal scrollbar timeline */
       .scrollbar-hide::-webkit-scrollbar { display: none; }
       .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -244,14 +240,14 @@
       <p class="text-[10px] mt-2 opacity-50 font-bold">MATHILDE MARTINE PAISLEY</p>
     </div>
 
-    <!-- En-tête Glassmorphism (Flouté) -->
+    <!-- En-tête Glassmorphism -->
     <header class="bg-[#F6F2E8]/80 backdrop-blur-xl border-b border-[#0F2C48]/10 h-[90px] flex items-center sticky top-0 z-[100] shadow-sm">
       <div class="w-full max-w-[1600px] mx-auto px-6 flex items-center justify-between">
         <div class="flex items-center gap-4 cursor-pointer hover:opacity-80 transition-opacity" onclick="location.reload()">
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo Paia Hub" class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover shadow-md" />
           <div>
             <h1 class="text-xl font-black uppercase text-[#0F2C48] drop-shadow-sm">Mon Parcours FPA</h1>
-            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Suivi programme FPA • V24 (Secured Edition)</p>
+            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Suivi programme FPA • V25</p>
           </div>
         </div>
 
@@ -335,7 +331,7 @@
       <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" class="btn-fab group"><span>⬇️</span><span class="absolute right-full mr-3 bg-[#0F2C48] text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Bas de page</span></button>
     </div>
 
-    <!-- MODALE CODE PIN POUR PDF (SÉCURISÉE) -->
+    <!-- MODALE CODE PIN POUR PDF (SÉCURISÉE Base64) -->
     <div id="pinModal" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
       <div class="bg-white p-10 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-sm w-full mx-4 transform scale-95 transition-transform duration-300" id="pinModalContent">
         <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full mx-auto flex items-center justify-center shadow-inner mb-6 border border-gray-300"><span class="text-4xl">🔒</span></div>
@@ -358,17 +354,17 @@
             <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest mb-4">Planification des révisions</p>
 
             <div class="bg-blue-50 text-blue-800 text-xs p-4 rounded-xl mb-6 text-left border border-blue-100">
-                <p class="mb-2 font-bold text-sm"><i class="fas fa-brain mr-1"></i> Pourquoi cette méthode ?</p>
+                <p class="mb-2 font-bold text-sm"><i class="fas fa-brain mr-1"></i> La méthode des J</p>
                 <p class="opacity-80 italic mb-2">"L'apprentissage ce n'est pas du bourrage de crâne, c'est l'art de la répétition espacée. L'objectif est d'ancrer l'information à long terme en revoyant les notions à des intervalles précis."</p>
                 <p class="text-right font-black text-[#B4792A] mb-3">- Ton Assistant Pédagogique 🤖</p>
-                <p class="opacity-80">Générez 6 rappels automatiques (J+3, J+7, J+10, J+30, J+60, J+90) pour :</p>
+                <p class="opacity-80">Générez 6 rappels médicaux automatiques (J1, J3, J7, J14, J30, J60) pour :</p>
                 <p class="font-black mt-2 text-[#0F2C48]" id="sr-module-title"></p>
                 <span id="sr-module-id" class="hidden"></span>
             </div>
 
             <div class="text-left mb-6 flex gap-4">
               <div class="flex-1">
-                  <label class="text-gray-600 text-xs font-bold mb-2 block">Jour 0 (Première lecture) :</label>
+                  <label class="text-gray-600 text-xs font-bold mb-2 block">Jour 0 (Aujourd'hui) :</label>
                   <input type="date" id="sr-start-date" class="w-full bg-white border-2 border-gray-200 text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm focus:outline-none focus:border-blue-400 transition-all shadow-inner">
               </div>
               <div class="w-1/3">
@@ -397,6 +393,18 @@
         <div id="daily-revisions-list" class="flex flex-col gap-3 mb-8 max-h-[300px] overflow-y-auto pr-2 text-left"></div>
 
         <button onclick="closeDailyRevisionsModal()" class="w-full bg-[#0F2C48] text-white px-4 py-4 rounded-xl font-black text-sm hover:shadow-[0_10px_20px_rgba(15,44,72,0.4)] transition-all transform hover:-translate-y-1">C'est noté, je m'y mets ! 💪</button>
+      </div>
+    </div>
+
+    <!-- MODALE : TRAVAUX EN COURS (RÉTABLIE) -->
+    <div id="modalTravaux" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
+      <div class="bg-white p-8 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-sm w-full mx-4 transform transition-transform duration-300 relative overflow-hidden">
+        <div class="w-16 h-16 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-yellow-200">
+            <span class="text-3xl">🚧</span>
+        </div>
+        <h2 class="font-black text-[#0F2C48] text-xl uppercase mb-2">En construction</h2>
+        <p class="text-gray-500 text-xs mb-6 font-medium leading-relaxed">Le support pour <strong id="modalTxt" class="text-[#0F2C48]"></strong> n'est pas encore disponible. Mathilde y travaille !</p>
+        <button onclick="document.getElementById('modalTravaux').style.display = 'none';" class="w-full bg-[#0F2C48] text-white px-4 py-3 rounded-xl font-black text-xs hover:shadow-lg transition-all hover:-translate-y-1">RETOUR</button>
       </div>
     </div>
 
@@ -465,7 +473,7 @@
           const todayDate = new Date();
           const todayStr = todayDate.getFullYear() + "-" + String(todayDate.getMonth() + 1).padStart(2, '0') + "-" + String(todayDate.getDate()).padStart(2, '0');
 
-          const dueRevisions = savedRevisions.filter(r => !r.done && r.dateStr <= todayStr);
+          const dueRevisions = savedRevisions.filter(r => !r.done && r.dateStr <= todayStr && r.days > 0); // J0 is excluded from popups
 
           if (dueRevisions.length > 0) {
               let html = '';
@@ -484,7 +492,7 @@
                               <span class="text-sm font-bold text-[#0F2C48] leading-tight">${rev.moduleId}</span>
                               <span class="text-xs text-gray-500 truncate max-w-[200px]">${rev.titre}</span>
                           </div>
-                          <button onclick="markRevisionDone('${rev.id}', true)" class="shrink-0 bg-white border-2 border-gray-200 text-gray-400 hover:text-blue-500 hover:border-blue-400 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm hover:shadow-md">
+                          <button onclick="markRevisionDone('${rev.id}', true)" class="shrink-0 bg-white border-2 border-gray-200 text-gray-400 hover:text-green-500 hover:border-green-400 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm hover:shadow-md">
                               <i class="fas fa-check"></i>
                           </button>
                       </div>
@@ -514,6 +522,7 @@
               if(el) { el.classList.add('opacity-0', 'scale-95'); setTimeout(() => { el.remove(); }, 300); }
           }
 
+          // Confetti seulement au moment où on COCHE la case
           if (isNowDone && !fromPopup) {
              confetti({ particleCount: 30, spread: 40, origin: { y: 0.8 } });
           }
@@ -851,7 +860,6 @@
       window.verifyPin = function() {
           const input = document.getElementById('pinInput').value;
 
-          // On vérifie si l'encodage de la saisie correspond à "1403" masqué
           if (btoa(input) === ENCODED_PIN) {
               localStorage.setItem('paia_unlocked', 'true');
               closePinModal();
@@ -874,6 +882,9 @@
           }
       };
 
+      // ==============================================================
+      // SMART RECALL : MÉTHODE DES RÉPÉTITIONS ESPACÉES (IN-APP & WEB)
+      // ==============================================================
       window.openSpacedRepetitionModal = function(id, titre) {
           document.getElementById('sr-module-id').innerText = id;
           document.getElementById('sr-module-title').innerText = titre;
@@ -908,7 +919,7 @@
 
           const startDateTime = new Date(`${startStr}T${timeStr}`);
 
-          const intervals = [0, 3, 7, 10, 30, 60, 90];
+          const intervals = [0, 1, 3, 7, 14, 30, 60];
           let newDates = [];
 
           intervals.forEach((days, index) => {
@@ -944,6 +955,7 @@
                    dateStr: `${yyyy}-${mm}-${dd}`,
                    datetime: d.date.getTime(),
                    num: d.num,
+                   days: d.days,
                    label: d.days === 0 ? "J0" : `J+${d.days}`,
                    done: false
                });
@@ -953,7 +965,7 @@
 
       window.downloadICSForModule = function(moduleId, titre) {
           let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
-          const moduleRevs = savedRevisions.filter(r => r.moduleId === moduleId);
+          const moduleRevs = savedRevisions.filter(r => r.moduleId === moduleId && r.days > 0);
 
           if(moduleRevs.length === 0) return;
 
@@ -967,7 +979,7 @@
 
               const uid = `${Date.now()}-${item.num}@paiahub.com`;
               const safeTitre = titre.replace(/,/g, '\\,');
-              const summary = `Révision ${item.num}/7 : ${moduleId} - ${safeTitre}`;
+              const summary = `Révision ${item.label} : ${moduleId} - ${safeTitre}`;
               const description = `Rappel d'apprentissage espacé (${item.label}).\\n\\nModule : ${moduleId} - ${safeTitre}\\nObjectif : Consolider la mémoire à long terme !`;
 
               icsContent += "BEGIN:VEVENT\r\n";
@@ -976,7 +988,8 @@
               icsContent += `UID:${uid}\r\n`;
               icsContent += `SUMMARY:${summary}\r\n`;
               icsContent += `DESCRIPTION:${description}\r\n`;
-              icsContent += "BEGIN:VALARM\r\nTRIGGER:-PT15H\r\nACTION:DISPLAY\r\nDESCRIPTION:Rappel de révision\r\nEND:VALARM\r\n";
+              icsContent += "BEGIN:VALARM\r\nTRIGGER:-P1D\r\nACTION:DISPLAY\r\nDESCRIPTION:Rappel (1 jour avant)\r\nEND:VALARM\r\n";
+              icsContent += "BEGIN:VALARM\r\nTRIGGER:-PT5M\r\nACTION:DISPLAY\r\nDESCRIPTION:Rappel (5 minutes avant)\r\nEND:VALARM\r\n";
               icsContent += "END:VEVENT\r\n";
           });
 
@@ -1038,25 +1051,31 @@
 
       window.toggleRes = function (id, rid, emoji, colorHex, totalExpected, currentChecked) {
         const key = `${id}-${rid}`;
+
+        // On récupère le statut de validation des éléments qui comptent pour "Valider Tout"
+        // On ne gère le popup que si c'est un check positif (passage de false à true)
+        const wasChecked = !!progressRes[key];
+
         progressRes[key] = !progressRes[key];
         localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
 
         let newCount = progressRes[key] ? currentChecked + 1 : currentChecked - 1;
         const isAllNow = newCount === totalExpected;
 
-        if (isAllNow) {
+        // FIESTA + MESSAGE si tout est validé
+        if (isAllNow && progressRes[key]) {
             shootFireworks();
             const toastHtml = `
               <div class="flex flex-col gap-2 w-[300px]">
                 <div class="text-sm font-black uppercase text-blue-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
                 <div class="text-[12px] font-bold text-[#0F2C48] leading-snug">Félicitations ! Tu viens de franchir une étape majeure. La persévérance est la clé de la réussite.</div>
-                <div class="text-[10px] font-black text-right text-[#B4792A] mt-1">- Ton Assistant Pédagogique 🤖</div>
               </div>
             `;
             afficherToastCustom(toastHtml, '#3b82f6');
-        } else if (progressRes[key]) {
+        }
+        // Ou message standard si on vient d'activer une ressource et que ce n'est pas "Valider tout"
+        else if (progressRes[key] && !wasChecked) {
             confetti({ particleCount: 50, spread: 60, origin: { y: 0.9 }, colors: ['#3b82f6', '#1e3a8a', '#ffffff', '#ffb900'] });
-
             const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
             const icon = emoji || "🏅";
 
@@ -1149,7 +1168,8 @@
           if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
-          const resRaw = [
+          // Tous les 10 boutons sont forcés d'être affichés, qu'il y ait une URL ou pas
+          const res = [
             { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio", color: "#667eea" },
             { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
             { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" },
@@ -1161,8 +1181,6 @@
             { id: "map", em: "🧠", n: "Carte", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "embed-map", color: "#ffb900" },
             { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "external", color: "#b4792a" },
           ];
-
-          const res = resRaw.filter(r => r.url && r.url.trim() !== '');
 
           let lineChecked = 0;
           let htmlRes = res.map((r) => {
@@ -1209,7 +1227,8 @@
           const moduleRevs = savedRevisions.filter(r => r.moduleId === id);
           let timelineHtml = '';
           if (moduleRevs.length > 0) {
-              const nbDone = moduleRevs.filter(r => r.done).length;
+              const nbDone = moduleRevs.filter(r => r.done && r.days > 0).length;
+              const nbTotal = moduleRevs.filter(r => r.days > 0).length;
 
               let j0Date = new Date();
               if (moduleRevs.length > 0) {
@@ -1227,7 +1246,7 @@
                       <i class="fas fa-brain text-[#B4792A] text-lg"></i>
                       <div class="flex flex-col text-left">
                           <span class="text-[10px] font-black text-[#0F2C48] uppercase tracking-widest">Répétitions Espacées</span>
-                          <span class="text-[9px] text-gray-500 font-bold">${nbDone}/${moduleRevs.length} révisions validées</span>
+                          <span class="text-[9px] text-gray-500 font-bold">${nbDone}/${nbTotal} révisions validées</span>
                       </div>
                   </div>
                   <div class="flex items-center gap-3">
@@ -1263,15 +1282,16 @@
 
                   const safeT = titre.replace(/'/g, "\\'");
                   const desc = encodeURIComponent(`Rappel d'apprentissage espacé (${rev.label}).\n\nModule : ${id} - ${titre}\nObjectif : Consolider la mémoire à long terme !`);
-                  const eventTitle = encodeURIComponent(`Révision ${rev.num}/6 : ${id} - ${titre}`);
+                  const eventTitle = encodeURIComponent(`Révision ${rev.label} : ${id} - ${titre}`);
 
                   const gCalLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=${dateStrLocal}/${endStrLocal}&details=${desc}`;
                   const outlookLink = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${eventTitle}&body=${desc}&startdt=${dateStrLocal}&enddt=${endStrLocal}`;
-                  const appleIcs = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${dateStrLocal}\nDTEND:${endStrLocal}\nSUMMARY:Révision ${rev.num}/6 : ${id} - ${safeT}\nDESCRIPTION:Rappel d'apprentissage espacé (${rev.label}).\\n\\nModule : ${id} - ${safeT}\\nObjectif : Consolider la mémoire à long terme !\nEND:VEVENT\nEND:VCALENDAR`;
+                  const appleIcs = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${dateStrLocal}\nDTEND:${endStrLocal}\nSUMMARY:Révision ${rev.label} : ${id} - ${safeT}\nDESCRIPTION:Rappel d'apprentissage espacé (${rev.label}).\\n\\nModule : ${id} - ${safeT}\\nObjectif : Consolider la mémoire à long terme !\nBEGIN:VALARM\nTRIGGER:-P1D\nACTION:DISPLAY\nDESCRIPTION:Rappel (1 jour avant)\nEND:VALARM\nBEGIN:VALARM\nTRIGGER:-PT5M\nACTION:DISPLAY\nDESCRIPTION:Rappel (5 minutes avant)\nEND:VALARM\nEND:VEVENT\nEND:VCALENDAR`;
                   const appleLink = `data:text/calendar;charset=utf8,${encodeURIComponent(appleIcs)}`;
 
                   const borderClass = rev.done ? 'border-blue-300 bg-blue-50' : (isPast ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-white');
-                  const checkIconClass = rev.done ? 'bg-[#3b82f6] text-white border-[#3b82f6]' : 'bg-white text-gray-300 border-gray-300 hover:border-blue-400 hover:text-blue-500';
+                  // MODIF: on force le vert vif sur le checkmark de la timeline quand c'est fait !
+                  const checkIconClass = rev.done ? 'bg-green-500 text-white border-green-500' : 'bg-white text-gray-300 border-gray-300 hover:border-green-400 hover:text-green-500';
 
                   timelineHtml += `
                     <div class="shrink-0 w-[110px] ${borderClass} border rounded-[16px] flex flex-col items-center p-3 relative shadow-sm transition-all hover:shadow-md snap-start">
@@ -1279,15 +1299,15 @@
                             <i class="fas fa-check text-[10px]"></i>
                         </button>
 
-                        <span class="text-xl mb-1 opacity-90">${rev.done ? '✅' : '🔔'}</span>
+                        <span class="text-2xl mb-1 opacity-90">${rev.done ? '✅' : '🔔'}</span>
                         <span class="text-[9px] font-black text-[#0F2C48] uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded mb-1 shadow-inner">${rev.label}</span>
                         <span class="text-[11px] font-bold ${isPast && !rev.done ? 'text-red-500' : 'text-gray-600'}">${revDateObj.toLocaleDateString('fr-FR', {day:'numeric', month:'short'})}</span>
                         <span class="text-[10px] font-black text-[#B4792A] mb-3">${String(revDateObj.getHours()).padStart(2,'0')}h${String(revDateObj.getMinutes()).padStart(2,'0')}</span>
 
                         <div class="flex gap-1.5 w-full justify-center pt-2 border-t border-gray-200/50 ${rev.done ? 'opacity-30 pointer-events-none grayscale' : ''}">
-                            <a href="${gCalLink}" target="_blank" title="Google" class="w-6 h-6 rounded border border-gray-200 flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-sm bg-white"><i class="fab fa-google text-[10px]"></i></a>
+                            <a href="${gCalLink}" target="_blank" title="Google Calendar" class="w-6 h-6 rounded border border-gray-200 flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-sm bg-white"><i class="fab fa-google text-[10px]"></i></a>
                             <a href="${outlookLink}" target="_blank" title="Outlook" class="w-6 h-6 rounded border border-gray-200 flex items-center justify-center text-cyan-600 hover:bg-cyan-600 hover:text-white transition-all shadow-sm bg-white"><i class="fab fa-windows text-[10px]"></i></a>
-                            <a href="${appleLink}" download="Apple_Rev${rev.num}_${id}.ics" title="Apple" class="w-6 h-6 rounded border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-all shadow-sm bg-white"><i class="fab fa-apple text-[11px]"></i></a>
+                            <a href="${appleLink}" download="Apple_Rev_${rev.label}_${id}.ics" title="Apple Calendar" class="w-6 h-6 rounded border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-all shadow-sm bg-white"><i class="fab fa-apple text-[11px]"></i></a>
                         </div>
                     </div>
                   `;
@@ -1358,5 +1378,18 @@
       if (sE) sE.addEventListener("input", (e) => afficherModules(e.target.value, false));
 
     </script>
+
+    <!-- MODALE : TRAVAUX EN COURS -->
+    <div id="modalTravaux" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
+      <div class="bg-white p-8 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-sm w-full mx-4 transform transition-transform duration-300 relative overflow-hidden">
+        <div class="w-16 h-16 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-yellow-200">
+            <span class="text-3xl">🚧</span>
+        </div>
+        <h2 class="font-black text-[#0F2C48] text-xl uppercase mb-2">En construction</h2>
+        <p class="text-gray-500 text-xs mb-6 font-medium leading-relaxed">Le support pour <strong id="modalTxt" class="text-[#0F2C48]"></strong> n'est pas encore disponible. Mathilde y travaille !</p>
+        <button onclick="document.getElementById('modalTravaux').style.display = 'none';" class="w-full bg-[#0F2C48] text-white px-4 py-3 rounded-xl font-black text-xs hover:shadow-lg transition-all hover:-translate-y-1">RETOUR</button>
+      </div>
+    </div>
+
   </body>
 </html>
