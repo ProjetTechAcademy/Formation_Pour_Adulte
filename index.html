@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V16 (Smart Learning)</title>
+    <title>Formation Pour Adulte - V17 (Smart Learning & Tracking)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -170,6 +170,7 @@
       .bg-map { background: linear-gradient(135deg, #ffb900 0%, #cc9400 100%); color: #0f2c48; }
       .bg-quiz { background: linear-gradient(135deg, #b4792a 0%, #906122 100%); color: white; }
       .bg-locked { background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important; color: #94a3b8 !important; border-color: #94a3b8 !important; box-shadow: none !important;}
+      .bg-calendar { background: linear-gradient(135deg, #4285F4 0%, #8A2BE2 100%); color: white; }
 
       /* Cartes avec effet 3D doux (DESIGN 2026 - Survol enrichi) */
       .card-module {
@@ -262,7 +263,7 @@
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo Paia Hub" class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover shadow-md" />
           <div>
             <h1 class="text-xl font-black uppercase text-[#0F2C48] drop-shadow-sm">Formation Pour Adulte</h1>
-            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base FPA • V18 (Smart Learning)</p>
+            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base FPA • V17 (Smart Tracking)</p>
           </div>
         </div>
 
@@ -382,10 +383,9 @@
     <div id="srModal" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
       <div class="bg-white p-8 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-md w-full mx-4 transform scale-95 transition-transform duration-300 relative overflow-hidden" id="srModalContent">
 
-        <!-- Étape 1 : Choix du J0 -->
         <div id="sr-step-1">
             <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-blue-200">
-                <span class="text-3xl">🚀</span>
+                <span class="text-3xl">📅</span>
             </div>
             <h2 class="font-black text-[#0F2C48] text-2xl mb-1 tracking-tight">Smart Recall</h2>
             <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest mb-4">Planification des révisions</p>
@@ -399,28 +399,19 @@
                 <span id="sr-module-id" class="hidden"></span>
             </div>
 
-            <div class="text-left mb-6">
-              <label class="text-gray-600 text-xs font-bold mb-2 block">Choisissez votre Jour 0 (Première lecture) :</label>
-              <input type="date" id="sr-start-date" class="w-full bg-white border-2 border-gray-200 text-[#0F2C48] px-4 py-3 rounded-xl font-black text-sm focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all shadow-inner">
+            <div class="text-left mb-6 flex gap-4">
+              <div class="flex-1">
+                  <label class="text-gray-600 text-xs font-bold mb-2 block">Jour 0 (Première lecture) :</label>
+                  <input type="date" id="sr-start-date" class="w-full bg-white border-2 border-gray-200 text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm focus:outline-none focus:border-blue-400 transition-all shadow-inner">
+              </div>
+              <div class="w-1/3">
+                  <label class="text-gray-600 text-xs font-bold mb-2 block">Horaire :</label>
+                  <input type="time" id="sr-start-time" value="14:00" class="w-full bg-white border-2 border-gray-200 text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm focus:outline-none focus:border-blue-400 transition-all shadow-inner">
+              </div>
             </div>
 
-            <button onclick="calculateAndShowDates()" class="w-full bg-gradient-to-r from-[#0F2C48] to-[#1a4b7c] text-white px-4 py-3.5 rounded-xl font-black text-xs hover:shadow-[0_10px_20px_rgba(15,44,72,0.3)] transition-all transform hover:-translate-y-1 mb-3">Calculer mes révisions</button>
+            <button onclick="calculateAndSaveDates()" class="w-full bg-gradient-to-r from-[#0F2C48] to-[#1a4b7c] text-white px-4 py-3.5 rounded-xl font-black text-xs hover:shadow-[0_10px_20px_rgba(15,44,72,0.3)] transition-all transform hover:-translate-y-1 mb-3">Générer mon programme !</button>
             <button onclick="closeSpacedRepetitionModal()" class="text-gray-400 text-xs font-bold hover:text-red-500 transition-colors underline">Annuler</button>
-        </div>
-
-        <!-- Étape 2 : Téléchargement ICS -->
-        <div id="sr-step-2" class="hidden">
-            <div class="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-green-200">
-                <span class="text-3xl">✅</span>
-            </div>
-            <h2 class="font-black text-[#0F2C48] text-xl mb-1 tracking-tight">Planning prêt !</h2>
-            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-4">Téléchargez votre fichier Agenda</p>
-
-            <!-- Conteneur des dates calculées -->
-            <div id="sr-links-container" class="mb-6 max-h-[200px] overflow-y-auto pr-1"></div>
-
-            <button onclick="downloadICS()" class="w-full bg-green-500 text-white px-4 py-3.5 rounded-xl font-black text-xs hover:bg-green-600 shadow-[0_5px_15px_rgba(16,185,129,0.4)] transition-all transform hover:-translate-y-1 mb-3"><i class="fas fa-calendar-check mr-2"></i> Ajouter à mon Agenda (.ics)</button>
-            <button onclick="closeSpacedRepetitionModal()" class="text-gray-400 text-xs font-bold hover:text-[#0F2C48] transition-colors underline">Fermer sans sauvegarder</button>
         </div>
       </div>
     </div>
@@ -495,7 +486,6 @@
                   setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
                   filtrerBloc("ALL");
 
-                  // Vérifier les rappels du jour au lancement
                   checkDailyRevisions();
               },
               error: (err) => {
@@ -517,17 +507,14 @@
       // ==============================================================
       function checkDailyRevisions() {
           let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
-          // Obtenir la date du jour au format YYYY-MM-DD
           const todayDate = new Date();
           const todayStr = todayDate.getFullYear() + "-" + String(todayDate.getMonth() + 1).padStart(2, '0') + "-" + String(todayDate.getDate()).padStart(2, '0');
 
-          // Filtrer celles qui ne sont pas faites ET dont la date est passée ou égale à aujourd'hui
           const dueRevisions = savedRevisions.filter(r => !r.done && r.dateStr <= todayStr);
 
           if (dueRevisions.length > 0) {
               let html = '';
               dueRevisions.forEach(rev => {
-                  // Déterminer si c'est en retard ou aujourd'hui
                   const isLate = rev.dateStr < todayStr;
                   const tagClass = isLate ? "bg-red-100 text-red-600 border-red-200" : "bg-yellow-100 text-yellow-700 border-yellow-200";
                   const tagText = isLate ? "En retard" : "Aujourd'hui";
@@ -542,7 +529,7 @@
                               <span class="text-sm font-bold text-[#0F2C48] leading-tight">${rev.moduleId}</span>
                               <span class="text-xs text-gray-500 truncate max-w-[200px]">${rev.titre}</span>
                           </div>
-                          <button onclick="markRevisionDone('${rev.id}')" class="shrink-0 bg-white border-2 border-gray-200 text-gray-400 hover:text-green-500 hover:border-green-400 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm hover:shadow-md">
+                          <button onclick="markRevisionDone('${rev.id}', true)" class="shrink-0 bg-white border-2 border-gray-200 text-gray-400 hover:text-green-500 hover:border-green-400 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm hover:shadow-md">
                               <i class="fas fa-check"></i>
                           </button>
                       </div>
@@ -558,7 +545,7 @@
           }
       }
 
-      window.markRevisionDone = function(id) {
+      window.markRevisionDone = function(id, fromPopup=false) {
           let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
           savedRevisions = savedRevisions.map(r => {
               if(r.id === id) r.done = true;
@@ -566,13 +553,16 @@
           });
           localStorage.setItem('paia_revisions', JSON.stringify(savedRevisions));
 
-          const el = document.getElementById(`rev-item-${id}`);
-          if(el) {
-              el.classList.add('opacity-0', 'scale-95');
-              setTimeout(() => { el.remove(); }, 300);
+          if(fromPopup) {
+              const el = document.getElementById(`rev-item-${id}`);
+              if(el) {
+                  el.classList.add('opacity-0', 'scale-95');
+                  setTimeout(() => { el.remove(); }, 300);
+              }
           }
 
-          confetti({ particleCount: 30, spread: 40, origin: { y: 0.8 } });
+          confetti({ particleCount: 40, spread: 50, origin: { y: 0.8 } });
+          afficherModules(document.getElementById("searchInput").value, false); // Refresh UI to update module cards
       };
 
       window.closeDailyRevisionsModal = function() {
@@ -936,15 +926,16 @@
       };
 
       // ==============================================================
-      // SMART RECALL : MÉTHODE DES RÉPÉTITIONS ESPACÉES (.ICS)
+      // SMART RECALL : MÉTHODE DES RÉPÉTITIONS ESPACÉES (IN-APP & WEB)
       // ==============================================================
       window.openSpacedRepetitionModal = function(id, titre) {
           document.getElementById('sr-module-id').innerText = id;
           document.getElementById('sr-module-title').innerText = titre;
-          document.getElementById('sr-start-date').valueAsDate = new Date();
 
-          document.getElementById('sr-step-1').classList.remove('hidden');
-          document.getElementById('sr-step-2').classList.add('hidden');
+          // Initialise la date et heure par défaut
+          const now = new Date();
+          document.getElementById('sr-start-date').valueAsDate = now;
+          document.getElementById('sr-start-time').value = String(now.getHours()).padStart(2, '0') + ":00";
 
           document.getElementById('srModal').style.display = 'flex';
           setTimeout(() => {
@@ -959,45 +950,47 @@
           setTimeout(() => { document.getElementById('srModal').style.display = 'none'; }, 200);
       };
 
-      window.calculateAndShowDates = function() {
-          const startStr = document.getElementById('sr-start-date').value;
-          if(!startStr) { alert("Veuillez choisir une date."); return; }
+      function formatLocalCalDate(dateObj) {
+          const pad = (n) => String(n).padStart(2, '0');
+          return `${dateObj.getFullYear()}${pad(dateObj.getMonth()+1)}${pad(dateObj.getDate())}T${pad(dateObj.getHours())}${pad(dateObj.getMinutes())}00`;
+      }
 
-          const startDate = new Date(startStr);
+      window.calculateAndSaveDates = function() {
+          const startStr = document.getElementById('sr-start-date').value;
+          const timeStr = document.getElementById('sr-start-time').value;
+
+          if(!startStr || !timeStr) { alert("Veuillez choisir une date et une heure."); return; }
+
+          // Combine Date and Time
+          const startDateTime = new Date(`${startStr}T${timeStr}`);
+
           // Règle Mathilde : J+3, J+7, J+10, J+30, J+60, J+90
           const intervals = [3, 7, 10, 30, 60, 90];
-          let html = '<div class="text-left mb-4"><p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">Planning calculé automatiquement :</p><div class="flex flex-col gap-2.5 h-[200px] overflow-y-auto pr-2">';
-
-          window.currentSrDates = [];
+          let newDates = [];
 
           intervals.forEach((days, index) => {
-              const revDate = new Date(startDate);
-              revDate.setDate(startDate.getDate() + days);
-              window.currentSrDates.push({ days: days, num: index + 1, date: revDate });
-
-              html += `
-                  <div class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-200 rounded-xl shadow-sm hover:border-blue-300 transition-colors">
-                      <span class="text-[10px] font-black text-[#B4792A] uppercase w-14">Rév ${index+1}</span>
-                      <span class="text-[10px] font-black text-white bg-[#0F2C48] px-2.5 py-1 rounded shadow-inner">J+${days}</span>
-                      <span class="text-xs font-bold text-[#0F2C48] flex-1 text-right capitalize">${revDate.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                  </div>
-              `;
+              const revDate = new Date(startDateTime);
+              revDate.setDate(startDateTime.getDate() + days);
+              newDates.push({ days: days, num: index + 1, date: revDate });
           });
-          html += '</div></div>';
 
-          document.getElementById('sr-links-container').innerHTML = html;
-          document.getElementById('sr-step-1').classList.add('hidden');
-          document.getElementById('sr-step-2').classList.remove('hidden');
+          const id = document.getElementById('sr-module-id').innerText;
+          const titre = document.getElementById('sr-module-title').innerText;
+
+          saveRevisionsLocally(id, titre, newDates);
+
+          closeSpacedRepetitionModal();
+          afficherToast("Planning généré et sauvegardé dans le module ! 📅");
+
+          // Rafraîchir l'affichage pour montrer la nouvelle Timeline
+          afficherModules(document.getElementById("searchInput").value, false);
       };
 
-      // Sauvegarde des rappels dans le LocalStorage pour l'alerte du matin
       function saveRevisionsLocally(moduleId, titre, datesArray) {
            let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
-           // On enlève les anciens rappels pour ce module précis (pour éviter les doublons si recalculé)
            savedRevisions = savedRevisions.filter(r => r.moduleId !== moduleId);
 
            datesArray.forEach(d => {
-               // formater en YYYY-MM-DD
                const yyyy = d.date.getFullYear();
                const mm = String(d.date.getMonth() + 1).padStart(2, '0');
                const dd = String(d.date.getDate()).padStart(2, '0');
@@ -1006,7 +999,9 @@
                    id: Math.random().toString(36).substr(2, 9),
                    moduleId: moduleId,
                    titre: titre,
-                   dateStr: `${yyyy}-${mm}-${dd}`,
+                   dateStr: `${yyyy}-${mm}-${dd}`, // used for quick daily popup check
+                   datetime: d.date.getTime(), // precise time for web links
+                   num: d.num,
                    label: `J+${d.days}`,
                    done: false
                });
@@ -1014,31 +1009,29 @@
            localStorage.setItem('paia_revisions', JSON.stringify(savedRevisions));
       }
 
-      window.downloadICS = function() {
-          const id = document.getElementById('sr-module-id').innerText;
-          const titre = document.getElementById('sr-module-title').innerText;
+      window.downloadICSForModule = function(moduleId, titre) {
+          let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
+          const moduleRevs = savedRevisions.filter(r => r.moduleId === moduleId);
 
-          // Sauvegarde locale pour le Tracker interne
-          saveRevisionsLocally(id, titre, window.currentSrDates);
+          if(moduleRevs.length === 0) return;
 
-          // Génération du ICS Google Agenda
           let icsContent = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//PAIA Hub//Smart Recall//FR\r\nCALSCALE:GREGORIAN\r\n";
 
-          window.currentSrDates.forEach(item => {
-              const eventDate = item.date;
-              const dateStr = eventDate.toISOString().replace(/-|:|\.\d\d\d/g, "").substring(0, 8);
-              const nextDay = new Date(eventDate);
-              nextDay.setDate(eventDate.getDate() + 1);
-              const nextDateStr = nextDay.toISOString().replace(/-|:|\.\d\d\d/g, "").substring(0, 8);
+          moduleRevs.forEach(item => {
+              const eventDate = new Date(item.datetime);
+              // ICS needs UTC time format (Z)
+              const dateStr = eventDate.toISOString().replace(/-|:|\.\d\d\d/g, "");
+              const endDate = new Date(eventDate.getTime() + 60*60*1000); // 1 hour duration
+              const endDateStr = endDate.toISOString().replace(/-|:|\.\d\d\d/g, "");
 
               const uid = `${Date.now()}-${item.num}@paiahub.com`;
               const safeTitre = titre.replace(/,/g, '\\,');
-              const summary = `Révision ${item.num}/6 : ${id} - ${safeTitre}`;
-              const description = `Rappel d'apprentissage espacé (J+${item.days}).\\n\\nModule : ${id} - ${safeTitre}\\nObjectif : Consolider la mémoire à long terme !`;
+              const summary = `Révision ${item.num}/6 : ${moduleId} - ${safeTitre}`;
+              const description = `Rappel d'apprentissage espacé (${item.label}).\\n\\nModule : ${moduleId} - ${safeTitre}\\nObjectif : Consolider la mémoire à long terme !`;
 
               icsContent += "BEGIN:VEVENT\r\n";
-              icsContent += `DTSTART;VALUE=DATE:${dateStr}\r\n`;
-              icsContent += `DTEND;VALUE=DATE:${nextDateStr}\r\n`;
+              icsContent += `DTSTART:${dateStr}\r\n`;
+              icsContent += `DTEND:${endDateStr}\r\n`;
               icsContent += `UID:${uid}\r\n`;
               icsContent += `SUMMARY:${summary}\r\n`;
               icsContent += `DESCRIPTION:${description}\r\n`;
@@ -1051,13 +1044,10 @@
           const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
           const link = document.createElement('a');
           link.href = window.URL.createObjectURL(blob);
-          link.download = `Revisions_${id}.ics`;
+          link.download = `Revisions_${moduleId}.ics`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-
-          closeSpacedRepetitionModal();
-          afficherToast("Planning généré ! Les dates sont ajoutées à tes rappels internes. 📅");
       };
 
       // ==============================================================
@@ -1096,7 +1086,6 @@
       // MÉDAILLES, CONFETTIS & FEU D'ARTIFICE
       // ==============================================================
 
-      // La belle fonction pour la validation TOTALE du module
       function shootFireworks() {
         var duration = 4 * 1000;
         var animationEnd = Date.now() + duration;
@@ -1113,26 +1102,41 @@
         }, 250);
       }
 
-      window.toggleRes = function (id, rid, emoji) {
+      window.toggleRes = function (id, rid, emoji, colorHex, totalExpected, currentChecked) {
         const key = `${id}-${rid}`;
         progressRes[key] = !progressRes[key];
         localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
 
-        if (progressRes[key]) {
+        // Est-ce qu'on vient de tout valider avec ce clic ?
+        // lineChecked au moment du clic correspondait au nombre AVANT l'action.
+        // S'il n'était pas coché avant, et qu'il l'est maintenant, on a +1.
+        let newCount = progressRes[key] ? currentChecked + 1 : currentChecked - 1;
+        const isAllNow = newCount === totalExpected;
+
+        if (isAllNow) {
+            shootFireworks();
+            const toastHtml = `
+              <div class="flex flex-col gap-2 w-[300px]">
+                <div class="text-sm font-black uppercase text-green-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
+                <div class="text-[12px] font-bold text-[#0F2C48] leading-snug">Félicitations ! Tu viens de franchir une étape majeure. La persévérance est la clé de la réussite.</div>
+                <div class="text-[10px] font-black text-right text-[#B4792A] mt-1">- Mathilde Martine PAISLEY 💫</div>
+              </div>
+            `;
+            afficherToastCustom(toastHtml, '#10b981'); // vert succès
+        } else if (progressRes[key]) {
             confetti({ particleCount: 50, spread: 60, origin: { y: 0.9 } });
 
-            // Sélection aléatoire d'une citation motivante
             const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
             const icon = emoji || "🏅";
 
             const toastHtml = `
               <div class="flex flex-col gap-1 w-[280px]">
-                <div class="text-xs font-black uppercase text-[#B4792A] tracking-widest mb-1 flex items-center gap-1">${icon} Ressource validée !</div>
+                <div class="text-xs font-black uppercase tracking-widest mb-1 flex items-center gap-1" style="color: ${colorHex}">${icon} Ressource validée !</div>
                 <div class="text-[11px] font-medium text-[#0F2C48] leading-snug italic">${quote}</div>
                 <div class="text-[9px] font-black text-right text-gray-400 mt-1">- Mathilde Martine PAISLEY 💫</div>
               </div>
             `;
-            afficherToastCustom(toastHtml);
+            afficherToastCustom(toastHtml, colorHex);
         }
         afficherModules(document.getElementById("searchInput").value, false);
       };
@@ -1145,9 +1149,7 @@
         localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
 
         if (!isAll) {
-          // Si on valide tout : GRAND FEU D'ARTIFICE FIESTA !
           shootFireworks();
-
           const toastHtml = `
               <div class="flex flex-col gap-2 w-[300px]">
                 <div class="text-sm font-black uppercase text-green-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
@@ -1155,22 +1157,25 @@
                 <div class="text-[10px] font-black text-right text-[#B4792A] mt-1">- Mathilde Martine PAISLEY 💫</div>
               </div>
           `;
-          afficherToastCustom(toastHtml);
+          afficherToastCustom(toastHtml, '#10b981');
         }
         afficherModules(document.getElementById("searchInput").value, false);
       };
 
-      function afficherToastCustom(htmlContent) {
+      // Modification du toast pour accepter une couleur de bordure personnalisée
+      function afficherToastCustom(htmlContent, borderColorHex) {
         const c = document.getElementById("toastContainer");
         const t = document.createElement("div");
-        t.className = "toast-msg p-5 bg-white/90 backdrop-blur-xl border-l-[5px] border-green-500 shadow-2xl rounded-xl flex items-start gap-3 pointer-events-auto z-[7000]";
+        t.className = `toast-msg p-5 bg-white/95 backdrop-blur-xl shadow-2xl rounded-xl flex items-start gap-3 pointer-events-auto z-[7000] border-l-[6px]`;
+        t.style.borderLeftColor = borderColorHex || '#10b981';
         t.innerHTML = htmlContent;
         c.appendChild(t);
-        setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 6000); // Reste 6 secondes pour lire
+        // Durée augmentée à 9 secondes (9000ms) pour laisser le temps de lire
+        setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 9000);
       }
 
       function afficherToast(m) {
-        afficherToastCustom(`<span class="text-xl">✨</span><span class="text-[#0F2C48] font-bold text-sm mt-1">${m}</span>`);
+        afficherToastCustom(`<span class="text-xl">✨</span><span class="text-[#0F2C48] font-bold text-sm mt-1">${m}</span>`, '#0F2C48');
       }
 
       // ==============================================================
@@ -1205,6 +1210,7 @@
         list.innerHTML = "";
         let vueCount = 0, totalCount = 0, cardIdx = 0;
         const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
+        let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
 
         database.forEach((itemObj) => {
           if (!itemObj.Code) return;
@@ -1218,18 +1224,22 @@
           if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
-          const res = [
-            { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio" },
-            { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf" },
-            { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external" },
-            { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel, type: "embed-doc" },
-            { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie, type: "embed-image" },
-            { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null, type: "embed-presentation" },
-            { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo, type: "embed-video" },
-            { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, type: "embed-glo" },
-            { id: "map", em: "🧠", n: "Carte", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "embed-map" },
-            { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "external" },
+          // Définition des types avec code couleur pour les Toasts
+          const resRaw = [
+            { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio", color: "#667eea" },
+            { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
+            { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" },
+            { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel, type: "embed-doc", color: "#107c41" },
+            { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie, type: "embed-image", color: "#e81123" },
+            { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null, type: "embed-presentation", color: "#d83b01" },
+            { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo, type: "embed-video", color: "#e52d27" },
+            { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, type: "embed-glo", color: "#4a5568" },
+            { id: "map", em: "🧠", n: "Carte", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "embed-map", color: "#ffb900" },
+            { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "external", color: "#b4792a" },
           ];
+
+          // Ne conserver que ceux qui sont réellement présents pour calculer le "total expected" exact du module
+          const res = resRaw.filter(r => r.url && r.url.trim() !== '');
 
           let lineChecked = 0;
           let htmlRes = res.map((r) => {
@@ -1248,14 +1258,15 @@
                 displayEmoji = "🔒"; tooltipText = "Accès Restreint"; btnClass = "bg-locked";
             }
 
+            // On passe res.length et lineChecked pour que le clique sache s'il valide l'ensemble
             return `<div class="relative tooltip-container">
                         <${linkProps.tag} ${linkProps.action} class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText.replace(/'/g, "\\'")}')"><span>${displayEmoji}</span></${linkProps.tag}>
-                        <button onclick="toggleRes('${id}','${r.id}','${displayEmoji}')" class="check-badge ${checkC}"><i class="fas fa-check"></i></button>
+                        <button onclick="toggleRes('${id}','${r.id}','${displayEmoji}','${r.color}', ${res.length}, ${lineChecked})" class="check-badge ${checkC}"><i class="fas fa-check"></i></button>
                         <span class="tooltip">${tooltipText}</span>
                     </div>`;
           }).join("");
 
-          // SÉPARATEUR FUN ET BOUTON SMART RECALL
+          // SÉPARATEUR FUN ET BOUTON SMART RECALL 📅
           htmlRes += `
             <div class="flex items-center justify-center px-1">
                 <div class="w-[2px] h-8 bg-gray-300 border-l-[3px] border-dotted border-gray-400/50 rounded-full opacity-60 relative group cursor-help transition-all hover:border-blue-400">
@@ -1265,14 +1276,61 @@
 
             <div class="relative tooltip-container">
                 <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource bg-gradient-to-br from-[#4285F4] to-[#8A2BE2] text-white border-b-[#303F9F] shadow-[0_5px_15px_rgba(66,133,244,0.3)]">
-                    <span>🚀</span>
+                    <span>📅</span>
                 </button>
-                <span class="tooltip text-nowrap">Planifier Répétition</span>
+                <span class="tooltip text-nowrap">Planifier Révisions</span>
             </div>
           `;
 
-          const isFull = lineChecked === res.length;
+          const isFull = res.length > 0 && lineChecked === res.length;
           const linePercent = res.length > 0 ? Math.round((lineChecked / res.length) * 100) : 0;
+
+          // --- CONSTRUCTION DE LA TIMELINE DE REVISION (In-App Tracker) ---
+          const moduleRevs = savedRevisions.filter(r => r.moduleId === id);
+          let timelineHtml = '';
+          if (moduleRevs.length > 0) {
+              timelineHtml += `<div class="mt-5 p-4 rounded-xl bg-blue-50/50 border border-blue-100/50 w-full animate-slideIn">`;
+              timelineHtml += `<div class="flex items-center justify-between mb-3">
+                                  <span class="text-[10px] font-black text-[#0F2C48] uppercase tracking-widest flex items-center gap-2"><i class="fas fa-brain text-[#B4792A]"></i> Planning de répétition espacée</span>
+                                  <button onclick="downloadICSForModule('${id}', '${titre.replace(/'/g, "\\'")}')" class="text-[9px] font-bold text-blue-600 bg-white px-2 py-1 rounded shadow-sm border border-blue-100 hover:bg-blue-600 hover:text-white transition-all"><i class="fas fa-download"></i> Tout exporter (.ics)</button>
+                               </div>`;
+              timelineHtml += `<div class="flex flex-col gap-2">`;
+
+              moduleRevs.forEach(rev => {
+                  const revDateObj = new Date(rev.datetime);
+                  const isPast = new Date() > revDateObj && !rev.done;
+                  const dateStrLocal = formatLocalCalDate(revDateObj);
+                  const endDateTimeObj = new Date(revDateObj.getTime() + 60*60*1000);
+                  const endStrLocal = formatLocalCalDate(endDateTimeObj);
+
+                  const safeT = titre.replace(/'/g, "\\'");
+                  const desc = encodeURIComponent(`Rappel d'apprentissage espacé (${rev.label}).\n\nModule : ${id} - ${titre}\nObjectif : Consolider la mémoire à long terme !`);
+                  const eventTitle = encodeURIComponent(`Révision ${rev.num}/6 : ${id} - ${titre}`);
+
+                  // Liens Web Agendas
+                  const gCalLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=${dateStrLocal}/${endStrLocal}&details=${desc}`;
+                  const outlookLink = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${eventTitle}&body=${desc}&startdt=${dateStrLocal}&enddt=${endStrLocal}`;
+
+                  timelineHtml += `
+                    <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border ${rev.done ? 'border-green-200 bg-green-50/30 opacity-70' : (isPast ? 'border-red-200' : 'border-gray-200')} shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <button onclick="markRevisionDone('${rev.id}')" class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${rev.done ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 text-transparent hover:border-green-400 hover:text-green-200'}">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </button>
+                            <div class="flex flex-col">
+                                <span class="text-[9px] font-black uppercase tracking-widest ${rev.done ? 'text-green-600' : 'text-[#B4792A]'}">Rév. ${rev.num} (${rev.label})</span>
+                                <span class="text-xs font-bold text-[#0F2C48] capitalize">${revDateObj.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })} à ${String(revDateObj.getHours()).padStart(2,'0')}h${String(revDateObj.getMinutes()).padStart(2,'0')}</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-1.5 ${rev.done ? 'hidden' : ''}">
+                            <a href="${gCalLink}" target="_blank" title="Ajouter à Google Agenda" class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-sm"><i class="fab fa-google text-[10px]"></i></a>
+                            <a href="${outlookLink}" target="_blank" title="Ajouter à Outlook" class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center text-blue-700 hover:bg-blue-700 hover:text-white transition-all shadow-sm"><i class="fab fa-windows text-[10px]"></i></a>
+                        </div>
+                    </div>
+                  `;
+              });
+              timelineHtml += `</div></div>`;
+          }
 
           const card = document.createElement("div");
           card.className = `card-module p-6 rounded-2xl mb-3 ${isFull ? "border-green-400/50 bg-green-50/80" : ""} ${anim ? "card-animate" : ""}`;
@@ -1296,6 +1354,9 @@
                 <div class="flex flex-wrap items-center gap-3">
                     ${htmlRes}
                 </div>
+
+                <!-- ZONE PLANNING (Répétition Espacée IN-APP) -->
+                ${timelineHtml}
 
                 <!-- BOTTOM : L'Îlot de Validation (Boîte Blanche Super Visible) -->
                 <div class="mt-6 p-4 rounded-2xl bg-white border border-[#0F2C48]/10 shadow-[0_5px_20px_rgba(15,44,72,0.08)] flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
