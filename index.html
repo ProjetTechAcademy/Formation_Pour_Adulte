@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V7</title>
+    <title>Formation Pour Adulte - V8</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -583,7 +583,7 @@
       // FONCTION POUR BASCULER ENTRE LES VUES (COMBO MULTI-VISUELS)
       // ==============================================================
       window.switchComboVisual = function(moduleId, visualId) {
-          const visuals = ['slide', 'infog', 'excel', 'map', 'glo'];
+          const visuals = ['slide', 'infog', 'excel', 'map', 'glo', 'pdf'];
           visuals.forEach(v => {
               const btn = document.getElementById(`btn-${v}-${moduleId}`);
               const panel = document.getElementById(`combo-${v}-${moduleId}`);
@@ -625,9 +625,10 @@
           });
 
           let contentHtml = '';
+          const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
 
           // On vérifie si c'est un type qui mérite le Mode "Espace Interactif"
-          const comboEligibleTypes = ['embed-audio', 'embed-presentation', 'embed-image', 'embed-doc', 'embed-glo', 'embed-map'];
+          const comboEligibleTypes = ['embed-audio', 'embed-presentation', 'embed-image', 'embed-doc', 'embed-glo', 'embed-map', 'embed-pdf'];
 
           if (comboEligibleTypes.includes(type)) {
 
@@ -643,12 +644,14 @@
                   let audioUrl = itemObj.Audio;
                   let infogUrl = itemObj.Infographie;
                   let excelUrl = itemObj.Excel;
+                  let pdfUrl = itemObj.Cours;
                   let slideUrl = itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null;
 
                   let hasAudio = audioUrl && audioUrl.trim() !== '';
                   let hasInfog = infogUrl && infogUrl.trim() !== '';
                   let hasSlide = slideUrl && slideUrl.trim() !== '';
                   let hasExcel = excelUrl && excelUrl.trim() !== '';
+                  let hasPdf = pdfUrl && pdfUrl.trim() !== '';
 
                   // On construit la liste des visuels disponibles pour ce module
                   let visuals = [];
@@ -660,6 +663,11 @@
                   visuals.push({ id: 'map', url: mapUrl, type: 'embed-map', icon: '🧠', label: 'Carte Mentale' });
                   visuals.push({ id: 'glo', url: gloUrl, type: 'embed-glo', icon: '📚', label: 'Lexique' });
 
+                  // Si on a le PDF ET qu'il est déverrouillé (ou vient d'être déverrouillé), on l'ajoute au combo !
+                  if (hasPdf && (isUnlocked || type === 'embed-pdf')) {
+                      visuals.push({ id: 'pdf', url: pdfUrl, type: 'embed-pdf', icon: '📄', label: 'Document PDF' });
+                  }
+
                   // On détermine quel visuel afficher par défaut selon le bouton cliqué
                   let activeVisualId = null;
                   if (type === 'embed-presentation') activeVisualId = 'slide';
@@ -667,6 +675,7 @@
                   else if (type === 'embed-doc') activeVisualId = 'excel';
                   else if (type === 'embed-glo') activeVisualId = 'glo';
                   else if (type === 'embed-map') activeVisualId = 'map';
+                  else if (type === 'embed-pdf') activeVisualId = 'pdf';
                   else if (type === 'embed-audio' && visuals.length > 0) activeVisualId = visuals[0].id; // Si on a cliqué sur audio, on affiche le premier visuel dispo
 
                   let comboHtml = '';
@@ -716,10 +725,10 @@
                   contentHtml = comboHtml;
               }
           } else if (type.startsWith("embed-")) {
-              // Pour les autres médias (Vidéo, PDF...)
+              // Pour les autres médias (Vidéo...)
               contentHtml = buildMiniPlayer(url, url, type, titre);
           } else {
-              // Sécurité (Types externes, bien que Lexique et Carte ne le soient plus)
+              // Sécurité (Types externes)
               contentHtml = `
                   <div class="mt-4 bg-white/60 backdrop-blur-xl rounded-2xl p-4 border shadow animate-slideIn text-center w-full">
                       <p class="text-sm font-bold text-gray-600 mb-3">
