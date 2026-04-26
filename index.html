@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V5</title>
+    <title>Formation Pour Adulte - V6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -568,7 +568,29 @@
 
 
       // ==============================================================
-      // PREVIEW INLINE UNIVERSEL (MODE COMBO AVEC SWITCHER ÉLÉGANT)
+      // FONCTION POUR BASCULER ENTRE LES VUES (COMBO MULTI-VISUELS)
+      // ==============================================================
+      window.switchComboVisual = function(moduleId, visualId) {
+          const visuals = ['slide', 'infog', 'excel'];
+          visuals.forEach(v => {
+              const btn = document.getElementById(`btn-${v}-${moduleId}`);
+              const panel = document.getElementById(`combo-${v}-${moduleId}`);
+              if(btn && panel) {
+                  if (v === visualId) {
+                      btn.classList.add('bg-white', 'shadow-sm', 'text-[#0F2C48]');
+                      btn.classList.remove('text-gray-500', 'hover:bg-white/50');
+                      panel.classList.remove('hidden');
+                  } else {
+                      btn.classList.add('text-gray-500', 'hover:bg-white/50');
+                      btn.classList.remove('bg-white', 'shadow-sm', 'text-[#0F2C48]');
+                      panel.classList.add('hidden');
+                  }
+              }
+          });
+      };
+
+      // ==============================================================
+      // PREVIEW INLINE UNIVERSEL (ESPACE INTERACTIF UNIFIÉ)
       // ==============================================================
       window.toggleInlineContent = function(id, url, type, titre) {
           const container = document.getElementById(`inline-media-${id}`);
@@ -592,58 +614,85 @@
 
           let contentHtml = '';
 
-          // Si c'est un contenu encastrable
-          if (type.startsWith("embed-")) {
+          // On vérifie si c'est un type qui mérite le Mode "Espace Interactif" (Audio, Excel, Infog, Slide)
+          const comboEligibleTypes = ['embed-audio', 'embed-presentation', 'embed-image', 'embed-doc'];
 
-              // === MODE COMBO AUDIO + VISUEL (AVEC SWITCH) ===
-              if (type === 'embed-audio') {
-                  // 1. On affiche le lecteur audio (ultra fin)
-                  contentHtml += buildMiniPlayer(url, url, type, titre);
+          if (comboEligibleTypes.includes(type)) {
 
-                  // 2. On cherche dans la base de données
-                  const itemObj = database.find(d => d.Code === id);
-                  if (itemObj) {
-                      let infogUrl = itemObj.Infographie;
-                      let slideUrl = itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null;
+              const itemObj = database.find(d => d.Code === id);
+              if (itemObj) {
+                  let audioUrl = itemObj.Audio;
+                  let infogUrl = itemObj.Infographie;
+                  let excelUrl = itemObj.Excel;
+                  let slideUrl = itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null;
 
-                      let hasInfog = infogUrl && infogUrl.trim() !== '';
-                      let hasSlide = slideUrl && slideUrl.trim() !== '';
+                  let hasAudio = audioUrl && audioUrl.trim() !== '';
+                  let hasInfog = infogUrl && infogUrl.trim() !== '';
+                  let hasSlide = slideUrl && slideUrl.trim() !== '';
+                  let hasExcel = excelUrl && excelUrl.trim() !== '';
 
-                      if (hasInfog || hasSlide) {
-                          contentHtml += `
-                          <div class="flex flex-col items-center justify-center mt-6 mb-[-5px] animate-slideIn w-full">
-                              <div class="flex items-center gap-2 text-[#B4792A] text-[10px] font-black uppercase tracking-widest opacity-90 mb-3">
-                                 <i class="fas fa-link"></i> Support visuel synchronisé
-                              </div>`;
+                  // On construit la liste des visuels disponibles pour ce module
+                  let visuals = [];
+                  if (hasSlide) visuals.push({ id: 'slide', url: slideUrl, type: 'embed-presentation', icon: '📽️', label: 'Diaporama' });
+                  if (hasInfog) visuals.push({ id: 'infog', url: infogUrl, type: 'embed-image', icon: '🖼️', label: 'Infographie' });
+                  if (hasExcel) visuals.push({ id: 'excel', url: excelUrl, type: 'embed-doc', icon: '📊', label: 'Tableur Excel' });
 
-                          if (hasInfog && hasSlide) {
-                              // Les deux sont dispos : on crée un sélecteur stylé (Slide par défaut)
-                              contentHtml += `
-                              <div class="flex bg-white/50 backdrop-blur-md p-1 rounded-xl shadow-sm border border-white/50 mb-2">
-                                  <button onclick="document.getElementById('combo-slide-${id}').classList.remove('hidden'); document.getElementById('combo-infog-${id}').classList.add('hidden'); this.classList.add('bg-white', 'shadow-sm', 'text-[#0F2C48]'); this.classList.remove('text-gray-500', 'hover:bg-white/50'); document.getElementById('btn-infog-${id}').classList.remove('bg-white', 'shadow-sm', 'text-[#0F2C48]'); document.getElementById('btn-infog-${id}').classList.add('text-gray-500', 'hover:bg-white/50');" id="btn-slide-${id}" class="px-4 py-1.5 rounded-lg text-[10px] font-black transition-all bg-white shadow-sm text-[#0F2C48]">📽️ Diaporama</button>
+                  // On détermine quel visuel afficher par défaut selon le bouton cliqué
+                  let activeVisualId = null;
+                  if (type === 'embed-presentation') activeVisualId = 'slide';
+                  else if (type === 'embed-image') activeVisualId = 'infog';
+                  else if (type === 'embed-doc') activeVisualId = 'excel';
+                  else if (type === 'embed-audio' && visuals.length > 0) activeVisualId = visuals[0].id; // Si on a cliqué sur audio, on affiche le premier visuel dispo
 
-                                  <button onclick="document.getElementById('combo-infog-${id}').classList.remove('hidden'); document.getElementById('combo-slide-${id}').classList.add('hidden'); this.classList.add('bg-white', 'shadow-sm', 'text-[#0F2C48]'); this.classList.remove('text-gray-500', 'hover:bg-white/50'); document.getElementById('btn-slide-${id}').classList.remove('bg-white', 'shadow-sm', 'text-[#0F2C48]'); document.getElementById('btn-slide-${id}').classList.add('text-gray-500', 'hover:bg-white/50');" id="btn-infog-${id}" class="px-4 py-1.5 rounded-lg text-[10px] font-black transition-all text-gray-500 hover:bg-white/50">🖼️ Infographie</button>
-                              </div>
-                              </div> <!-- fin du header visuel -->
+                  let comboHtml = '';
 
-                              <div id="combo-slide-${id}" class="w-full animate-slideIn">
-                                  ${buildMiniPlayer(slideUrl, slideUrl, 'embed-presentation', titre)}
-                              </div>
-                              <div id="combo-infog-${id}" class="w-full hidden animate-slideIn">
-                                  ${buildMiniPlayer(infogUrl, infogUrl, 'embed-image', titre)}
-                              </div>
-                              `;
-                          } else if (hasSlide) {
-                              contentHtml += `</div>` + buildMiniPlayer(slideUrl, slideUrl, 'embed-presentation', titre);
-                          } else if (hasInfog) {
-                              contentHtml += `</div>` + buildMiniPlayer(infogUrl, infogUrl, 'embed-image', titre);
-                          }
-                      }
+                  // 1. On affiche l'Audio (s'il existe) tout en haut de l'espace de travail
+                  if (hasAudio) {
+                      comboHtml += buildMiniPlayer(audioUrl, audioUrl, 'embed-audio', titre);
                   }
-              } else {
-                  // Classique : On affiche juste le lecteur normal
-                  contentHtml = buildMiniPlayer(url, url, type, titre);
+
+                  // 2. On gère l'affichage des supports visuels (Slide, Infog, Excel)
+                  if (visuals.length > 0) {
+                      comboHtml += `
+                      <div class="flex flex-col items-center justify-center mt-6 mb-[-5px] animate-slideIn w-full">
+                          <div class="flex items-center gap-2 text-[#B4792A] text-[10px] font-black uppercase tracking-widest opacity-90 mb-3">
+                             <i class="fas fa-layer-group"></i> Espace de travail interactif
+                          </div>`;
+
+                      // S'il y a PLUSIEURS supports visuels, on génère le joli menu de sélection
+                      if (visuals.length > 1) {
+                          comboHtml += `<div class="flex flex-wrap justify-center gap-2 bg-white/50 backdrop-blur-md p-1.5 rounded-xl shadow-sm border border-white/50 mb-4">`;
+                          visuals.forEach(v => {
+                              const isActive = v.id === activeVisualId;
+                              comboHtml += `
+                              <button onclick="switchComboVisual('${id}', '${v.id}')"
+                                      id="btn-${v.id}-${id}"
+                                      class="px-4 py-2 rounded-lg text-[10px] font-black transition-all ${isActive ? 'bg-white shadow-sm text-[#0F2C48]' : 'text-gray-500 hover:bg-white/50'}">
+                                  ${v.icon} ${v.label}
+                              </button>`;
+                          });
+                          comboHtml += `</div>`;
+                      }
+                      comboHtml += `</div>`;
+
+                      // On génère tous les lecteurs visuels (en cachant ceux qui ne sont pas sélectionnés)
+                      visuals.forEach(v => {
+                          const isHidden = v.id === activeVisualId ? '' : 'hidden';
+                          comboHtml += `
+                          <div id="combo-${v.id}-${id}" class="w-full ${isHidden} animate-slideIn">
+                              ${buildMiniPlayer(v.url, v.url, v.type, titre)}
+                          </div>`;
+                      });
+                  } else if (!hasAudio) {
+                     // Sécurité : S'il n'y a ni audio ni visuels combo (cas quasi impossible)
+                     comboHtml += buildMiniPlayer(url, url, type, titre);
+                  }
+
+                  contentHtml = comboHtml;
               }
+          } else if (type.startsWith("embed-")) {
+              // Pour les autres médias (Vidéo, PDF...)
+              contentHtml = buildMiniPlayer(url, url, type, titre);
           } else {
               // Sécurité (Types externes)
               contentHtml = `
@@ -802,7 +851,7 @@
               return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
           }
 
-          // Tout le reste des embeds (Vidéo, Infographie, Slides, Audio, PDF Déverrouillé)
+          // Tout le reste des embeds (Vidéo, Infographie, Slides, Audio, PDF Déverrouillé, Excel)
           return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"` };
       }
 
