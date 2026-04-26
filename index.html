@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V23 (Secured Edition)</title>
+    <title>Mon Parcours FPA - V24 (Secured Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -250,8 +250,8 @@
         <div class="flex items-center gap-4 cursor-pointer hover:opacity-80 transition-opacity" onclick="location.reload()">
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo Paia Hub" class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover shadow-md" />
           <div>
-            <h1 class="text-xl font-black uppercase text-[#0F2C48] drop-shadow-sm">Formation Pour Adulte</h1>
-            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base FPA • V23 (Secured Edition)</p>
+            <h1 class="text-xl font-black uppercase text-[#0F2C48] drop-shadow-sm">Mon Parcours FPA</h1>
+            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Suivi programme FPA • V24 (Secured Edition)</p>
           </div>
         </div>
 
@@ -313,7 +313,8 @@
     <footer class="py-12 flex flex-col items-center gap-5 bg-[#0F2C48]/5 backdrop-blur-md border-t border-white/40 mt-auto relative z-10">
       <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo Mathilde Martine PAISLEY" class="w-16 h-16 rounded-full border-4 border-white shadow-lg object-cover" />
       <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest text-center text-[#0F2C48] leading-relaxed">
-        💫 PAIA ✨ Platform Automation & Intelligent Architecture<br />By Mathilde Martine PAISLEY - © 2026
+        💫 PAIA ✨ Platform Automation & Intelligent Architecture<br />By Mathilde Martine PAISLEY - © 2026<br/>
+        <span class="text-gray-400 text-[8px]">Plateforme indépendante de révision et d'entraide créée par une apprenante. Non affiliée à l'organisme de formation officiel.</span>
       </p>
 
       <div class="flex gap-4 mt-2 bg-white/50 px-6 py-2 rounded-full shadow-inner border border-white">
@@ -483,7 +484,7 @@
                               <span class="text-sm font-bold text-[#0F2C48] leading-tight">${rev.moduleId}</span>
                               <span class="text-xs text-gray-500 truncate max-w-[200px]">${rev.titre}</span>
                           </div>
-                          <button onclick="markRevisionDone('${rev.id}', true)" class="shrink-0 bg-white border-2 border-gray-200 text-gray-400 hover:text-green-500 hover:border-green-400 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm hover:shadow-md">
+                          <button onclick="markRevisionDone('${rev.id}', true)" class="shrink-0 bg-white border-2 border-gray-200 text-gray-400 hover:text-blue-500 hover:border-blue-400 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm hover:shadow-md">
                               <i class="fas fa-check"></i>
                           </button>
                       </div>
@@ -1049,6 +1050,7 @@
               <div class="flex flex-col gap-2 w-[300px]">
                 <div class="text-sm font-black uppercase text-blue-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
                 <div class="text-[12px] font-bold text-[#0F2C48] leading-snug">Félicitations ! Tu viens de franchir une étape majeure. La persévérance est la clé de la réussite.</div>
+                <div class="text-[10px] font-black text-right text-[#B4792A] mt-1">- Ton Assistant Pédagogique 🤖</div>
               </div>
             `;
             afficherToastCustom(toastHtml, '#3b82f6');
