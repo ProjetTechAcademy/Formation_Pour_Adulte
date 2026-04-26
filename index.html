@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V8</title>
+    <title>Formation Pour Adulte - V9</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -602,7 +602,7 @@
       };
 
       // ==============================================================
-      // PREVIEW INLINE UNIVERSEL (ESPACE INTERACTIF UNIFIÉ)
+      // PREVIEW INLINE UNIVERSEL (ESPACE INTERACTIF UNIFIÉ ET PLIABLE)
       // ==============================================================
       window.toggleInlineContent = function(id, url, type, titre) {
           const container = document.getElementById(`inline-media-${id}`);
@@ -685,13 +685,21 @@
                       comboHtml += buildMiniPlayer(audioUrl, audioUrl, 'embed-audio', titre);
                   }
 
-                  // 2. On gère l'affichage des supports visuels
+                  // 2. On gère l'affichage des supports visuels (avec bouton ACCORDÉON)
                   if (visuals.length > 0) {
                       comboHtml += `
                       <div class="flex flex-col items-center justify-center mt-6 mb-[-5px] animate-slideIn w-full">
-                          <div class="flex items-center gap-2 text-[#B4792A] text-[10px] font-black uppercase tracking-widest opacity-90 mb-3">
-                             <i class="fas fa-layer-group"></i> Espace de travail interactif
-                          </div>`;
+
+                          <!-- BOUTON ACCORDÉON POUR PLIER/DÉPLIER LE VISUEL -->
+                          <button onclick="document.getElementById('workspace-body-${id}').classList.toggle('hidden'); document.getElementById('icon-toggle-${id}').classList.toggle('fa-chevron-up'); document.getElementById('icon-toggle-${id}').classList.toggle('fa-chevron-down');"
+                                  class="flex items-center justify-center gap-2 text-[#B4792A] text-[10px] font-black uppercase tracking-widest opacity-90 mb-3 bg-white/60 hover:bg-white/90 px-5 py-2 rounded-full shadow-sm border border-white/50 transition-all cursor-pointer">
+                             <i class="fas fa-layer-group"></i>
+                             <span>Espace de travail interactif</span>
+                             <i id="icon-toggle-${id}" class="fas fa-chevron-up ml-2"></i>
+                          </button>
+
+                          <!-- CONTENEUR PLIABLE DU VISUEL -->
+                          <div id="workspace-body-${id}" class="w-full flex flex-col items-center">`;
 
                       // S'il y a PLUSIEURS supports visuels, on génère le joli menu de sélection
                       if (visuals.length > 1) {
@@ -707,7 +715,6 @@
                           });
                           comboHtml += `</div>`;
                       }
-                      comboHtml += `</div>`;
 
                       // On génère tous les lecteurs visuels (en cachant ceux qui ne sont pas sélectionnés)
                       visuals.forEach(v => {
@@ -717,6 +724,8 @@
                               ${buildMiniPlayer(v.url, v.url, v.type, titre)}
                           </div>`;
                       });
+
+                      comboHtml += `</div></div>`; // Fin du conteneur pliable
                   } else if (!hasAudio) {
                      // Sécurité : S'il n'y a ni audio ni visuels combo (cas quasi impossible)
                      comboHtml += buildMiniPlayer(url, url, type, titre);
