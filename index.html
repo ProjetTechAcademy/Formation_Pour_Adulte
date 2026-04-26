@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V19 (Smart Learning & Tracking)</title>
+    <title>Formation Pour Adulte - V20 (Smart Learning & Tracking)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -263,7 +263,7 @@
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo Paia Hub" class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover shadow-md" />
           <div>
             <h1 class="text-xl font-black uppercase text-[#0F2C48] drop-shadow-sm">Formation Pour Adulte</h1>
-            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base FPA • V19 (Smart Tracking)</p>
+            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base FPA • V20 (Smart Tracking)</p>
           </div>
         </div>
 
@@ -274,7 +274,6 @@
 
         <div class="flex items-center gap-3">
           <div class="flex justify-center items-center gap-3 hidden md:flex">
-            <!-- BOUTON CONTACT 👋 -->
             <a href="Card.html" target="_blank" class="btn-nav-app btn-contact group">
               <span class="text-[1.6rem]">👋</span>
               <span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Contact</span>
@@ -443,7 +442,6 @@
       let database = [];
       const SECRET_PIN = "2026";
 
-      // Citations de motivation (sans signature automatique de Mathilde)
       const motivationalQuotes = [
           "« Le succès n'est pas final, l'échec n'est pas fatal : c'est le courage de continuer qui compte. » – Winston Churchill 👑",
           "« La folie, c’est de faire toujours la même chose et de s’attendre à un résultat différent. » – Albert Einstein 💡",
@@ -502,9 +500,6 @@
           });
       };
 
-      // ==============================================================
-      // GESTION DES RAPPELS (POPUP DU JOUR)
-      // ==============================================================
       function checkDailyRevisions() {
           let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
           const todayDate = new Date();
@@ -553,7 +548,6 @@
           });
           localStorage.setItem('paia_revisions', JSON.stringify(savedRevisions));
 
-          // Mettre à jour l'UI sans confettis !
           if(fromPopup) {
               const el = document.getElementById(`rev-item-${id}`);
               if(el) {
@@ -561,7 +555,6 @@
                   setTimeout(() => { el.remove(); }, 300);
               }
           }
-          // Rafraîchir l'affichage pour mettre à jour la timeline interne de la carte
           afficherModules(document.getElementById("searchInput").value, false);
       };
 
@@ -570,7 +563,6 @@
           document.getElementById('dailyRevisionsContent').classList.add('scale-95');
           setTimeout(() => { document.getElementById('dailyRevisionsModal').style.display = 'none'; }, 200);
       };
-
 
       function updateLockBtnUI() {
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
@@ -1111,7 +1103,6 @@
               <div class="flex flex-col gap-2 w-[300px]">
                 <div class="text-sm font-black uppercase text-green-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
                 <div class="text-[12px] font-bold text-[#0F2C48] leading-snug">Félicitations ! Tu viens de franchir une étape majeure. La persévérance est la clé de la réussite.</div>
-                <div class="text-[10px] font-black text-right text-[#B4792A] mt-1">- Ton Assistant Pédagogique 🤖</div>
               </div>
             `;
             afficherToastCustom(toastHtml, '#10b981');
@@ -1301,7 +1292,7 @@
               </div>
 
               <div id="timeline-list-${id}" class="flex flex-col gap-2 hidden p-3 pt-0 border-t border-[#0F2C48]/5 mt-2">
-                  <p class="text-[9px] text-gray-500 italic mb-2 text-center opacity-80">Exportez le fichier .ics pour ajouter toutes les dates d'un coup, ou utilisez les boutons Google/Outlook ci-dessous.</p>
+                  <p class="text-[9px] text-gray-500 italic mb-2 text-center opacity-80">Exportez le fichier .ics pour ajouter toutes les dates d'un coup, ou utilisez les boutons ci-dessous.</p>
               `;
 
               moduleRevs.forEach(rev => {
@@ -1318,8 +1309,12 @@
                   const gCalLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=${dateStrLocal}/${endStrLocal}&details=${desc}`;
                   const outlookLink = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${eventTitle}&body=${desc}&startdt=${dateStrLocal}&enddt=${endStrLocal}`;
 
+                  // ICS generation for Apple specific button
+                  const appleIcs = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${dateStrLocal}\nDTEND:${endStrLocal}\nSUMMARY:Révision ${rev.num}/6 : ${id} - ${safeT}\nDESCRIPTION:Rappel d'apprentissage espacé (${rev.label}).\\n\\nModule : ${id} - ${safeT}\\nObjectif : Consolider la mémoire à long terme !\nEND:VEVENT\nEND:VCALENDAR`;
+                  const appleLink = `data:text/calendar;charset=utf8,${encodeURIComponent(appleIcs)}`;
+
                   timelineHtml += `
-                    <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border ${rev.done ? 'border-green-200 bg-green-50/30 opacity-70' : (isPast ? 'border-red-200' : 'border-gray-200')} shadow-sm">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between bg-white px-3 py-2 rounded-lg border ${rev.done ? 'border-green-200 bg-green-50/30 opacity-70' : (isPast ? 'border-red-200' : 'border-gray-200')} shadow-sm gap-2">
                         <div class="flex items-center gap-3">
                             <button onclick="markRevisionDone('${rev.id}')" title="Pointer comme fait" class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${rev.done ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 text-transparent hover:border-green-400 hover:text-green-500'}">
                                 <i class="fas fa-check text-[10px]"></i>
@@ -1329,9 +1324,10 @@
                                 <span class="text-xs font-bold text-[#0F2C48] capitalize">${revDateObj.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })} à ${String(revDateObj.getHours()).padStart(2,'0')}h${String(revDateObj.getMinutes()).padStart(2,'0')}</span>
                             </div>
                         </div>
-                        <div class="flex flex-wrap gap-1 ${rev.done ? 'hidden' : ''} justify-end">
+                        <div class="flex flex-wrap gap-1 ${rev.done ? 'hidden' : ''} justify-start md:justify-end mt-2 md:mt-0">
                             <a href="${gCalLink}" target="_blank" title="Ajouter uniquement à Google" class="px-2 py-1 rounded bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm text-[9px] font-bold gap-1"><i class="fab fa-google"></i> <span class="hidden md:inline">Google</span></a>
                             <a href="${outlookLink}" target="_blank" title="Ajouter uniquement à Outlook" class="px-2 py-1 rounded bg-cyan-50 border border-cyan-100 flex items-center justify-center text-cyan-700 hover:bg-cyan-700 hover:text-white transition-all shadow-sm text-[9px] font-bold gap-1"><i class="fab fa-windows"></i> <span class="hidden md:inline">Outlook</span></a>
+                            <a href="${appleLink}" download="Apple_Rev${rev.num}_${id}.ics" title="Ajouter à Apple" class="px-2 py-1 rounded bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-800 hover:text-white transition-all shadow-sm text-[9px] font-bold gap-1"><i class="fab fa-apple"></i> <span class="hidden md:inline">Apple</span></a>
                         </div>
                     </div>
                   `;
