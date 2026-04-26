@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V21 (Timeline Interactive)</title>
+    <title>Formation Pour Adulte - V22 (Blue Edition & Timeline)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -16,6 +16,8 @@
         --surface-ivory: #f6f2e8;
         --title-blue: #0f2c48;
         --cta-yellow: #ffb900;
+        --success-blue-light: #3b82f6; /* Bleu Azur remplace le vert clair */
+        --success-blue-dark: #1e3a8a;  /* Bleu Nuit remplace le vert foncé */
       }
 
       body {
@@ -106,7 +108,7 @@
         color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(70, 78, 184, 0.3);
       }
 
-      /* --- Bouton Valider Solaire 3D --- */
+      /* --- Bouton Valider Solaire 3D (Remplacé par du BLEU pour le Succès) --- */
       .btn-valider-3d {
         background: linear-gradient(135deg, #ffeb3b 0%, #ffb900 50%, #ff8c00 100%);
         color: #0f2c48 !important; border: none; border-bottom: 4px solid #b4792a !important;
@@ -117,11 +119,11 @@
       .btn-valider-3d:active { transform: translateY(2px); border-bottom-width: 1px !important; }
 
       .btn-success-line {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; color: white !important;
-        border-bottom: 4px solid #064e3b !important; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        background: linear-gradient(135deg, var(--success-blue-dark) 0%, var(--success-blue-light) 100%) !important; color: white !important;
+        border-bottom: 4px solid #172554 !important; text-shadow: 0 1px 2px rgba(0,0,0,0.3);
       }
 
-      /* --- Menu Vertical Flottant --- */
+      /* --- Menu Vertical Flottant (Glassmorphism) --- */
       @keyframes floatUpDown { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
       .floating-side-menu {
         position: fixed; right: 10px; bottom: 30px; display: flex; flex-direction: column; align-items: center;
@@ -136,7 +138,7 @@
       }
       .btn-fab:hover { transform: scale(1.15) translateX(-3px); box-shadow: 0 5px 12px rgba(0,0,0,0.15); }
 
-      /* --- Ressources & Cartes --- */
+      /* --- Ressources & Cartes (Design 3D App Icon) --- */
       .btn-resource {
         width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
         font-size: 1.5rem; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
@@ -158,6 +160,7 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
+      /* Gradients 3D Premium pour les Ressources */
       .bg-audio { background: linear-gradient(135deg, #667eea 0%, #5a68d8 100%); color: white; }
       .bg-pdf { background: linear-gradient(135deg, #0f2c48 0%, #174069 100%); color: #d9a526; }
       .bg-lien { background: linear-gradient(135deg, #0078d4 0%, #0060a8 100%); color: white; }
@@ -171,6 +174,7 @@
       .bg-locked { background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important; color: #94a3b8 !important; border-color: #94a3b8 !important; box-shadow: none !important;}
       .bg-calendar { background: linear-gradient(135deg, #4285F4 0%, #8A2BE2 100%); color: white; }
 
+      /* Cartes avec effet 3D doux */
       .card-module {
         background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(16px);
         border: 1px solid rgba(255,255,255,0.8);
@@ -182,8 +186,9 @@
         background: rgba(255, 255, 255, 0.85);
       }
 
+      /* Barre de progression vivante (PASSÉE EN BLEU) */
       .progress-shine {
-        background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #10b981 100%);
+        background: linear-gradient(90deg, var(--success-blue-dark) 0%, var(--success-blue-light) 50%, var(--success-blue-dark) 100%);
         background-size: 200% auto;
         animation: shine 2s linear infinite;
       }
@@ -206,21 +211,37 @@
       .card-animate { animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
       @keyframes slideIn { from { transform: translateY(20px) scale(0.98); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
 
-      @keyframes glassShine { 100% { transform: translateX(100%); } }
-      .group-hover\:animate-glassShine:hover { animation: glassShine 0.6s forwards; }
-
-      .accordion-content {
-        display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      /* --- Animation Brillante pour Bouton Beau Gosse --- */
+      @keyframes glassShine {
+        100% { transform: translateX(100%); }
       }
-      .accordion-content.open { grid-template-rows: 1fr; }
-      .accordion-inner { overflow: hidden; width: 100%; }
+      .group-hover\:animate-glassShine:hover {
+        animation: glassShine 0.6s forwards;
+      }
 
+      /* --- CSS 2026 : Transition Fluide Accordéon (Grid Trick) --- */
+      .accordion-content {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .accordion-content.open {
+        grid-template-rows: 1fr;
+      }
+      .accordion-inner {
+        overflow: hidden;
+        width: 100%;
+      }
+
+      /* --- CSS 2026 : Skeleton Loader (Shimmer) --- */
       .skeleton-loader {
         background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%);
-        background-size: 200% 100%; animation: shimmer 1.5s infinite linear;
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite linear;
       }
       @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
+      /* Animation des Confettis Toast */
       .toast-msg { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
       /* Custom scrollbar class for horizontal timeline */
@@ -248,7 +269,7 @@
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo Paia Hub" class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover shadow-md" />
           <div>
             <h1 class="text-xl font-black uppercase text-[#0F2C48] drop-shadow-sm">Formation Pour Adulte</h1>
-            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base FPA • V21 (Timeline Interactive)</p>
+            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base FPA • V22 (Blue Edition)</p>
           </div>
         </div>
 
@@ -290,13 +311,14 @@
         <button class="tab-btn" id="tab-B4" onclick="filtrerBloc('B4')">B4: Qualité & RSE</button>
       </div>
 
+      <!-- Barre de progression revisitée -->
       <div class="bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-lg border border-white mb-8 flex flex-col md:flex-row items-center gap-6">
         <div class="flex flex-col text-center md:text-left shrink-0">
           <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Progression Globale</span>
           <div class="text-4xl font-black bg-gradient-to-r from-[#D9A526] to-[#ff8c00] text-transparent bg-clip-text" id="progressText">0%</div>
         </div>
         <div class="flex-grow w-full bg-gray-200/50 h-5 rounded-full overflow-hidden relative shadow-inner">
-          <div id="progressBar" class="h-full absolute left-0 progress-shine rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]" style="width: 0%; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1)"></div>
+          <div id="progressBar" class="h-full absolute left-0 progress-shine rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" style="width: 0%; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1)"></div>
         </div>
         <div class="text-right font-bold text-xs whitespace-nowrap hidden md:block text-[#0F2C48]">
           <span id="compteurResVue" class="text-xl">0</span> / <span id="compteurResTotal" class="text-gray-400">0</span><br /><span class="text-[9px] uppercase tracking-wider opacity-60">Validés</span>
@@ -478,7 +500,7 @@
                               <span class="text-sm font-bold text-[#0F2C48] leading-tight">${rev.moduleId}</span>
                               <span class="text-xs text-gray-500 truncate max-w-[200px]">${rev.titre}</span>
                           </div>
-                          <button onclick="markRevisionDone('${rev.id}', true)" class="shrink-0 bg-white border-2 border-gray-200 text-gray-400 hover:text-green-500 hover:border-green-400 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm hover:shadow-md">
+                          <button onclick="markRevisionDone('${rev.id}', true)" class="shrink-0 bg-white border-2 border-gray-200 text-gray-400 hover:text-blue-500 hover:border-blue-400 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm hover:shadow-md">
                               <i class="fas fa-check"></i>
                           </button>
                       </div>
@@ -525,7 +547,7 @@
           const btn = document.getElementById("lockBtn");
           if (isUnlocked) {
               btn.innerHTML = "🔓 Session Active (Fermer le cadenas)";
-              btn.className = "text-green-600 font-black text-[9px] uppercase hover:text-red-600 transition-colors";
+              btn.className = "text-blue-600 font-black text-[9px] uppercase hover:text-red-600 transition-colors";
           } else {
               btn.innerHTML = "🔒 Mode Public";
               btn.className = "text-gray-400 font-black text-[9px] uppercase transition-colors cursor-default";
@@ -581,7 +603,7 @@
         let headerBg = "bg-[#f6f2e8]/40";
         let iconEmoji = "🎬";
         let titleText = "Lecteur Vidéo - " + titre;
-        let pulseColor = "bg-[#10b981]";
+        let pulseColor = "bg-[#3b82f6]";
 
         if (type === 'embed-pdf') {
             containerClass = "w-full h-[65vh] min-h-[500px]";
@@ -603,10 +625,10 @@
             pulseColor = "bg-[#e81123]";
         } else if (type === 'embed-doc') {
             containerClass = "w-full h-[50vh] min-h-[400px]";
-            headerBg = "bg-green-100/40";
+            headerBg = "bg-[#e0f2fe]/40"; // Blue tint for excel alternative to avoid green
             iconEmoji = "📊";
             titleText = "Document Excel - " + titre;
-            pulseColor = "bg-[#107c41]";
+            pulseColor = "bg-[#2563eb]"; // Blue instead of green
         } else if (type === 'embed-audio') {
             containerClass = "w-full h-[90px] md:h-[110px]";
             headerBg = "bg-indigo-100/40";
@@ -1023,13 +1045,13 @@
       }
 
       // ==============================================================
-      // MÉDAILLES, CONFETTIS & FEU D'ARTIFICE
+      // MÉDAILLES, CONFETTIS & FEU D'ARTIFICE (BLEU EDITION)
       // ==============================================================
 
       function shootFireworks() {
         var duration = 4 * 1000;
         var animationEnd = Date.now() + duration;
-        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9000 };
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9000, colors: ['#3b82f6', '#1e3a8a', '#ffffff', '#ffb900'] };
 
         function randomInRange(min, max) { return Math.random() * (max - min) + min; }
 
@@ -1054,13 +1076,13 @@
             shootFireworks();
             const toastHtml = `
               <div class="flex flex-col gap-2 w-[300px]">
-                <div class="text-sm font-black uppercase text-green-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
+                <div class="text-sm font-black uppercase text-blue-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
                 <div class="text-[12px] font-bold text-[#0F2C48] leading-snug">Félicitations ! Tu viens de franchir une étape majeure. La persévérance est la clé de la réussite.</div>
               </div>
             `;
-            afficherToastCustom(toastHtml, '#10b981');
+            afficherToastCustom(toastHtml, '#3b82f6');
         } else if (progressRes[key]) {
-            confetti({ particleCount: 50, spread: 60, origin: { y: 0.9 } });
+            confetti({ particleCount: 50, spread: 60, origin: { y: 0.9 }, colors: ['#3b82f6', '#1e3a8a', '#ffffff', '#ffb900'] });
 
             const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
             const icon = emoji || "🏅";
@@ -1087,12 +1109,12 @@
           shootFireworks();
           const toastHtml = `
               <div class="flex flex-col gap-2 w-[300px]">
-                <div class="text-sm font-black uppercase text-green-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
+                <div class="text-sm font-black uppercase text-blue-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
                 <div class="text-[12px] font-bold text-[#0F2C48] leading-snug">Félicitations ! Tu viens de franchir une étape majeure. La persévérance est la clé de la réussite.</div>
                 <div class="text-[10px] font-black text-right text-[#B4792A] mt-1">- Ton Assistant Pédagogique 🤖</div>
               </div>
           `;
-          afficherToastCustom(toastHtml, '#10b981');
+          afficherToastCustom(toastHtml, '#3b82f6');
         }
         afficherModules(document.getElementById("searchInput").value, false);
       };
@@ -1101,7 +1123,7 @@
         const c = document.getElementById("toastContainer");
         const t = document.createElement("div");
         t.className = `toast-msg p-5 bg-white/95 backdrop-blur-xl shadow-2xl rounded-xl flex items-start gap-3 pointer-events-auto z-[7000] border-l-[6px]`;
-        t.style.borderLeftColor = borderColorHex || '#10b981';
+        t.style.borderLeftColor = borderColorHex || '#3b82f6';
         t.innerHTML = htmlContent;
         c.appendChild(t);
         setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 9000);
@@ -1157,11 +1179,12 @@
           if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
+          // Note : on remplace certains verts par du bleu pour ne plus afficher de vert. Ex: Excel vert -> Bleu ciel pour le hover
           const resRaw = [
             { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio", color: "#667eea" },
             { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
             { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" },
-            { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel, type: "embed-doc", color: "#107c41" },
+            { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel, type: "embed-doc", color: "#2563eb" },
             { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie, type: "embed-image", color: "#e81123" },
             { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null, type: "embed-presentation", color: "#d83b01" },
             { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo, type: "embed-video", color: "#e52d27" },
@@ -1177,7 +1200,8 @@
             totalCount++;
             const isV = progressRes[`${id}-${r.id}`];
             if (isV) { vueCount++; lineChecked++; }
-            const checkC = isV ? "bg-green-500 text-white" : "bg-white text-gray-200";
+            // Remplacé bg-green-500 par bg-[#3b82f6] (Bleu Azur)
+            const checkC = isV ? "bg-[#3b82f6] text-white border-[#3b82f6]" : "bg-white text-gray-200 border-gray-200 hover:border-[#3b82f6] hover:text-[#3b82f6]";
 
             const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
 
@@ -1204,7 +1228,7 @@
             </div>
 
             <div class="relative tooltip-container">
-                <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource bg-gradient-to-br from-[#4285F4] to-[#8A2BE2] text-white border-b-[#303F9F] shadow-[0_5px_15px_rgba(66,133,244,0.3)]">
+                <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] text-white border-b-[#172554] shadow-[0_5px_15px_rgba(59,130,246,0.3)]">
                     <span>📅</span>
                 </button>
                 <span class="tooltip text-nowrap">Planifier Révisions</span>
@@ -1241,10 +1265,10 @@
                       </div>
                   </div>
                   <div class="flex items-center gap-3">
-                      <button onclick="event.stopPropagation(); downloadICSForModule('${id}', '${titre.replace(/'/g, "\\'")}')" class="hidden md:flex text-[9px] font-bold text-white bg-green-600 px-3 py-1.5 rounded-lg shadow-sm border border-green-700 hover:bg-green-700 transition-all items-center gap-1 z-10 relative">
+                      <button onclick="event.stopPropagation(); downloadICSForModule('${id}', '${titre.replace(/'/g, "\\'")}')" class="hidden md:flex text-[9px] font-bold text-[#0F2C48] bg-white px-3 py-1.5 rounded-lg shadow-sm border border-[#0F2C48]/20 hover:bg-[#0F2C48] hover:text-white transition-all items-center gap-1 z-10 relative">
                           <i class="fas fa-file-download"></i> Tout exporter (.ics)
                       </button>
-                      <button onclick="event.stopPropagation(); downloadICSForModule('${id}', '${titre.replace(/'/g, "\\'")}')" class="md:hidden w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center shadow-sm z-10 relative">
+                      <button onclick="event.stopPropagation(); downloadICSForModule('${id}', '${titre.replace(/'/g, "\\'")}')" class="md:hidden w-8 h-8 rounded-full bg-white text-[#0F2C48] border border-[#0F2C48]/20 flex items-center justify-center shadow-sm z-10 relative">
                           <i class="fas fa-file-download text-xs"></i>
                       </button>
                       <i id="timeline-chevron-${id}" class="fas fa-chevron-down transition-transform duration-300 text-gray-400 group-hover:text-[#0F2C48] text-sm"></i>
@@ -1259,10 +1283,10 @@
 
                       <!-- Carte Jour Zéro -->
                       <div class="shrink-0 w-[100px] bg-gradient-to-b from-blue-50 to-white border border-blue-200 rounded-[16px] flex flex-col items-center justify-center p-3 shadow-sm relative overflow-hidden snap-start">
-                          <div class="absolute top-0 w-full h-1 bg-blue-400"></div>
-                          <span class="text-2xl mb-1 mt-1">📅</span>
-                          <span class="text-[10px] font-black text-blue-800 uppercase tracking-widest text-center">Jour Zéro</span>
-                          <span class="text-[10px] font-bold text-gray-500 mt-1">${j0Date.toLocaleDateString('fr-FR', {day:'numeric', month:'short'})}</span>
+                          <div class="absolute top-0 w-full h-3 bg-red-500 shadow-sm border-b border-red-600"></div>
+                          <span class="text-3xl font-black text-[#0F2C48] mt-2 mb-0 leading-none">${j0Date.getDate()}</span>
+                          <span class="text-[10px] font-black text-red-500 uppercase tracking-widest">${j0Date.toLocaleDateString('fr-FR', {month:'short'})}</span>
+                          <span class="text-[8px] font-bold text-gray-400 mt-2 uppercase text-center border-t border-gray-200 pt-1 w-full">Jour Zéro</span>
                       </div>
               `;
 
@@ -1282,20 +1306,22 @@
                   const appleIcs = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${dateStrLocal}\nDTEND:${endStrLocal}\nSUMMARY:Révision ${rev.num}/6 : ${id} - ${safeT}\nDESCRIPTION:Rappel d'apprentissage espacé (${rev.label}).\\n\\nModule : ${id} - ${safeT}\\nObjectif : Consolider la mémoire à long terme !\nEND:VEVENT\nEND:VCALENDAR`;
                   const appleLink = `data:text/calendar;charset=utf8,${encodeURIComponent(appleIcs)}`;
 
-                  const borderClass = rev.done ? 'border-green-300 bg-green-50' : (isPast ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-white');
-                  const checkIconClass = rev.done ? 'bg-green-500 text-white border-green-500' : 'bg-white text-gray-300 border-gray-300 hover:border-green-400 hover:text-green-500';
+                  // Bleu au lieu de vert pour les révisions
+                  const borderClass = rev.done ? 'border-blue-300 bg-blue-50' : (isPast ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-white');
+                  const checkIconClass = rev.done ? 'bg-[#3b82f6] text-white border-[#3b82f6]' : 'bg-white text-gray-300 border-gray-300 hover:border-blue-400 hover:text-blue-500';
 
                   timelineHtml += `
                     <div class="shrink-0 w-[110px] ${borderClass} border rounded-[16px] flex flex-col items-center p-3 relative shadow-sm transition-all hover:shadow-md snap-start">
-                        <!-- Validation Badge (Top Right) -->
+
+                        <!-- Validation Badge (Top Right Identique aux Onglets) -->
                         <button onclick="markRevisionDone('${rev.id}')" class="absolute -top-2 -right-2 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all z-10 ${checkIconClass} shadow-sm">
                             <i class="fas fa-check text-[10px]"></i>
                         </button>
 
-                        <span class="text-xl mb-1 opacity-90">${rev.done ? '✅' : '🔔'}</span>
-                        <span class="text-[9px] font-black text-[#0F2C48] uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded mb-1">${rev.label}</span>
+                        <span class="text-2xl mb-1 opacity-90">${rev.done ? '✅' : '🔔'}</span>
+                        <span class="text-[9px] font-black text-[#0F2C48] uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded mb-1 shadow-inner">${rev.label}</span>
                         <span class="text-[11px] font-bold ${isPast && !rev.done ? 'text-red-500' : 'text-gray-600'}">${revDateObj.toLocaleDateString('fr-FR', {day:'numeric', month:'short'})}</span>
-                        <span class="text-[10px] font-black text-[#B4792A] mb-3">${String(revDateObj.getHours()).padStart(2,'0')}h${String(revDateObj.getMinutes()).padStart(2,'0')}</span>
+                        <span class="text-[10px] font-black text-[#B4792A] mb-2">${String(revDateObj.getHours()).padStart(2,'0')}h${String(revDateObj.getMinutes()).padStart(2,'0')}</span>
 
                         <!-- Export Icons -->
                         <div class="flex gap-1.5 w-full justify-center pt-2 border-t border-gray-200/50 ${rev.done ? 'opacity-30 pointer-events-none grayscale' : ''}">
@@ -1310,7 +1336,7 @@
           }
 
           const card = document.createElement("div");
-          card.className = `card-module p-6 rounded-2xl mb-3 ${isFull ? "border-green-400/50 bg-green-50/80" : ""} ${anim ? "card-animate" : ""}`;
+          card.className = `card-module p-6 rounded-2xl mb-3 ${isFull ? "border-blue-300 bg-blue-50/50" : ""} ${anim ? "card-animate" : ""}`;
           if (anim) card.style.animationDelay = `${cardIdx * 0.03}s`;
 
           card.innerHTML = `
@@ -1335,11 +1361,12 @@
                     <div class="w-full md:flex-grow">
                         <div class="flex justify-between items-end mb-2">
                             <span class="text-[10px] font-black text-[#0F2C48]/60 uppercase tracking-widest">Avancement du module</span>
-                            <span class="text-sm font-black ${isFull ? 'text-green-500' : 'text-[#0F2C48]'}">${linePercent}%</span>
+                            <span class="text-sm font-black ${isFull ? 'text-blue-600' : 'text-[#0F2C48]'}">${linePercent}%</span>
                         </div>
                         <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden shadow-inner border border-gray-300">
-                            <div class="h-full bg-gradient-to-r from-[#10b981] to-[#34d399] rounded-full transition-all duration-700 ease-out shadow-[0_0_10px_rgba(16,185,129,0.4)] relative" style="width: ${linePercent}%;">
-                                <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwTDggOFpNOCAwTDAgOFoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuMiIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] opacity-50"></div>
+                            <!-- Barre bleue ! -->
+                            <div class="h-full bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] rounded-full transition-all duration-700 ease-out shadow-[0_0_10px_rgba(59,130,246,0.4)] relative" style="width: ${linePercent}%;">
+                                <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwTDggOFpNOCAwTDAgOFoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuMiIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] opacity-30"></div>
                             </div>
                         </div>
                     </div>
