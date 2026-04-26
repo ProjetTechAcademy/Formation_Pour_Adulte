@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V17 (Smart Learning & Tracking)</title>
+    <title>Formation Pour Adulte - V19 (Smart Learning & Tracking)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -263,7 +263,7 @@
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo Paia Hub" class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover shadow-md" />
           <div>
             <h1 class="text-xl font-black uppercase text-[#0F2C48] drop-shadow-sm">Formation Pour Adulte</h1>
-            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base FPA • V17 (Smart Tracking)</p>
+            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Base FPA • V19 (Smart Tracking)</p>
           </div>
         </div>
 
@@ -393,7 +393,7 @@
             <div class="bg-blue-50 text-blue-800 text-xs p-4 rounded-xl mb-6 text-left border border-blue-100">
                 <p class="mb-2 font-bold text-sm"><i class="fas fa-brain mr-1"></i> Pourquoi cette méthode ?</p>
                 <p class="opacity-80 italic mb-2">"L'apprentissage ce n'est pas du bourrage de crâne, c'est l'art de la répétition espacée. L'objectif est d'ancrer l'information à long terme en revoyant les notions à des intervalles précis."</p>
-                <p class="text-right font-black text-[#B4792A] mb-3">- Mathilde Martine PAISLEY 💫</p>
+                <p class="text-right font-black text-[#B4792A] mb-3">- Ton Assistant Pédagogique 🤖</p>
                 <p class="opacity-80">Générez 6 rappels automatiques (J+3, J+7, J+10, J+30, J+60, J+90) pour :</p>
                 <p class="font-black mt-2 text-[#0F2C48]" id="sr-module-title"></p>
                 <span id="sr-module-id" class="hidden"></span>
@@ -443,7 +443,7 @@
       let database = [];
       const SECRET_PIN = "2026";
 
-      // Citations de motivation Mathilde PAISLEY
+      // Citations de motivation (sans signature automatique de Mathilde)
       const motivationalQuotes = [
           "« Le succès n'est pas final, l'échec n'est pas fatal : c'est le courage de continuer qui compte. » – Winston Churchill 👑",
           "« La folie, c’est de faire toujours la même chose et de s’attendre à un résultat différent. » – Albert Einstein 💡",
@@ -553,6 +553,7 @@
           });
           localStorage.setItem('paia_revisions', JSON.stringify(savedRevisions));
 
+          // Mettre à jour l'UI sans confettis !
           if(fromPopup) {
               const el = document.getElementById(`rev-item-${id}`);
               if(el) {
@@ -560,9 +561,8 @@
                   setTimeout(() => { el.remove(); }, 300);
               }
           }
-
-          confetti({ particleCount: 40, spread: 50, origin: { y: 0.8 } });
-          afficherModules(document.getElementById("searchInput").value, false); // Refresh UI to update module cards
+          // Rafraîchir l'affichage pour mettre à jour la timeline interne de la carte
+          afficherModules(document.getElementById("searchInput").value, false);
       };
 
       window.closeDailyRevisionsModal = function() {
@@ -932,7 +932,6 @@
           document.getElementById('sr-module-id').innerText = id;
           document.getElementById('sr-module-title').innerText = titre;
 
-          // Initialise la date et heure par défaut
           const now = new Date();
           document.getElementById('sr-start-date').valueAsDate = now;
           document.getElementById('sr-start-time').value = String(now.getHours()).padStart(2, '0') + ":00";
@@ -961,10 +960,8 @@
 
           if(!startStr || !timeStr) { alert("Veuillez choisir une date et une heure."); return; }
 
-          // Combine Date and Time
           const startDateTime = new Date(`${startStr}T${timeStr}`);
 
-          // Règle Mathilde : J+3, J+7, J+10, J+30, J+60, J+90
           const intervals = [3, 7, 10, 30, 60, 90];
           let newDates = [];
 
@@ -982,7 +979,6 @@
           closeSpacedRepetitionModal();
           afficherToast("Planning généré et sauvegardé dans le module ! 📅");
 
-          // Rafraîchir l'affichage pour montrer la nouvelle Timeline
           afficherModules(document.getElementById("searchInput").value, false);
       };
 
@@ -999,8 +995,8 @@
                    id: Math.random().toString(36).substr(2, 9),
                    moduleId: moduleId,
                    titre: titre,
-                   dateStr: `${yyyy}-${mm}-${dd}`, // used for quick daily popup check
-                   datetime: d.date.getTime(), // precise time for web links
+                   dateStr: `${yyyy}-${mm}-${dd}`,
+                   datetime: d.date.getTime(),
                    num: d.num,
                    label: `J+${d.days}`,
                    done: false
@@ -1019,9 +1015,8 @@
 
           moduleRevs.forEach(item => {
               const eventDate = new Date(item.datetime);
-              // ICS needs UTC time format (Z)
               const dateStr = eventDate.toISOString().replace(/-|:|\.\d\d\d/g, "");
-              const endDate = new Date(eventDate.getTime() + 60*60*1000); // 1 hour duration
+              const endDate = new Date(eventDate.getTime() + 60*60*1000);
               const endDateStr = endDate.toISOString().replace(/-|:|\.\d\d\d/g, "");
 
               const uid = `${Date.now()}-${item.num}@paiahub.com`;
@@ -1107,9 +1102,6 @@
         progressRes[key] = !progressRes[key];
         localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
 
-        // Est-ce qu'on vient de tout valider avec ce clic ?
-        // lineChecked au moment du clic correspondait au nombre AVANT l'action.
-        // S'il n'était pas coché avant, et qu'il l'est maintenant, on a +1.
         let newCount = progressRes[key] ? currentChecked + 1 : currentChecked - 1;
         const isAllNow = newCount === totalExpected;
 
@@ -1119,10 +1111,10 @@
               <div class="flex flex-col gap-2 w-[300px]">
                 <div class="text-sm font-black uppercase text-green-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
                 <div class="text-[12px] font-bold text-[#0F2C48] leading-snug">Félicitations ! Tu viens de franchir une étape majeure. La persévérance est la clé de la réussite.</div>
-                <div class="text-[10px] font-black text-right text-[#B4792A] mt-1">- Mathilde Martine PAISLEY 💫</div>
+                <div class="text-[10px] font-black text-right text-[#B4792A] mt-1">- Ton Assistant Pédagogique 🤖</div>
               </div>
             `;
-            afficherToastCustom(toastHtml, '#10b981'); // vert succès
+            afficherToastCustom(toastHtml, '#10b981');
         } else if (progressRes[key]) {
             confetti({ particleCount: 50, spread: 60, origin: { y: 0.9 } });
 
@@ -1133,7 +1125,6 @@
               <div class="flex flex-col gap-1 w-[280px]">
                 <div class="text-xs font-black uppercase tracking-widest mb-1 flex items-center gap-1" style="color: ${colorHex}">${icon} Ressource validée !</div>
                 <div class="text-[11px] font-medium text-[#0F2C48] leading-snug italic">${quote}</div>
-                <div class="text-[9px] font-black text-right text-gray-400 mt-1">- Mathilde Martine PAISLEY 💫</div>
               </div>
             `;
             afficherToastCustom(toastHtml, colorHex);
@@ -1154,7 +1145,7 @@
               <div class="flex flex-col gap-2 w-[300px]">
                 <div class="text-sm font-black uppercase text-green-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
                 <div class="text-[12px] font-bold text-[#0F2C48] leading-snug">Félicitations ! Tu viens de franchir une étape majeure. La persévérance est la clé de la réussite.</div>
-                <div class="text-[10px] font-black text-right text-[#B4792A] mt-1">- Mathilde Martine PAISLEY 💫</div>
+                <div class="text-[10px] font-black text-right text-[#B4792A] mt-1">- Ton Assistant Pédagogique 🤖</div>
               </div>
           `;
           afficherToastCustom(toastHtml, '#10b981');
@@ -1162,7 +1153,6 @@
         afficherModules(document.getElementById("searchInput").value, false);
       };
 
-      // Modification du toast pour accepter une couleur de bordure personnalisée
       function afficherToastCustom(htmlContent, borderColorHex) {
         const c = document.getElementById("toastContainer");
         const t = document.createElement("div");
@@ -1170,7 +1160,6 @@
         t.style.borderLeftColor = borderColorHex || '#10b981';
         t.innerHTML = htmlContent;
         c.appendChild(t);
-        // Durée augmentée à 9 secondes (9000ms) pour laisser le temps de lire
         setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 9000);
       }
 
@@ -1224,7 +1213,6 @@
           if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
-          // Définition des types avec code couleur pour les Toasts
           const resRaw = [
             { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio", color: "#667eea" },
             { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
@@ -1238,7 +1226,6 @@
             { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "external", color: "#b4792a" },
           ];
 
-          // Ne conserver que ceux qui sont réellement présents pour calculer le "total expected" exact du module
           const res = resRaw.filter(r => r.url && r.url.trim() !== '');
 
           let lineChecked = 0;
@@ -1258,7 +1245,6 @@
                 displayEmoji = "🔒"; tooltipText = "Accès Restreint"; btnClass = "bg-locked";
             }
 
-            // On passe res.length et lineChecked pour que le clique sache s'il valide l'ensemble
             return `<div class="relative tooltip-container">
                         <${linkProps.tag} ${linkProps.action} class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText.replace(/'/g, "\\'")}')"><span>${displayEmoji}</span></${linkProps.tag}>
                         <button onclick="toggleRes('${id}','${r.id}','${displayEmoji}','${r.color}', ${res.length}, ${lineChecked})" class="check-badge ${checkC}"><i class="fas fa-check"></i></button>
@@ -1266,7 +1252,6 @@
                     </div>`;
           }).join("");
 
-          // SÉPARATEUR FUN ET BOUTON SMART RECALL 📅
           htmlRes += `
             <div class="flex items-center justify-center px-1">
                 <div class="w-[2px] h-8 bg-gray-300 border-l-[3px] border-dotted border-gray-400/50 rounded-full opacity-60 relative group cursor-help transition-all hover:border-blue-400">
@@ -1285,16 +1270,39 @@
           const isFull = res.length > 0 && lineChecked === res.length;
           const linePercent = res.length > 0 ? Math.round((lineChecked / res.length) * 100) : 0;
 
-          // --- CONSTRUCTION DE LA TIMELINE DE REVISION (In-App Tracker) ---
           const moduleRevs = savedRevisions.filter(r => r.moduleId === id);
           let timelineHtml = '';
           if (moduleRevs.length > 0) {
-              timelineHtml += `<div class="mt-5 p-4 rounded-xl bg-blue-50/50 border border-blue-100/50 w-full animate-slideIn">`;
-              timelineHtml += `<div class="flex items-center justify-between mb-3">
-                                  <span class="text-[10px] font-black text-[#0F2C48] uppercase tracking-widest flex items-center gap-2"><i class="fas fa-brain text-[#B4792A]"></i> Planning de répétition espacée</span>
-                                  <button onclick="downloadICSForModule('${id}', '${titre.replace(/'/g, "\\'")}')" class="text-[9px] font-bold text-blue-600 bg-white px-2 py-1 rounded shadow-sm border border-blue-100 hover:bg-blue-600 hover:text-white transition-all"><i class="fas fa-download"></i> Tout exporter (.ics)</button>
-                               </div>`;
-              timelineHtml += `<div class="flex flex-col gap-2">`;
+              const nbDone = moduleRevs.filter(r => r.done).length;
+              let nextRev = moduleRevs.find(r => !r.done);
+              let nextRevText = nextRev ? `(Prochaine : ${new Date(nextRev.datetime).toLocaleDateString('fr-FR', {day:'numeric', month:'short'})})` : "";
+
+              timelineHtml += `<div class="mt-5 rounded-xl bg-[#0F2C48]/5 border border-[#0F2C48]/10 w-full animate-slideIn overflow-hidden shadow-sm">`;
+
+              // HEADER ACCORDÉON
+              timelineHtml += `
+              <div class="flex items-center justify-between p-3 cursor-pointer group hover:bg-[#0F2C48]/5 transition-colors" onclick="document.getElementById('timeline-list-${id}').classList.toggle('hidden'); document.getElementById('timeline-chevron-${id}').classList.toggle('rotate-180');">
+                  <div class="flex items-center gap-3">
+                      <i class="fas fa-brain text-[#B4792A] text-lg"></i>
+                      <div class="flex flex-col text-left">
+                          <span class="text-[10px] font-black text-[#0F2C48] uppercase tracking-widest">Répétitions Espacées ${nextRevText}</span>
+                          <span class="text-[9px] text-gray-500 font-bold">${nbDone}/${moduleRevs.length} révisions validées</span>
+                      </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                      <button onclick="event.stopPropagation(); downloadICSForModule('${id}', '${titre.replace(/'/g, "\\'")}')" class="hidden md:flex text-[9px] font-bold text-white bg-green-600 px-3 py-1.5 rounded-lg shadow-sm border border-green-700 hover:bg-green-700 transition-all items-center gap-1 z-10 relative">
+                          <i class="fas fa-file-download"></i> Tout exporter (.ics)
+                      </button>
+                      <button onclick="event.stopPropagation(); downloadICSForModule('${id}', '${titre.replace(/'/g, "\\'")}')" class="md:hidden w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center shadow-sm z-10 relative">
+                          <i class="fas fa-file-download text-xs"></i>
+                      </button>
+                      <i id="timeline-chevron-${id}" class="fas fa-chevron-down transition-transform duration-300 text-gray-400 group-hover:text-[#0F2C48] text-sm"></i>
+                  </div>
+              </div>
+
+              <div id="timeline-list-${id}" class="flex flex-col gap-2 hidden p-3 pt-0 border-t border-[#0F2C48]/5 mt-2">
+                  <p class="text-[9px] text-gray-500 italic mb-2 text-center opacity-80">Exportez le fichier .ics pour ajouter toutes les dates d'un coup, ou utilisez les boutons Google/Outlook ci-dessous.</p>
+              `;
 
               moduleRevs.forEach(rev => {
                   const revDateObj = new Date(rev.datetime);
@@ -1307,14 +1315,13 @@
                   const desc = encodeURIComponent(`Rappel d'apprentissage espacé (${rev.label}).\n\nModule : ${id} - ${titre}\nObjectif : Consolider la mémoire à long terme !`);
                   const eventTitle = encodeURIComponent(`Révision ${rev.num}/6 : ${id} - ${titre}`);
 
-                  // Liens Web Agendas
                   const gCalLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=${dateStrLocal}/${endStrLocal}&details=${desc}`;
                   const outlookLink = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${eventTitle}&body=${desc}&startdt=${dateStrLocal}&enddt=${endStrLocal}`;
 
                   timelineHtml += `
                     <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border ${rev.done ? 'border-green-200 bg-green-50/30 opacity-70' : (isPast ? 'border-red-200' : 'border-gray-200')} shadow-sm">
                         <div class="flex items-center gap-3">
-                            <button onclick="markRevisionDone('${rev.id}')" class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${rev.done ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 text-transparent hover:border-green-400 hover:text-green-200'}">
+                            <button onclick="markRevisionDone('${rev.id}')" title="Pointer comme fait" class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${rev.done ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 text-transparent hover:border-green-400 hover:text-green-500'}">
                                 <i class="fas fa-check text-[10px]"></i>
                             </button>
                             <div class="flex flex-col">
@@ -1322,9 +1329,9 @@
                                 <span class="text-xs font-bold text-[#0F2C48] capitalize">${revDateObj.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })} à ${String(revDateObj.getHours()).padStart(2,'0')}h${String(revDateObj.getMinutes()).padStart(2,'0')}</span>
                             </div>
                         </div>
-                        <div class="flex gap-1.5 ${rev.done ? 'hidden' : ''}">
-                            <a href="${gCalLink}" target="_blank" title="Ajouter à Google Agenda" class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-sm"><i class="fab fa-google text-[10px]"></i></a>
-                            <a href="${outlookLink}" target="_blank" title="Ajouter à Outlook" class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center text-blue-700 hover:bg-blue-700 hover:text-white transition-all shadow-sm"><i class="fab fa-windows text-[10px]"></i></a>
+                        <div class="flex flex-wrap gap-1 ${rev.done ? 'hidden' : ''} justify-end">
+                            <a href="${gCalLink}" target="_blank" title="Ajouter uniquement à Google" class="px-2 py-1 rounded bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm text-[9px] font-bold gap-1"><i class="fab fa-google"></i> <span class="hidden md:inline">Google</span></a>
+                            <a href="${outlookLink}" target="_blank" title="Ajouter uniquement à Outlook" class="px-2 py-1 rounded bg-cyan-50 border border-cyan-100 flex items-center justify-center text-cyan-700 hover:bg-cyan-700 hover:text-white transition-all shadow-sm text-[9px] font-bold gap-1"><i class="fab fa-windows"></i> <span class="hidden md:inline">Outlook</span></a>
                         </div>
                     </div>
                   `;
@@ -1336,10 +1343,8 @@
           card.className = `card-module p-6 rounded-2xl mb-3 ${isFull ? "border-green-400/50 bg-green-50/80" : ""} ${anim ? "card-animate" : ""}`;
           if (anim) card.style.animationDelay = `${cardIdx * 0.03}s`;
 
-          // L'ÎLOT DE VALIDATION (Socle très visible et bien séparé)
           card.innerHTML = `
             <div class="flex flex-col relative z-10">
-                <!-- TOP : En-tête du module -->
                 <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
                     <div>
                         <div class="flex items-center gap-3 mb-1">
@@ -1350,40 +1355,30 @@
                     </div>
                 </div>
 
-                <!-- MIDDLE : Ressources (Emojis) -->
                 <div class="flex flex-wrap items-center gap-3">
                     ${htmlRes}
                 </div>
 
-                <!-- ZONE PLANNING (Répétition Espacée IN-APP) -->
                 ${timelineHtml}
 
-                <!-- BOTTOM : L'Îlot de Validation (Boîte Blanche Super Visible) -->
                 <div class="mt-6 p-4 rounded-2xl bg-white border border-[#0F2C48]/10 shadow-[0_5px_20px_rgba(15,44,72,0.08)] flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
-
-                    <!-- Barre de progression plus épaisse -->
                     <div class="w-full md:flex-grow">
                         <div class="flex justify-between items-end mb-2">
                             <span class="text-[10px] font-black text-[#0F2C48]/60 uppercase tracking-widest">Avancement du module</span>
                             <span class="text-sm font-black ${isFull ? 'text-green-500' : 'text-[#0F2C48]'}">${linePercent}%</span>
                         </div>
-                        <!-- Track gris clair -->
                         <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden shadow-inner border border-gray-300">
-                            <!-- Remplissage dégradé vert -->
                             <div class="h-full bg-gradient-to-r from-[#10b981] to-[#34d399] rounded-full transition-all duration-700 ease-out shadow-[0_0_10px_rgba(16,185,129,0.4)] relative" style="width: ${linePercent}%;">
-                                <!-- Petit reflet diagonal décoratif dans la barre -->
                                 <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwTDggOFpNOCAwTDAgOFoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuMiIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] opacity-50"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Bouton Valider -->
                     <button onclick="toggleLine('${id}')" class="btn-valider-3d px-8 py-3.5 rounded-xl text-xs w-full md:w-auto md:min-w-[180px] whitespace-nowrap relative z-10 ${isFull ? "btn-success-line" : ""}">
                          ${isFull ? "Terminé ✅" : "Valider tout"}
                     </button>
                 </div>
             </div>
-            <!-- Conteneur INLINE MEDIA -->
             <div id="inline-media-${id}" class="hidden w-full flex-col relative z-0 mt-4" data-current-url=""></div>
           `;
           list.appendChild(card);
