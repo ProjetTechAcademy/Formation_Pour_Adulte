@@ -6,7 +6,6 @@
     <title>Formation Pour Adulte</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&family=Open+Dyslexic&display=swap" rel="stylesheet" />
@@ -192,11 +191,19 @@
       .card-animate { animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
       @keyframes slideIn { from { transform: translateY(20px) scale(0.98); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
 
+      /* --- Styles pour le Mini Lecteur Intégré --- */
+      .inline-player {
+        border-left: 4px solid #FFB900;
+        transition: all 0.25s ease;
+      }
+      .inline-player:hover {
+        transform: translateY(-2px) scale(1.01);
+        box-shadow: 0 15px 30px rgba(15,44,72,0.15);
+      }
     </style>
   </head>
   <body class="relative">
 
-    <!-- Blobs d'arrière-plan -->
     <div class="bg-animated-blob blob-1"></div>
     <div class="bg-animated-blob blob-2"></div>
     <div class="bg-animated-blob blob-3"></div>
@@ -207,7 +214,6 @@
       <p class="text-[10px] mt-2 opacity-50 font-bold">MATHILDE MARTINE PAISLEY</p>
     </div>
 
-    <!-- En-tête Glassmorphism (Flouté) -->
     <header class="bg-[#F6F2E8]/80 backdrop-blur-xl border-b border-[#0F2C48]/10 h-[90px] flex items-center sticky top-0 z-[100] shadow-sm">
       <div class="w-full max-w-[1600px] mx-auto px-6 flex items-center justify-between">
         <div class="flex items-center gap-4 cursor-pointer hover:opacity-80 transition-opacity" onclick="location.reload()">
@@ -225,7 +231,6 @@
 
         <div class="flex items-center gap-3">
           <div class="flex justify-center items-center gap-2 hidden md:flex">
-            <!-- NOUVEAU BOUTON CONTACT -->
             <a href="Card.html" target="_blank" class="btn-nav-round btn-contact group">
               <i class="fas fa-id-card text-[1.1rem]"></i>
               <span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50 transform group-hover:-translate-y-1">Contact</span>
@@ -258,7 +263,6 @@
         <button class="tab-btn" id="tab-B4" onclick="filtrerBloc('B4')">B4: Qualité & RSE</button>
       </div>
 
-      <!-- Barre de progression revisitée -->
       <div class="bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-lg border border-white mb-8 flex flex-col md:flex-row items-center gap-6">
         <div class="flex flex-col text-center md:text-left shrink-0">
           <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Progression Globale</span>
@@ -274,7 +278,6 @@
 
       <div id="subTabsContainer" class="sub-tabs-container hidden mb-6 flex-wrap gap-2"></div>
 
-      <!-- Liste des modules -->
       <div id="listContainer" class="flex flex-col gap-5 pb-12 w-full"></div>
     </main>
 
@@ -291,7 +294,6 @@
       </div>
     </footer>
 
-    <!-- Menu Accessibilité Vertical -->
     <div class="floating-side-menu">
       <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn-fab group">
         <span>⬆️</span><span class="absolute right-full mr-3 bg-[#0F2C48] text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Haut de page</span>
@@ -312,7 +314,6 @@
       </button>
     </div>
 
-    <!-- MODALE CODE PIN POUR PDF -->
     <div id="pinModal" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
       <div class="bg-white p-10 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-sm w-full mx-4 transform scale-95 transition-transform duration-300" id="pinModalContent">
         <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full mx-auto flex items-center justify-center shadow-inner mb-6 border border-gray-300">
@@ -417,8 +418,72 @@
         window.speechSynthesis.speak(u);
       }
 
+      // 🔥 1. FONCTION DE NORMALISATION DES LIENS
+      function normalizeUrl(url) {
+        if (!url) return "";
+
+        // Google Drive (open?id=)
+        if (url.includes("open?id=")) {
+          const id = url.split("open?id=")[1].split("&")[0];
+          return `https://drive.google.com/file/d/${id}/preview`;
+        }
+
+        // Google Drive (déjà en /d/)
+        if (url.includes("drive.google.com/file/d/")) {
+          const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+          if (match) {
+            return `https://drive.google.com/file/d/${match[1]}/preview`;
+          }
+        }
+
+        // YouTube classique
+        if (url.includes("youtube.com/watch")) {
+          return url.replace("watch?v=", "embed/");
+        }
+
+        // YouTube short
+        if (url.includes("youtu.be/")) {
+          const id = url.split("youtu.be/")[1];
+          return `https://www.youtube.com/embed/${id}`;
+        }
+
+        // Sinon → retourne tel quel
+        return url;
+      }
+
+      // 🎬 2. MINI LECTEUR INTÉGRÉ
+      function buildMiniPlayer(url, originalUrl) {
+        const finalUrl = normalizeUrl(url);
+
+        return `
+          <div class="mt-4 rounded-2xl p-3 border shadow-md backdrop-blur-xl bg-white/70 inline-player animate-slideIn">
+              <div class="flex items-center justify-between mb-2 px-2">
+                  <span class="text-[10px] font-black uppercase tracking-widest text-[#0F2C48]">
+                      🎬 Lecture
+                  </span>
+                  <span class="text-[10px] font-bold text-[#B4792A]">Preview</span>
+              </div>
+
+              <iframe
+                  src="${finalUrl}"
+                  class="w-full h-[220px] rounded-xl border-none"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                  allowfullscreen
+              ></iframe>
+
+              <div class="mt-2 text-right">
+                  <a href="${originalUrl}" target="_blank"
+                     class="text-[10px] font-bold text-[#0F2C48] hover:text-[#FFB900] transition">
+                      Ouvrir ↗
+                  </a>
+              </div>
+          </div>
+        `;
+      }
+
+
       // ==============================================================
-      // PREVIEW INLINE UNIVERSEL (PDF / LIENS / DRIVE)
+      // PREVIEW INLINE UNIVERSEL (PDF / LIENS / DRIVE) AVEC MINI-LECTEUR
       // ==============================================================
       window.toggleInlineContent = function(id, url, type) {
           const container = document.getElementById(`inline-media-${id}`);
@@ -440,16 +505,7 @@
               el.dataset.currentUrl = '';
           });
 
-          let finalUrl = url;
           let isEmbeddable = true;
-
-          // Google Drive fix
-          if (url.includes("drive.google.com")) {
-              const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-              if (match) {
-                  finalUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
-              }
-          }
 
           // Types connus bloqués
           if (type === "web") {
@@ -460,21 +516,8 @@
           let contentHtml = '';
 
           if (isEmbeddable) {
-              contentHtml = `
-                  <div class="mt-4 bg-white/60 backdrop-blur-xl rounded-2xl p-4 border shadow animate-slideIn">
-                      <iframe
-                          src="${finalUrl}"
-                          class="w-full h-[500px] rounded-xl border-none"
-                          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                      ></iframe>
-
-                      <div class="mt-3 text-right">
-                          <a href="${url}" target="_blank" class="text-xs font-bold text-blue-600 hover:underline">
-                              Ouvrir dans un nouvel onglet ↗
-                          </a>
-                      </div>
-                  </div>
-              `;
+              // 🔁 INTÉGRATION DU MINI LECTEUR ICI
+              contentHtml = buildMiniPlayer(url, url);
           } else {
               contentHtml = `
                   <div class="mt-4 bg-white/60 backdrop-blur-xl rounded-2xl p-4 border shadow animate-slideIn text-center">
@@ -711,7 +754,6 @@
                     </button>
                 </div>
             </div>
-            <!-- Conteneur INLINE MEDIA -->
             <div id="inline-media-${id}" class="hidden w-full" data-current-url=""></div>
           `;
           list.appendChild(card);
