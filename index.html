@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V4</title>
+    <title>Formation Pour Adulte - V5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -568,7 +568,7 @@
 
 
       // ==============================================================
-      // PREVIEW INLINE UNIVERSEL (MODE COMBO INTÉGRÉ)
+      // PREVIEW INLINE UNIVERSEL (MODE COMBO AVEC SWITCHER ÉLÉGANT)
       // ==============================================================
       window.toggleInlineContent = function(id, url, type, titre) {
           const container = document.getElementById(`inline-media-${id}`);
@@ -595,29 +595,49 @@
           // Si c'est un contenu encastrable
           if (type.startsWith("embed-")) {
 
-              // === MODE COMBO AUDIO + VISUEL ===
+              // === MODE COMBO AUDIO + VISUEL (AVEC SWITCH) ===
               if (type === 'embed-audio') {
                   // 1. On affiche le lecteur audio (ultra fin)
                   contentHtml += buildMiniPlayer(url, url, type, titre);
 
-                  // 2. On cherche dans la base de données si ce module a une infographie ou une slide
+                  // 2. On cherche dans la base de données
                   const itemObj = database.find(d => d.Code === id);
                   if (itemObj) {
                       let infogUrl = itemObj.Infographie;
                       let slideUrl = itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null;
 
-                      if (infogUrl && infogUrl.trim() !== '') {
+                      let hasInfog = infogUrl && infogUrl.trim() !== '';
+                      let hasSlide = slideUrl && slideUrl.trim() !== '';
+
+                      if (hasInfog || hasSlide) {
                           contentHtml += `
-                          <div class="flex items-center justify-center mt-6 mb-[-10px] gap-2 text-[#B4792A] text-[10px] font-black uppercase tracking-widest opacity-90 animate-slideIn">
-                             <i class="fas fa-link"></i> Support visuel synchronisé
-                          </div>`;
-                          contentHtml += buildMiniPlayer(infogUrl, infogUrl, 'embed-image', titre);
-                      } else if (slideUrl && slideUrl.trim() !== '') {
-                          contentHtml += `
-                          <div class="flex items-center justify-center mt-6 mb-[-10px] gap-2 text-[#B4792A] text-[10px] font-black uppercase tracking-widest opacity-90 animate-slideIn">
-                             <i class="fas fa-link"></i> Support visuel synchronisé
-                          </div>`;
-                          contentHtml += buildMiniPlayer(slideUrl, slideUrl, 'embed-presentation', titre);
+                          <div class="flex flex-col items-center justify-center mt-6 mb-[-5px] animate-slideIn w-full">
+                              <div class="flex items-center gap-2 text-[#B4792A] text-[10px] font-black uppercase tracking-widest opacity-90 mb-3">
+                                 <i class="fas fa-link"></i> Support visuel synchronisé
+                              </div>`;
+
+                          if (hasInfog && hasSlide) {
+                              // Les deux sont dispos : on crée un sélecteur stylé (Slide par défaut)
+                              contentHtml += `
+                              <div class="flex bg-white/50 backdrop-blur-md p-1 rounded-xl shadow-sm border border-white/50 mb-2">
+                                  <button onclick="document.getElementById('combo-slide-${id}').classList.remove('hidden'); document.getElementById('combo-infog-${id}').classList.add('hidden'); this.classList.add('bg-white', 'shadow-sm', 'text-[#0F2C48]'); this.classList.remove('text-gray-500', 'hover:bg-white/50'); document.getElementById('btn-infog-${id}').classList.remove('bg-white', 'shadow-sm', 'text-[#0F2C48]'); document.getElementById('btn-infog-${id}').classList.add('text-gray-500', 'hover:bg-white/50');" id="btn-slide-${id}" class="px-4 py-1.5 rounded-lg text-[10px] font-black transition-all bg-white shadow-sm text-[#0F2C48]">📽️ Diaporama</button>
+
+                                  <button onclick="document.getElementById('combo-infog-${id}').classList.remove('hidden'); document.getElementById('combo-slide-${id}').classList.add('hidden'); this.classList.add('bg-white', 'shadow-sm', 'text-[#0F2C48]'); this.classList.remove('text-gray-500', 'hover:bg-white/50'); document.getElementById('btn-slide-${id}').classList.remove('bg-white', 'shadow-sm', 'text-[#0F2C48]'); document.getElementById('btn-slide-${id}').classList.add('text-gray-500', 'hover:bg-white/50');" id="btn-infog-${id}" class="px-4 py-1.5 rounded-lg text-[10px] font-black transition-all text-gray-500 hover:bg-white/50">🖼️ Infographie</button>
+                              </div>
+                              </div> <!-- fin du header visuel -->
+
+                              <div id="combo-slide-${id}" class="w-full animate-slideIn">
+                                  ${buildMiniPlayer(slideUrl, slideUrl, 'embed-presentation', titre)}
+                              </div>
+                              <div id="combo-infog-${id}" class="w-full hidden animate-slideIn">
+                                  ${buildMiniPlayer(infogUrl, infogUrl, 'embed-image', titre)}
+                              </div>
+                              `;
+                          } else if (hasSlide) {
+                              contentHtml += `</div>` + buildMiniPlayer(slideUrl, slideUrl, 'embed-presentation', titre);
+                          } else if (hasInfog) {
+                              contentHtml += `</div>` + buildMiniPlayer(infogUrl, infogUrl, 'embed-image', titre);
+                          }
                       }
                   }
               } else {
