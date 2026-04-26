@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V10</title>
+    <title>Formation Pour Adulte - V12</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -66,34 +66,34 @@
       body.high-contrast .bg-animated-blob { display: none; }
       body.high-contrast header { background-color: #1a1a1a !important; border-bottom: 2px solid #ffffff !important; }
 
-      /* --- Boutons Ronds de Navigation --- */
-      .btn-nav-round {
-        width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-        font-size: 1.2rem; color: white !important; position: relative; text-decoration: none;
-        border: 2px solid rgba(255,255,255,0.4); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      /* --- Boutons Navigation (Design 3D App Icon Harmonisé) --- */
+      .btn-nav-app {
+        width: 58px; height: 58px; border-radius: 18px; display: flex; align-items: center; justify-content: center;
+        font-size: 1.6rem; color: white !important; position: relative; text-decoration: none;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15), inset 0 2px 2px rgba(255, 255, 255, 0.5), inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.5); z-index: 1;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
-      .btn-nav-round:hover { transform: translateY(-5px) scale(1.1); border-color: rgba(255,255,255,0.8); }
+      .btn-nav-app::before {
+        content: ''; position: absolute; width: 38px; height: 38px;
+        background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+        border-radius: 50%; z-index: -1; pointer-events: none;
+      }
+      .btn-nav-app:hover {
+        transform: translateY(-5px) scale(1.08);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2), inset 0 2px 2px rgba(255, 255, 255, 0.6), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+      }
+      .btn-nav-app:active {
+        transform: translateY(2px) scale(0.95);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
 
-      .btn-news { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4); }
-      .btn-exam { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); box-shadow: 0 6px 15px rgba(126, 34, 206, 0.4); }
-      .btn-eval { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 6px 15px rgba(5, 150, 105, 0.4); }
-      .btn-teams-round { background: linear-gradient(135deg, #464eb8 0%, #e81123 100%); box-shadow: 0 6px 15px rgba(70, 78, 184, 0.4); }
-
-      /* --- NOUVEAU BOUTON CONTACT (Animation Rebond) --- */
-      .btn-contact {
-        background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
-        box-shadow: 0 6px 15px rgba(190, 24, 93, 0.4);
-        animation: softBounce 3s infinite;
-      }
-
-      @keyframes softBounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-6px); }
-      }
-      .btn-contact:hover {
-        animation: none;
-        transform: translateY(-5px) scale(1.1);
-      }
+      .btn-news { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+      .btn-exam { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); }
+      .btn-eval { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+      .btn-teams { background: linear-gradient(135deg, #464eb8 0%, #e81123 100%); }
+      .btn-contact { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
 
       /* --- Onglets --- */
       .tab-btn {
@@ -270,23 +270,24 @@
         </div>
 
         <div class="flex items-center gap-3">
-          <div class="flex justify-center items-center gap-2 hidden md:flex">
-            <a href="Card.html" target="_blank" class="btn-nav-round btn-contact group">
-              <i class="fas fa-id-card text-[1.1rem]"></i>
-              <span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50 transform group-hover:-translate-y-1">Contact</span>
+          <div class="flex justify-center items-center gap-3 hidden md:flex">
+            <!-- BOUTON CONTACT MODIFIÉ : Emoji plus humain et chaleureux 👋 au lieu de l'icône admin -->
+            <a href="Card.html" target="_blank" class="btn-nav-app btn-contact group">
+              <span class="text-[1.6rem]">👋</span>
+              <span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Contact</span>
             </a>
 
-            <a href="https://app.studi.fr/v3/blog" target="_blank" class="btn-nav-round btn-news group">
-              <span>📰</span><span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50 transform group-hover:-translate-y-1">Newsletter</span>
+            <a href="https://app.studi.fr/v3/blog" target="_blank" class="btn-nav-app btn-news group">
+              <span>📰</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Newsletter</span>
             </a>
-            <a href="Examen.html" target="_blank" class="btn-nav-round btn-exam group">
-              <span>🎓</span><span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50 transform group-hover:-translate-y-1">Examen</span>
+            <a href="Examen.html" target="_blank" class="btn-nav-app btn-exam group">
+              <span>🎓</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Examen</span>
             </a>
-            <a href="%C3%89valuations.html" target="_blank" class="btn-nav-round btn-eval group">
-              <span>📊</span><span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50 transform group-hover:-translate-y-1">Évaluations</span>
+            <a href="%C3%89valuations.html" target="_blank" class="btn-nav-app btn-eval group">
+              <span>📊</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Évaluations</span>
             </a>
-            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="btn-nav-round btn-teams-round group">
-              <i class="fab fa-microsoft text-[1.2rem]"></i><span class="absolute top-full mt-3 right-0 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50 transform group-hover:-translate-y-1">Communauté</span>
+            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="btn-nav-app btn-teams group">
+              <i class="fab fa-microsoft text-[1.4rem]"></i><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Communauté</span>
             </a>
           </div>
         </div>
@@ -983,6 +984,8 @@
           }).join("");
 
           const isFull = lineChecked === res.length;
+          const linePercent = res.length > 0 ? Math.round((lineChecked / res.length) * 100) : 0;
+
           const card = document.createElement("div");
 
           card.className = `card-module p-6 rounded-2xl mb-3 ${isFull ? "border-green-400/50 bg-green-50/80" : ""} ${anim ? "card-animate" : ""}`;
@@ -1000,6 +1003,18 @@
                 </div>
 
                 <div class="flex flex-col items-center justify-center min-w-[150px] border-t md:border-t-0 md:border-l pt-5 md:pt-0 md:pl-5 border-gray-200/50">
+
+                    <!-- NOUVELLE MINI BARRE DE PROGRESSION DU MODULE -->
+                    <div class="w-full mb-3">
+                        <div class="flex justify-between items-end mb-1">
+                            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Avancement</span>
+                            <span class="text-[10px] font-black ${isFull ? 'text-green-500' : 'text-[#0F2C48]'}">${linePercent}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200/60 h-1.5 rounded-full overflow-hidden shadow-inner">
+                            <div class="h-full bg-gradient-to-r from-[#10b981] to-[#34d399] rounded-full transition-all duration-700 ease-out" style="width: ${linePercent}%;"></div>
+                        </div>
+                    </div>
+
                     <button onclick="toggleLine('${id}')" class="btn-valider-3d px-6 py-3.5 rounded-xl text-xs w-full ${isFull ? "btn-success-line" : ""}">
                          ${isFull ? "Terminé ✅" : "Valider tout"}
                     </button>
