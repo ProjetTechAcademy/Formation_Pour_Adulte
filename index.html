@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte</title>
+    <title>Formation Pour Adulte - V3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -136,35 +136,40 @@
       }
       .btn-fab:hover { transform: scale(1.15) translateX(-3px); box-shadow: 0 5px 12px rgba(0,0,0,0.15); }
 
-      /* --- Ressources & Cartes --- */
+      /* --- Ressources & Cartes (Design 3D App Icon) --- */
       .btn-resource {
-        width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
-        font-size: 1.4rem; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), inset 0 2px 0 rgba(255,255,255,0.2);
-        border: 1px solid rgba(0, 0, 0, 0.05); border-bottom-width: 4px;
+        width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+        font-size: 1.5rem; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1), inset 0 2px 2px rgba(255, 255, 255, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.4); z-index: 1; text-decoration: none;
+      }
+      .btn-resource::before {
+        content: ''; position: absolute; width: 34px; height: 34px;
+        background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+        border-radius: 50%; z-index: -1; pointer-events: none;
       }
       .btn-resource:hover {
-        transform: translateY(-4px) scale(1.08);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), inset 0 2px 0 rgba(255,255,255,0.4);
+        transform: translateY(-5px) scale(1.08);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15), inset 0 2px 2px rgba(255, 255, 255, 0.6), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
         z-index: 10;
       }
       .btn-resource:active {
         transform: translateY(2px) scale(0.95);
-        border-bottom-width: 1px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
       /* Gradients 3D Premium pour les Ressources */
-      .bg-audio { background: linear-gradient(135deg, #667eea 0%, #5a68d8 100%); color: white; border-bottom-color: #4c58b8; }
-      .bg-pdf { background: linear-gradient(135deg, #0f2c48 0%, #174069 100%); color: #d9a526; border-bottom-color: #081828; }
-      .bg-lien { background: linear-gradient(135deg, #0078d4 0%, #0060a8 100%); color: white; border-bottom-color: #004880; }
-      .bg-excel { background: linear-gradient(135deg, #107c41 0%, #0d6334 100%); color: white; border-bottom-color: #094a27; }
-      .bg-infog { background: linear-gradient(135deg, #e81123 0%, #b80d1b 100%); color: white; border-bottom-color: #8a0a14; }
-      .bg-slide { background: linear-gradient(135deg, #d83b01 0%, #ad2f01 100%); color: white; border-bottom-color: #822301; }
-      .bg-video { background: linear-gradient(135deg, #e52d27 0%, #b8241f 100%); color: white; border-bottom-color: #8a1b17; }
-      .bg-glo { background: linear-gradient(135deg, #4a5568 0%, #3a4352 100%); color: white; border-bottom-color: #2b313d; }
-      .bg-map { background: linear-gradient(135deg, #ffb900 0%, #cc9400 100%); color: #0f2c48; border-bottom-color: #996f00; }
-      .bg-quiz { background: linear-gradient(135deg, #b4792a 0%, #906122 100%); color: white; border-bottom-color: #6c491a; }
-      .bg-locked { background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important; color: #94a3b8 !important; border-color: #94a3b8 !important; border-bottom-color: #94a3b8 !important; box-shadow: none !important;}
+      .bg-audio { background: linear-gradient(135deg, #667eea 0%, #5a68d8 100%); color: white; }
+      .bg-pdf { background: linear-gradient(135deg, #0f2c48 0%, #174069 100%); color: #d9a526; }
+      .bg-lien { background: linear-gradient(135deg, #0078d4 0%, #0060a8 100%); color: white; }
+      .bg-excel { background: linear-gradient(135deg, #107c41 0%, #0d6334 100%); color: white; }
+      .bg-infog { background: linear-gradient(135deg, #e81123 0%, #b80d1b 100%); color: white; }
+      .bg-slide { background: linear-gradient(135deg, #d83b01 0%, #ad2f01 100%); color: white; }
+      .bg-video { background: linear-gradient(135deg, #e52d27 0%, #b8241f 100%); color: white; }
+      .bg-glo { background: linear-gradient(135deg, #4a5568 0%, #3a4352 100%); color: white; }
+      .bg-map { background: linear-gradient(135deg, #ffb900 0%, #cc9400 100%); color: #0f2c48; }
+      .bg-quiz { background: linear-gradient(135deg, #b4792a 0%, #906122 100%); color: white; }
+      .bg-locked { background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important; color: #94a3b8 !important; border-color: #94a3b8 !important; box-shadow: none !important;}
 
       /* Cartes avec effet 3D doux */
       .card-module {
@@ -196,20 +201,18 @@
 
       .check-badge {
         position: absolute; top: -5px; right: -5px; width: 18px; height: 18px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center; font-size: 8px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex; align-items: center; justify-content: center; font-size: 8px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); pointer-events: auto; z-index: 20;
       }
 
       .card-animate { animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
       @keyframes slideIn { from { transform: translateY(20px) scale(0.98); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
 
-      /* --- Styles pour le Mini Lecteur Intégré (Thème Crème / Ivoire) --- */
-      .ms-theme-player {
-        box-shadow: 0 10px 30px rgba(15,44,72,0.08);
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+      /* --- Animation Brillante pour Bouton Beau Gosse --- */
+      @keyframes glassShine {
+        100% { transform: translateX(100%); }
       }
-      .ms-theme-player:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 20px 40px rgba(15,44,72,0.12);
+      .group-hover\:animate-glassShine:hover {
+        animation: glassShine 0.6s forwards;
       }
     </style>
   </head>
@@ -468,34 +471,79 @@
         return url;
       }
 
-      // 🎬 2. MINI LECTEUR INTÉGRÉ (Design Large x Thème Crème)
-      function buildMiniPlayer(url, originalUrl) {
+      // 🎬 2. LECTEUR INTÉGRÉ ADAPTATIF (Contenant Caméléon)
+      function buildMiniPlayer(url, originalUrl, type, titre) {
         const finalUrl = normalizeUrl(url);
 
+        // Valeurs par défaut (pour une vidéo)
+        let heightClass = "h-[200px] md:h-[280px]";
+        let maxWidthClass = "max-w-[600px] mx-auto md:ml-0";
+        let headerBg = "bg-[#f6f2e8]/60";
+        let iconEmoji = "🎬";
+        let titleText = "Mini-Lecteur Vidéo";
+        let pulseColor = "bg-[#10b981]"; // Vert par défaut
+
+        // ADAPTATION DU CONTENANT SELON LE CONTENU
+        if (type === 'embed-pdf') {
+            heightClass = "h-[500px] md:h-[700px]";
+            maxWidthClass = "w-full"; // Prends toute la largeur pour bien lire
+            headerBg = "bg-blue-100/60";
+            iconEmoji = "📄";
+            titleText = "Document PDF - " + titre;
+            pulseColor = "bg-[#0F2C48]";
+        } else if (type === 'embed-presentation') {
+            heightClass = "h-[300px] md:h-[450px]";
+            maxWidthClass = "max-w-[800px] mx-auto md:ml-0";
+            headerBg = "bg-orange-100/60";
+            iconEmoji = "📽️";
+            titleText = "Diaporama - " + titre;
+            pulseColor = "bg-[#d83b01]";
+        } else if (type === 'embed-image') {
+            heightClass = "h-[400px] md:h-[600px]";
+            maxWidthClass = "max-w-[800px] mx-auto md:ml-0";
+            headerBg = "bg-red-100/60";
+            iconEmoji = "🖼️";
+            titleText = "Infographie - " + titre;
+            pulseColor = "bg-[#e81123]";
+        } else if (type === 'embed-doc') {
+            heightClass = "h-[300px] md:h-[400px]";
+            maxWidthClass = "max-w-[700px] mx-auto md:ml-0";
+            headerBg = "bg-green-100/60";
+            iconEmoji = "📊";
+            titleText = "Document Excel - " + titre;
+            pulseColor = "bg-[#107c41]";
+        } else if (type === 'embed-audio') {
+            heightClass = "h-[150px]";
+            maxWidthClass = "max-w-[400px] mx-auto md:ml-0";
+            headerBg = "bg-indigo-100/60";
+            iconEmoji = "🎧";
+            titleText = "Extrait Audio";
+            pulseColor = "bg-[#667eea]";
+        }
+
         return `
-          <div class="mt-4 w-full rounded-2xl overflow-hidden bg-white/80 backdrop-blur-xl border border-[#0F2C48]/10 ms-theme-player animate-slideIn">
+          <div class="mt-4 w-full ${maxWidthClass} rounded-[24px] overflow-hidden bg-white/60 backdrop-blur-2xl border border-white/60 shadow-[0_15px_35px_rgba(15,44,72,0.08)] animate-slideIn p-2 transition-all hover:shadow-[0_20px_40px_rgba(15,44,72,0.12)]">
 
-              <!-- LIGNE COULEURS MICROSOFT -->
-              <div class="h-1.5 w-full flex">
-                  <div class="h-full flex-1 bg-[#F25022]"></div> <!-- Rouge -->
-                  <div class="h-full flex-1 bg-[#7FBA00]"></div> <!-- Vert -->
-                  <div class="h-full flex-1 bg-[#00A4EF]"></div> <!-- Bleu -->
-                  <div class="h-full flex-1 bg-[#FFB900]"></div> <!-- Jaune -->
-              </div>
-
-              <!-- HEADER (Thème Ivoire) -->
-              <div class="flex items-center justify-between px-4 py-3 bg-[#f6f2e8]/60 border-b border-[#0F2C48]/5">
+              <!-- HEADER COLORÉ ET DYNAMIQUE -->
+              <div class="flex items-center justify-between mb-2 px-3 pt-2 ${headerBg} rounded-xl pb-2">
                   <div class="flex items-center gap-2">
-                      <div class="w-2 h-2 rounded-full bg-[#10b981] shadow-[0_0_8px_#10b981] animate-pulse"></div>
-                      <span class="text-[10px] font-black uppercase tracking-widest text-[#0F2C48]">
-                          Lecture en cours
+                      <span class="text-xl">${iconEmoji}</span>
+                      <span class="text-[11px] font-black uppercase tracking-widest text-[#0F2C48] truncate max-w-[200px] md:max-w-[400px]">
+                          ${titleText}
                       </span>
                   </div>
-                  <span class="text-[9px] font-bold text-[#B4792A] bg-white/80 px-2 py-0.5 rounded-md border border-[#0F2C48]/10 shadow-sm">PREVIEW</span>
+                  <div class="flex items-center gap-1.5 bg-white/90 px-3 py-1.5 rounded-full shadow-sm border border-white/50">
+                      <div class="w-2 h-2 rounded-full ${pulseColor} animate-pulse"></div>
+                      <span class="text-[9px] font-black uppercase tracking-widest text-[#0F2C48]">
+                          Ouvert
+                      </span>
+                  </div>
               </div>
 
-              <!-- PLAYER (Pleine largeur, hauteur fixe réduite) -->
-              <div class="w-full relative bg-[#0F2C48]/5 h-[250px] md:h-[320px]">
+              <!-- PLAYER (Hauteur Dynamique sans AUCUN FOND NOIR AUTOUR) -->
+              <div class="w-full relative rounded-xl overflow-hidden bg-white/50 ${heightClass} shadow-inner border border-white/50 flex items-center justify-center">
+                  <!-- Petit loader pendant que le Drive charge -->
+                  <i class="fas fa-circle-notch fa-spin absolute text-[#0F2C48]/20 text-3xl -z-10"></i>
                   <iframe
                       src="${finalUrl}"
                       class="absolute top-0 left-0 w-full h-full border-none"
@@ -504,12 +552,18 @@
                   ></iframe>
               </div>
 
-              <!-- FOOTER / ACTION -->
-              <div class="px-4 py-3 bg-[#f6f2e8]/90 flex items-center justify-between border-t border-[#0F2C48]/5">
-                  <span class="text-[10px] text-gray-500 font-bold tracking-wide">Média interactif</span>
+              <!-- FOOTER / ACTION BUTTON BEAU GOSSE -->
+              <div class="mt-3 mb-1 px-3 flex items-center justify-between">
+                  <div class="flex gap-1.5">
+                      <div class="w-2 h-2 rounded-full bg-[#F25022] shadow-inner"></div>
+                      <div class="w-2 h-2 rounded-full bg-[#7FBA00] shadow-inner"></div>
+                      <div class="w-2 h-2 rounded-full bg-[#00A4EF] shadow-inner"></div>
+                      <div class="w-2 h-2 rounded-full bg-[#FFB900] shadow-inner"></div>
+                  </div>
                   <a href="${originalUrl}" target="_blank"
-                     class="flex items-center gap-2 px-4 py-2 bg-[#0F2C48] hover:bg-blue-900 text-white rounded-xl text-[10px] font-black transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
-                      Ouvrir l'original <i class="fas fa-external-link-alt text-[10px]"></i>
+                     class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#0F2C48] to-[#1a4b7c] text-white rounded-full text-[10px] font-black transition-all duration-300 shadow-[0_5px_15px_rgba(15,44,72,0.3)] hover:shadow-[0_8px_20px_rgba(15,44,72,0.4)] hover:-translate-y-1 border border-white/20 relative overflow-hidden group">
+                      <div class="absolute inset-0 bg-white/20 w-full h-full skew-x-12 -translate-x-full group-hover:animate-glassShine"></div>
+                      Ouvrir en grand <i class="fas fa-external-link-alt text-[10px]"></i>
                   </a>
               </div>
           </div>
@@ -518,9 +572,9 @@
 
 
       // ==============================================================
-      // PREVIEW INLINE UNIVERSEL (PDF / LIENS / DRIVE) AVEC MINI-LECTEUR
+      // PREVIEW INLINE UNIVERSEL (ADAPTATIF)
       // ==============================================================
-      window.toggleInlineContent = function(id, url, type) {
+      window.toggleInlineContent = function(id, url, type, titre) {
           const container = document.getElementById(`inline-media-${id}`);
 
           if (!url) return;
@@ -540,24 +594,15 @@
               el.dataset.currentUrl = '';
           });
 
-          let isEmbeddable = true;
-
-          // Types connus bloqués
-          if (type === "web") {
-              // Beaucoup de sites refusent iframe
-              isEmbeddable = false;
-          }
-
-          let contentHtml = '';
-
-          if (isEmbeddable) {
-              // 🔁 INTÉGRATION DU MINI LECTEUR ICI
-              contentHtml = buildMiniPlayer(url, url);
+          // Si c'est un contenu encastrable (Vidéo, PDF, Slide, Audio, Image, Excel)
+          if (type.startsWith("embed-")) {
+              container.innerHTML = buildMiniPlayer(url, url, type, titre);
           } else {
-              contentHtml = `
+              // Sécurité (au cas où on appellerait ça pour un type non supporté)
+              container.innerHTML = `
                   <div class="mt-4 bg-white/60 backdrop-blur-xl rounded-2xl p-4 border shadow animate-slideIn text-center max-w-[400px]">
                       <p class="text-sm font-bold text-gray-600 mb-3">
-                          🔒 Ce contenu ne peut pas être affiché ici
+                          🔒 Ce contenu doit s'ouvrir dans une nouvelle page.
                       </p>
                       <a href="${url}" target="_blank"
                          class="inline-block bg-[#0F2C48] text-white px-4 py-2 rounded-lg text-xs font-bold hover:shadow-lg">
@@ -567,7 +612,6 @@
               `;
           }
 
-          container.innerHTML = contentHtml;
           container.dataset.currentUrl = url;
           container.classList.remove('hidden');
       };
@@ -577,14 +621,16 @@
       // ==============================================================
       let pendingPdfUrl = "";
       let pendingPdfId = "";
+      let pendingPdfTitre = "";
 
-      window.handleProtectedClick = function(url, id) {
+      window.handleProtectedClick = function(url, id, titre) {
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
           if (isUnlocked) {
-              toggleInlineContent(id, url, 'pdf');
+              toggleInlineContent(id, url, 'embed-pdf', titre);
           } else {
               pendingPdfUrl = url;
               pendingPdfId = id;
+              pendingPdfTitre = titre;
               document.getElementById('pinModal').style.display = 'flex';
               setTimeout(() => {
                   document.getElementById('pinModalContent').classList.remove('scale-95');
@@ -612,9 +658,10 @@
               afficherModules(document.getElementById("searchInput").value, false);
 
               if (pendingPdfUrl && pendingPdfId) {
-                  toggleInlineContent(pendingPdfId, pendingPdfUrl, 'pdf');
+                  toggleInlineContent(pendingPdfId, pendingPdfUrl, 'embed-pdf', pendingPdfTitre);
                   pendingPdfUrl = "";
                   pendingPdfId = "";
+                  pendingPdfTitre = "";
               } else if (pendingPdfUrl) {
                   window.open(pendingPdfUrl, '_blank');
                   pendingPdfUrl = "";
@@ -694,17 +741,21 @@
           }
 
           const safeUrl = finalUrl.replace(/'/g, "\\'");
+          const safeTitre = (titre || "").replace(/'/g, "\\'");
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
 
-          if (type === 'pdf') {
-              if (!isUnlocked) {
-                  return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}')" style="cursor:pointer;"` };
-              } else {
-                  return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', 'pdf')" style="cursor:pointer;"` };
-              }
-          } else {
-              return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}')" style="cursor:pointer;"` };
+          // Les éléments externes (Quiz, Glossaire, Carte, Lien Studi)
+          if (type === 'external') {
+              return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
           }
+
+          // PDF Protégé
+          if (type === 'embed-pdf' && !isUnlocked) {
+              return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
+          }
+
+          // Tout le reste des embeds (Vidéo, Infographie, Slides, Audio, PDF Déverrouillé)
+          return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"` };
       }
 
       function afficherModules(filtre = "", anim = true) {
@@ -727,17 +778,18 @@
           if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
+          // DÉFINITION DES TYPES (embed- vs external)
           const res = [
-            { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "audio" },
-            { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours, type: "pdf" },
-            { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "web" },
-            { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel, type: "doc" },
-            { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie, type: "image" },
-            { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null, type: "presentation" },
-            { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo, type: "video" },
-            { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, type: "web" },
-            { id: "map", em: "🧠", n: "Carte", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "web" },
-            { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "web" },
+            { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio" },
+            { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf" },
+            { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external" },
+            { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel, type: "embed-doc" },
+            { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie, type: "embed-image" },
+            { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null, type: "embed-presentation" },
+            { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo, type: "embed-video" },
+            { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, type: "external" },
+            { id: "map", em: "🧠", n: "Carte", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "external" },
+            { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "external" },
           ];
 
           let lineChecked = 0;
@@ -753,14 +805,15 @@
             let tooltipText = r.n;
             let btnClass = r.b;
 
-            if (r.type === 'pdf' && !isUnlocked && r.url) {
+            if (r.type === 'embed-pdf' && !isUnlocked && r.url) {
                 displayEmoji = "🔒";
                 tooltipText = "Accès Restreint";
                 btnClass = "bg-locked";
             }
 
+            // On retire le href pour forcer l'usage du Javascript si ce n'est pas "external"
             return `<div class="relative tooltip-container">
-                        <${linkProps.tag} ${linkProps.action} class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText}')"><span>${displayEmoji}</span></${linkProps.tag}>
+                        <${linkProps.tag} ${linkProps.action} class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText.replace(/'/g, "\\'")}')"><span>${displayEmoji}</span></${linkProps.tag}>
                         <button onclick="toggleRes('${id}','${r.id}')" class="check-badge ${checkC}"><i class="fas fa-check"></i></button>
                         <span class="tooltip">${tooltipText}</span>
                     </div>`;
