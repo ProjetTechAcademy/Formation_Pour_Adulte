@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V3</title>
+    <title>Formation Pour Adulte - V4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -471,64 +471,59 @@
         return url;
       }
 
-      // 🎬 2. LECTEUR INTÉGRÉ ADAPTATIF (Contenant Caméléon)
+      // 🎬 2. LECTEUR INTÉGRÉ ADAPTATIF (Pleine largeur)
       function buildMiniPlayer(url, originalUrl, type, titre) {
         const finalUrl = normalizeUrl(url);
 
         // Valeurs par défaut (pour une vidéo)
-        let heightClass = "h-[200px] md:h-[280px]";
-        let maxWidthClass = "max-w-[600px] mx-auto md:ml-0";
+        let heightClass = "h-[250px] md:h-[450px]"; // Plus haut car on est en "Pleine largeur"
+        let maxWidthClass = "w-full"; // NOUVEAUTÉ : Toujours sur toute la longueur !
         let headerBg = "bg-[#f6f2e8]/60";
         let iconEmoji = "🎬";
-        let titleText = "Mini-Lecteur Vidéo";
+        let titleText = "Lecteur Vidéo - " + titre;
         let pulseColor = "bg-[#10b981]"; // Vert par défaut
 
         // ADAPTATION DU CONTENANT SELON LE CONTENU
         if (type === 'embed-pdf') {
-            heightClass = "h-[500px] md:h-[700px]";
-            maxWidthClass = "w-full"; // Prends toute la largeur pour bien lire
+            heightClass = "h-[500px] md:h-[800px]";
             headerBg = "bg-blue-100/60";
             iconEmoji = "📄";
             titleText = "Document PDF - " + titre;
             pulseColor = "bg-[#0F2C48]";
         } else if (type === 'embed-presentation') {
-            heightClass = "h-[300px] md:h-[450px]";
-            maxWidthClass = "max-w-[800px] mx-auto md:ml-0";
+            heightClass = "h-[350px] md:h-[600px]";
             headerBg = "bg-orange-100/60";
             iconEmoji = "📽️";
             titleText = "Diaporama - " + titre;
             pulseColor = "bg-[#d83b01]";
         } else if (type === 'embed-image') {
-            heightClass = "h-[400px] md:h-[600px]";
-            maxWidthClass = "max-w-[800px] mx-auto md:ml-0";
+            heightClass = "h-[450px] md:h-[700px]";
             headerBg = "bg-red-100/60";
             iconEmoji = "🖼️";
             titleText = "Infographie - " + titre;
             pulseColor = "bg-[#e81123]";
         } else if (type === 'embed-doc') {
-            heightClass = "h-[300px] md:h-[400px]";
-            maxWidthClass = "max-w-[700px] mx-auto md:ml-0";
+            heightClass = "h-[300px] md:h-[500px]";
             headerBg = "bg-green-100/60";
             iconEmoji = "📊";
             titleText = "Document Excel - " + titre;
             pulseColor = "bg-[#107c41]";
         } else if (type === 'embed-audio') {
-            heightClass = "h-[150px]";
-            maxWidthClass = "max-w-[400px] mx-auto md:ml-0";
+            heightClass = "h-[90px] md:h-[110px]"; // NOUVEAUTÉ : Audio ultra fin !
             headerBg = "bg-indigo-100/60";
             iconEmoji = "🎧";
-            titleText = "Extrait Audio";
+            titleText = "Extrait Audio - " + titre;
             pulseColor = "bg-[#667eea]";
         }
 
         return `
-          <div class="mt-4 w-full ${maxWidthClass} rounded-[24px] overflow-hidden bg-white/60 backdrop-blur-2xl border border-white/60 shadow-[0_15px_35px_rgba(15,44,72,0.08)] animate-slideIn p-2 transition-all hover:shadow-[0_20px_40px_rgba(15,44,72,0.12)]">
+          <div class="mt-4 ${maxWidthClass} rounded-[24px] overflow-hidden bg-white/60 backdrop-blur-2xl border border-white/60 shadow-[0_15px_35px_rgba(15,44,72,0.08)] animate-slideIn p-2 transition-all hover:shadow-[0_20px_40px_rgba(15,44,72,0.12)]">
 
               <!-- HEADER COLORÉ ET DYNAMIQUE -->
               <div class="flex items-center justify-between mb-2 px-3 pt-2 ${headerBg} rounded-xl pb-2">
                   <div class="flex items-center gap-2">
                       <span class="text-xl">${iconEmoji}</span>
-                      <span class="text-[11px] font-black uppercase tracking-widest text-[#0F2C48] truncate max-w-[200px] md:max-w-[400px]">
+                      <span class="text-[11px] font-black uppercase tracking-widest text-[#0F2C48] truncate max-w-[200px] md:max-w-full">
                           ${titleText}
                       </span>
                   </div>
@@ -554,12 +549,13 @@
 
               <!-- FOOTER / ACTION BUTTON BEAU GOSSE -->
               <div class="mt-3 mb-1 px-3 flex items-center justify-between">
-                  <div class="flex gap-1.5">
+                  <div class="flex gap-1.5 hidden md:flex">
                       <div class="w-2 h-2 rounded-full bg-[#F25022] shadow-inner"></div>
                       <div class="w-2 h-2 rounded-full bg-[#7FBA00] shadow-inner"></div>
                       <div class="w-2 h-2 rounded-full bg-[#00A4EF] shadow-inner"></div>
                       <div class="w-2 h-2 rounded-full bg-[#FFB900] shadow-inner"></div>
                   </div>
+                  <div class="text-[9px] font-bold text-gray-500 uppercase tracking-widest ml-1 md:hidden">Interactif</div>
                   <a href="${originalUrl}" target="_blank"
                      class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#0F2C48] to-[#1a4b7c] text-white rounded-full text-[10px] font-black transition-all duration-300 shadow-[0_5px_15px_rgba(15,44,72,0.3)] hover:shadow-[0_8px_20px_rgba(15,44,72,0.4)] hover:-translate-y-1 border border-white/20 relative overflow-hidden group">
                       <div class="absolute inset-0 bg-white/20 w-full h-full skew-x-12 -translate-x-full group-hover:animate-glassShine"></div>
@@ -572,7 +568,7 @@
 
 
       // ==============================================================
-      // PREVIEW INLINE UNIVERSEL (ADAPTATIF)
+      // PREVIEW INLINE UNIVERSEL (MODE COMBO INTÉGRÉ)
       // ==============================================================
       window.toggleInlineContent = function(id, url, type, titre) {
           const container = document.getElementById(`inline-media-${id}`);
@@ -594,15 +590,46 @@
               el.dataset.currentUrl = '';
           });
 
-          // Si c'est un contenu encastrable (Vidéo, PDF, Slide, Audio, Image, Excel)
+          let contentHtml = '';
+
+          // Si c'est un contenu encastrable
           if (type.startsWith("embed-")) {
-              container.innerHTML = buildMiniPlayer(url, url, type, titre);
+
+              // === MODE COMBO AUDIO + VISUEL ===
+              if (type === 'embed-audio') {
+                  // 1. On affiche le lecteur audio (ultra fin)
+                  contentHtml += buildMiniPlayer(url, url, type, titre);
+
+                  // 2. On cherche dans la base de données si ce module a une infographie ou une slide
+                  const itemObj = database.find(d => d.Code === id);
+                  if (itemObj) {
+                      let infogUrl = itemObj.Infographie;
+                      let slideUrl = itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null;
+
+                      if (infogUrl && infogUrl.trim() !== '') {
+                          contentHtml += `
+                          <div class="flex items-center justify-center mt-6 mb-[-10px] gap-2 text-[#B4792A] text-[10px] font-black uppercase tracking-widest opacity-90 animate-slideIn">
+                             <i class="fas fa-link"></i> Support visuel synchronisé
+                          </div>`;
+                          contentHtml += buildMiniPlayer(infogUrl, infogUrl, 'embed-image', titre);
+                      } else if (slideUrl && slideUrl.trim() !== '') {
+                          contentHtml += `
+                          <div class="flex items-center justify-center mt-6 mb-[-10px] gap-2 text-[#B4792A] text-[10px] font-black uppercase tracking-widest opacity-90 animate-slideIn">
+                             <i class="fas fa-link"></i> Support visuel synchronisé
+                          </div>`;
+                          contentHtml += buildMiniPlayer(slideUrl, slideUrl, 'embed-presentation', titre);
+                      }
+                  }
+              } else {
+                  // Classique : On affiche juste le lecteur normal
+                  contentHtml = buildMiniPlayer(url, url, type, titre);
+              }
           } else {
-              // Sécurité (au cas où on appellerait ça pour un type non supporté)
-              container.innerHTML = `
-                  <div class="mt-4 bg-white/60 backdrop-blur-xl rounded-2xl p-4 border shadow animate-slideIn text-center max-w-[400px]">
+              // Sécurité (Types externes)
+              contentHtml = `
+                  <div class="mt-4 bg-white/60 backdrop-blur-xl rounded-2xl p-4 border shadow animate-slideIn text-center w-full">
                       <p class="text-sm font-bold text-gray-600 mb-3">
-                          🔒 Ce contenu doit s'ouvrir dans une nouvelle page.
+                          🔒 Ce contenu s'ouvre dans une nouvelle page.
                       </p>
                       <a href="${url}" target="_blank"
                          class="inline-block bg-[#0F2C48] text-white px-4 py-2 rounded-lg text-xs font-bold hover:shadow-lg">
@@ -612,6 +639,7 @@
               `;
           }
 
+          container.innerHTML = contentHtml;
           container.dataset.currentUrl = url;
           container.classList.remove('hidden');
       };
@@ -843,7 +871,7 @@
                 </div>
             </div>
             <!-- Conteneur INLINE MEDIA -->
-            <div id="inline-media-${id}" class="hidden w-full" data-current-url=""></div>
+            <div id="inline-media-${id}" class="hidden w-full flex-col" data-current-url=""></div>
           `;
           list.appendChild(card);
           cardIdx++;
