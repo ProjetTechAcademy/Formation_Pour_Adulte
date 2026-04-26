@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V12</title>
+    <title>Formation Pour Adulte - V13</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -991,37 +991,46 @@
           card.className = `card-module p-6 rounded-2xl mb-3 ${isFull ? "border-green-400/50 bg-green-50/80" : ""} ${anim ? "card-animate" : ""}`;
           if (anim) card.style.animationDelay = `${cardIdx * 0.03}s`;
 
+          // NOUVELLE STRUCTURE SANS L'ESPACE VIDE SUR LA DROITE
           card.innerHTML = `
-            <div class="flex flex-col md:flex-row gap-5 relative z-10">
-                <div class="flex-grow">
-                    <div class="flex items-center gap-3 mb-2">
-                        <span class="text-black font-black text-2xl pr-2 opacity-80">${id.split("_")[0]}</span>
-                        <h3 class="font-bold text-lg text-[#0F2C48] leading-tight">${titre}</h3>
+            <div class="flex flex-col relative z-10">
+                <!-- TOP : En-tête du module -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <span class="text-black font-black text-2xl pr-2 opacity-80">${id.split("_")[0]}</span>
+                            <h3 class="font-bold text-lg text-[#0F2C48] leading-tight">${titre}</h3>
+                        </div>
+                        <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest opacity-80">${id}</p>
                     </div>
-                    <p class="text-[10px] text-[#B4792A] font-bold uppercase mb-5 tracking-widest opacity-80">${id}</p>
-                    <div class="flex flex-wrap gap-3">${htmlRes}</div>
                 </div>
 
-                <div class="flex flex-col items-center justify-center min-w-[150px] border-t md:border-t-0 md:border-l pt-5 md:pt-0 md:pl-5 border-gray-200/50">
+                <!-- MIDDLE : Ressources (Emojis) -->
+                <div class="flex flex-wrap gap-3 mb-6">
+                    ${htmlRes}
+                </div>
 
-                    <!-- NOUVELLE MINI BARRE DE PROGRESSION DU MODULE -->
-                    <div class="w-full mb-3">
-                        <div class="flex justify-between items-end mb-1">
-                            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Avancement</span>
+                <!-- BOTTOM : Footer avec Barre de progression et Bouton Valider -->
+                <div class="flex flex-wrap md:flex-nowrap items-center justify-between pt-4 border-t border-gray-200/50 gap-4">
+                    <!-- Barre de progression -->
+                    <div class="w-full md:max-w-[300px]">
+                        <div class="flex justify-between items-end mb-1.5">
+                            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Avancement du module</span>
                             <span class="text-[10px] font-black ${isFull ? 'text-green-500' : 'text-[#0F2C48]'}">${linePercent}%</span>
                         </div>
-                        <div class="w-full bg-gray-200/60 h-1.5 rounded-full overflow-hidden shadow-inner">
+                        <div class="w-full bg-gray-200/60 h-2 rounded-full overflow-hidden shadow-inner">
                             <div class="h-full bg-gradient-to-r from-[#10b981] to-[#34d399] rounded-full transition-all duration-700 ease-out" style="width: ${linePercent}%;"></div>
                         </div>
                     </div>
 
-                    <button onclick="toggleLine('${id}')" class="btn-valider-3d px-6 py-3.5 rounded-xl text-xs w-full ${isFull ? "btn-success-line" : ""}">
+                    <!-- Bouton -->
+                    <button onclick="toggleLine('${id}')" class="btn-valider-3d px-8 py-3 rounded-xl text-xs w-full md:w-auto md:min-w-[160px] whitespace-nowrap ${isFull ? "btn-success-line" : ""}">
                          ${isFull ? "Terminé ✅" : "Valider tout"}
                     </button>
                 </div>
             </div>
             <!-- Conteneur INLINE MEDIA -->
-            <div id="inline-media-${id}" class="hidden w-full flex-col relative z-0" data-current-url=""></div>
+            <div id="inline-media-${id}" class="hidden w-full flex-col relative z-0 mt-4" data-current-url=""></div>
           `;
           list.appendChild(card);
           cardIdx++;
