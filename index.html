@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formation Pour Adulte - V6</title>
+    <title>Formation Pour Adulte - V7</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -514,6 +514,18 @@
             iconEmoji = "🎧";
             titleText = "Extrait Audio - " + titre;
             pulseColor = "bg-[#667eea]";
+        } else if (type === 'embed-glo') {
+            heightClass = "h-[400px] md:h-[600px]";
+            headerBg = "bg-slate-100/60";
+            iconEmoji = "📚";
+            titleText = "Lexique - " + titre;
+            pulseColor = "bg-[#4a5568]";
+        } else if (type === 'embed-map') {
+            heightClass = "h-[450px] md:h-[700px]";
+            headerBg = "bg-yellow-100/60";
+            iconEmoji = "🧠";
+            titleText = "Carte Mentale - " + titre;
+            pulseColor = "bg-[#ffb900]";
         }
 
         return `
@@ -537,7 +549,7 @@
 
               <!-- PLAYER (Hauteur Dynamique sans AUCUN FOND NOIR AUTOUR) -->
               <div class="w-full relative rounded-xl overflow-hidden bg-white/50 ${heightClass} shadow-inner border border-white/50 flex items-center justify-center">
-                  <!-- Petit loader pendant que le Drive charge -->
+                  <!-- Petit loader pendant que le document charge -->
                   <i class="fas fa-circle-notch fa-spin absolute text-[#0F2C48]/20 text-3xl -z-10"></i>
                   <iframe
                       src="${finalUrl}"
@@ -571,7 +583,7 @@
       // FONCTION POUR BASCULER ENTRE LES VUES (COMBO MULTI-VISUELS)
       // ==============================================================
       window.switchComboVisual = function(moduleId, visualId) {
-          const visuals = ['slide', 'infog', 'excel'];
+          const visuals = ['slide', 'infog', 'excel', 'map', 'glo'];
           visuals.forEach(v => {
               const btn = document.getElementById(`btn-${v}-${moduleId}`);
               const panel = document.getElementById(`combo-${v}-${moduleId}`);
@@ -614,12 +626,19 @@
 
           let contentHtml = '';
 
-          // On vérifie si c'est un type qui mérite le Mode "Espace Interactif" (Audio, Excel, Infog, Slide)
-          const comboEligibleTypes = ['embed-audio', 'embed-presentation', 'embed-image', 'embed-doc'];
+          // On vérifie si c'est un type qui mérite le Mode "Espace Interactif"
+          const comboEligibleTypes = ['embed-audio', 'embed-presentation', 'embed-image', 'embed-doc', 'embed-glo', 'embed-map'];
 
           if (comboEligibleTypes.includes(type)) {
 
               const itemObj = database.find(d => d.Code === id);
+
+              // Recréer les URL pour la carte mentale et le lexique (sont toujours générés)
+              const fullItemName = `${id} - ${titre}`;
+              const safeFileName = encodeURIComponent(fullItemName) + '.html';
+              let gloUrl = `Glossaire/${safeFileName}`;
+              let mapUrl = `Carte Mentale/${safeFileName}`;
+
               if (itemObj) {
                   let audioUrl = itemObj.Audio;
                   let infogUrl = itemObj.Infographie;
@@ -637,11 +656,17 @@
                   if (hasInfog) visuals.push({ id: 'infog', url: infogUrl, type: 'embed-image', icon: '🖼️', label: 'Infographie' });
                   if (hasExcel) visuals.push({ id: 'excel', url: excelUrl, type: 'embed-doc', icon: '📊', label: 'Tableur Excel' });
 
+                  // On ajoute la carte mentale et le lexique
+                  visuals.push({ id: 'map', url: mapUrl, type: 'embed-map', icon: '🧠', label: 'Carte Mentale' });
+                  visuals.push({ id: 'glo', url: gloUrl, type: 'embed-glo', icon: '📚', label: 'Lexique' });
+
                   // On détermine quel visuel afficher par défaut selon le bouton cliqué
                   let activeVisualId = null;
                   if (type === 'embed-presentation') activeVisualId = 'slide';
                   else if (type === 'embed-image') activeVisualId = 'infog';
                   else if (type === 'embed-doc') activeVisualId = 'excel';
+                  else if (type === 'embed-glo') activeVisualId = 'glo';
+                  else if (type === 'embed-map') activeVisualId = 'map';
                   else if (type === 'embed-audio' && visuals.length > 0) activeVisualId = visuals[0].id; // Si on a cliqué sur audio, on affiche le premier visuel dispo
 
                   let comboHtml = '';
@@ -651,7 +676,7 @@
                       comboHtml += buildMiniPlayer(audioUrl, audioUrl, 'embed-audio', titre);
                   }
 
-                  // 2. On gère l'affichage des supports visuels (Slide, Infog, Excel)
+                  // 2. On gère l'affichage des supports visuels
                   if (visuals.length > 0) {
                       comboHtml += `
                       <div class="flex flex-col items-center justify-center mt-6 mb-[-5px] animate-slideIn w-full">
@@ -694,7 +719,7 @@
               // Pour les autres médias (Vidéo, PDF...)
               contentHtml = buildMiniPlayer(url, url, type, titre);
           } else {
-              // Sécurité (Types externes)
+              // Sécurité (Types externes, bien que Lexique et Carte ne le soient plus)
               contentHtml = `
                   <div class="mt-4 bg-white/60 backdrop-blur-xl rounded-2xl p-4 border shadow animate-slideIn text-center w-full">
                       <p class="text-sm font-bold text-gray-600 mb-3">
@@ -841,7 +866,7 @@
           const safeTitre = (titre || "").replace(/'/g, "\\'");
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
 
-          // Les éléments externes (Quiz, Glossaire, Carte, Lien Studi)
+          // Les éléments externes (Quiz, Lien Studi)
           if (type === 'external') {
               return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
           }
@@ -851,7 +876,7 @@
               return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
           }
 
-          // Tout le reste des embeds (Vidéo, Infographie, Slides, Audio, PDF Déverrouillé, Excel)
+          // Tout le reste des embeds (Vidéo, Infographie, Slides, Audio, PDF, Excel, Carte Mentale, Lexique)
           return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"` };
       }
 
@@ -875,7 +900,7 @@
           if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
-          // DÉFINITION DES TYPES (embed- vs external)
+          // DÉFINITION DES TYPES AVEC LEXIQUE ET CARTE INTÉGRÉS
           const res = [
             { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio" },
             { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf" },
@@ -884,8 +909,8 @@
             { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie, type: "embed-image" },
             { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null, type: "embed-presentation" },
             { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo, type: "embed-video" },
-            { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, type: "external" },
-            { id: "map", em: "🧠", n: "Carte", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "external" },
+            { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, type: "embed-glo" },
+            { id: "map", em: "🧠", n: "Carte", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "embed-map" },
             { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "external" },
           ];
 
