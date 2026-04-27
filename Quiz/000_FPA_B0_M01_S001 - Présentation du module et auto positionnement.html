@@ -28,7 +28,7 @@
             display: flex; justify-content: center; align-items: flex-start;
             min-height: 100vh; overflow-x: hidden;
             transition: all 0.5s ease;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
         }
 
         /* --- BARRE GLOBALE PAIA (ACCESSIBILITÉ COMPLÈTE) --- */
@@ -71,7 +71,6 @@
         .platform-name { font-family: 'Roboto', sans-serif; font-size: 2rem; font-weight: 900; color: var(--title-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0; line-height: 1; }
         .platform-sub { color: var(--alert-bronze); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; margin-top: 6px; }
 
-        /* Bouton Teams */
         .btn-teams {
             background: linear-gradient(135deg, #464EB8 0%, #E81123 50%, #FFB900 100%);
             color: #ffffff; padding: 10px 22px; border-radius: 50px; text-decoration: none;
@@ -165,7 +164,7 @@
     <div class="divider-vert"></div>
     <div class="control-group-horiz">
         <button class="acc-btn" onclick="changeSpeechRate(-0.1)">🗣️-</button>
-        <span id="ui-rate" style="font-weight:700; font-size:0.85rem; min-width:35px; text-align:center;">x1.2</span>
+        <span id="ui-rate" style="font-weight:700; font-size:0.85rem; min-width:35px; text-align:center;">x1.1</span>
         <button class="acc-btn" onclick="changeSpeechRate(0.1)">🗣️+</button>
     </div>
 </div>
@@ -219,7 +218,7 @@
             </div>
         </div>
         <div id="ui-motivation-start" class="motivation-banner">
-            Bienvenue dans le parcours Animation. Prêt à évaluer vos pratiques et découvrir les 45 activités ?
+            Bienvenue Mathilde. Prête pour le diagnostic de vos pratiques d'animation ?
         </div>
         <button class="btn-action" onclick="startGame()">DÉMARRER LA SESSION 🚀</button>
     </div>
@@ -272,68 +271,72 @@
 </div>
 
 <script>
-    // --- BANQUE DE 30 QUESTIONS (FICHE 000 - PRÉSENTATION & AUTO-POSITIONNEMENT) ---
+    // --- BANQUE DE 30 QUESTIONS (FICHE 000 ANIMATION) ---
     const questionBank = [
-        {q: "Quel est l'objectif principal de la session 1 (B1M5S1) ?", options: ["Animer une classe virtuelle", "Présenter le module et s'auto-positionner", "Vendre des formations"], correct: 1, rationale: "Cette première session sert de diagnostic initial et présente la structure du module." },
-        {q: "Combien d'ateliers de lancement (Ice breakers) sont prévus en session 2 ?", options: ["5", "10", "15"], correct: 2, rationale: "La fiche mentionne explicitement 15 techniques d'Ice breakers ou ateliers de lancement." },
-        {q: "Les sessions 3 et 4 du module sont dédiées à quoi ?", options: ["La comptabilité", "La création d'environ 15 jeux pédagogiques", "L'audit Qualiopi"], correct: 1, rationale: "Ces deux sessions se concentrent sur la ludification via une quinzaine de jeux." },
-        {q: "Combien de scénarios pédagogiques sont abordés en session 5 ?", options: ["2", "Une dizaine", "50"], correct: 1, rationale: "La session 5 permet d'accéder à une dizaine de scénarios pédagogiques types." },
-        {q: "Quelle est la particularité de la session 6 ?", options: ["C'est une évaluation finale", "Elle propose une représentation matricielle des activités", "C'est une pause café"], correct: 1, rationale: "Elle synthétise les 45 activités via une matrice classée par typologie, participants et temps." },
-        {q: "Au total, combien d'activités pédagogiques sont identifiées dans ce module ?", options: ["10", "25", "45"], correct: 2, rationale: "Le cumul des ice breakers (15), jeux (15) et scénarios (10) + bonus amène à 45 activités." },
-        {q: "L'implication émotionnelle des participants nécessite quoi de la part du formateur ?", options: ["De crier fort", "Du rythme et des pauses", "De ne jamais s'arrêter"], correct: 1, rationale: "La gestion des émotions et de l'énergie passe par un rythme adapté et des temps de respiration." },
-        {q: "Les activités pédagogiques présentées dans le module sont visibles via quel format ?", options: ["Texte uniquement", "Audio", "Vidéo"], correct: 2, rationale: "La fiche précise que l'ensemble de ces activités pédagogiques seront visibles en vidéo." },
-        {q: "L'auto-positionnement suggère de renouveler ses jeux pédagogiques tous les :", options: ["10 ans", "5 ans", "Ans (chaque année)", "Mois"], correct: 2, rationale: "Le renouvellement annuel est un indicateur de dynamisme et d'innovation pédagogique." },
-        {q: "Un formateur doit-il varier ses techniques selon le nombre de participants ?", options: ["Oui, c'est indispensable pour l'efficacité", "Non, la technique est universelle", "Seulement si les participants le demandent"], correct: 0, rationale: "L'adaptation au groupe est un pilier de la posture de facilitateur." },
-        {q: "Que signifie s'auto-positionner au début d'un module ?", options: ["Choisir sa place dans la salle", "Évaluer ses pratiques actuelles par rapport aux objectifs du module", "Se présenter aux autres"], correct: 1, rationale: "Cela permet de mesurer le chemin à parcourir pendant la formation." },
-        {q: "La matrice des activités en session 6 classe les outils selon quels critères ?", options: ["Prix et couleur", "Nom du créateur", "Typologie, nombre de participants et temps alloué"], correct: 2, rationale: "C'est un outil d'aide au choix stratégique pour le formateur." },
-        {q: "Expérimenter régulièrement de nouveaux formats est un signe de :", options: ["Perte de temps", "Innovation et agilité pédagogique", "Manque de sérieux"], correct: 1, rationale: "La curiosité et le test de nouveaux formats enrichissent la palette du formateur." },
-        {q: "Le partage de scénarios avec des collègues est encouragé dans l'auto-évaluation.", options: ["Vrai", "Faux"], correct: 0, rationale: "La collaboration entre pairs est un levier de montée en compétences collectives." },
-        {q: "Un 'Ice breaker' sert prioritairement à :", options: ["Faire baisser le chauffage", "Démarrer une session et briser la glace entre participants", "Évaluer les connaissances théoriques"], correct: 1, rationale: "Il installe un climat de confiance dès le début de la formation." },
-        {q: "Quel aspect de l'apprentissage est souligné comme demandant une attention émotionnelle ?", options: ["Le calcul mathématique", "L'implication des participants", "Le règlement intérieur"], correct: 1, rationale: "Apprendre n'est pas que cognitif, c'est aussi un processus émotionnel." },
-        {q: "La diversification des techniques d'animation favorise :", options: ["La fatigue du formateur", "L'engagement et le maintien de l'attention", "L'anarchie dans le groupe"], correct: 1, rationale: "Casser la monotonie permet de garder les apprenants actifs." },
-        {q: "Pourquoi les vidéos sont-elles utilisées pour présenter les 45 activités ?", options: ["Pour faire joli", "Pour montrer concrètement la mise en œuvre réelle", "Parce que le formateur ne sait pas écrire"], correct: 1, rationale: "La vidéo permet d'observer la posture et la dynamique de l'activité." },
-        {q: "Le module B1M5 traite globalement de quelle thématique ?", options: ["L'ingénierie financière", "L'animation de formation", "Le cadre légal"], correct: 1, rationale: "Le bloc B1M5 est centré sur les techniques d'animation et de dynamisation." },
-        {q: "En session 2, les ateliers sont aussi appelés techniques de...", options: ["Clôture", "Lancement", "Sanction"], correct: 1, rationale: "Il s'agit des ateliers de lancement d'une session ou d'une séquence." },
-        {q: "L'auto-positionnement interroge sur la variation des techniques selon :", options: ["La météo", "Le nombre de participants", "L'humeur du gérant"], correct: 1, rationale: "La taille du groupe influence directement le choix de l'outil d'animation." },
-        {q: "Le formateur doit-il expériementer des formats 'hors-piste' ?", options: ["Oui, de nouveaux formats régulièrement", "Non, il faut rester académique", "Seulement à distance"], correct: 0, rationale: "L'innovation fait partie intégrante du perfectionnement professionnel." },
-        {q: "Le module promet d'accéder à combien de jeux pédagogiques ?", options: ["5", "10", "15"], correct: 2, rationale: "Une quinzaine de jeux pédagogiques sont prévus en sessions 3 et 4." },
-        {q: "La notion de 'rythme' en formation est liée à :", options: ["La musique diffusée", "L'alternance des activités et des phases de repos", "La vitesse de parole du formateur"], correct: 1, rationale: "Le rythme évite la surcharge cognitive et la lassitude." },
-        {q: "La représentation matricielle est comparée à une...", options: ["Équation", "Synthèse", "Représentation visuelle des 45 activités"], correct: 2, rationale: "C'est une vue d'ensemble structurée pour faciliter le choix des outils." },
-        {q: "L'auto-positionnement est un test noté pour l'examen.", options: ["Vrai", "Faux, c'est une évaluation pour soi-même"], correct: 1, rationale: "Il sert à situer son propre niveau de pratique avant de progresser." },
-        {q: "La création de ses propres scénarios pédagogiques est une compétence visée.", options: ["Vrai", "Faux"], correct: 0, rationale: "Le formateur doit être capable de construire son propre déroulé logique." },
-        {q: "Quel est le risque de ne pas varier ses techniques ?", options: ["Aucun", "Désengagement des apprenants", "Diminution du coût de la formation"], correct: 1, rationale: "La monotonie est l'ennemie numéro 1 de l'apprentissage des adultes." },
-        {q: "Le module B1M5S1 est daté de :", options: ["Janvier 2010", "Juin 2020", "Décembre 2023"], correct: 1, rationale: "La fiche indique 'Juin 2020' comme date de contexte." },
-        {q: "Les 45 activités pédagogiques sont classées en combien de grandes catégories (sessions) ?", options: ["2", "4", "6"], correct: 1, rationale: "Lancement (S2), Jeux (S3-4), Scénarios (S5) et Matrice (S6)." }
+        {q: "En session 2, combien de techniques d'Ice breakers sont présentées ?", options: ["5 techniques", "15 techniques", "30 techniques"], correct: 1, rationale: "Le module présente 15 techniques spécifiques pour briser la glace au démarrage." },
+        {q: "Quelle session est consacrée à la matrice synthétique des 45 activités ?", options: ["Session 1", "Session 4", "Session 6"], correct: 2, rationale: "La session 6 compile toutes les activités dans une matrice de choix stratégique." },
+        {q: "Quel format est utilisé pour visualiser la mise en œuvre des 45 activités ?", options: ["Format texte PDF", "Format Vidéo", "Format Podcast"], correct: 1, rationale: "Toutes les activités pédagogiques du module sont illustrées en vidéo." },
+        {q: "Combien de jeux pédagogiques sont abordés dans les sessions 3 et 4 ?", options: ["5 environ", "10 environ", "15 environ"], correct: 2, rationale: "Une quinzaine de jeux pédagogiques sont détaillés pour dynamiser les séquences." },
+        {q: "Le formateur doit-il oublier l'implication émotionnelle des participants ?", options: ["Oui, seul le cognitif compte", "Non, elle demande du rythme et des pauses", "Seulement en formation théorique"], correct: 1, rationale: "L'émotion est le moteur de l'apprentissage ; elle nécessite une gestion fine du rythme." },
+        {q: "Que permet la matrice de la session 6 ?", options: ["De calculer le coût de la salle", "D'identifier les activités selon la typologie, le nombre d'apprenants et le temps", "De noter les participants"], correct: 1, rationale: "C'est un outil de décision pour choisir l'activité la plus adaptée au contexte." },
+        {q: "Quel est l'objectif de l'auto-positionnement au début du module ?", options: ["Définir le menu du déjeuner", "Évaluer ses propres compétences et pratiques initiales", "Valider l'examen final"], correct: 1, rationale: "C'est un diagnostic pour situer son niveau avant d'entamer le parcours." },
+        {q: "Combien de scénarios pédagogiques sont abordés en session 5 ?", options: ["2", "Une dizaine", "25"], correct: 1, rationale: "La session 5 propose une dizaine de scénarios types pour structurer les interventions." },
+        {q: "Sur un même cours, que suggère-t-on concernant les techniques d'animation ?", options: ["De ne jamais en changer", "De les varier selon le nombre de participants", "D'utiliser uniquement l'exposé"], correct: 1, rationale: "L'adaptation au volume du groupe est une compétence clé du formateur." },
+        {q: "Renouveler ses jeux pédagogiques chaque année est un signe de :", options: ["Manque de temps", "Innovation et agilité pédagogique", "Confusion technique"], correct: 1, rationale: "L'agilité demande de tester et d'adapter continuellement ses outils." },
+        {q: "Qu'est-ce qu'un format 'hors-piste' dans l'auto-évaluation ?", options: ["Une sortie en montagne", "Un format innovant expérimenté régulièrement", "Une erreur pédagogique"], correct: 1, rationale: "L'expérimentation de nouveaux formats 'hors-piste' enrichit la palette du facilitateur." },
+        {q: "Le partage de scénarios entre collègues est :", options: ["Interdit par Qualiopi", "Encouragé pour progresser ensemble", "Inutile si l'on est expert"], correct: 1, rationale: "La collaboration entre pairs est un puissant levier de montée en compétences." },
+        {q: "Un Ice breaker sert principalement à :", options: ["Évaluer les connaissances", "Démarrer un cours et créer une dynamique de groupe", "Faire la sieste"], correct: 1, rationale: "Il sert à 'briser la glace' et mettre les apprenants en confiance." },
+        {q: "Le rythme d'une formation est soutenu par :", options: ["La musique uniquement", "L'alternance entre activités actives et pauses de réflexion", "Le volume de la voix"], correct: 1, rationale: "Le rythme évite la saturation cognitive." },
+        {q: "Combien d'activités au total sont identifiées dans le module ?", options: ["20", "30", "45"], correct: 2, rationale: "Le module compile 45 activités (Ice breakers + Jeux + Scénarios)." },
+        {q: "Dans l'auto-positionnement, le critère 'Ludification' concerne :", options: ["Le fait de s'amuser seul", "L'utilisation de mécaniques de jeu pour apprendre", "Le jeu de cartes uniquement"], correct: 1, rationale: "Le jeu pédagogique sert des objectifs d'apprentissage précis." },
+        {q: "L'implication émotionnelle demande au formateur d'être :", options: ["Indifférent", "Un facilitateur attentif aux besoins du groupe", "Un acteur de théâtre uniquement"], correct: 1, rationale: "Le facilitateur gère l'énergie et l'engagement du groupe." },
+        {q: "La matrice des activités aide à gérer quel paramètre logistique ?", options: ["Le budget", "Le temps alloué à l'activité", "La température"], correct: 1, rationale: "Le temps est un critère majeur de la matrice de la session 6." },
+        {q: "Une session qui démarre mal peut nuire à l'apprentissage. Quel outil prévient cela ?", options: ["L'émargement", "L'Ice breaker de lancement", "Le diaporama"], correct: 1, rationale: "Un bon lancement conditionne l'engagement pour toute la suite." },
+        {q: "Les 15 jeux des sessions 3 et 4 visent quel bloc de compétences ?", options: ["La gestion financière", "L'animation de la formation", "La création de support de cours"], correct: 1, rationale: "Le module B1M5 est centré sur les techniques d'animation." },
+        {q: "L'innovation pédagogique est une compétence :", options: ["Facultative", "Indispensable pour rester pertinent face aux publics", "Inutile"], correct: 1, rationale: "L'adaptation permanente est le propre du formateur d'adultes." },
+        {q: "La fiche mentionne-t-elle des supports de lecture ?", options: ["Non, uniquement du texte", "Oui, l'ensemble est visible en vidéo", "Uniquement par téléphone"], correct: 1, rationale: "L'aspect visuel (vidéo) est central pour ce module d'animation." },
+        {q: "L'auto-positionnement interroge sur la fréquence de renouvellement des cours. Quelle est la réponse cible ?", options: ["Tous les 5 ans", "Chaque année", "Jamais"], correct: 1, rationale: "Un renouvellement annuel garantit une veille et une pertinence optimale." },
+        {q: "Le formateur expert utilise des techniques spécifiques pour démarrer. Lesquelles ?", options: ["L'exposé long", "Les ateliers de lancement ou Ice breakers", "Le test écrit immédiat"], correct: 1, rationale: "Les techniques de lancement sont vitales pour instaurer le cadre." },
+        {q: "La représentation matricielle est un outil de :", options: ["Synthèse visuelle", "Vente", "Recrutement"], correct: 0, rationale: "Elle résume graphiquement les options d'animation du formateur." },
+        {q: "Le module B1M5S1 est-il une séance de cours théorique ?", options: ["Oui, 100% théorique", "Non, c'est une séance de présentation et de diagnostic", "C'est l'examen final"], correct: 1, rationale: "C'est la porte d'entrée et le diagnostic du module." },
+        {q: "L'implication des participants est favorisée par :", options: ["Le silence total", "La diversité des activités pédagogiques", "L'obscurité"], correct: 1, rationale: "La variété maintient l'éveil et l'engagement émotionnel." },
+        {q: "Un facilitateur doit-il créer ses propres scénarios ?", options: ["Non, il doit suivre des manuels", "Oui, et les partager avec ses collègues", "C'est facultatif"], correct: 1, rationale: "La conception sur mesure et le partage sont des signes de maîtrise." },
+        {q: "Quel est le nombre total de participants gérable via la matrice ?", options: ["Seulement 5", "Le nombre varie selon la typologie de l'activité choisie", "Illimité"], correct: 1, rationale: "La matrice aide à choisir en fonction du nombre réel d'apprenants." },
+        {q: "En session 5, on apprend à structurer quoi ?", options: ["Un budget de formation", "Un scénario pédagogique type", "Une offre d'emploi"], correct: 1, rationale: "Le scénario est la partition de l'animation du formateur." }
     ];
 
     const glossaryTerms = [
-        { word: "Auto-positionnement", def: "Évaluation de ses propres compétences et pratiques en début de formation." },
-        { word: "Ice breaker", def: "Activité courte de début de session visant à créer une dynamique de groupe et lever les barrières." },
-        { word: "Représentation matricielle", def: "Tableau de synthèse permettant de classer des éléments (ici des activités) selon plusieurs critères croisés." },
-        { word: "Implication émotionnelle", def: "Engagement affectif de l'apprenant dans son processus d'apprentissage." },
-        { word: "Scénario pédagogique", def: "Document détaillant le déroulement chronologique d'une séquence de formation." },
-        { word: "Jeu pédagogique", def: "Activité d'apprentissage utilisant les mécaniques du jeu pour favoriser l'acquisition de savoirs." },
-        { word: "Rythme pédagogique", def: "Alternance stratégique des modalités et des intensités d'apprentissage durant une session." },
-        { word: "Techniques d'animation", def: "Moyens mis en œuvre par le formateur pour faciliter les échanges et les apprentissages." },
-        { word: "Démarrage de session", def: "Phase cruciale d'une formation incluant l'accueil, les présentations et le cadre." },
-        { word: "Typologie d'activité", def: "Classement des méthodes pédagogiques par genre (expositives, actives, ludiques)." },
-        { word: "Facilitateur", def: "Posture du formateur visant à aider le groupe à construire lui-même ses connaissances." },
-        { word: "Matrice 45", def: "Outil de synthèse du module regroupant l'ensemble des techniques abordées." }
+        { word: "Auto-positionnement", def: "Bilan diagnostique réalisé par l'apprenant pour évaluer ses acquis avant de commencer." },
+        { word: "Ice breaker", def: "Technique courte de début de session pour briser la glace et créer une dynamique." },
+        { word: "Ludification", def: "Intégration de mécaniques de jeu dans l'apprentissage pour booster l'engagement." },
+        { word: "Facilitateur", def: "Posture du formateur qui guide le groupe sans imposer, en favorisant les échanges." },
+        { word: "Scénario pédagogique", def: "Fiche de route chronologique détaillant chaque phase d'une session." },
+        { word: "Matrice d'activités", def: "Outil de choix stratégique classant les techniques selon des critères logistiques." },
+        { word: "Implication émotionnelle", def: "Engagement affectif de l'apprenant, facilitant l'ancrage et la mémorisation." },
+        { word: "Dynamisation", def: "Action de maintenir l'énergie et l'attention du groupe par des activités variées." }
     ];
 
     const anecdotes = [
-        "Sans implication émotionnelle, on ne retient que 10% de ce qu'on lit, mais on retient 90% de ce qu'on expérimente !",
-        "Le saviez-vous ? Le terme 'Ice breaker' vient de la marine : c'est un navire qui ouvre la voie pour les autres.",
-        "Renouveler ses jeux chaque année n'est pas un luxe, c'est une nécessité pour s'adapter à l'évolution des publics.",
-        "Un formateur qui ne varie pas ses techniques est comme un chef cuisinier qui n'utiliserait qu'un seul ingrédient !",
-        "La matrice des 45 activités est votre 'couteau suisse' pour ne jamais être à court d'idées en salle."
+        "Un bon Ice breaker réduit le stress des apprenants de 30% dès les 10 premières minutes !",
+        "Le cerveau humain décroche après 20 minutes de discours passif : d'où l'importance du rythme.",
+        "Renouveler ses outils chaque année permet de ne jamais tomber dans la routine pédagogique."
     ];
 
     let gameMode = 'chrono', activeSet = [], current = 0, score = 0, timer, timeLeft, totalQ = 10, lives = 3;
-    let isDarkMode = false, isDys = false, isContrast = false, isCalm = false, isMuted = false, speechRate = 1.2, globalVolume = 1.0;
+    let isDarkMode = false, isDys = false, isContrast = false, isCalm = false, isMuted = false, speechRate = 1.1, globalVolume = 1.0;
 
     let seenGlossaryTerms = new Set(JSON.parse(localStorage.getItem('paia_vocab_000_anim') || '[]'));
     const maxGlossary = glossaryTerms.length;
+
+    // --- SÉLECTION VOIX QUALITÉ (FEMME FRANÇAISE) ---
+    let mainVoice = null;
+    function loadVoices() {
+        const voices = window.speechSynthesis.getVoices();
+        // On cherche une voix féminine française de qualité (Google ou Premium)
+        mainVoice = voices.find(v => v.lang.includes('fr-FR') && (v.name.includes('Google') || v.name.includes('Hortense') || v.name.includes('Female') || v.name.includes('Premium')));
+        if (!mainVoice) mainVoice = voices.find(v => v.lang.includes('fr-FR')); // Fallback
+    }
+    window.speechSynthesis.onvoiceschanged = loadVoices;
 
     // --- ACCESSIBILITÉ & UI CONTROLS ---
     function toggleDarkMode() { isDarkMode = !isDarkMode; document.body.classList.toggle('dark-mode', isDarkMode); document.getElementById('btn-dark-mode').innerText = isDarkMode ? "☀️" : "🌙"; }
@@ -342,7 +345,7 @@
     function toggleContrast(b) { isContrast = !isContrast; document.body.classList.toggle('high-contrast'); b.classList.toggle('selected-config', isContrast); }
     function toggleAnimations(b) { isCalm = !isCalm; document.body.classList.toggle('no-anim'); b.classList.toggle('selected-config', isCalm); }
 
-    // --- AUDIO CONTROLS ---
+    // --- AUDIO & SMART VOIX (ACCENT ET VITESSE 1.1) ---
     function changeSpeechRate(s) { speechRate = Math.min(1.5, Math.max(0.5, speechRate + s)); document.getElementById('ui-rate').innerText = "x" + speechRate.toFixed(1); }
     function changeVolume(v) { globalVolume = Math.min(1, Math.max(0, globalVolume + v)); if(globalVolume > 0 && isMuted) toggleMute(); }
     function toggleMute() { isMuted = !isMuted; document.getElementById('btn-mute').innerText = isMuted ? "🔇" : "🔊"; if(isMuted) window.speechSynthesis.cancel(); }
@@ -350,9 +353,18 @@
     function speak(txt) {
         if (isMuted) return;
         window.speechSynthesis.cancel();
-        const m = new SpeechSynthesisUtterance(txt); m.lang = 'fr-FR'; m.rate = speechRate; m.volume = globalVolume; m.pitch = 1.15;
-        window.speechSynthesis.speak(m);
+
+        // Harmonisation : Une seule voix capable de tout lire ou bascule très rapide
+        const utterance = new SpeechSynthesisUtterance(txt);
+        utterance.rate = speechRate;
+        utterance.volume = globalVolume;
+        utterance.pitch = 1.1; // Un peu plus haut pour une voix féminine claire
+        utterance.lang = 'fr-FR';
+        if (mainVoice) utterance.voice = mainVoice;
+
+        window.speechSynthesis.speak(utterance);
     }
+
     function speakCurrent() {
         if(!activeSet[current]) return;
         const d = activeSet[current];
@@ -361,7 +373,7 @@
         speak(tts);
     }
     function speakGlossary() {
-        let tts = "Glossaire. ";
+        let tts = "Glossaire Expert. ";
         const listItems = document.querySelectorAll('#ui-glossary-list li');
         if(listItems.length === 0) { tts += "Le glossaire est vide."; }
         else { listItems.forEach(li => { tts += li.innerText + ". "; }); }
@@ -382,13 +394,10 @@
         score = 0; current = 0;
         if(gameMode === 'vies') { lives = (totalQ <= 10 ? 1 : totalQ <= 20 ? 2 : 3); document.getElementById('ui-hearts').style.display = 'block'; document.getElementById('ui-timer').style.display = 'none'; }
         else { lives = 99; document.getElementById('ui-hearts').style.display = 'none'; }
-
-        // ALÉATOIRE : Mélange de la banque et extraction
         activeSet = [...questionBank].sort(() => Math.random() - 0.5).slice(0, totalQ);
-
         document.getElementById('screen-setup').classList.remove('active-screen');
         document.getElementById('screen-game').classList.add('active-screen');
-        speak("C'est parti pour le positionnement. Bonne chance Mathilde !");
+        speak("C'est parti ! Bonne chance.");
         setTimeout(loadQuestion, 1500);
     }
 
@@ -475,7 +484,7 @@
                 document.getElementById('ui-vocab-diploma').style.display = 'none';
                 document.getElementById('btn-new-words').innerText = "🔄 Termes suivants";
             }
-            if(isManual) speak("Voici d'autres concepts sur l'animation.");
+            if(isManual) speak("Voici d'autres concepts.");
         }, 300);
     }
 
@@ -483,7 +492,7 @@
         document.getElementById('screen-game').classList.remove('active-screen');
         document.getElementById('screen-result').classList.add('active-screen');
         document.getElementById('ui-final-score').innerText = `${score} / ${lose ? current : totalQ}`;
-        let msg = lose ? "Game Over ! Reprenez la structure des 45 activités." : (score === totalQ ? "Performance exceptionnelle ! Vous êtes prêt pour les sessions d'animation." : "C'est validé ! Vous avez bien cerné le contenu du module.");
+        let msg = lose ? "Game Over ! Reprenez la structure des activités." : (score === totalQ ? "Maîtrise totale !" : "C'est validé !");
         document.getElementById('ui-humor').innerText = msg;
         document.getElementById('ui-anecdote').innerText = anecdotes[Math.floor(Math.random()*anecdotes.length)];
         generateGlossary(false);
@@ -493,12 +502,15 @@
     function rain() {
         if(isCalm) return;
         for(let i=0; i<15; i++) {
-            const e = document.createElement('div'); e.className = 'emoji'; e.innerText = '🎭🎬🎮'[Math.floor(Math.random()*3)];
+            const e = document.createElement('div'); e.className = 'emoji'; e.innerText = '🎓🌟💎'[Math.floor(Math.random()*3)];
             e.style.position = 'fixed'; e.style.top = '-50px'; e.style.left = Math.random()*100+'vw'; e.style.zIndex = '9999';
             e.style.animation = `slideUp ${(Math.random()*3+4)}s linear reverse`;
             document.body.appendChild(e); setTimeout(()=>e.remove(), 7000);
         }
     }
+
+    // Init voix au chargement
+    window.onload = loadVoices;
 </script>
 </body>
 </html>

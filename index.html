@@ -3,10 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mon Parcours FPA - V27 (Centralized Planning)</title>
+    <title>Mon Parcours FPA - V27 (Ultra Compact UI)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&family=Open+Dyslexic&display=swap" rel="stylesheet" />
@@ -30,9 +29,6 @@
         overflow-x: hidden;
       }
 
-      /* =========================================
-         🌟 EFFETS GLOBAUX 2026 (Fonds animés)
-         ========================================= */
       .bg-animated-blob {
         position: fixed;
         border-radius: 50%;
@@ -51,7 +47,6 @@
         100% { transform: translate(-5%, -5%) scale(0.9); }
       }
 
-      /* Loader */
       #loader {
         position: fixed; inset: 0; background-color: var(--surface-ivory);
         z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -68,7 +63,6 @@
       body.high-contrast .bg-animated-blob { display: none; }
       body.high-contrast header { background-color: #1a1a1a !important; border-bottom: 2px solid #ffffff !important; }
 
-      /* --- Boutons Navigation --- */
       .btn-nav-app {
         width: 68px; height: 68px; border-radius: 20px; display: flex; align-items: center; justify-content: center;
         font-size: 2rem; color: white !important; position: relative; text-decoration: none;
@@ -97,7 +91,6 @@
       .btn-teams { background: linear-gradient(135deg, #464eb8 0%, #e81123 100%); }
       .btn-contact { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
 
-      /* --- Onglets --- */
       .tab-btn {
         background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px);
         color: var(--title-blue); border: 2px solid rgba(15, 44, 72, 0.05); border-radius: 12px;
@@ -108,33 +101,16 @@
         color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(70, 78, 184, 0.3);
       }
 
-      /* Onglet spécial calendrier */
       .tab-btn-cal {
-        background: linear-gradient(135deg, #4f46e5 0%, #7e22ce 100%);
-        color: white; border: none; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+        color: white; border: none; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
       }
       .tab-btn-cal.active {
         transform: scale(1.05);
-        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5);
-        border-bottom: 4px solid #312e81;
+        box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5);
+        border-bottom: 4px solid #831843;
       }
 
-      /* --- Bouton Valider Solaire 3D --- */
-      .btn-valider-3d {
-        background: linear-gradient(135deg, #ffeb3b 0%, #ffb900 50%, #ff8c00 100%);
-        color: #0f2c48 !important; border: none; border-bottom: 4px solid #b4792a !important;
-        font-weight: 900; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); cursor: pointer;
-      }
-      .btn-valider-3d:hover { transform: translateY(-2px); border-bottom-width: 6px !important; filter: brightness(1.05); box-shadow: 0 8px 15px rgba(255, 185, 0, 0.4); }
-      .btn-valider-3d:active { transform: translateY(2px); border-bottom-width: 1px !important; }
-
-      .btn-success-line {
-        background: linear-gradient(135deg, var(--success-blue-dark) 0%, var(--success-blue-light) 100%) !important; color: white !important;
-        border-bottom: 4px solid #172554 !important; text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-      }
-
-      /* --- Menu Vertical Flottant --- */
       @keyframes floatUpDown { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
       .floating-side-menu {
         position: fixed; right: 10px; bottom: 30px; display: flex; flex-direction: column; align-items: center;
@@ -149,21 +125,20 @@
       }
       .btn-fab:hover { transform: scale(1.15) translateX(-3px); box-shadow: 0 5px 12px rgba(0,0,0,0.15); }
 
-      /* --- Ressources & Cartes --- */
       .btn-resource {
-        width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
-        font-size: 1.5rem; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1), inset 0 2px 2px rgba(255, 255, 255, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+        width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), inset 0 2px 2px rgba(255, 255, 255, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.4); z-index: 1; text-decoration: none;
       }
       .btn-resource::before {
-        content: ''; position: absolute; width: 34px; height: 34px;
+        content: ''; position: absolute; width: 26px; height: 26px;
         background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
         border-radius: 50%; z-index: -1; pointer-events: none;
       }
       .btn-resource:hover {
-        transform: translateY(-5px) scale(1.08);
-        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15), inset 0 2px 2px rgba(255, 255, 255, 0.6), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px) scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), inset 0 2px 2px rgba(255, 255, 255, 0.6), inset 0 -2px 4px rgba(0, 0, 0, 0.08);
         z-index: 10;
       }
       .btn-resource:active {
@@ -171,7 +146,6 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
-      /* Gradients 3D Premium pour les Ressources */
       .bg-audio { background: linear-gradient(135deg, #667eea 0%, #5a68d8 100%); color: white; }
       .bg-pdf { background: linear-gradient(135deg, #0f2c48 0%, #174069 100%); color: #d9a526; }
       .bg-lien { background: linear-gradient(135deg, #0078d4 0%, #0060a8 100%); color: white; }
@@ -184,23 +158,21 @@
       .bg-quiz { background: linear-gradient(135deg, #b4792a 0%, #906122 100%); color: white; }
       .bg-locked { background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important; color: #94a3b8 !important; border-color: #94a3b8 !important; box-shadow: none !important;}
 
-      /* Pastille compteur sur le bouton calendrier */
       .cal-badge {
-        position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 4px;
-        background: #ef4444; color: white; border-radius: 10px; font-size: 10px; font-weight: 900;
+        position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 3px;
+        background: #ef4444; color: white; border-radius: 9px; font-size: 9px; font-weight: 900;
         display: flex; align-items: center; justify-content: center; border: 2px solid white;
         box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 20;
       }
 
-      /* Cartes avec effet 3D doux */
       .card-module {
         background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(16px);
         border: 1px solid rgba(255,255,255,0.8);
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
       .card-module:hover {
-        transform: translateY(-6px) scale(1.01);
-        box-shadow: 0 20px 40px -5px rgba(15, 44, 72, 0.12), 0 10px 20px -5px rgba(15, 44, 72, 0.08);
+        transform: translateY(-4px) scale(1.01);
+        box-shadow: 0 15px 30px -5px rgba(15, 44, 72, 0.1), 0 8px 15px -5px rgba(15, 44, 72, 0.05);
         background: rgba(255, 255, 255, 0.85);
       }
 
@@ -221,8 +193,8 @@
       .tooltip-container:hover .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-5px); }
 
       .check-badge {
-        position: absolute; top: -5px; right: -5px; width: 18px; height: 18px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center; font-size: 8px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); pointer-events: auto; z-index: 20;
+        position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center; font-size: 7px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); pointer-events: auto; z-index: 20;
       }
 
       .card-animate { animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
@@ -245,14 +217,12 @@
 
       .toast-msg { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-      /* Horizontal scrollbar timeline */
       .scrollbar-hide::-webkit-scrollbar { display: none; }
       .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
   </head>
   <body class="relative">
 
-    <!-- Blobs d'arrière-plan -->
     <div class="bg-animated-blob blob-1"></div>
     <div class="bg-animated-blob blob-2"></div>
     <div class="bg-animated-blob blob-3"></div>
@@ -263,7 +233,6 @@
       <p class="text-[10px] mt-2 opacity-50 font-bold">MATHILDE MARTINE PAISLEY</p>
     </div>
 
-    <!-- En-tête Glassmorphism -->
     <header class="bg-[#F6F2E8]/80 backdrop-blur-xl border-b border-[#0F2C48]/10 h-[100px] flex items-center sticky top-0 z-[100] shadow-sm">
       <div class="w-full max-w-[1600px] mx-auto px-6 flex items-center justify-between">
         <div class="flex items-center gap-4 cursor-pointer hover:opacity-80 transition-opacity" onclick="location.reload()">
@@ -311,10 +280,9 @@
         <button class="tab-btn" id="tab-B3" onclick="filtrerBloc('B3')">B3: Accompagner</button>
         <button class="tab-btn" id="tab-B4" onclick="filtrerBloc('B4')">B4: Qualité & RSE</button>
 
-        <!-- Le tout nouvel onglet Calendrier ! -->
         <div class="h-8 w-px bg-[#0F2C48]/20 mx-2 hidden md:block"></div>
         <button class="tab-btn tab-btn-cal" id="tab-CAL" onclick="filtrerBloc('CAL')">
-            <i class="fas fa-calendar-alt mr-2"></i> Mon Planning
+            <i class="fas fa-clock mr-2"></i> Mon Planning
         </button>
       </div>
 
@@ -333,10 +301,7 @@
 
       <div id="subTabsContainer" class="sub-tabs-container hidden mb-6 flex-wrap gap-2"></div>
 
-      <!-- Conteneur Standard des Modules -->
-      <div id="listContainer" class="flex flex-col gap-5 pb-12 w-full"></div>
-
-      <!-- NOUVEAU : Conteneur de l'onglet Calendrier -->
+      <div id="listContainer" class="flex flex-col gap-4 pb-12 w-full"></div>
       <div id="calendarContainer" class="hidden flex-col gap-8 pb-12 w-full animate-slideIn"></div>
     </main>
 
@@ -383,14 +348,14 @@
     <div id="srModal" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
       <div class="bg-white p-8 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-md w-full mx-4 transform scale-95 transition-transform duration-300 relative overflow-hidden" id="srModalContent">
         <div id="sr-step-1">
-            <div class="w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-indigo-200"><span class="text-3xl text-indigo-600"><i class="fas fa-infinity"></i></span></div>
+            <div class="w-16 h-16 bg-gradient-to-br from-pink-100 to-rose-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-rose-200"><span class="text-3xl text-rose-600"><i class="fas fa-clock"></i></span></div>
             <h2 class="font-black text-[#0F2C48] text-2xl mb-1 tracking-tight">Ancrage Mémoriel</h2>
-            <p class="text-[10px] text-indigo-500 font-bold uppercase tracking-widest mb-4">Planification des révisions</p>
+            <p class="text-[10px] text-rose-500 font-bold uppercase tracking-widest mb-4">Planification des révisions</p>
 
-            <div class="bg-indigo-50 text-indigo-900 text-xs p-4 rounded-xl mb-6 text-left border border-indigo-100">
+            <div class="bg-rose-50 text-rose-900 text-xs p-4 rounded-xl mb-6 text-left border border-rose-100">
                 <p class="mb-2 font-bold text-sm"><i class="fas fa-brain mr-1"></i> La méthode des J</p>
                 <p class="opacity-80 italic mb-2">"L'apprentissage ce n'est pas du bourrage de crâne, c'est l'art de la répétition espacée. L'objectif est d'ancrer l'information à long terme en revoyant les notions à des intervalles précis."</p>
-                <p class="text-right font-black text-indigo-600 mb-3">- Mathilde 💫</p>
+                <p class="text-right font-black text-rose-600 mb-3">- Mathilde 💫</p>
                 <p class="opacity-80">Générez vos 6 rappels automatiques d'apprentissage (J0, J3, J7, J14, J30, J60) pour :</p>
                 <p class="font-black mt-2 text-[#0F2C48]" id="sr-module-title"></p>
                 <span id="sr-module-id" class="hidden"></span>
@@ -399,15 +364,15 @@
             <div class="text-left mb-6 flex gap-4">
               <div class="flex-1">
                   <label class="text-gray-600 text-xs font-bold mb-2 block">Jour 0 (Aujourd'hui) :</label>
-                  <input type="date" id="sr-start-date" class="w-full bg-white border-2 border-gray-200 text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm focus:outline-none focus:border-indigo-400 transition-all shadow-inner">
+                  <input type="date" id="sr-start-date" class="w-full bg-white border-2 border-gray-200 text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm focus:outline-none focus:border-rose-400 transition-all shadow-inner">
               </div>
               <div class="w-1/3">
                   <label class="text-gray-600 text-xs font-bold mb-2 block">Horaire :</label>
-                  <input type="time" id="sr-start-time" value="14:00" class="w-full bg-white border-2 border-gray-200 text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm focus:outline-none focus:border-indigo-400 transition-all shadow-inner">
+                  <input type="time" id="sr-start-time" value="14:00" class="w-full bg-white border-2 border-gray-200 text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm focus:outline-none focus:border-rose-400 transition-all shadow-inner">
               </div>
             </div>
 
-            <button onclick="calculateAndSaveDates()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-3.5 rounded-xl font-black text-xs hover:shadow-[0_10px_20px_rgba(79,70,229,0.3)] transition-all transform hover:-translate-y-1 mb-3">Générer mon programme !</button>
+            <button onclick="calculateAndSaveDates()" class="w-full bg-gradient-to-r from-rose-500 to-pink-600 text-white px-4 py-3.5 rounded-xl font-black text-xs hover:shadow-[0_10px_20px_rgba(225,29,72,0.3)] transition-all transform hover:-translate-y-1 mb-3">Générer mon programme !</button>
             <button onclick="closeSpacedRepetitionModal()" class="text-gray-400 text-xs font-bold hover:text-red-500 transition-colors underline">Annuler</button>
         </div>
       </div>
@@ -501,25 +466,21 @@
           });
       };
 
-      // Fonction principale de Navigation (Maintenant avec le Calendrier)
       function filtrerBloc(bloc) {
         currentBloc = bloc;
         currentMod = "ALL";
 
-        // Reset classes
         document.querySelectorAll(".tab-btn").forEach((btn) => btn.classList.remove("active"));
         const activeTabBtn = document.getElementById("tab-" + bloc);
         if (activeTabBtn) activeTabBtn.classList.add("active");
 
         if (bloc === 'CAL') {
-            // Vue Calendrier
             document.getElementById('listContainer').classList.add('hidden');
             document.getElementById('subTabsContainer').classList.add('hidden');
             document.getElementById('globalProgressHeader').classList.add('hidden');
             document.getElementById('calendarContainer').classList.remove('hidden');
             renderCalendarView();
         } else {
-            // Vue Standard
             document.getElementById('calendarContainer').classList.add('hidden');
             document.getElementById('listContainer').classList.remove('hidden');
             document.getElementById('globalProgressHeader').classList.remove('hidden');
@@ -593,10 +554,9 @@
           }
       };
 
-      // Fonction d'export global pour le nouvel onglet
       window.downloadICSForAll = function() {
           let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
-          const revs = savedRevisions.filter(r => !r.done); // Exporte tout ce qui n'est pas fait
+          const revs = savedRevisions.filter(r => !r.done);
 
           if(revs.length === 0) {
               afficherToastCustom("Aucune révision à exporter ! 🎉", "#10b981");
@@ -639,7 +599,6 @@
           document.body.removeChild(link);
       };
 
-      // VUE GLOBALE DU CALENDRIER (Nouvel Onglet)
       function renderCalendarView() {
           const container = document.getElementById("calendarContainer");
           let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
@@ -647,7 +606,7 @@
           if (savedRevisions.length === 0) {
               container.innerHTML = `
                   <div class="flex flex-col items-center justify-center py-20 bg-white/50 backdrop-blur-md rounded-3xl border border-white">
-                      <div class="text-6xl mb-4 opacity-50">📅</div>
+                      <div class="text-6xl mb-4 opacity-50">⏰</div>
                       <h2 class="text-xl font-black text-[#0F2C48] mb-2">Aucun planning pour le moment</h2>
                       <p class="text-sm text-gray-500 mb-6 text-center max-w-md">Retournez sur vos modules et cliquez sur le bouton Calendrier pour générer vos rappels d'ancrage mémoriel.</p>
                       <button onclick="filtrerBloc('ALL')" class="bg-[#0F2C48] text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:-translate-y-1 transition-transform">Explorer les modules</button>
@@ -656,24 +615,22 @@
               return;
           }
 
-          // Header du calendrier avec bouton d'export global
           let html = `
-              <div class="bg-gradient-to-br from-[#4f46e5] to-[#7e22ce] rounded-3xl p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+              <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
                   <div class="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
                   <div class="absolute -bottom-20 -left-20 w-48 h-48 bg-black/10 rounded-full blur-2xl"></div>
 
                   <div class="relative z-10 text-center md:text-left">
                       <h2 class="text-3xl font-black text-white mb-2 tracking-tight">Mon Planning de Révisions</h2>
-                      <p class="text-indigo-100 text-sm font-medium">Consolidez votre mémoire à long terme grâce à la méthode des J.</p>
+                      <p class="text-rose-100 text-sm font-medium">Consolidez votre mémoire à long terme grâce à la méthode des J.</p>
                   </div>
 
-                  <button onclick="downloadICSForAll()" class="relative z-10 bg-white text-indigo-900 px-8 py-4 rounded-xl font-black text-sm shadow-[0_10px_25px_rgba(0,0,0,0.2)] hover:shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all flex items-center gap-3 w-full md:w-auto">
-                      <i class="fas fa-calendar-plus text-lg text-indigo-600"></i> TOUT EXPORTER (.ICS)
+                  <button onclick="downloadICSForAll()" class="relative z-10 bg-white text-rose-900 px-8 py-4 rounded-xl font-black text-sm shadow-[0_10px_25px_rgba(0,0,0,0.2)] hover:shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all flex items-center gap-3 w-full md:w-auto">
+                      <i class="fas fa-calendar-plus text-lg text-rose-600"></i> TOUT EXPORTER (.ICS)
                   </button>
               </div>
           `;
 
-          // Tri chronologique
           savedRevisions.sort((a, b) => a.datetime - b.datetime);
 
           const todayDate = new Date();
@@ -683,7 +640,6 @@
           const upcomingRevs = savedRevisions.filter(r => !r.done && r.dateStr > todayStr);
           const doneRevs = savedRevisions.filter(r => r.done);
 
-          // Fonction Helper pour générer une ligne de révision
           const generateRow = (rev, isUrgent) => {
               const revDateObj = new Date(rev.datetime);
               const dayStr = revDateObj.toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
@@ -692,23 +648,28 @@
               const bgColor = rev.done ? 'bg-emerald-50' : (isUrgent ? 'bg-rose-50' : 'bg-white');
               const borderColor = rev.done ? 'border-emerald-200' : (isUrgent ? 'border-rose-200' : 'border-gray-200');
 
+              const blocId = rev.moduleId.split('_')[1] || 'ALL';
+              const goToModuleCode = `document.getElementById('searchInput').value = '${rev.moduleId}'; filtrerBloc('${blocId}');`;
+
               return `
-                  <div class="flex items-center gap-4 p-4 rounded-2xl ${bgColor} border ${borderColor} shadow-sm transition-all hover:shadow-md group">
-                      <div class="w-16 h-16 shrink-0 rounded-xl bg-${baseColor}-100 flex flex-col items-center justify-center text-${baseColor}-700 border border-${baseColor}-200">
-                          <span class="text-xs font-black uppercase">${rev.label}</span>
-                          <span class="text-[10px] font-bold opacity-80">${dayStr}</span>
+                  <div class="flex items-center gap-3 p-2.5 rounded-xl ${bgColor} border ${borderColor} shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_5px_15px_rgba(0,0,0,0.06)] group">
+                      <div class="w-12 h-12 shrink-0 rounded-lg bg-${baseColor}-100 flex flex-col items-center justify-center text-${baseColor}-700 border border-${baseColor}-200">
+                          <span class="text-[10px] font-black uppercase">${rev.label}</span>
+                          <span class="text-[9px] font-bold opacity-80">${dayStr}</span>
                       </div>
 
                       <div class="flex-grow min-w-0 flex flex-col">
-                          <div class="flex items-center gap-2 mb-1">
-                              <span class="text-xs font-black text-[#0F2C48] bg-gray-100 px-2 py-0.5 rounded">${rev.moduleId}</span>
-                              ${isUrgent ? '<span class="text-[9px] font-black uppercase tracking-widest text-white bg-rose-500 px-2 py-0.5 rounded-full">À faire aujourd\'hui</span>' : ''}
+                          <div class="flex items-center gap-2 mb-0.5">
+                              <button onclick="${goToModuleCode}" class="text-[10px] font-black text-[#0F2C48] bg-gray-100 border border-gray-200 px-1.5 py-0.5 rounded cursor-pointer hover:bg-[#0F2C48] hover:text-white transition-colors" title="Aller réviser ce cours">
+                                  <i class="fas fa-external-link-alt text-[8px] mr-1"></i>${rev.moduleId}
+                              </button>
+                              ${isUrgent ? '<span class="text-[8px] font-black uppercase tracking-widest text-white bg-rose-500 px-1.5 py-0.5 rounded-full shadow-sm">À faire</span>' : ''}
                           </div>
-                          <span class="text-sm font-bold text-gray-700 truncate">${rev.titre}</span>
+                          <span onclick="${goToModuleCode}" class="text-xs font-bold text-gray-700 truncate cursor-pointer hover:text-indigo-600 transition-colors" title="Aller au cours">${rev.titre}</span>
                       </div>
 
-                      <button onclick="markRevisionDone('${rev.id}')" class="shrink-0 w-12 h-12 rounded-full border-2 ${rev.done ? 'bg-gradient-to-r from-emerald-400 to-teal-500 text-white border-transparent' : 'bg-white text-gray-300 border-gray-300 hover:border-indigo-400 hover:text-indigo-500'} flex items-center justify-center transition-all shadow-sm hover:scale-110">
-                          <i class="fas fa-check"></i>
+                      <button onclick="markRevisionDone('${rev.id}')" class="shrink-0 w-9 h-9 rounded-full border-2 ${rev.done ? 'bg-gradient-to-r from-emerald-400 to-teal-500 text-white border-transparent' : 'bg-white text-gray-300 border-gray-300 hover:border-indigo-400 hover:text-indigo-500'} flex items-center justify-center transition-all shadow-sm hover:scale-110">
+                          <i class="fas fa-check text-[10px]"></i>
                       </button>
                   </div>
               `;
@@ -718,7 +679,7 @@
               html += `
                   <div class="mt-4">
                       <h3 class="text-lg font-black text-rose-600 mb-4 flex items-center gap-2"><i class="fas fa-fire"></i> Urgent / Aujourd'hui</h3>
-                      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
                           ${urgentRevs.map(r => generateRow(r, true)).join('')}
                       </div>
                   </div>
@@ -729,7 +690,7 @@
               html += `
                   <div class="mt-4">
                       <h3 class="text-lg font-black text-[#0F2C48] mb-4 flex items-center gap-2"><i class="fas fa-calendar-day text-indigo-500"></i> À venir</h3>
-                      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
                           ${upcomingRevs.map(r => generateRow(r, false)).join('')}
                       </div>
                   </div>
@@ -740,7 +701,7 @@
               html += `
                   <div class="mt-8 pt-8 border-t border-gray-200">
                       <h3 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-history"></i> Historique (Terminé)</h3>
-                      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
                           ${doneRevs.reverse().slice(0, 10).map(r => generateRow(r, false)).join('')}
                       </div>
                   </div>
@@ -1132,11 +1093,6 @@
           setTimeout(() => { document.getElementById('srModal').style.display = 'none'; }, 200);
       };
 
-      function formatLocalCalDate(dateObj) {
-          const pad = (n) => String(n).padStart(2, '0');
-          return `${dateObj.getFullYear()}${pad(dateObj.getMonth()+1)}${pad(dateObj.getDate())}T${pad(dateObj.getHours())}${pad(dateObj.getMinutes())}00`;
-      }
-
       window.calculateAndSaveDates = function() {
           const startStr = document.getElementById('sr-start-date').value;
           const timeStr = document.getElementById('sr-start-time').value;
@@ -1144,7 +1100,6 @@
           if(!startStr || !timeStr) { alert("Veuillez choisir une date et une heure."); return; }
 
           const startDateTime = new Date(`${startStr}T${timeStr}`);
-
           const intervals = [0, 3, 7, 14, 30, 60];
           let newDates = [];
 
@@ -1160,7 +1115,7 @@
           saveRevisionsLocally(id, titre, newDates);
 
           closeSpacedRepetitionModal();
-          afficherToastCustom("Planning généré et sauvegardé ! Retrouvez-le dans l'onglet 'Mon Planning' 📅", "#4f46e5");
+          afficherToastCustom("Planning généré et sauvegardé ! Retrouvez-le dans l'onglet 'Mon Planning' 📅", "#e11d48");
 
           if (currentBloc === 'CAL') {
               renderCalendarView();
@@ -1261,6 +1216,9 @@
       }
 
       window.toggleRes = function (id, rid, emoji, colorHex) {
+        const checkableRids = ["audio", "excel", "infog", "slide", "video", "glo", "map", "quiz"];
+        if (!checkableRids.includes(rid)) return;
+
         const key = `${id}-${rid}`;
         const wasChecked = !!progressRes[key];
 
@@ -1270,23 +1228,10 @@
         const itemObj = database.find(d => d.Code === id);
         if (!itemObj) return;
 
-        const titre = itemObj.Titre || "Sans titre";
-        const safeFileName = encodeURIComponent(`${id} - ${titre}`) + '.html';
+        const safeFileName = encodeURIComponent(`${id} - ${itemObj.Titre}`) + '.html';
+        const resMap = { audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie, slide: itemObj.Slides, video: itemObj.Vidéo, glo: `Glossaire/${safeFileName}`, map: `Carte Mentale/${safeFileName}`, quiz: `Quiz/${safeFileName}` };
 
-        const resRaw = [
-            { id: "audio", url: itemObj.Audio },
-            { id: "pdf", url: itemObj.Cours },
-            { id: "lien", url: itemObj.Lien_Studi },
-            { id: "excel", url: itemObj.Excel },
-            { id: "infog", url: itemObj.Infographie },
-            { id: "slide", url: itemObj.Slides },
-            { id: "video", url: itemObj.Vidéo },
-            { id: "glo", url: `Glossaire/${safeFileName}` },
-            { id: "map", url: `Carte Mentale/${safeFileName}` },
-            { id: "quiz", url: `Quiz/${safeFileName}` },
-        ];
-
-        const validRids = resRaw.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
+        const validRids = checkableRids.filter(r => resMap[r] && resMap[r].trim() !== '');
         const isAllNow = validRids.every(r => progressRes[`${id}-${r}`]);
 
         if (isAllNow && progressRes[key]) {
@@ -1301,11 +1246,9 @@
         } else if (progressRes[key] && !wasChecked) {
             confetti({ particleCount: 50, spread: 60, origin: { y: 0.9 }, colors: ['#3b82f6', '#1e3a8a', '#ffffff', '#ffb900'] });
             const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
-            const icon = emoji || "🏅";
-
             const toastHtml = `
               <div class="flex flex-col gap-1 w-[280px]">
-                <div class="text-xs font-black uppercase tracking-widest mb-1 flex items-center gap-1" style="color: ${colorHex}">${icon} Ressource validée !</div>
+                <div class="text-xs font-black uppercase tracking-widest mb-1 flex items-center gap-1" style="color: ${colorHex}">${emoji} Ressource validée !</div>
                 <div class="text-[11px] font-medium text-[#0F2C48] leading-snug italic">${quote}</div>
               </div>
             `;
@@ -1314,33 +1257,31 @@
         afficherModules(document.getElementById("searchInput").value, false);
       };
 
-      window.toggleLine = function (id) {
+      // NOUVELLE FONCTION POUR VALIDER UN GROUPE ENTIER (Skill Up ou Créations)
+      window.toggleGroup = function (id, groupType) {
         const itemObj = database.find(d => d.Code === id);
         if (!itemObj) return;
 
-        const titre = itemObj.Titre || "Sans titre";
-        const safeFileName = encodeURIComponent(`${id} - ${titre}`) + '.html';
+        const safeFileName = encodeURIComponent(`${id} - ${itemObj.Titre}`) + '.html';
+        const resMap = { audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie, slide: itemObj.Slides, video: itemObj.Vidéo, glo: `Glossaire/${safeFileName}`, map: `Carte Mentale/${safeFileName}`, quiz: `Quiz/${safeFileName}` };
 
-        const resRaw = [
-            { id: "audio", url: itemObj.Audio },
-            { id: "pdf", url: itemObj.Cours },
-            { id: "lien", url: itemObj.Lien_Studi },
-            { id: "excel", url: itemObj.Excel },
-            { id: "infog", url: itemObj.Infographie },
-            { id: "slide", url: itemObj.Slides },
-            { id: "video", url: itemObj.Vidéo },
-            { id: "glo", url: `Glossaire/${safeFileName}` },
-            { id: "map", url: `Carte Mentale/${safeFileName}` },
-            { id: "quiz", url: `Quiz/${safeFileName}` },
-        ];
+        let checkableRids = [];
+        if (groupType === 'core') checkableRids = ["audio", "excel", "infog", "slide", "video"];
+        if (groupType === 'ext') checkableRids = ["glo", "map", "quiz"];
 
-        const validRids = resRaw.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
-        const isAll = validRids.every(r => progressRes[`${id}-${r}`]);
+        const validRids = checkableRids.filter(r => resMap[r] && resMap[r].trim() !== '');
+        if (validRids.length === 0) return;
 
-        validRids.forEach(r => { progressRes[`${id}-${r}`] = !isAll; });
+        const isGroupAll = validRids.every(r => progressRes[`${id}-${r}`]);
+
+        validRids.forEach(r => { progressRes[`${id}-${r}`] = !isGroupAll; });
         localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
 
-        if (!isAll) {
+        const allCheckable = ["audio", "excel", "infog", "slide", "video", "glo", "map", "quiz"];
+        const allValidRids = allCheckable.filter(r => resMap[r] && resMap[r].trim() !== '');
+        const isModuleAll = allValidRids.every(r => progressRes[`${id}-${r}`]);
+
+        if (!isGroupAll && isModuleAll) {
           shootFireworks();
           const toastHtml = `
               <div class="flex flex-col gap-2 w-[300px]">
@@ -1383,109 +1324,175 @@
           if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
-          const resRaw = [
+          // 1. Documents Officiels Studi
+          const resOfficiels = [
+            { id: "pdf", em: "🔒", n: "Document Privé", b: "bg-locked", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
+            { id: "lien", em: "🎓", n: "Plateforme Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" }
+          ];
+
+          // 2. Ressources Cœur "SKILL UP"
+          const resCore = [
             { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio", color: "#667eea" },
-            { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
-            { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" },
             { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel, type: "embed-doc", color: "#2563eb" },
             { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie, type: "embed-image", color: "#e81123" },
             { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null, type: "embed-presentation", color: "#d83b01" },
             { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo, type: "embed-video", color: "#e52d27" },
+          ];
+
+          // 3. Mes Créations Externes
+          const resExternes = [
             { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, type: "embed-glo", color: "#4a5568" },
-            { id: "map", em: "🧠", n: "Carte", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "embed-map", color: "#ffb900" },
+            { id: "map", em: "🧠", n: "Carte Mentale", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "embed-map", color: "#ffb900" },
             { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "external", color: "#b4792a" },
           ];
 
-          const validRids = resRaw.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
-          const totalExpected = validRids.length;
-          totalCount += totalExpected;
+          // --- Création HTML : Documents Officiels ---
+          let htmlOff = resOfficiels.map((r) => {
+              let displayEmoji = r.em;
+              let tooltipText = r.n;
+              let btnClass = r.b;
 
-          let lineChecked = 0;
-          validRids.forEach(rid => {
-              if (progressRes[`${id}-${rid}`]) {
-                  vueCount++;
-                  lineChecked++;
+              if (r.id === 'pdf' && !isUnlocked) {
+                  displayEmoji = "🔒"; tooltipText = "Document Privé (Droits d'auteur)"; btnClass = "bg-locked";
+              } else if (r.id === 'pdf' && isUnlocked) {
+                  displayEmoji = "📄"; tooltipText = "Cours Officiel PDF"; btnClass = "bg-pdf";
               }
-          });
 
-          let htmlRes = resRaw.map((r) => {
-            const hasUrl = r.url && r.url.trim() !== '';
-            const isV = hasUrl && progressRes[`${id}-${r.id}`];
+              const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
+              let extraDivClass = (!r.url || r.url.trim() === '') ? "opacity-40 grayscale pointer-events-none" : "";
 
-            let displayEmoji = r.em;
-            let tooltipText = r.n;
-            let btnClass = r.b;
-
-            if (r.type === 'embed-pdf' && !isUnlocked && r.url) {
-                displayEmoji = "🔒"; tooltipText = "Accès Restreint"; btnClass = "bg-locked";
-            }
-
-            const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
-
-            let checkC = "";
-            let checkIcon = "";
-            let badgeAction = "";
-            let extraDivClass = "";
-
-            if (!hasUrl) {
-                checkC = "bg-red-50 text-red-500 border-red-400 cursor-not-allowed";
-                checkIcon = "fas fa-times";
-                badgeAction = `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')"`;
-                extraDivClass = "opacity-60 grayscale-[30%]";
-            } else {
-                checkC = isV ? "bg-[#3b82f6] text-white border-[#3b82f6]" : "bg-white text-gray-200 border-gray-200 hover:border-[#3b82f6] hover:text-[#3b82f6]";
-                checkIcon = "fas fa-check";
-                badgeAction = `onclick="toggleRes('${id}','${r.id}','${displayEmoji}','${r.color}')"`;
-            }
-
-            return `<div class="relative tooltip-container ${extraDivClass}">
-                        <${linkProps.tag} ${linkProps.action} class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText.replace(/'/g, "\\'")}')"><span>${displayEmoji}</span></${linkProps.tag}>
-                        <button ${badgeAction} class="check-badge ${checkC}"><i class="${checkIcon}"></i></button>
-                        <span class="tooltip">${tooltipText}</span>
-                    </div>`;
+              return `<div class="relative tooltip-container ${extraDivClass}">
+                          <${linkProps.tag} ${linkProps.action} class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText.replace(/'/g, "\\'")}')"><span>${displayEmoji}</span></${linkProps.tag}>
+                          <span class="tooltip">${tooltipText}</span>
+                      </div>`;
           }).join("");
 
-          // C'est ici qu'on allège la carte : on affiche juste le bouton pour planifier,
-          // avec éventuellement un petit badge si des révisions sont prévues
+          // --- Création HTML : Ressources d'Apprentissage (Progression locale) ---
+          const trackableRes = [...resCore, ...resExternes];
+          const validRids = trackableRes.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
+          totalCount += validRids.length;
+
+          validRids.forEach(rid => { if (progressRes[`${id}-${rid}`]) vueCount++; });
+
+          const buildTrackableHtml = (arr) => {
+              return arr.map((r) => {
+                const hasUrl = r.url && r.url.trim() !== '';
+                const isV = hasUrl && progressRes[`${id}-${r.id}`];
+                const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
+
+                let checkC = "";
+                let checkIcon = "";
+                let badgeAction = "";
+                let extraDivClass = "";
+
+                if (!hasUrl) {
+                    checkC = "bg-red-50 text-red-500 border-red-400 cursor-not-allowed";
+                    checkIcon = "fas fa-times";
+                    badgeAction = `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')"`;
+                    extraDivClass = "opacity-60 grayscale-[30%]";
+                } else {
+                    checkC = isV ? "bg-[#3b82f6] text-white border-[#3b82f6]" : "bg-white text-gray-200 border-gray-200 hover:border-[#3b82f6] hover:text-[#3b82f6]";
+                    checkIcon = "fas fa-check";
+                    badgeAction = `onclick="toggleRes('${id}','${r.id}','${r.em}','${r.color}')"`;
+                }
+
+                return `<div class="relative tooltip-container ${extraDivClass}">
+                            <${linkProps.tag} ${linkProps.action} class="btn-resource ${r.b}" onmouseenter="lire('${r.n.replace(/'/g, "\\'")}')"><span>${r.em}</span></${linkProps.tag}>
+                            <button ${badgeAction} class="check-badge ${checkC}"><i class="${checkIcon}"></i></button>
+                            <span class="tooltip">${r.n}</span>
+                        </div>`;
+              }).join("");
+          };
+
+          let htmlCore = buildTrackableHtml(resCore);
+          let htmlExt = buildTrackableHtml(resExternes);
+
+          // Calcul des pourcentages locaux
+          const validRidsCore = resCore.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
+          let lineCheckedCore = 0;
+          validRidsCore.forEach(rid => { if (progressRes[`${id}-${rid}`]) lineCheckedCore++; });
+          const percentCore = validRidsCore.length > 0 ? Math.round((lineCheckedCore / validRidsCore.length) * 100) : 0;
+          const isCoreFull = validRidsCore.length > 0 && lineCheckedCore === validRidsCore.length;
+
+          const validRidsExt = resExternes.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
+          let lineCheckedExt = 0;
+          validRidsExt.forEach(rid => { if (progressRes[`${id}-${rid}`]) lineCheckedExt++; });
+          const percentExt = validRidsExt.length > 0 ? Math.round((lineCheckedExt / validRidsExt.length) * 100) : 0;
+          const isExtFull = validRidsExt.length > 0 && lineCheckedExt === validRidsExt.length;
+
+
+          // --- Création HTML : Calendrier ---
           const moduleRevs = savedRevisions.filter(r => r.moduleId === id);
           let btnCalendarHTML = '';
-
           if (moduleRevs.length > 0) {
               const nbDone = moduleRevs.filter(r => r.done).length;
               const nbTotal = moduleRevs.length;
-              // Le bouton devient indigo (couleur active)
               btnCalendarHTML = `
                   <div class="relative tooltip-container">
-                      <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource bg-gradient-to-br from-[#4f46e5] to-[#7e22ce] text-white border-b-[#312e81] shadow-[0_5px_15px_rgba(79,70,229,0.3)]">
-                          <span>📅</span>
+                      <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource bg-gradient-to-br from-rose-500 to-pink-600 text-white border-b-rose-800 shadow-[0_5px_15px_rgba(225,29,72,0.3)]">
+                          <span>⏰</span>
                       </button>
                       <div class="cal-badge">${nbDone}/${nbTotal}</div>
                       <span class="tooltip text-nowrap">Modifier mon Planning</span>
                   </div>
               `;
           } else {
-              // Le bouton est gris/neutre (non planifié)
               btnCalendarHTML = `
                   <div class="relative tooltip-container">
-                      <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource bg-white border-gray-200 text-gray-400 hover:text-[#0F2C48] shadow-sm">
-                          <span>📅</span>
+                      <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource bg-white border-gray-200 text-gray-400 hover:text-rose-500 shadow-sm">
+                          <span>⏰</span>
                       </button>
                       <span class="tooltip text-nowrap">Planifier Révisions</span>
                   </div>
               `;
           }
 
-          htmlRes += `
-            <div class="flex items-center justify-center px-1">
-                <div class="w-[2px] h-8 bg-gray-300 border-l-[3px] border-dotted border-gray-400/50 rounded-full opacity-60 relative group cursor-help transition-all hover:border-blue-400">
-                    <span class="absolute -top-8 left-1/2 -translate-x-1/2 text-[9px] font-black text-[#B4792A] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all whitespace-nowrap bg-white px-3 py-1.5 rounded-lg shadow-md pointer-events-none z-50">Zone Bonus</span>
-                </div>
-            </div>
-            ${btnCalendarHTML}
-          `;
+          const isFull = validRids.length > 0 && (lineCheckedCore + lineCheckedExt) === validRids.length;
 
-          const isFull = totalExpected > 0 && lineChecked === totalExpected;
-          const linePercent = totalExpected > 0 ? Math.round((lineChecked / totalExpected) * 100) : 0;
+          // Génération des blocs intégrés (avec barres de progression locales)
+          let offBlock = `
+              <div class="flex flex-col gap-1.5 bg-[#0F2C48]/5 pt-2 pb-1.5 px-2.5 rounded-xl border border-[#0F2C48]/10 shadow-inner shrink-0 relative overflow-hidden h-full">
+                  <div class="flex gap-1.5 z-10">${htmlOff}</div>
+                  <div class="flex items-center justify-center w-full px-1 z-10 mt-0.5">
+                      <span class="text-[7px] font-black uppercase text-[#0F2C48]/50 tracking-widest leading-none mt-0.5">Officiel</span>
+                  </div>
+              </div>`;
+
+          let coreBlock = '';
+          if (validRidsCore.length > 0) {
+              coreBlock = `
+              <div class="flex flex-col gap-1.5 ${isCoreFull ? 'bg-emerald-50/50 border-emerald-200' : 'bg-cyan-50/80 border-cyan-100'} pt-2 pb-2 px-2.5 rounded-xl border shadow-inner shrink-0 relative overflow-hidden transition-colors duration-500">
+                  <div class="flex gap-1.5 z-10">${htmlCore}</div>
+                  <div class="flex items-center justify-between w-full px-1 z-10 mt-0.5">
+                      <span class="text-[7px] font-black uppercase ${isCoreFull ? 'text-emerald-600' : 'text-cyan-600/80'} tracking-widest leading-none transition-colors">Skill Up</span>
+                      <button onclick="toggleGroup('${id}', 'core')" class="text-[10px] hover:scale-125 transition-transform ${isCoreFull ? 'text-emerald-500' : 'text-cyan-500 drop-shadow-sm'}" title="${isCoreFull ? 'Annuler' : 'Valider Skill Up'}">${isCoreFull ? '✅' : '⚡'}</button>
+                  </div>
+                  <div class="absolute bottom-0 left-0 w-full h-[4px] bg-black/5 z-0"></div>
+                  <div class="absolute bottom-0 left-0 h-[4px] ${isCoreFull ? 'bg-gradient-to-r from-emerald-400 to-teal-500' : 'bg-gradient-to-r from-cyan-400 to-blue-500'} transition-all duration-700 ease-out z-0" style="width: ${percentCore}%;"></div>
+              </div>`;
+          }
+
+          let extBlock = '';
+          if (validRidsExt.length > 0) {
+              extBlock = `
+              <div class="flex flex-col gap-1.5 ${isExtFull ? 'bg-emerald-50/50 border-emerald-200' : 'bg-amber-50/80 border-amber-100'} pt-2 pb-2 px-2.5 rounded-xl border shadow-inner shrink-0 relative overflow-hidden transition-colors duration-500">
+                  <div class="flex gap-1.5 z-10">${htmlExt}</div>
+                  <div class="flex items-center justify-between w-full px-1 z-10 mt-0.5">
+                      <span class="text-[7px] font-black uppercase ${isExtFull ? 'text-emerald-600' : 'text-amber-600/80'} tracking-widest leading-none transition-colors">Créations</span>
+                      <button onclick="toggleGroup('${id}', 'ext')" class="text-[10px] hover:scale-125 transition-transform ${isExtFull ? 'text-emerald-500' : 'text-amber-500 drop-shadow-sm'}" title="${isExtFull ? 'Annuler' : 'Valider Créations'}">${isExtFull ? '✅' : '⚡'}</button>
+                  </div>
+                  <div class="absolute bottom-0 left-0 w-full h-[4px] bg-black/5 z-0"></div>
+                  <div class="absolute bottom-0 left-0 h-[4px] ${isExtFull ? 'bg-gradient-to-r from-emerald-400 to-teal-500' : 'bg-gradient-to-r from-amber-400 to-orange-400'} transition-all duration-700 ease-out z-0" style="width: ${percentExt}%;"></div>
+              </div>`;
+          }
+
+          let calBlock = `
+              <div class="flex flex-col gap-1.5 bg-rose-50/80 pt-2 pb-1.5 px-2.5 rounded-xl border border-rose-100 shadow-inner shrink-0 relative overflow-hidden h-full">
+                  <div class="flex justify-center z-10">${btnCalendarHTML}</div>
+                  <div class="flex items-center justify-center w-full px-1 z-10 mt-0.5">
+                      <span class="text-[7px] font-black uppercase text-rose-500/70 tracking-widest leading-none mt-0.5">Rappels</span>
+                  </div>
+              </div>`;
 
           const card = document.createElement("div");
           card.className = `card-module p-6 rounded-2xl mb-3 ${isFull ? "border-blue-300 bg-blue-50/50" : ""} ${anim ? "card-animate" : ""}`;
@@ -1493,7 +1500,7 @@
 
           card.innerHTML = `
             <div class="flex flex-col relative z-10">
-                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2">
                     <div>
                         <div class="flex items-center gap-3 mb-1">
                             <span class="text-black font-black text-2xl pr-2 opacity-80">${id.split("_")[0]}</span>
@@ -1503,27 +1510,13 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-5 mt-2">
-                    <div class="flex flex-wrap items-center gap-3">
-                        ${htmlRes}
-                    </div>
-
-                    <div class="flex items-center gap-4 bg-white/60 p-2 pl-4 rounded-2xl border border-[#0F2C48]/5 shadow-sm min-w-[280px] shrink-0">
-                        <div class="flex-grow flex flex-col gap-1.5">
-                            <div class="flex justify-between items-center leading-none">
-                                <span class="text-[9px] font-black text-[#0F2C48]/60 uppercase tracking-widest">Avancement</span>
-                                <span class="text-xs font-black ${isFull ? 'text-blue-600' : 'text-[#0F2C48]'}">${linePercent}%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden shadow-inner border border-gray-300">
-                                <div class="h-full bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] rounded-full transition-all duration-700 ease-out shadow-[0_0_10px_rgba(59,130,246,0.4)] relative" style="width: ${linePercent}%;">
-                                    <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwTDggOFpNOCAwTDAgOFoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuMiIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] opacity-30"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <button onclick="toggleLine('${id}')" class="btn-valider-3d px-5 py-2.5 rounded-xl text-[10px] whitespace-nowrap relative z-10 ${isFull ? "btn-success-line" : ""}">
-                             ${isFull ? "Terminé ✅" : "Valider"}
-                        </button>
-                    </div>
+                <!-- LIGNE UNIQUE, COMPACTE ET ÉPURÉE -->
+                <div class="flex items-stretch w-full overflow-x-auto scrollbar-hide pb-2 snap-x mt-1 gap-3">
+                    ${offBlock}
+                    ${coreBlock}
+                    ${extBlock}
+                    <div class="w-[2px] h-8 self-center bg-gray-200 rounded-full shrink-0 mx-1 hidden md:block"></div>
+                    ${calBlock}
                 </div>
             </div>
             <div id="inline-media-${id}" class="hidden w-full flex-col relative z-0 mt-4" data-current-url=""></div>
