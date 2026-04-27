@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mon Parcours FPA - V26 (Smart Badges & Preview)</title>
+    <title>Mon Parcours FPA - V27 (Fresh Timeline)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -252,7 +252,7 @@
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo Paia Hub" class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover shadow-md" />
           <div>
             <h1 class="text-xl font-black uppercase text-[#0F2C48] drop-shadow-sm">Mon Parcours FPA</h1>
-            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Suivi programme FPA • V26</p>
+            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Suivi programme FPA • V27 (Fresh Timeline)</p>
           </div>
         </div>
 
@@ -527,6 +527,7 @@
               if(el) { el.classList.add('opacity-0', 'scale-95'); setTimeout(() => { el.remove(); }, 300); }
           }
 
+          // Confetti seulement au moment où on COCHE la case
           if (isNowDone && !fromPopup) {
              confetti({ particleCount: 30, spread: 40, origin: { y: 0.8 } });
           }
@@ -1033,10 +1034,12 @@
           const safeTitre = (titre || "").replace(/'/g, "\\'");
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
 
+          // Les éléments externes
           if (type === 'external') {
               return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
           }
 
+          // PDF Protégé
           if (type === 'embed-pdf' && !isUnlocked) {
               return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
           }
@@ -1317,7 +1320,7 @@
                   j0Date.setDate(j0Date.getDate() - daysOffset);
               }
 
-              timelineHtml += `<div class="mt-5 rounded-xl bg-[#0F2C48]/5 border border-[#0F2C48]/10 w-full animate-slideIn overflow-hidden shadow-sm">`;
+              timelineHtml += `<div class="mt-5 rounded-xl bg-gradient-to-r from-slate-50 to-blue-50/50 border border-[#0F2C48]/10 w-full animate-slideIn overflow-hidden shadow-sm">`;
 
               timelineHtml += `
               <div class="flex items-center justify-between p-3 cursor-pointer group hover:bg-[#0F2C48]/5 transition-colors" onclick="document.getElementById('timeline-list-${id}').classList.toggle('hidden'); document.getElementById('timeline-chevron-${id}').classList.toggle('rotate-180');">
@@ -1343,52 +1346,69 @@
                   <p class="text-[9px] text-gray-500 italic mb-2 mt-2 px-3 opacity-80">Exportez le fichier .ics pour tout ajouter d'un coup, ou utilisez les icônes sur chaque date.</p>
 
                   <div class="flex gap-3 overflow-x-auto pb-4 pt-2 px-2 snap-x scrollbar-hide">
-
-                      <div class="shrink-0 w-[100px] bg-gradient-to-b from-blue-50 to-white border border-blue-200 rounded-[16px] flex flex-col items-center justify-center p-3 shadow-sm relative overflow-hidden snap-start">
-                          <div class="absolute top-0 w-full h-3 bg-red-500 shadow-sm border-b border-red-600"></div>
-                          <span class="text-3xl font-black text-[#0F2C48] mt-2 mb-0 leading-none">${j0Date.getDate()}</span>
-                          <span class="text-[10px] font-black text-red-500 uppercase tracking-widest">${j0Date.toLocaleDateString('fr-FR', {month:'short'})}</span>
-                          <span class="text-[8px] font-bold text-gray-400 mt-2 uppercase text-center border-t border-gray-200 pt-1 w-full">Jour Zéro</span>
-                      </div>
               `;
 
               moduleRevs.forEach(rev => {
                   const revDateObj = new Date(rev.datetime);
-                  const isPast = new Date() > revDateObj && !rev.done;
-                  const dateStrLocal = formatLocalCalDate(revDateObj);
-                  const endDateTimeObj = new Date(revDateObj.getTime() + 60*60*1000);
-                  const endStrLocal = formatLocalCalDate(endDateTimeObj);
 
-                  const safeT = titre.replace(/'/g, "\\'");
-                  const desc = encodeURIComponent(`Rappel d'apprentissage espacé (${rev.label}).\n\nModule : ${id} - ${titre}\nObjectif : Consolider la mémoire à long terme !`);
-                  const eventTitle = encodeURIComponent(`Révision ${rev.label} : ${id} - ${titre}`);
+                  // JOUR ZERO (J0)
+                  if (rev.days === 0) {
+                      timelineHtml += `
+                          <div class="shrink-0 w-[100px] bg-gradient-to-br from-amber-50 to-orange-100 border border-orange-200 rounded-[16px] flex flex-col items-center justify-center p-3 shadow-sm relative overflow-hidden snap-start hover:-translate-y-1 transition-transform">
+                              <div class="absolute top-0 w-full h-1.5 bg-gradient-to-r from-orange-400 to-red-500 shadow-sm"></div>
+                              <span class="text-3xl font-black text-[#0F2C48] mt-2 mb-0 leading-none">${revDateObj.getDate()}</span>
+                              <span class="text-[10px] font-black text-orange-600 uppercase tracking-widest">${revDateObj.toLocaleDateString('fr-FR', {month:'short'})}</span>
+                              <span class="text-[8px] font-bold text-orange-800/60 mt-2 uppercase text-center border-t border-orange-200/50 pt-1 w-full">Jour Zéro</span>
+                          </div>
+                      `;
+                  } else {
+                      // MINI-AGENDAS (Les cloches J1, J3, etc.)
+                      const isPast = new Date() > revDateObj && !rev.done;
+                      const dateStrLocal = formatLocalCalDate(revDateObj);
+                      const endDateTimeObj = new Date(revDateObj.getTime() + 60*60*1000);
+                      const endStrLocal = formatLocalCalDate(endDateTimeObj);
 
-                  const gCalLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=${dateStrLocal}/${endStrLocal}&details=${desc}`;
-                  const outlookLink = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${eventTitle}&body=${desc}&startdt=${dateStrLocal}&enddt=${endStrLocal}`;
-                  const appleIcs = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${dateStrLocal}\nDTEND:${endStrLocal}\nSUMMARY:Révision ${rev.label} : ${id} - ${safeT}\nDESCRIPTION:Rappel d'apprentissage espacé (${rev.label}).\\n\\nModule : ${id} - ${safeT}\\nObjectif : Consolider la mémoire à long terme !\nBEGIN:VALARM\nTRIGGER:-P1D\nACTION:DISPLAY\nDESCRIPTION:Rappel (1 jour avant)\nEND:VALARM\nBEGIN:VALARM\nTRIGGER:-PT5M\nACTION:DISPLAY\nDESCRIPTION:Rappel (5 minutes avant)\nEND:VALARM\nEND:VEVENT\nEND:VCALENDAR`;
-                  const appleLink = `data:text/calendar;charset=utf8,${encodeURIComponent(appleIcs)}`;
+                      const safeT = titre.replace(/'/g, "\\'");
+                      const desc = encodeURIComponent(`Rappel d'apprentissage espacé (${rev.label}).\n\nModule : ${id} - ${titre}\nObjectif : Consolider la mémoire à long terme !`);
+                      const eventTitle = encodeURIComponent(`Révision ${rev.label} : ${id} - ${titre}`);
 
-                  const borderClass = rev.done ? 'border-blue-300 bg-blue-50' : (isPast ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-white');
-                  const checkIconClass = rev.done ? 'bg-[#3b82f6] text-white border-[#3b82f6]' : 'bg-white text-gray-300 border-gray-300 hover:border-blue-400 hover:text-blue-500';
+                      const gCalLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=${dateStrLocal}/${endStrLocal}&details=${desc}`;
+                      const outlookLink = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${eventTitle}&body=${desc}&startdt=${dateStrLocal}&enddt=${endStrLocal}`;
+                      const appleIcs = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${dateStrLocal}\nDTEND:${endStrLocal}\nSUMMARY:Révision ${rev.label} : ${id} - ${safeT}\nDESCRIPTION:Rappel d'apprentissage espacé (${rev.label}).\\n\\nModule : ${id} - ${safeT}\\nObjectif : Consolider la mémoire à long terme !\nBEGIN:VALARM\nTRIGGER:-P1D\nACTION:DISPLAY\nDESCRIPTION:Rappel (1 jour avant)\nEND:VALARM\nBEGIN:VALARM\nTRIGGER:-PT5M\nACTION:DISPLAY\nDESCRIPTION:Rappel (5 minutes avant)\nEND:VALARM\nEND:VEVENT\nEND:VCALENDAR`;
+                      const appleLink = `data:text/calendar;charset=utf8,${encodeURIComponent(appleIcs)}`;
 
-                  timelineHtml += `
-                    <div class="shrink-0 w-[110px] ${borderClass} border rounded-[16px] flex flex-col items-center p-3 relative shadow-sm transition-all hover:shadow-md snap-start">
-                        <button onclick="markRevisionDone('${rev.id}')" class="absolute -top-2 -right-2 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all z-10 ${checkIconClass} shadow-sm">
-                            <i class="fas fa-check text-[10px]"></i>
-                        </button>
+                      const bgClass = rev.done
+                          ? 'bg-gradient-to-br from-emerald-50 to-teal-100 border-emerald-300'
+                          : (isPast
+                              ? 'bg-gradient-to-br from-rose-50 to-red-100 border-rose-300'
+                              : 'bg-gradient-to-br from-indigo-50 to-blue-100 border-indigo-200');
 
-                        <span class="text-2xl mb-1 opacity-90">${rev.done ? '✅' : '🔔'}</span>
-                        <span class="text-[9px] font-black text-[#0F2C48] uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded mb-1 shadow-inner">${rev.label}</span>
-                        <span class="text-[11px] font-bold ${isPast && !rev.done ? 'text-red-500' : 'text-gray-600'}">${revDateObj.toLocaleDateString('fr-FR', {day:'numeric', month:'short'})}</span>
-                        <span class="text-[10px] font-black text-[#B4792A] mb-3">${String(revDateObj.getHours()).padStart(2,'0')}h${String(revDateObj.getMinutes()).padStart(2,'0')}</span>
+                      const checkIconClass = rev.done
+                          ? 'bg-gradient-to-r from-emerald-400 to-teal-500 text-white border-transparent'
+                          : 'bg-white/80 text-gray-300 border-gray-300 hover:border-[#3b82f6] hover:text-[#3b82f6]';
 
-                        <div class="flex gap-1.5 w-full justify-center pt-2 border-t border-gray-200/50 ${rev.done ? 'opacity-30 pointer-events-none grayscale' : ''}">
-                            <a href="${gCalLink}" target="_blank" title="Google Calendar" class="w-6 h-6 rounded border border-gray-200 flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-sm bg-white"><i class="fab fa-google text-[10px]"></i></a>
-                            <a href="${outlookLink}" target="_blank" title="Outlook" class="w-6 h-6 rounded border border-gray-200 flex items-center justify-center text-cyan-600 hover:bg-cyan-600 hover:text-white transition-all shadow-sm bg-white"><i class="fab fa-windows text-[10px]"></i></a>
-                            <a href="${appleLink}" download="Apple_Rev_${rev.label}_${id}.ics" title="Apple Calendar" class="w-6 h-6 rounded border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-all shadow-sm bg-white"><i class="fab fa-apple text-[11px]"></i></a>
+                      timelineHtml += `
+                        <div class="shrink-0 w-[110px] ${bgClass} border rounded-[16px] flex flex-col items-center p-3 relative shadow-sm transition-all hover:shadow-md hover:-translate-y-1 snap-start">
+
+                            <!-- La coche pointage -->
+                            <button onclick="markRevisionDone('${rev.id}')" class="absolute -top-2 -right-2 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all z-10 ${checkIconClass} shadow-md">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </button>
+
+                            <span class="text-2xl mb-1 opacity-90 drop-shadow-sm">${rev.done ? '✅' : (isPast ? '⚠️' : '🔔')}</span>
+                            <span class="text-[9px] font-black text-[#0F2C48] uppercase tracking-widest bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded mb-1 shadow-sm">${rev.label}</span>
+                            <span class="text-[11px] font-bold ${isPast && !rev.done ? 'text-red-600' : 'text-[#0F2C48]/80'}">${revDateObj.toLocaleDateString('fr-FR', {day:'numeric', month:'short'})}</span>
+                            <span class="text-[10px] font-black text-[#0F2C48]/60 mb-2">${String(revDateObj.getHours()).padStart(2,'0')}h${String(revDateObj.getMinutes()).padStart(2,'0')}</span>
+
+                            <!-- Exportation : Bulles avec Icônes -->
+                            <div class="flex gap-1.5 w-full justify-center pt-2 border-t border-[#0F2C48]/10 ${rev.done ? 'opacity-40 pointer-events-none grayscale' : ''}">
+                                <a href="${gCalLink}" target="_blank" title="Google Calendar" class="w-6 h-6 rounded-full border border-white bg-white/80 flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-sm"><i class="fab fa-google text-[10px]"></i></a>
+                                <a href="${outlookLink}" target="_blank" title="Outlook" class="w-6 h-6 rounded-full border border-white bg-white/80 flex items-center justify-center text-cyan-600 hover:bg-cyan-600 hover:text-white transition-all shadow-sm"><i class="fab fa-windows text-[10px]"></i></a>
+                                <a href="${appleLink}" download="Apple_Rev_${rev.label}_${id}.ics" title="Apple Calendar" class="w-6 h-6 rounded-full border border-white bg-white/80 flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-all shadow-sm"><i class="fab fa-apple text-[11px]"></i></a>
+                            </div>
                         </div>
-                    </div>
-                  `;
+                      `;
+                  }
               });
               timelineHtml += `</div></div></div>`;
           }
