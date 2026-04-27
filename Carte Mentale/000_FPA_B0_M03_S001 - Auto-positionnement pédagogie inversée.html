@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-positionnement pédagogie inversée</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 400px;
+            text-align: center;
+        }
+        .reference {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .price {
+            font-size: 2em;
+            color: #27ae60;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .get-btn {
+            display: inline-block;
+            background-color: #27ae60;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .get-btn:hover {
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="reference">Réf: 000_FPA_B0_M03_S001</div>
+        <h1>Auto-positionnement pédagogie inversée</h1>
+        <div class="price">Gratuit</div>
+
+        <!-- Le lien mailto pré-remplit l'objet de l'email avec le titre de la formation -->
+        <a href="mailto:votre-email@exemple.com?subject=Demande de document gratuit : 000_FPA_B0_M03_S001 - Auto-positionnement pédagogie inversée" class="get-btn">
+            ✉️ Obtenir gratuitement
+        </a>
+    </div>
+
+</body>
+</html>
