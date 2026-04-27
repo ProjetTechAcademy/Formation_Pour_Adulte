@@ -113,7 +113,6 @@
 
       .btn-news { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
       .btn-teams { background: linear-gradient(135deg, #464eb8 0%, #e81123 100%); }
-      /* Changement: Contact passe en Violet profond (pour ne pas être vert) */
       .btn-contact { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); }
       .btn-planning { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
       .btn-certif-nav { background: linear-gradient(135deg, #D9A526 0%, #B4792A 100%); }
@@ -1129,7 +1128,13 @@
                 data: {
                     labels: ['B0: Socle', 'B1: Concevoir', 'B2: Animer', 'B3: Accompagner', 'B4: Qualité'],
                     datasets: [{
-                        data: [16, 62, 42, 43, 27],
+                        data: [
+                            progressState.bloc0.total || 16,
+                            progressState.bloc1.total || 62,
+                            progressState.bloc2.total || 42,
+                            progressState.bloc3.total || 43,
+                            progressState.bloc4.total || 27
+                        ],
                         backgroundColor: [themes.trans.hex, themes.bloc1.hex, themes.bloc2.hex, themes.bloc3.hex, themes.bloc4.hex],
                         borderWidth: 5, borderColor: '#ffffff', hoverOffset: 15
                     }]
