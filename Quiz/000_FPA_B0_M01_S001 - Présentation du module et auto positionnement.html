@@ -28,7 +28,7 @@
             display: flex; justify-content: center; align-items: flex-start;
             min-height: 100vh; overflow-x: hidden;
             transition: all 0.5s ease;
-            padding-bottom: 100px;
+            padding-bottom: 150px; /* Espace pour la barre et le grand footer */
         }
 
         /* --- BARRE GLOBALE PAIA (ACCESSIBILITÉ COMPLÈTE) --- */
@@ -71,6 +71,7 @@
         .platform-name { font-family: 'Roboto', sans-serif; font-size: 2rem; font-weight: 900; color: var(--title-blue); text-transform: uppercase; letter-spacing: 1px; margin: 0; line-height: 1; }
         .platform-sub { color: var(--alert-bronze); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; margin-top: 6px; }
 
+        /* Bouton Teams */
         .btn-teams {
             background: linear-gradient(135deg, #464EB8 0%, #E81123 50%, #FFB900 100%);
             color: #ffffff; padding: 10px 22px; border-radius: 50px; text-decoration: none;
@@ -121,7 +122,6 @@
             border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%; margin-top: 20px;
             transition: all 0.3s ease; text-transform: uppercase;
         }
-        .btn-action:hover { background: var(--cta-yellow); color: var(--title-blue); border-color: var(--cta-yellow); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(217, 165, 38, 0.3); }
 
         .glossary-box { margin-top: 25px; padding: 20px; background: var(--surface-ivory); border-radius: 8px; border: 1px dashed var(--cta-yellow); text-align: left; }
         .glossary-box h3 { color: var(--title-blue); display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; font-weight: 700; margin-top:0;}
@@ -133,10 +133,12 @@
 
         .diploma { text-align: center; }
 
-        /* --- FOOTER PAIA --- */
-        .footer-paia { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(15, 44, 72, 0.1); }
+        /* --- FOOTER PAIA (STRUCTURE 2 LIGNES DISTINCTES) --- */
+        .footer-paia { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(15, 44, 72, 0.1); }
         .footer-logo { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--cta-yellow); object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .signature { font-size: 11px; color: var(--title-blue); text-align: center; font-weight: 500; line-height: 1.6; opacity: 0.85; }
+        .footer-text { text-align: center; width: 100%; max-width: 800px; }
+        .signature-line1 { font-size: 12px; color: var(--title-blue); font-weight: 700; line-height: 1.4; margin-bottom: 5px; }
+        .signature-line2 { font-size: 11px; color: var(--title-blue); font-weight: 400; opacity: 0.8; line-height: 1.4; font-style: italic; }
 
         .acc-btn { padding: 8px 12px; font-size: 1.1rem; border-radius: 8px; color: var(--title-blue); font-weight: 700; background: transparent; border: none; cursor: pointer; }
         .control-group-horiz { display: flex; gap: 5px; align-items: center; background: rgba(15, 44, 72, 0.05); padding: 5px 10px; border-radius: 8px; }
@@ -227,7 +229,7 @@
         <div class="hud">
             <div id="ui-timer" class="timer-box" style="display:none;">⏱️ --s</div>
             <div id="ui-hearts" style="display:none; color:var(--rouge-vies); font-size:1.3rem;">❤️❤️❤️</div>
-            <div id="ui-progress" class="vies">📝 Question 1 / --</div>
+            <div id="ui-progress">📝 Question 1 / --</div>
             <button class="acc-btn" style="border:1px solid var(--title-blue);" onclick="speakCurrent()">🎤</button>
         </div>
         <div class="progress-bar"><div id="ui-bar" class="progress-fill"></div></div>
@@ -237,41 +239,35 @@
         <button id="btn-next" class="btn-action" style="display:none;" onclick="handleNext()">CONTINUER ➡️</button>
     </div>
 
-    <div id="screen-result" class="screen diploma">
-        <div class="diploma-content">
-            <span style="font-size: 3.5rem; display:block; margin-bottom:10px;" id="ui-diploma-icon">🎓</span>
-            <h2 id="final-title" style="font-weight:900; text-transform:uppercase;">BILAN DE POSITIONNEMENT</h2>
-            <div id="ui-final-score" style="font-size:4rem; font-weight:900; margin:10px 0; color:var(--cta-yellow);">0/0</div>
-            <p id="ui-humor" style="font-weight:500; padding:0 20px;"></p>
+    <div id="screen-result" class="screen diploma" style="text-align:center;">
+        <span style="font-size: 3.5rem;">🎓</span>
+        <h2 style="font-weight:900; text-transform:uppercase;">BILAN DE POSITIONNEMENT</h2>
+        <div id="ui-final-score" style="font-size:4rem; font-weight:900; color:var(--cta-yellow);">0/0</div>
+        <p id="ui-humor" style="font-weight:500; padding:0 20px;"></p>
 
-            <div class="motivation-banner" style="text-align:left;">
-                <b>💡 Insight FPA :</b><br><span id="ui-anecdote">...</span>
-            </div>
-
-            <div class="glossary-box">
-                <h3>
-                    <span style="display:flex; align-items:center; gap:10px;">
-                        Glossaire Expert
-                        <button class="acc-btn" style="padding:2px 8px; font-size:1.1rem; color:var(--alert-bronze); border:1px solid rgba(180, 121, 42, 0.3);" onclick="speakGlossary()" title="Écouter les termes affichés">🔊</button>
-                    </span>
-                    <span id="ui-glossary-progress" style="font-size:0.85rem; background:var(--title-blue); color:var(--cta-yellow); padding:4px 12px; border-radius:50px;">0 / 12</span>
-                </h3>
-                <ul class="glossary-list" id="ui-glossary-list"></ul>
-                <button id="btn-new-words" class="opt-btn" style="margin-top:15px; text-align:center; background:transparent; font-weight:700; border-style:dashed;" onclick="generateGlossary(true)">🔄 Termes suivants</button>
-                <div id="ui-vocab-diploma" class="vocab-diploma">🏅 Maîtrise Lexicale Confirmée !</div>
-            </div>
+        <div class="glossary-box">
+            <h3>
+                <span style="display:flex; align-items:center; gap:10px;">
+                    Glossaire Expert
+                    <button class="acc-btn" style="padding:2px 8px; font-size:1.1rem; color:var(--alert-bronze); border:1px solid rgba(180, 121, 42, 0.3);" onclick="speakGlossary()">🔊</button>
+                </span>
+            </h3>
+            <ul class="glossary-list" id="ui-glossary-list"></ul>
         </div>
         <button class="btn-action" onclick="location.reload()">NOUVELLE SESSION 🔄</button>
     </div>
 
     <div class="footer-paia">
         <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo MMPA" class="footer-logo">
-        <div class="signature">💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026 Tous droits réservés</div>
+        <div class="footer-text">
+            <div class="signature-line1">💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026</div>
+            <div class="signature-line2">Plateforme indépendante de révision et d'entraide créée par une apprenante. Non affiliée à l'organisme de formation officiel.</div>
+        </div>
     </div>
 </div>
 
 <script>
-    // --- BANQUE DE 30 QUESTIONS (FICHE 000 ANIMATION) ---
+    // --- BANQUE DE 30 QUESTIONS ---
     const questionBank = [
         {q: "En session 2, combien de techniques d'Ice breakers sont présentées ?", options: ["5 techniques", "15 techniques", "30 techniques"], correct: 1, rationale: "Le module présente 15 techniques spécifiques pour briser la glace au démarrage." },
         {q: "Quelle session est consacrée à la matrice synthétique des 45 activités ?", options: ["Session 1", "Session 4", "Session 6"], correct: 2, rationale: "La session 6 compile toutes les activités dans une matrice de choix stratégique." },
@@ -311,41 +307,29 @@
         { word: "Ludification", def: "Intégration de mécaniques de jeu dans l'apprentissage pour booster l'engagement." },
         { word: "Facilitateur", def: "Posture du formateur qui guide le groupe sans imposer, en favorisant les échanges." },
         { word: "Scénario pédagogique", def: "Fiche de route chronologique détaillant chaque phase d'une session." },
-        { word: "Matrice d'activités", def: "Outil de choix stratégique classant les techniques selon des critères logistiques." },
-        { word: "Implication émotionnelle", def: "Engagement affectif de l'apprenant, facilitant l'ancrage et la mémorisation." },
-        { word: "Dynamisation", def: "Action de maintenir l'énergie et l'attention du groupe par des activités variées." }
-    ];
-
-    const anecdotes = [
-        "Un bon Ice breaker réduit le stress des apprenants de 30% dès les 10 premières minutes !",
-        "Le cerveau humain décroche après 20 minutes de discours passif : d'où l'importance du rythme.",
-        "Renouveler ses outils chaque année permet de ne jamais tomber dans la routine pédagogique."
+        { word: "Matrice d'activités", def: "Outil de choix stratégique classant les techniques selon des critères logistiques." }
     ];
 
     let gameMode = 'chrono', activeSet = [], current = 0, score = 0, timer, timeLeft, totalQ = 10, lives = 3;
     let isDarkMode = false, isDys = false, isContrast = false, isCalm = false, isMuted = false, speechRate = 1.1, globalVolume = 1.0;
 
-    let seenGlossaryTerms = new Set(JSON.parse(localStorage.getItem('paia_vocab_000_anim') || '[]'));
-    const maxGlossary = glossaryTerms.length;
-
     // --- SÉLECTION VOIX QUALITÉ (FEMME FRANÇAISE) ---
     let mainVoice = null;
     function loadVoices() {
         const voices = window.speechSynthesis.getVoices();
-        // On cherche une voix féminine française de qualité (Google ou Premium)
         mainVoice = voices.find(v => v.lang.includes('fr-FR') && (v.name.includes('Google') || v.name.includes('Hortense') || v.name.includes('Female') || v.name.includes('Premium')));
-        if (!mainVoice) mainVoice = voices.find(v => v.lang.includes('fr-FR')); // Fallback
+        if (!mainVoice) mainVoice = voices.find(v => v.lang === 'fr-FR' || v.lang === 'fr_FR');
     }
     window.speechSynthesis.onvoiceschanged = loadVoices;
 
-    // --- ACCESSIBILITÉ & UI CONTROLS ---
+    // --- ACCESSIBILITÉ & UI ---
     function toggleDarkMode() { isDarkMode = !isDarkMode; document.body.classList.toggle('dark-mode', isDarkMode); document.getElementById('btn-dark-mode').innerText = isDarkMode ? "☀️" : "🌙"; }
     function changeFontSize(s) { let f = parseInt(window.getComputedStyle(document.documentElement).fontSize); document.documentElement.style.fontSize = Math.min(24, Math.max(12, f + (s*2))) + "px"; }
     function toggleDys(b) { isDys = !isDys; document.body.classList.toggle('dys-mode'); b.classList.toggle('selected-config', isDys); }
     function toggleContrast(b) { isContrast = !isContrast; document.body.classList.toggle('high-contrast'); b.classList.toggle('selected-config', isContrast); }
     function toggleAnimations(b) { isCalm = !isCalm; document.body.classList.toggle('no-anim'); b.classList.toggle('selected-config', isCalm); }
 
-    // --- AUDIO & SMART VOIX (ACCENT ET VITESSE 1.1) ---
+    // --- AUDIO CONTROLS (VITESSE 1.1) ---
     function changeSpeechRate(s) { speechRate = Math.min(1.5, Math.max(0.5, speechRate + s)); document.getElementById('ui-rate').innerText = "x" + speechRate.toFixed(1); }
     function changeVolume(v) { globalVolume = Math.min(1, Math.max(0, globalVolume + v)); if(globalVolume > 0 && isMuted) toggleMute(); }
     function toggleMute() { isMuted = !isMuted; document.getElementById('btn-mute').innerText = isMuted ? "🔇" : "🔊"; if(isMuted) window.speechSynthesis.cancel(); }
@@ -353,16 +337,16 @@
     function speak(txt) {
         if (isMuted) return;
         window.speechSynthesis.cancel();
-
-        // Harmonisation : Une seule voix capable de tout lire ou bascule très rapide
-        const utterance = new SpeechSynthesisUtterance(txt);
-        utterance.rate = speechRate;
-        utterance.volume = globalVolume;
-        utterance.pitch = 1.1; // Un peu plus haut pour une voix féminine claire
-        utterance.lang = 'fr-FR';
-        if (mainVoice) utterance.voice = mainVoice;
-
-        window.speechSynthesis.speak(utterance);
+        // Délai de 250ms pour stabiliser le démarrage
+        setTimeout(() => {
+            const utterance = new SpeechSynthesisUtterance(txt);
+            utterance.rate = speechRate;
+            utterance.volume = globalVolume;
+            utterance.pitch = 1.1;
+            utterance.lang = 'fr-FR';
+            if (mainVoice) utterance.voice = mainVoice;
+            window.speechSynthesis.speak(utterance);
+        }, 250);
     }
 
     function speakCurrent() {
@@ -374,9 +358,7 @@
     }
     function speakGlossary() {
         let tts = "Glossaire Expert. ";
-        const listItems = document.querySelectorAll('#ui-glossary-list li');
-        if(listItems.length === 0) { tts += "Le glossaire est vide."; }
-        else { listItems.forEach(li => { tts += li.innerText + ". "; }); }
+        document.querySelectorAll('#ui-glossary-list li').forEach(li => { tts += li.innerText + ". "; });
         speak(tts);
     }
 
@@ -397,7 +379,7 @@
         activeSet = [...questionBank].sort(() => Math.random() - 0.5).slice(0, totalQ);
         document.getElementById('screen-setup').classList.remove('active-screen');
         document.getElementById('screen-game').classList.add('active-screen');
-        speak("C'est parti ! Bonne chance.");
+        speak("C'est parti ! Bonne chance Mathilde.");
         setTimeout(loadQuestion, 1500);
     }
 
@@ -410,13 +392,11 @@
         document.getElementById('btn-next').style.display = "none";
         if(gameMode === 'vies') updateHearts();
 
-        let tts = d.q + ". ";
         d.options.forEach((o, i) => {
             const b = document.createElement('button'); b.className = "opt-btn"; b.innerText = (i+1) + ". " + o;
             b.onclick = () => validate(i); box.appendChild(b);
-            tts += `Option ${i+1}, ${o}. `;
         });
-        speak(tts);
+        speak(d.q + ". Quelles sont vos propositions ?");
         if(gameMode === 'chrono' && timeLimit > 0) startTimer();
     }
 
@@ -437,20 +417,18 @@
         f.style.display = "block";
         document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
 
-        let tts = "";
         if(i === d.correct) {
             score++;
             f.className = "feedback success";
             f.innerHTML = "✨ <b>Bravo !</b> " + d.rationale;
-            tts = "Excellent ! " + d.rationale;
+            speak("Excellent ! " + d.rationale);
             rain();
         } else {
             if(gameMode === 'vies') lives--;
             f.className = "feedback error";
-            tts = (i === -1 ? "Oups, temps écoulé !" : "Erreur !") + " La réponse était : " + d.options[d.correct] + ". " + d.rationale;
-            f.innerHTML = `❌ ${tts}`;
+            f.innerHTML = `❌ Oups ! La réponse était : ${d.options[d.correct]}. ${d.rationale}`;
+            speak("Erreur. La réponse était : " + d.options[d.correct]);
         }
-        speak(tts);
         document.getElementById('btn-next').style.display = "block";
     }
 
@@ -465,36 +443,17 @@
     }
 
     function generateGlossary(isManual = false) {
-        const listEl = document.getElementById('ui-glossary-list'); listEl.style.opacity = '0.3';
-        setTimeout(() => {
-            let pool = glossaryTerms.filter(t => !seenGlossaryTerms.has(t.word));
-            if(pool.length < 4) { seenGlossaryTerms.clear(); pool = glossaryTerms; }
-            const selection = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
-            selection.forEach(t => seenGlossaryTerms.add(t.word));
-            localStorage.setItem('paia_vocab_000_anim', JSON.stringify([...seenGlossaryTerms]));
-
-            let h = ""; selection.forEach(t => h += `<li><strong>${t.word} :</strong> ${t.def}</li>`);
-            listEl.innerHTML = h; listEl.style.opacity = '1';
-
-            document.getElementById('ui-glossary-progress').innerText = `${seenGlossaryTerms.size} / ${maxGlossary}`;
-            if(seenGlossaryTerms.size >= maxGlossary) {
-                document.getElementById('ui-vocab-diploma').style.display = 'block';
-                document.getElementById('btn-new-words').innerText = "🔄 Revoir les termes";
-            } else {
-                document.getElementById('ui-vocab-diploma').style.display = 'none';
-                document.getElementById('btn-new-words').innerText = "🔄 Termes suivants";
-            }
-            if(isManual) speak("Voici d'autres concepts.");
-        }, 300);
+        const listEl = document.getElementById('ui-glossary-list');
+        const selection = glossaryTerms.sort(() => 0.5 - Math.random()).slice(0, 4);
+        listEl.innerHTML = selection.map(t => `<li><strong>${t.word} :</strong> ${t.def}</li>`).join('');
     }
 
     function finish(lose) {
         document.getElementById('screen-game').classList.remove('active-screen');
         document.getElementById('screen-result').classList.add('active-screen');
         document.getElementById('ui-final-score').innerText = `${score} / ${lose ? current : totalQ}`;
-        let msg = lose ? "Game Over ! Reprenez la structure des activités." : (score === totalQ ? "Maîtrise totale !" : "C'est validé !");
+        let msg = lose ? "Session interrompue. Prenez le temps de revoir la matrice." : "C'est validé ! Belle progression Mathilde.";
         document.getElementById('ui-humor').innerText = msg;
-        document.getElementById('ui-anecdote').innerText = anecdotes[Math.floor(Math.random()*anecdotes.length)];
         generateGlossary(false);
         speak(`Bilan de session terminé. ${msg}`);
     }
@@ -509,7 +468,6 @@
         }
     }
 
-    // Init voix au chargement
     window.onload = loadVoices;
 </script>
 </body>
