@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mon Parcours FPA - V27 (Ultra Compact UI)</title>
+    <title>Mon Parcours FPA - V001 (Ultra Compact UI)</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -112,10 +112,11 @@
       }
 
       .btn-news { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
-      .btn-exam { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); }
-      .btn-eval { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
       .btn-teams { background: linear-gradient(135deg, #464eb8 0%, #e81123 100%); }
-      .btn-contact { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
+      /* Changement: Contact passe en Violet profond (pour ne pas être vert) */
+      .btn-contact { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); }
+      .btn-planning { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
+      .btn-certif-nav { background: linear-gradient(135deg, #D9A526 0%, #B4792A 100%); }
 
       .tab-btn {
         background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px);
@@ -125,26 +126,6 @@
       .tab-btn.active {
         background: linear-gradient(135deg, #464eb8 0%, #e81123 100%);
         color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(70, 78, 184, 0.3);
-      }
-
-      .tab-btn-cal {
-        background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
-        color: white; border: none; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
-      }
-      .tab-btn-cal.active {
-        transform: scale(1.05);
-        box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5);
-        border-bottom: 4px solid #831843;
-      }
-
-      .tab-btn-certif {
-        background: linear-gradient(135deg, #D9A526 0%, #B4792A 100%);
-        color: white; border: none; box-shadow: 0 4px 15px rgba(217, 165, 38, 0.3);
-      }
-      .tab-btn-certif.active {
-        transform: scale(1.05);
-        box-shadow: 0 8px 25px rgba(217, 165, 38, 0.5);
-        border-bottom: 4px solid #8B5A19;
       }
 
       /* --- Menu Vertical Flottant --- */
@@ -308,7 +289,7 @@
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo Paia Hub" class="w-16 h-16 rounded-xl border-2 border-[#0F2C48] object-cover shadow-md" />
           <div>
             <h1 class="text-2xl font-black uppercase text-[#0F2C48] drop-shadow-sm">Mon Parcours FPA</h1>
-            <p class="text-xs text-[#B4792A] font-bold uppercase tracking-widest">Suivi programme FPA • V27</p>
+            <p class="text-xs text-[#B4792A] font-bold uppercase tracking-widest">Suivi programme FPA • V001</p>
           </div>
         </div>
 
@@ -326,9 +307,12 @@
             <a href="https://app.studi.fr/v3/blog" target="_blank" class="btn-nav-app btn-news group">
               <span>📰</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Newsletter</span>
             </a>
-            <a href="Examen.html" target="_blank" class="btn-nav-app btn-exam group">
-              <span>🎓</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Examen</span>
-            </a>
+            <button onclick="filtrerBloc('CAL')" class="btn-nav-app btn-planning group">
+              <span>⏰</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Planning</span>
+            </button>
+            <button onclick="filtrerBloc('CERTIF')" class="btn-nav-app btn-certif-nav group">
+              <span>🏆</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Certification</span>
+            </button>
             <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="btn-nav-app btn-teams group">
               <i class="fab fa-microsoft text-[1.8rem]"></i><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Communauté</span>
             </a>
@@ -345,15 +329,6 @@
         <button class="tab-btn" id="tab-B2" onclick="filtrerBloc('B2')">B2: Animer</button>
         <button class="tab-btn" id="tab-B3" onclick="filtrerBloc('B3')">B3: Accompagner</button>
         <button class="tab-btn" id="tab-B4" onclick="filtrerBloc('B4')">B4: Qualité & RSE</button>
-
-        <div class="h-8 w-px bg-[#0F2C48]/20 mx-2 hidden md:block"></div>
-        <button class="tab-btn tab-btn-cal" id="tab-CAL" onclick="filtrerBloc('CAL')">
-            <i class="fas fa-clock mr-2"></i> Mon Planning
-        </button>
-
-        <button class="tab-btn tab-btn-certif" id="tab-CERTIF" onclick="filtrerBloc('CERTIF')">
-            <i class="fas fa-certificate mr-2"></i> Certifications
-        </button>
       </div>
 
       <div id="globalProgressHeader" class="bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-lg border border-white mb-8 flex flex-col md:flex-row items-center gap-6">
@@ -492,7 +467,7 @@
       </p>
 
       <div class="flex gap-4 mt-2 bg-white/50 px-6 py-2 rounded-full shadow-inner border border-white">
-          <button onclick="if (confirm('Êtes-vous sûre de vouloir réinitialiser tout votre parcours ?')) { localStorage.removeItem('paia_p_v10'); localStorage.removeItem('paia_revisions'); location.reload(); }" class="text-gray-500 font-black text-[9px] uppercase hover:text-red-500 transition-colors">Réinitialiser le parcours</button>
+          <button onclick="if (confirm('Êtes-vous sûre de vouloir réinitialiser tout votre parcours ?')) { localStorage.removeItem('paia_p_v10'); localStorage.removeItem('paia_progression_complete'); localStorage.removeItem('paia_revisions'); location.reload(); }" class="text-gray-500 font-black text-[9px] uppercase hover:text-red-500 transition-colors">Réinitialiser le parcours</button>
           <span class="text-gray-300 text-[9px]">|</span>
           <button id="lockBtn" onclick="toggleLockSession()" class="text-gray-500 font-black text-[9px] uppercase hover:text-[#0F2C48] transition-colors">Vérifier statut session</button>
       </div>
@@ -825,11 +800,42 @@
             resInput.className = 'w-full border border-paia-yellow rounded-md px-3 py-2 text-sm text-center bg-white text-paia-blue font-bold shadow-inner cursor-not-allowed';
       };
 
+      // Modification de la fonction pour synchroniser avec l'accueil global
       window.toggleSujet = function(sujetCode, blocId) {
             const set = progressState[blocId].completed;
-            if (set.has(sujetCode)) set.delete(sujetCode); else set.add(sujetCode);
+            const isNowCompleted = !set.has(sujetCode);
+
+            if (isNowCompleted) {
+                set.add(sujetCode);
+            } else {
+                set.delete(sujetCode);
+            }
+
+            // Sync vers la vue globale
+            const itemObj = database.find(d => d.Code === sujetCode);
+            if (itemObj) {
+                const allCheckable = ["audio", "excel", "infog", "slide", "video", "glo", "map", "quiz"];
+                const safeFileName = encodeURIComponent(`${sujetCode} - ${itemObj.Titre}`) + '.html';
+                const resMap = {
+                    audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie,
+                    slide: itemObj.Slides, video: itemObj.Vidéo,
+                    glo: `Glossaire/${safeFileName}`, map: `Carte Mentale/${safeFileName}`, quiz: `Quiz/${safeFileName}`
+                };
+
+                const validRids = allCheckable.filter(r => resMap[r] && resMap[r].trim() !== '');
+                validRids.forEach(r => {
+                    progressRes[`${sujetCode}-${r}`] = isNowCompleted;
+                });
+                localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
+            }
+
             saveState();
             updateProgressUI();
+
+            // Rafraichit la vue globale en fond si besoin
+            if (document.getElementById('listContainer') && !document.getElementById('listContainer').classList.contains('hidden')) {
+                afficherModules(document.getElementById("searchInput") ? document.getElementById("searchInput").value : "", false);
+            }
       };
 
       window.toggleEvalInProgress = function(evalId) {
@@ -1947,6 +1953,7 @@
         }, 250);
       }
 
+      // Modification pour synchroniser avec l'onglet Certification
       window.toggleRes = function (id, rid, emoji, colorHex) {
         const checkableRids = ["audio", "excel", "infog", "slide", "video", "glo", "map", "quiz"];
         if (!checkableRids.includes(rid)) return;
@@ -1964,9 +1971,24 @@
         const resMap = { audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie, slide: itemObj.Slides, video: itemObj.Vidéo, glo: `Glossaire/${safeFileName}`, map: `Carte Mentale/${safeFileName}`, quiz: `Quiz/${safeFileName}` };
 
         const validRids = checkableRids.filter(r => resMap[r] && resMap[r].trim() !== '');
-        const isAllNow = validRids.every(r => progressRes[`${id}-${r}`]);
+        const isModuleAll = validRids.every(r => progressRes[`${id}-${r}`]);
 
-        if (isAllNow && progressRes[key]) {
+        // Sync vers Certification
+        let blocKey = "bloc0";
+        if(id.includes("_B1_")) blocKey = "bloc1";
+        else if(id.includes("_B2_")) blocKey = "bloc2";
+        else if(id.includes("_B3_")) blocKey = "bloc3";
+        else if(id.includes("_B4_")) blocKey = "bloc4";
+
+        if (isModuleAll) {
+            progressState[blocKey].completed.add(id);
+        } else {
+            progressState[blocKey].completed.delete(id);
+        }
+        saveState();
+        updateProgressUI();
+
+        if (isModuleAll && progressRes[key]) {
             shootFireworks();
             const toastHtml = `
               <div class="flex flex-col gap-2 w-[300px]">
@@ -1989,6 +2011,7 @@
         afficherModules(document.getElementById("searchInput").value, false);
       };
 
+      // Modification pour synchroniser avec l'onglet Certification
       window.toggleGroup = function (id, groupType) {
         const itemObj = database.find(d => d.Code === id);
         if (!itemObj) return;
@@ -2011,6 +2034,21 @@
         const allCheckable = ["audio", "excel", "infog", "slide", "video", "glo", "map", "quiz"];
         const allValidRids = allCheckable.filter(r => resMap[r] && resMap[r].trim() !== '');
         const isModuleAll = allValidRids.every(r => progressRes[`${id}-${r}`]);
+
+        // Sync vers Certification
+        let blocKey = "bloc0";
+        if(id.includes("_B1_")) blocKey = "bloc1";
+        else if(id.includes("_B2_")) blocKey = "bloc2";
+        else if(id.includes("_B3_")) blocKey = "bloc3";
+        else if(id.includes("_B4_")) blocKey = "bloc4";
+
+        if (isModuleAll) {
+            progressState[blocKey].completed.add(id);
+        } else {
+            progressState[blocKey].completed.delete(id);
+        }
+        saveState();
+        updateProgressUI();
 
         if (!isGroupAll && isModuleAll) {
           shootFireworks();

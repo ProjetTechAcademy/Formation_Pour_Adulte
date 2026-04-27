@@ -3,68 +3,441 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Présentation du module et auto positionnement</title>
+    <title>000_FPA_B0_M01_S001 - Présentation | PAIA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+        :root {
+            --surface-ivory: #F6F2E8;
+            --title-blue: #0F2C48;
+            --cta-yellow: #FFB900;
+            --alert-bronze: #B4792A;
+            --glass: rgba(255, 255, 255, 0.85);
+            --node-bg: #ffffff;
         }
-        .card {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 400px;
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--surface-ivory);
+            color: var(--title-blue);
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* --- EFFET GLASSMORPHISM --- */
+        .glass-ui {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(15, 44, 72, 0.1);
+        }
+
+        /* --- HEADER ÉPURÉ --- */
+        header {
+            background: var(--surface-ivory);
+            border-bottom: 2px solid rgba(15, 44, 72, 0.05);
+            z-index: 50;
+            flex-shrink: 0;
+        }
+
+        /* --- NOEUDS CARTE MENTALE --- */
+        .node { cursor: pointer; }
+        .node-rect {
+            fill: var(--node-bg);
+            stroke-width: 1.5px;
+            rx: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 2px 5px rgba(15, 44, 72, 0.06));
+        }
+        .node:hover .node-rect {
+            filter: drop-shadow(0 8px 18px rgba(15, 44, 72, 0.15));
+            transform: translateY(-2px);
+            stroke: var(--cta-yellow) !important;
+        }
+
+        .node-label-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--title-blue);
+            line-height: 1.25;
+            pointer-events: none;
+        }
+
+        .node.root .node-rect { fill: var(--title-blue); stroke: var(--cta-yellow); stroke-width: 2px; }
+        .node.root .node-label-container { color: #ffffff; font-size: 12px; font-weight: 900; text-transform: uppercase; }
+
+        .node.leaf .node-rect { stroke: var(--alert-bronze); stroke-dasharray: 4,3; }
+
+        .link {
+            fill: none;
+            stroke: var(--title-blue);
+            stroke-width: 1.8px;
+            stroke-opacity: 0.12;
+            transition: stroke-opacity 0.3s;
+        }
+
+        /* --- BARRE LATERALE SLIM --- */
+        .sidebar-controls {
+            position: absolute;
+            left: 20px;
+            top: 40%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 50px;
+            z-index: 40;
+        }
+        .side-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: var(--title-blue);
+            transition: all 0.2s;
+            border: 1px solid rgba(15, 44, 72, 0.08);
+            font-size: 0.9rem;
+        }
+        .side-btn:hover {
+            background: var(--cta-yellow);
+            color: var(--title-blue);
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 185, 0, 0.35);
+        }
+
+        /* --- BOUTONS HEADER --- */
+        .btn-action {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 8px 18px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .btn-teams {
+            background: linear-gradient(135deg, #464EB8 0%, #E81123 100%);
+            color: white !important;
+        }
+        .btn-formation {
+            background: var(--title-blue);
+            color: var(--surface-ivory) !important;
+            border: 1px solid var(--cta-yellow);
+        }
+        .btn-action:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        }
+
+        /* --- BARRE D'ACCÈS BAS RESPONSIVE --- */
+        #bottom-access-bar {
+            position: fixed;
+            bottom: 60px; /* Remonté pour laisser place au footer signature */
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            border-radius: 100px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 10px 40px rgba(15, 44, 72, 0.15);
+            max-width: 90vw;
+            transition: all 0.3s ease;
+        }
+
+        .tool-icon {
+            cursor: pointer;
+            font-size: 1.2rem;
+            opacity: 0.65;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+        }
+        .tool-icon:hover { opacity: 1; transform: scale(1.3); color: var(--cta-yellow); }
+
+        .divider-v {
+            height: 20px;
+            width: 1.5px;
+            background: rgba(15, 44, 72, 0.1);
+            border-radius: 2px;
+        }
+
+        /* --- FOOTER SIGNATURE --- */
+        footer {
+            flex-shrink: 0;
+            padding: 12px 20px;
+            background: transparent;
+            z-index: 50;
             text-align: center;
         }
-        .reference {
-            color: #888;
-            font-size: 0.9em;
-            margin-bottom: 10px;
+        .footer-text {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--title-blue);
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            line-height: 1.6;
         }
-        h1 {
-            color: #2c3e50;
-            font-size: 1.5em;
-            margin-bottom: 20px;
+        .footer-disclaimer {
+            font-size: 8px;
+            font-weight: 400;
+            opacity: 0.4;
+            margin-top: 4px;
         }
-        .price {
-            font-size: 2em;
-            color: #27ae60;
-            font-weight: bold;
-            margin: 20px 0;
+
+        @media (max-width: 768px) {
+            .btn-text-hide { display: none; }
+            .btn-action { padding: 8px 12px; }
         }
-        .get-btn {
-            display: inline-block;
-            background-color: #27ae60;
-            color: white;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background-color 0.3s;
+
+        @media (max-width: 640px) {
+            #bottom-access-bar { gap: 10px; padding: 8px 15px; bottom: 85px; }
+            .tool-icon { font-size: 1rem; width: 28px; height: 28px; }
+            header { padding: 0 15px; }
+            .footer-text { font-size: 7px; }
         }
-        .get-btn:hover {
-            background-color: #2ecc71;
-        }
+
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <div class="reference">Réf: 000_FPA_B0_M01_S001</div>
-        <h1>Présentation du module et auto positionnement</h1>
-        <div class="price">Gratuit</div>
+    <!-- Header Premium -->
+    <header class="h-[85px] flex items-center px-6 md:px-12">
+        <div class="flex items-center justify-between w-full">
+            <div class="flex items-center gap-4 cursor-pointer" onclick="centerMap()">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png"
+                     class="w-12 h-12 md:w-14 md:h-14 rounded-2xl shadow-sm object-cover border border-white" alt="PAIA">
+                <div class="leading-tight">
+                    <h1 class="text-lg md:text-xl font-black text-[#0F2C48] uppercase tracking-tight">Auto-Positionnement</h1>
+                    <p class="text-[9px] font-bold text-[#B4792A] uppercase tracking-[0.3em] mt-1 opacity-80">000_FPA_B0_M01_S001</p>
+                </div>
+            </div>
 
-        <!-- Le lien mailto pré-remplit l'objet de l'email avec le titre de la formation -->
-        <a href="mailto:votre-email@exemple.com?subject=Demande de document gratuit : 000_FPA_B0_M01_S001 - Présentation du module et auto positionnement" class="get-btn">
-            ✉️ Obtenir gratuitement
-        </a>
+            <div class="flex items-center gap-2 md:gap-3">
+                <a href="https://projettechacademy.github.io/Formation_Pour_Adulte/" target="_blank"
+                   class="btn-action btn-formation shadow-sm flex items-center gap-2">
+                   <i class="fas fa-graduation-cap"></i> <span class="btn-text-hide">Mon Suivi Formation & Certification</span><span class="sm:hidden">Suivi</span>
+                </a>
+                <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank"
+                   class="btn-action btn-teams shadow-md flex items-center gap-2">
+                   <i class="fab fa-microsoft"></i> <span class="hidden md:inline">Teams</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Zone Interactive -->
+    <main class="flex-grow relative overflow-hidden cursor-grab active:cursor-grabbing" id="map-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar-controls glass-ui">
+            <button onclick="expandAll()" class="side-btn" title="Tout déployer"><i class="fas fa-expand-arrows-alt"></i></button>
+            <button onclick="collapseAll()" class="side-btn" title="Tout réduire"><i class="fas fa-compress-arrows-alt"></i></button>
+            <button onclick="centerMap()" class="side-btn" title="Recentrer"><i class="fas fa-crosshairs"></i></button>
+        </div>
+    </main>
+
+    <!-- Barre d'Accessibilité (La Lune) en bas et Responsive -->
+    <div id="bottom-access-bar" class="glass-ui">
+        <div class="tool-icon" onclick="toggleDarkMode()" title="Mode Sombre">🌙</div>
+        <div class="tool-icon" onclick="toggleDys()" title="Mode Dyslexie">🔤</div>
+
+        <div class="divider-v"></div>
+
+        <div class="tool-icon font-black text-xs" onclick="changeFontSize(1.5)" title="Agrandir">A+</div>
+        <div class="tool-icon font-black text-xs" onclick="changeFontSize(-1.5)" title="Réduire">A-</div>
+
+        <div class="divider-v"></div>
+
+        <div class="tool-icon" id="audio-btn" onclick="toggleMute()" title="Lecture Vocale">🔊</div>
     </div>
 
+    <!-- Footer Signature Premium -->
+    <footer>
+        <div class="footer-text">
+            💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026
+        </div>
+        <div class="footer-disclaimer">
+            Plateforme indépendante de révision et d'entraide créée par une apprenante. Non affiliée à l'organisme de formation officiel.
+        </div>
+    </footer>
+
+    <script>
+        const treeData = {
+            name: "🚀 Auto-positionnement & Présentation",
+            isRoot: true,
+            children: [
+                {
+                    name: "📋 Auto-évaluation Initiale",
+                    children: [
+                        { name: "🔍 Variation des techniques d'animation" },
+                        { name: "🎭 Usage des Ice Breakers de démarrage" },
+                        { name: "🧪 Expérimentation de nouveaux formats" },
+                        { name: "🔄 Renouvellement annuel des supports" },
+                        { name: "🤝 Partage de scénarios entre pairs" }
+                    ]
+                },
+                {
+                    name: "📚 Programme (45 activités)",
+                    children: [
+                        {
+                            name: "🎬 Session 2 : Lancement",
+                            children: [{name:"~20 Ateliers de type Ice Breaker"}]
+                        },
+                        {
+                            name: "🎮 Sessions 3-4 : Dynamiser",
+                            children: [{name:"~15 Jeux pédagogiques variés"}]
+                        },
+                        {
+                            name: "🏗️ Session 5 : Scénariser",
+                            children: [{name:"~10 Scénarios pédagogiques complets"}]
+                        }
+                    ]
+                },
+                {
+                    name: "📊 Matrice Pédagogique",
+                    children: [
+                        { name: "🏷️ Typologie (Apport / Jeu / Scénario)" },
+                        { name: "👥 Nombre de participants cible" },
+                        { name: "⏳ Temps alloué par activité" },
+                        { name: "🎥 Démonstrations Vidéo HD" }
+                    ]
+                },
+                {
+                    name: "🧠 Posture de l'Animateur",
+                    children: [
+                        {
+                            name: "✨ Implication Émotionnelle",
+                            children: [{name:"Le moteur principal de l'ancrage"}]
+                        },
+                        {
+                            name: "⏱️ Rythme & Pauses",
+                            children: [{name:"Équilibre indispensable de l'énergie"}]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        const container = document.getElementById('map-container');
+        const nodeWidth = 200, nodeHeight = 54;
+        let i = 0, isMuted = false, speechRate = 1.1;
+
+        const zoom = d3.zoom().scaleExtent([0.15, 3]).on("zoom", (e) => svgGroup.attr("transform", e.transform));
+        const svg = d3.select("#map-container").append("svg").attr("width", "100%").attr("height", "100%").call(zoom);
+        const svgGroup = svg.append("g");
+
+        const treeMap = d3.tree().nodeSize([75, 275]);
+        let root = d3.hierarchy(treeData);
+
+        function update(source) {
+            const nodes = treeMap(root).descendants();
+            const links = nodes.slice(1);
+            nodes.forEach(d => d.y = d.depth * 280);
+
+            const node = svgGroup.selectAll('g.node').data(nodes, d => d.id || (d.id = ++i));
+
+            const nodeEnter = node.enter().append('g')
+                .attr('class', d => `node ${d.data.isRoot ? 'root' : ''} ${!d.children && !d._children ? 'leaf' : ''}`)
+                .attr("transform", d => `translate(${source.y0 || 0},${source.x0 || 0})`)
+                .on('click', (e, d) => {
+                    if (d.children) { d._children = d.children; d.children = null; }
+                    else { d.children = d._children; d._children = null; }
+                    update(d);
+                    speak(d.data.name);
+                });
+
+            nodeEnter.append('rect')
+                .attr('class', 'node-rect')
+                .attr('width', nodeWidth)
+                .attr('height', nodeHeight)
+                .attr('y', -nodeHeight/2)
+                .attr('stroke', d => d.data.isRoot ? 'var(--cta-yellow)' : 'rgba(15,44,72,0.1)');
+
+            nodeEnter.append('foreignObject')
+                .attr('width', nodeWidth)
+                .attr('height', nodeHeight)
+                .attr('y', -nodeHeight/2)
+                .attr('x', 0)
+                .append('xhtml:div')
+                .attr('class', 'node-label-container')
+                .html(d => `<div>${d.data.name}</div>`);
+
+            const nodeUpdate = nodeEnter.merge(node);
+            nodeUpdate.transition().duration(600).attr("transform", d => `translate(${d.y},${d.x})`);
+
+            node.exit().transition().duration(600).attr("transform", d => `translate(${source.y},${source.x})`).remove();
+
+            const link = svgGroup.selectAll('path.link').data(links, d => d.id);
+            const linkEnter = link.enter().insert('path', "g").attr("class", "link");
+            linkEnter.merge(link).transition().duration(600).attr('d', d => d3.linkHorizontal().x(d => d.y).y(d => d.x)({
+                source: {x: d.parent.x, y: d.parent.y + nodeWidth},
+                target: {x: d.x, y: d.y}
+            }));
+            link.exit().remove();
+            nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+        }
+
+        window.expandAll = () => {
+            const expand = (d) => { if(d._children){ d.children = d._children; d._children = null; } if(d.children) d.children.forEach(expand); };
+            expand(root); update(root); setTimeout(centerMap, 700);
+        };
+        window.collapseAll = () => {
+            root.children.forEach(d => { if(d.children){ d._children = d.children; d.children = null; } });
+            update(root);
+        };
+        window.centerMap = () => {
+            const b = svgGroup.node().getBBox();
+            const w = container.clientWidth, h = container.clientHeight;
+            const s = Math.min(w/(b.width+150), h/(b.height+150), 1);
+            svg.transition().duration(800).call(zoom.transform, d3.zoomIdentity.translate(w/2 - s*(b.x + b.width/2), h/2 - s*(b.y + b.height/2)).scale(s));
+        };
+
+        function toggleMute() { isMuted = !isMuted; document.getElementById('audio-btn').innerText = isMuted ? "🔇" : "🔊"; }
+        function speak(t) { if (isMuted) return; window.speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(t); m.lang='fr-FR'; m.rate=speechRate; window.speechSynthesis.speak(m); }
+        function toggleDys() { document.body.style.fontFamily = document.body.style.fontFamily.includes('Open Dyslexic') ? 'Roboto, sans-serif' : '"Open Dyslexic", sans-serif'; }
+        function toggleDarkMode() {
+            const b = document.body;
+            const isDark = b.style.filter === 'invert(0.9) hue-rotate(180deg)';
+            b.style.filter = isDark ? '' : 'invert(0.9) hue-rotate(180deg)';
+
+            // Corriger les éléments qui ne doivent pas être inversés
+            document.getElementById('bottom-access-bar').style.filter = !isDark ? 'invert(1) hue-rotate(180deg)' : '';
+            document.querySelector('header').style.filter = !isDark ? 'invert(1) hue-rotate(180deg)' : '';
+            document.querySelector('footer').style.filter = !isDark ? 'invert(1) hue-rotate(180deg)' : '';
+        }
+        function changeFontSize(v) {
+            let s = parseFloat(window.getComputedStyle(document.documentElement).fontSize);
+            document.documentElement.style.fontSize = (s + v) + 'px';
+        }
+
+        root.children.forEach(d => { d._children = d.children; d.children = null; });
+        update(root);
+        setTimeout(centerMap, 400);
+        window.addEventListener('resize', centerMap);
+    </script>
 </body>
 </html>

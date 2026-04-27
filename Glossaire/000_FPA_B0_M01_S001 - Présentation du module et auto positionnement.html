@@ -1,70 +1,444 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Présentation du module et auto positionnement</title>
+    <title>000_FPA_B0_M01_S001 - Présentation du module et auto positionnement</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configuration Tailwind alignée EXACTEMENT sur ton index.html
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        paia: {
+                            ivory: '#F6F2E8',
+                            blue: '#0F2C48',
+                            yellow: '#D9A526',
+                            bronze: '#B4792A',
+                            dark: '#0f172a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                        mono: ['Space Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Lexend:wght@400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+        /* Hide scrollbar for horizontal scrolling menus (UX Moderne) */
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Scrollbar globale */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #D9A526; border-radius: 10px; }
+
+        body { transition: background-color 0.3s ease, color 0.3s ease; }
+        html { transition: font-size 0.3s ease; }
+
+        /* =========================================
+           MODE DYSLEXIE (Typographie uniquement)
+           ========================================= */
+        body.dyslexia-mode {
+            font-family: 'Lexend', sans-serif !important;
+            letter-spacing: 0.08em !important;
+            word-spacing: 0.15em !important;
+            line-height: 1.8 !important;
         }
-        .card {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 400px;
-            text-align: center;
+
+        /* Cartes Bento Modernisées */
+        .bento-card {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-top: 4px solid var(--card-accent, #0078D4);
         }
-        .reference {
-            color: #888;
-            font-size: 0.9em;
-            margin-bottom: 10px;
+        .bento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(15, 44, 72, 0.2);
+            border-color: var(--card-accent);
         }
-        h1 {
-            color: #2c3e50;
-            font-size: 1.5em;
-            margin-bottom: 20px;
+
+        .icon-box {
+            color: var(--card-accent);
+            background-color: color-mix(in srgb, var(--card-accent) 15%, transparent);
+            transition: transform 0.3s;
         }
-        .price {
-            font-size: 2em;
-            color: #27ae60;
-            font-weight: bold;
-            margin: 20px 0;
+        .bento-card:hover .icon-box { transform: scale(1.1) rotate(5deg); }
+
+        .btn-multicolor {
+            background: linear-gradient(135deg, #0078D4 0%, #E81123 50%, #FFB900 100%);
+            color: white !important;
+            transition: transform 0.2s;
         }
-        .get-btn {
-            display: inline-block;
-            background-color: #27ae60;
-            color: white;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background-color 0.3s;
+        .btn-multicolor:hover { transform: scale(1.05); }
+
+        .alpha-btn.active {
+            background: linear-gradient(135deg, #0078D4, #E81123, #FFB900);
+            color: white !important;
+            border-color: transparent !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transform: scale(1.05);
         }
-        .get-btn:hover {
-            background-color: #2ecc71;
-        }
+
+        /* Variables pour l'aléatoire Microsoft */
+        .ms-blue { --card-accent: #0078D4; }
+        .ms-red { --card-accent: #E81123; }
+        .ms-yellow { --card-accent: #FFB900; }
     </style>
 </head>
-<body>
+<body class="bg-paia-ivory dark:bg-paia-dark text-paia-blue dark:text-gray-200 selection:bg-paia-yellow/30 pb-28">
 
-    <div class="card">
-        <div class="reference">Réf: 000_FPA_B0_M01_S001</div>
-        <h1>Présentation du module et auto positionnement</h1>
-        <div class="price">Gratuit</div>
+    <!-- Header Compact avec Lien Hub -->
+    <header class="bg-paia-ivory/90 dark:bg-paia-dark/90 backdrop-blur-md border-b border-paia-blue/10 dark:border-white/10 sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-[1600px] mx-auto px-4 py-2 flex items-center justify-between gap-4">
+            <a href="https://projettechacademy.github.io/Formation_Pour_Adulte/" class="flex items-center gap-3 min-w-0 group cursor-pointer decoration-transparent">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png"
+                     alt="PAIA Logo" class="w-10 h-10 rounded-lg border border-paia-blue dark:border-white/20 shadow-sm group-hover:scale-105 transition-transform duration-300">
+                <div class="min-w-0">
+                    <h1 class="text-sm md:text-lg font-black text-paia-blue dark:text-white truncate group-hover:text-paia-yellow dark:group-hover:text-paia-yellow transition-colors duration-300" title="000_FPA_B0_M01_S001 - Présentation du module et auto positionnement">
+                        000_FPA_B0_M01_S001 - Présentation et auto-positionnement
+                    </h1>
+                    <p class="text-[10px] text-paia-blue dark:text-gray-400 font-bold uppercase tracking-widest mt-0.5 opacity-70 group-hover:opacity-100 transition-opacity">
+                        <i class="fas fa-arrow-left mr-1"></i>Retour au Parcours
+                    </p>
+                </div>
+            </a>
+            <div class="flex items-center gap-2 md:gap-3">
+                <a href="https://projettechacademy.github.io/Formation_Pour_Adulte/"
+                   class="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full font-bold text-xs transition-all bg-white dark:bg-slate-800 text-paia-blue dark:text-white hover:bg-paia-yellow hover:text-paia-blue border border-paia-blue/10 dark:border-white/10 shadow-sm">
+                    <i class="fas fa-home"></i> <span>Mon Parcours</span>
+                </a>
+                <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgM" target="_blank"
+                   class="btn-multicolor flex-shrink-0 flex items-center gap-2 px-4 py-1.5 rounded-full font-bold text-xs shadow-sm">
+                    <i class="fab fa-microsoft"></i> <span class="hidden sm:inline">Communauté</span>
+                </a>
+            </div>
+        </div>
+    </header>
 
-        <!-- Le lien mailto pré-remplit l'objet de l'email avec le titre de la formation -->
-        <a href="mailto:votre-email@exemple.com?subject=Demande de document gratuit : 000_FPA_B0_M01_S001 - Présentation du module et auto positionnement" class="get-btn">
-            ✉️ Obtenir gratuitement
-        </a>
+    <main class="max-w-[1600px] mx-auto px-4 py-6">
+
+        <!-- Barre de Recherche & Stats (UX Moderne) -->
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between mb-8">
+            <div class="relative w-full md:max-w-md group">
+                <div class="absolute inset-0 bg-paia-yellow rounded-xl blur opacity-0 group-focus-within:opacity-20 transition duration-500"></div>
+                <div class="relative flex items-center bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm focus-within:border-paia-yellow transition-all">
+                    <div class="pl-4 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400"></i></div>
+                    <input type="text" id="searchInput" placeholder="Rechercher (Ice breaker, Posture)..."
+                        class="w-full bg-transparent py-3 pl-3 pr-4 text-base font-bold text-paia-blue dark:text-white focus:outline-none placeholder-gray-400">
+                </div>
+            </div>
+            <div class="flex items-center gap-3 px-5 py-2.5 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm">
+                <i class="fas fa-layer-group text-paia-yellow"></i>
+                <span id="resultCount" class="font-mono text-sm font-bold text-paia-blue dark:text-white">105 MOTS</span>
+            </div>
+        </div>
+
+        <!-- Filtre Alphabétique (Scrollable sur mobile, comme les onglets index.html) -->
+        <div class="w-full overflow-x-auto scrollbar-hide pb-4 mb-4">
+            <div class="flex md:flex-wrap items-center md:justify-center gap-2 min-w-max md:min-w-0 px-1" id="alphabetContainer">
+                <!-- Généré par JS -->
+            </div>
+        </div>
+
+        <!-- Grille des concepts -->
+        <div id="glossaryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-8"></div>
+
+        <!-- Vide -->
+        <div id="emptyState" class="hidden flex-col items-center justify-center py-16 text-center bg-white dark:bg-slate-800 rounded-2xl border border-dashed border-gray-300 dark:border-slate-600 mt-4 transition-all">
+            <div class="text-5xl mb-4">🛸</div>
+            <h3 class="text-xl font-bold text-paia-blue dark:text-white">Concept non répertorié</h3>
+            <button onclick="resetFilters()" class="mt-4 px-5 py-2 bg-paia-blue dark:bg-white text-white dark:text-paia-blue hover:bg-paia-yellow hover:text-paia-blue rounded-full font-bold transition-colors">
+                Voir tous les termes
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Dock Accessibilité Flottant (Style App Moderne) -->
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+        <div class="flex items-center gap-1 sm:gap-2 px-3 py-2 bg-paia-blue/95 dark:bg-slate-800/95 backdrop-blur-md border border-paia-gold/50 rounded-full shadow-2xl">
+            <button class="w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors" onclick="toggleTheme()" id="btn-theme" title="Mode Clair/Sombre">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors" onclick="toggleDyslexia()" id="btn-dys" title="Mode Dyslexie">
+                <i class="fas fa-font"></i>
+            </button>
+
+            <div class="w-px h-6 bg-white/20 mx-1"></div>
+
+            <button class="w-8 h-10 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors" onclick="changeFontSize(-1)" title="Réduire le texte">
+                <i class="fas fa-minus text-xs"></i>
+            </button>
+            <button class="w-8 h-10 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors" onclick="changeFontSize(1)" title="Agrandir le texte">
+                <i class="fas fa-plus text-xs"></i>
+            </button>
+
+            <div class="w-px h-6 bg-white/20 mx-1"></div>
+
+            <button class="w-10 h-10 rounded-full flex items-center justify-center text-paia-yellow hover:bg-white/10 transition-colors" onclick="toggleMute()" id="btn-mute" title="Son Actif/Inactif">
+                <i class="fas fa-volume-up"></i>
+            </button>
+
+            <div class="flex items-center bg-black/20 rounded-full px-2 py-1">
+                <button class="w-6 h-6 rounded-full flex items-center justify-center text-white hover:bg-white/20 text-[10px]" onclick="changeSpeechRate(-0.1)">🐌</button>
+                <span id="ui-rate" class="font-mono text-[11px] font-bold text-white w-7 text-center">1.1x</span>
+                <button class="w-6 h-6 rounded-full flex items-center justify-center text-white hover:bg-white/20 text-[10px]" onclick="changeSpeechRate(0.1)">🐇</button>
+            </div>
+        </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="mt-auto py-8 flex flex-col items-center justify-center gap-3 border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-paia-dark relative z-10 transition-colors">
+        <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo MMPA" class="w-12 h-12 rounded-full border-2 border-paia-gold shadow-sm object-cover">
+        <p class="font-bold text-xs md:text-sm text-center px-4 tracking-wide text-paia-blue dark:text-gray-400">
+            💫 PAIA ✨ Platform Automation & Intelligent Architecture | By Mathilde Martine PAISLEY - © 2026<br>
+            <span class="font-normal text-[10px] md:text-xs opacity-70 mt-1 block">Plateforme indépendante de révision et d'entraide créée par une apprenante. Non affiliée à l'organisme de formation officiel.</span>
+        </p>
+    </footer>
+
+    <script>
+        // Logique UI
+        let isDark = false, isDys = false, baseFS = 16, isMuted = false, sRate = 1.1;
+
+        function toggleTheme() {
+            isDark = !isDark;
+            // Utilisation standard Tailwind pour le mode sombre
+            document.documentElement.classList.toggle('dark', isDark);
+            document.getElementById('btn-theme').innerHTML = isDark ? '<i class="fas fa-sun text-paia-yellow"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        function toggleDyslexia() {
+            isDys = !isDys;
+            document.body.classList.toggle('dyslexia-mode', isDys);
+            const btn = document.getElementById('btn-dys');
+            isDys ? btn.classList.add('text-paia-yellow', 'bg-white/10') : btn.classList.remove('text-paia-yellow', 'bg-white/10');
+        }
+
+        function changeFontSize(d) {
+            baseFS = Math.min(22, Math.max(12, baseFS + d*2));
+            document.documentElement.style.setProperty('--font-size-base', baseFS + 'px');
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            document.getElementById('btn-mute').innerHTML = isMuted ? '<i class="fas fa-volume-mute text-red-400"></i>' : '<i class="fas fa-volume-up"></i>';
+            if (isMuted) window.speechSynthesis.cancel();
+        }
+
+        function changeSpeechRate(a) {
+            sRate = Math.min(2.0, Math.max(0.5, sRate + a));
+            document.getElementById('ui-rate').innerText = sRate.toFixed(1) + "x";
+        }
+
+        window.lireTexte = function(t, d, e) {
+            if (isMuted) return;
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(`${t}. Définition : ${d}. Exemple : ${e}`);
+            msg.lang = 'fr-FR';
+            msg.rate = sRate;
+            window.speechSynthesis.speak(msg);
+        };
+
+        // --- BASE DE DONNÉES : 105 CONCEPTS (Module 000) ---
+        const data = [
+            { term: "Auto-évaluation", emoji: "📝", def: "Processus par lequel l'apprenant ou le formateur juge lui-même ses propres compétences et sa pratique.", example: "Remplir un quiz d'auto-évaluation avant le début du module." },
+            { term: "Auto-positionnement", emoji: "📍", def: "Action de situer son niveau de maîtrise par rapport à un référentiel de compétences donné.", example: "Se positionner comme 'Débutant' sur les techniques d'Ice Breaker." },
+            { term: "Technique d'animation", emoji: "🎤", def: "Méthode employée par le formateur pour dynamiser le groupe et faciliter l'apprentissage.", example: "Utiliser la technique du photolangage pour faire parler les stagiaires." },
+            { term: "Jeu pédagogique", emoji: "🎲", def: "Activité ludique détournée de son but premier pour servir un objectif d'apprentissage sérieux.", example: "Un jeu de cartes pour apprendre les panneaux de signalisation." },
+            { term: "Scénario pédagogique", emoji: "🎬", def: "Document détaillant le déroulé chronologique de l'animation, les méthodes et le minutage.", example: "Le scénario indique : 9h00 Accueil, 9h15 Ice breaker." },
+            { term: "Ice breaker", emoji: "🧊", def: "Activité courte de démarrage (brise-glace) pour détendre l'atmosphère et connecter les apprenants.", example: "Le jeu des 'Deux vérités et un mensonge'." },
+            { term: "Atelier de lancement", emoji: "🚀", def: "Séquence introductive d'une formation visant à engager le groupe et présenter les enjeux.", example: "Créer un blason d'équipe lors du lancement de la session." },
+            { term: "Dynamique de groupe", emoji: "🌊", def: "Ensemble des phénomènes psychosociologiques qui se créent entre les membres d'un groupe en formation.", example: "Gérer la dynamique lorsqu'un leader naturel prend trop la parole." },
+            { term: "Implication émotionnelle", emoji: "❤️", def: "Degré d'engagement affectif d'un apprenant dans la formation, crucial pour la mémorisation.", example: "Susciter l'implication en partageant une anecdote inspirante." },
+            { term: "Rythme de formation", emoji: "🥁", def: "Alternance des méthodes et de l'intensité pour maintenir l'attention des participants.", example: "Passer d'une théorie dense à un jeu de rôle dynamique." },
+            { term: "Pause pédagogique", emoji: "☕", def: "Arrêt stratégique de l'activité pour permettre au cerveau d'assimiler les informations.", example: "Faire une pause de 10 min après une heure de cours magistral." },
+            { term: "Représentation matricielle", emoji: "📊", def: "Tableau croisant plusieurs critères (ex: type d'activité, durée, nombre de participants) pour aider au choix pédagogique.", example: "Utiliser la matrice pour trouver un jeu de 15 min pour 20 personnes." },
+            { term: "Typologie d'activité", emoji: "🗂️", def: "Classification des activités selon leur but (introduction, mémorisation, évaluation, cohésion).", example: "Choisir une activité de type 'évaluation formative'." },
+            { term: "Format d'apprentissage", emoji: "📏", def: "Cadre temporel ou spatial de la séquence (présentiel, distanciel, micro-learning).", example: "Adapter son jeu de rôle au format classe virtuelle." },
+            { term: "Innovation pédagogique", emoji: "💡", def: "Fait d'expérimenter de nouveaux formats ou de nouvelles technologies pour enseigner.", example: "Utiliser la réalité virtuelle pour une simulation de sécurité." },
+            { term: "Renouvellement des cours", emoji: "🔄", def: "Pratique qualité consistant à mettre à jour annuellement ses supports et jeux pédagogiques.", example: "Changer l'étude de cas de 2018 pour une situation de 2024." },
+            { term: "Partage entre pairs", emoji: "🤝", def: "Fait de mutualiser ses scénarios et astuces avec d'autres formateurs.", example: "Envoyer son nouveau jeu pédagogique à ses collègues pour test." },
+            { term: "Tour de table", emoji: "⭕", def: "Technique d'animation classique où chaque participant se présente à tour de rôle.", example: "Demander aux apprenants de donner leur prénom et leurs attentes." },
+            { term: "Brainstorming", emoji: "🌩️", def: "Technique de créativité collective visant à produire un maximum d'idées sans jugement.", example: "Un brainstorming sur le paperboard pour définir le mot 'Qualité'." },
+            { term: "Méthode active", emoji: "🏃", def: "Approche où l'apprenant est l'acteur principal de sa construction du savoir.", example: "Faire résoudre un problème plutôt que de donner la solution." },
+            { term: "Méthode expositive", emoji: "📢", def: "Approche transmissive où le formateur délivre un savoir théorique de façon descendante.", example: "Un cours magistral avec diaporama." },
+            { term: "Méthode démonstrative", emoji: "👀", def: "Approche où le formateur montre le geste, puis l'apprenant reproduit.", example: "Montrer comment utiliser l'extincteur avant l'exercice." },
+            { term: "Méthode interrogative", emoji: "❓", def: "Approche utilisant le questionnement pour faire émerger le savoir des apprenants.", example: "Demander : 'À votre avis, que se passe-t-il si on clique ici ?'." },
+            { term: "Facilitateur", emoji: "🧘", def: "Posture du formateur qui guide les échanges et aide le groupe à trouver ses propres solutions.", example: "Animer un atelier de co-développement professionnel." },
+            { term: "Ludopédagogie", emoji: "🎯", def: "Apprentissage par le jeu pour dédramatiser l'erreur et augmenter l'engagement.", example: "Utiliser des Lego pour apprendre la gestion de projet Agile." },
+            { term: "Energizer", emoji: "⚡", def: "Courte activité physique ou mentale pour réveiller le groupe après une baisse d'attention.", example: "Faire un jeu de rythme après la pause déjeuner." },
+            { term: "Cohésion", emoji: "🔗", def: "Force des liens qui unissent les membres du groupe de formation.", example: "Proposer un escape game pour renforcer la cohésion." },
+            { term: "Sous-groupe", emoji: "👥", def: "Division du grand groupe en petites équipes pour faciliter la production ou l'échange.", example: "Faire des ateliers de réflexion par groupes de 4." },
+            { term: "Binôme", emoji: "👯", def: "Technique d'animation faisant travailler les apprenants par deux.", example: "Exercice d'interview croisée en binôme." },
+            { term: "Rétroaction (Feedback)", emoji: "💬", def: "Retour d'information du formateur sur l'action de l'apprenant pour l'aider à progresser.", example: "Donner un feedback constructif après un jeu de rôle." },
+            { term: "Évaluation diagnostique", emoji: "🩺", def: "Test initial pour évaluer les connaissances préalables avant d'aborder un nouveau sujet.", example: "Le quiz de positionnement du module 1." },
+            { term: "Évaluation formative", emoji: "📈", def: "Vérification des acquis en cours d'apprentissage, sans enjeu de sanction, pour réajuster.", example: "Un mini-quiz interactif sur Kahoot au milieu du cours." },
+            { term: "Évaluation sommative", emoji: "🎓", def: "Test final certifiant l'atteinte des objectifs de la séquence.", example: "L'examen final noté." },
+            { term: "Bilan de session", emoji: "🏁", def: "Moment d'échange à la fin du cours pour vérifier l'atteinte des objectifs et le ressenti.", example: "Faire un tour de table final : 'Avec quoi repartez-vous ?'." },
+            { term: "Météo du jour", emoji: "🌤️", def: "Technique de lancement rapide où chacun exprime son état d'esprit du moment.", example: "Dire 'Je suis grand soleil' ou 'Je suis un peu nuageux'." },
+            { term: "Photolangage", emoji: "📸", def: "Utilisation de photographies pour faciliter l'expression des émotions ou des idées.", example: "Choisir une photo qui représente au mieux son projet professionnel." },
+            { term: "Métaplan", emoji: "📝", def: "Technique d'animation visuelle utilisant des Post-it pour structurer les idées du groupe.", example: "Classer les idées du brainstorming par colonnes thématiques." },
+            { term: "World Café", emoji: "☕", def: "Processus créatif en intelligence collective où les apprenants tournent de table en table.", example: "Débattre sur 3 thèmes différents en changeant de table toutes les 15 min." },
+            { term: "Jeu de rôle", emoji: "🎭", def: "Mise en situation simulant une situation professionnelle pour pratiquer le savoir-être.", example: "Simuler un entretien de vente avec un client difficile." },
+            { term: "Simulation", emoji: "🕹️", def: "Reproduction d'un environnement complexe pour s'entraîner à la prise de décision.", example: "Une simulation informatique de gestion d'entreprise." },
+            { term: "Étude de cas", emoji: "📖", def: "Analyse d'une situation professionnelle réelle ou fictive pour y appliquer les concepts vus.", example: "Résoudre le problème d'organisation de l'entreprise fictive 'Studia'." },
+            { term: "Serious Game", emoji: "🎲", def: "Jeu vidéo ou de plateau conçu spécifiquement à des fins sérieuses (formation).", example: "Un jeu de gestion de budget pour les non-financiers." },
+            { term: "Gamification", emoji: "🕹️", def: "Application des mécanismes de jeu (points, badges) dans un contexte non ludique.", example: "Gagner un badge 'Expert' sur la plateforme e-learning." },
+            { term: "Attention", emoji: "👁️", def: "Capacité de l'apprenant à se concentrer. Elle baisse naturellement toutes les 20 minutes.", example: "Changer d'activité pour relancer l'attention du groupe." },
+            { term: "Posture neutre", emoji: "⚖️", def: "Attitude du formateur qui ne juge pas et ne prend pas parti lors d'un débat.", example: "Accueillir les opinions divergentes avec neutralité." },
+            { term: "Congruence", emoji: "🧘", def: "Alignement parfait entre le discours verbal du formateur et son attitude non-verbale.", example: "Sourire quand on dit 'Je suis ravi d'être là'." },
+            { term: "Empathie", emoji: "❤️", def: "Capacité du formateur à comprendre les difficultés de l'apprenant sans se les approprier.", example: "Comprendre le blocage d'un stagiaire face aux mathématiques." },
+            { term: "Écoute active", emoji: "👂", def: "Attention totale portée à l'apprenant, ponctuée de silences, de regards et de reformulations.", example: "Regarder le stagiaire dans les yeux et hocher la tête." },
+            { term: "Reformulation", emoji: "🔄", def: "Technique consistant à redire avec ses propres mots ce que vient d'exprimer l'apprenant.", example: "Vous voulez dire que le logiciel vous semble trop complexe ?" },
+            { term: "Question ouverte", emoji: "❓", def: "Question qui appelle un développement, idéale pour faire parler (commence par Comment, Quel...).", example: "Comment envisagez-vous de résoudre ce problème ?" },
+            { term: "Question fermée", emoji: "🔒", def: "Question appelant un oui ou un non, utile pour valider une information précise.", example: "Avez-vous validé le module 1 ?" },
+            { term: "Question relais", emoji: "🔀", def: "Technique d'animation consistant à renvoyer la question d'un stagiaire au reste du groupe.", example: "C'est une excellente question, qu'en pense le reste de la classe ?" },
+            { term: "Saboteur", emoji: "💣", def: "Profil d'apprenant qui remet constamment en cause la formation ou le formateur.", example: "Utiliser la technique du parking pour gérer ses interventions hors-sujet." },
+            { term: "Leader naturel", emoji: "👑", def: "Membre du groupe qui influence naturellement les autres. À canaliser ou à utiliser comme relais.", example: "Lui confier le rôle de rapporteur lors d'un travail en sous-groupe." },
+            { term: "Bouc émissaire", emoji: "🐑", def: "Personne rejetée ou critiquée par le reste du groupe. Le formateur doit la protéger.", example: "Intervenir immédiatement en cas de moquerie lors d'un jeu de rôle." },
+            { term: "Timide", emoji: "😶", def: "Apprenant discret qu'il faut valoriser sans le forcer brutalement à prendre la parole.", example: "L'encourager positivement lors d'un travail en binôme." },
+            { term: "Bavard", emoji: "🦜", def: "Apprenant monopolisant la parole. Le formateur doit savoir l'interrompre avec tact.", example: "Le remercier et distribuer la parole : 'Merci, et vous autres, qu'en pensez-vous ?'." },
+            { term: "Inclusion", emoji: "🤝", def: "Action d'intégrer chaque participant dans la dynamique de groupe dès les premières minutes.", example: "Faire un ice-breaker où tout le monde participe à part égale." },
+            { term: "Désinclusion", emoji: "👋", def: "Technique pour clôturer proprement une session et permettre aux participants de 'sortir' du groupe.", example: "Le mot de la fin pour se dire au revoir." },
+            { term: "Technique du Parking", emoji: "🅿️", def: "Espace (tableau) où l'on note les questions hors-sujet pour y revenir plus tard.", example: "Excellente remarque, je la mets au parking et on en parle à 16h." },
+            { term: "Paperboard", emoji: "📝", def: "Tableau papier très utilisé en animation pour garder une trace visuelle des échanges.", example: "Faire écrire les idées du groupe sur le paperboard." },
+            { term: "Diaporama", emoji: "🖥️", def: "Support visuel (PowerPoint) accompagnant l'exposé. Ne doit pas être surchargé de texte.", example: "Utiliser des images impactantes plutôt que de longues phrases." },
+            { term: "Support apprenant", emoji: "📖", def: "Document remis aux stagiaires contenant la synthèse du cours et les exercices.", example: "Le livret de formation distribué le premier jour." },
+            { term: "Fiche d'animation", emoji: "📋", def: "Document de synthèse du scénario, utilisé par le formateur comme guide-âne pendant la session.", example: "Avoir sa fiche sous les yeux pour surveiller le minutage." },
+            { term: "Objectif opérationnel", emoji: "🎯", def: "Compétence métier finale visée à l'issue de la formation.", example: "Savoir réaliser une paie complète." },
+            { term: "Prérequis", emoji: "🔑", def: "Niveau de connaissance exigé avant de pouvoir participer à une technique d'animation spécifique.", example: "Connaître les bases d'Excel avant le jeu de rôle sur les macros." },
+            { term: "Autonomie de groupe", emoji: "🚲", def: "Capacité des stagiaires à travailler ensemble sans l'intervention du formateur.", example: "Le formateur s'efface lors de l'étude de cas en sous-groupes." },
+            { term: "Apprentissage par les pairs", emoji: "🤝", def: "Modalité où les apprenants partagent leurs savoirs et s'enseignent mutuellement.", example: "Un stagiaire expert aide un stagiaire débutant sur l'exercice." },
+            { term: "Apprentissage vicariant", emoji: "👀", def: "Fait d'apprendre en observant les autres faire.", example: "Apprendre une posture de vente en regardant le jeu de rôle d'un collègue." },
+            { term: "Ancrage", emoji: "⚓", def: "Technique visant à fixer durablement l'information dans la mémoire de l'apprenant.", example: "Faire un quiz de rappel le lendemain matin pour ancrer le savoir." },
+            { term: "Répétition espacée", emoji: "⏱️", def: "Méthode de mémorisation (issue des neurosciences) basée sur la révision à intervalles réguliers.", example: "Aborder un concept, puis y revenir 2 jours après, puis 1 semaine après." },
+            { term: "Charge cognitive", emoji: "🧠", def: "Quantité d'effort mental requise. Si elle est trop haute, l'apprentissage bloque.", example: "Simplifier une consigne de jeu pour réduire la charge cognitive." },
+            { term: "Consigne", emoji: "📢", def: "Explication claire et précise des règles d'une activité ou d'un jeu.", example: "Reformuler la consigne ou la projeter au tableau pour éviter les erreurs." },
+            { term: "Débriefing", emoji: "🔄", def: "Phase obligatoire après un jeu ou un exercice pour analyser ce qui s'est passé et faire le lien avec la théorie.", example: "Demander : 'Qu'avez-vous ressenti pendant ce jeu de rôle ?'." },
+            { term: "Feedforward", emoji: "⏩", def: "Feedback orienté vers le futur : donner des conseils pour la prochaine fois plutôt que de critiquer le passé.", example: "Pour ta prochaine présentation, essaie de parler plus fort." },
+            { term: "Biais cognitif", emoji: "🧩", def: "Erreur de jugement du cerveau. Le formateur doit les connaître pour rester objectif.", example: "Le biais de confirmation lors de l'évaluation d'un stagiaire." },
+            { term: "Effet Pygmalion", emoji: "🪄", def: "Le fait que les attentes du formateur influencent la réussite du stagiaire.", example: "Croire en la réussite d'un élève difficile pour l'aider à s'améliorer." },
+            { term: "Andragogie", emoji: "🧑‍🎓", def: "La pédagogie appliquée spécifiquement aux adultes.", example: "Prendre en compte l'expérience passée des adultes lors de l'animation." },
+            { term: "Pédagogie différenciée", emoji: "🎨", def: "Adapter ses techniques d'animation aux différents profils d'un même groupe.", example: "Proposer un exercice écrit et une vidéo pour le même concept." },
+            { term: "Inclusion numérique", emoji: "💻", def: "S'assurer que tous les apprenants maîtrisent les outils numériques utilisés pour le jeu.", example: "Prendre 5 minutes pour expliquer comment se connecter à Kahoot." },
+            { term: "Blended Learning", emoji: "🌐", def: "Alternance de sessions présentielles et distancielles.", example: "Faire le jeu de rôle en salle et le quiz final en ligne." },
+            { term: "Classe virtuelle", emoji: "🎥", def: "Animation d'une session en direct via un outil de visioconférence.", example: "Utiliser les sondages Zoom pour dynamiser la classe virtuelle." },
+            { term: "Breakout rooms", emoji: "🚪", def: "Salles de sous-groupes virtuelles utilisées pour reproduire le travail en équipe à distance.", example: "Diviser les 12 apprenants en 3 salons Teams virtuels." },
+            { term: "Tableau blanc virtuel", emoji: "🖍️", def: "Outil collaboratif en ligne (ex: Miro, Klaxoon) pour faire des brainstormings à distance.", example: "Chacun ajoute un Post-it numérique sur le tableau partagé." },
+            { term: "Sondage instantané", emoji: "📊", def: "Technique d'animation à distance pour recueillir l'avis du groupe en un clic.", example: "Lancer un vote pour vérifier la compréhension avant d'avancer." },
+            { term: "Interactivité", emoji: "🏓", def: "Niveau d'échange entre le formateur, les apprenants et le contenu.", example: "Poser une question toutes les 5 slides pour maintenir l'interactivité." },
+            { term: "Apprentissage expérientiel", emoji: "🧗", def: "Apprendre en faisant (Learning by doing).", example: "Démonter un moteur pour comprendre son fonctionnement réel." },
+            { term: "Zone de confort", emoji: "🛋️", def: "État psychologique où l'apprenant est à l'aise mais apprend peu.", example: "Faire sortir l'apprenant de sa zone de confort via un jeu de rôle inédit." },
+            { term: "Dissonance cognitive", emoji: "⚡", def: "Inconfort mental face à une information qui contredit ses croyances. Puissant levier d'apprentissage.", example: "Prouver à un expert que son ancienne méthode est obsolète." },
+            { term: "Alignement pédagogique", emoji: "📏", def: "Cohérence entre les objectifs, les techniques d'animation et l'évaluation.", example: "Si l'objectif est oral, l'évaluation doit être un oral, pas un QCM." },
+            { term: "Transposition", emoji: "🌉", def: "Capacité de l'apprenant à appliquer ce qu'il a appris dans un jeu à sa réalité professionnelle.", example: "Expliquer en quoi le jeu des Lego ressemble à son travail quotidien." },
+            { term: "Posture d'autorité", emoji: "👮", def: "Attitude directive du formateur, utile uniquement pour la sécurité ou le cadre.", example: "Imposer le silence lors de l'explication des consignes d'urgence." },
+            { term: "Contrat didactique", emoji: "🤝", def: "Règles du jeu implicites ou explicites fixées entre le formateur et le groupe au démarrage.", example: "Se mettre d'accord sur le tutoiement et le droit à l'erreur." },
+            { term: "Droit à l'erreur", emoji: "🛡️", def: "Principe fondamental en andragogie favorisant la prise de risque et l'innovation.", example: "Rappeler que les erreurs faites pendant le jeu ne sont pas notées." },
+            { term: "Motivation intrinsèque", emoji: "🔥", def: "L'envie d'apprendre qui vient de l'intérieur (plaisir, curiosité).", example: "L'apprenant cherche la solution du jeu par pur défi intellectuel." },
+            { term: "Motivation extrinsèque", emoji: "🥕", def: "L'envie d'apprendre dictée par une récompense externe.", example: "Participer au quiz pour gagner le badge virtuel ou une note." },
+            { term: "Taxonomie de Bloom", emoji: "🔺", def: "Classification des niveaux d'apprentissage (connaître, comprendre, appliquer, analyser...).", example: "Adapter la difficulté du jeu selon le niveau visé dans la taxonomie." },
+            { term: "Profil d'apprentissage", emoji: "🎨", def: "Méthode préférentielle d'un individu pour capter l'information (visuel, auditif, kinesthésique).", example: "Le jeu pédagogique favorise les profils kinesthésiques (manipulation)." },
+            { term: "Veille pédagogique", emoji: "📡", def: "Recherche constante de nouvelles techniques et de nouveaux jeux d'animation.", example: "S'inscrire à un webinaire sur l'utilisation de l'IA en formation." },
+            { term: "Posture d'accompagnant", emoji: "🤲", def: "Attitude bienveillante soutenant la montée en compétences sans faire à la place de l'autre.", example: "Guider l'apprenant vers la solution par des questions relais." },
+            { term: "Micro-learning", emoji: "⏱️", def: "Modules d'apprentissage très courts (3 à 5 min), parfaits pour réactiver l'attention.", example: "Un mini-quiz sur mobile en fin de journée." },
+            { term: "Storytelling", emoji: "📖", def: "Art de raconter une histoire pour captiver l'auditoire et illustrer un concept.", example: "Raconter une erreur de sa propre carrière pour introduire le module de sécurité." },
+            { term: "Pédagogie inversée", emoji: "🔄", def: "Faire découvrir la théorie en amont et utiliser le temps en salle pour la pratique.", example: "Les stagiaires lisent le cours chez eux, puis font les jeux pédagogiques en classe." },
+            { term: "Animateur", emoji: "🎭", def: "Rôle du formateur consistant à donner vie à la session, maintenir l'énergie et l'attention.", example: "Mettre de l'enthousiasme et de la voix pour lancer le jeu." },
+            { term: "Posture de guide", emoji: "🧭", def: "Le formateur ne donne pas le savoir, il indique le chemin pour que l'apprenant le trouve.", example: "Au lieu de donner la réponse, orienter l'apprenant vers le bon document." },
+            { term: "Effet de halo", emoji: "✨", def: "Biais cognitif où une caractéristique d'une personne (souvent positive) influence l'évaluation globale de ses autres compétences.", example: "Surnoter un élève parce qu'il s'exprime très bien à l'oral." },
+            { term: "Pédagogie ludique", emoji: "🎲", def: "Utilisation systématique des principes du jeu pour dédramatiser l'apprentissage.", example: "Transformer un cours de droit en jeu de plateau type Monopoly." },
+            { term: "Intelligence collective", emoji: "🧠", def: "Capacité d'un groupe à résoudre des problèmes complexes mieux qu'un individu seul.", example: "Utiliser un hackathon pour trouver une solution innovante." },
+            { term: "Co-construction", emoji: "🧱", def: "Fait d'élaborer un savoir ou une règle conjointement avec le groupe.", example: "Définir les règles du règlement intérieur avec les stagiaires le jour 1." },
+            { term: "Mind mapping", emoji: "🗺️", def: "Carte mentale permettant d'organiser visuellement l'information.", example: "Faire dessiner une carte mentale pour résumer le chapitre." },
+            { term: "Nuage de mots", emoji: "☁️", def: "Technique d'animation visuelle où la taille des mots dépend de leur fréquence de citation.", example: "Utiliser Mentimeter pour créer un nuage de mots sur le thème de la qualité." },
+            { term: "Pédagogie de projet", emoji: "🏗️", def: "Apprentissage à travers la réalisation d'une production concrète sur plusieurs jours.", example: "Construire un site web de A à Z en groupe." },
+            { term: "Apprentissage collaboratif", emoji: "🤝", def: "Démarche où les membres d'une équipe unissent leurs efforts pour atteindre un but commun.", example: "Chaque membre a un rôle défini dans l'étude de cas." },
+            { term: "Quiz interactif", emoji: "📱", def: "Évaluation formative rapide et ludique utilisant souvent les smartphones des stagiaires.", example: "Un QCM sur l'application Kahoot avec classement." },
+            { term: "Ice breaker physique", emoji: "🏃", def: "Brise-glace nécessitant du mouvement, idéal pour réveiller les corps.", example: "Le jeu du nœud humain (se tenir par les mains et se démêler)." },
+            { term: "Ice breaker cognitif", emoji: "🧠", def: "Brise-glace faisant appel à la réflexion et à la créativité.", example: "Résoudre une énigme rapide en équipe de 3." },
+            { term: "Ice breaker émotionnel", emoji: "❤️", def: "Brise-glace visant à partager un ressenti ou une part de soi.", example: "Amener un objet qui nous représente et l'expliquer." },
+            { term: "Synergie", emoji: "✨", def: "Phénomène par lequel l'action conjointe du groupe est supérieure à la somme des actions individuelles.", example: "1+1=3 dans un travail de groupe réussi." },
+            { term: "Gestuelle", emoji: "👋", def: "Mouvements du corps (mains, bras) utilisés par l'animateur pour appuyer son discours.", example: "Ouvrir les bras pour signifier l'accueil des questions." },
+            { term: "Proxémique", emoji: "🚶", def: "Gestion de l'espace physique et de la distance entre le formateur et les apprenants.", example: "S'approcher d'un sous-groupe pour montrer sa disponibilité." },
+            { term: "Voix (Paraverbal)", emoji: "🔊", def: "Utilisation du volume, du ton, du rythme et du débit pour captiver l'auditoire.", example: "Baisser le volume de sa voix pour attirer l'attention (effet de suspense)." },
+            { term: "Silence pédagogique", emoji: "🤫", def: "Arrêt volontaire de la parole pour laisser au groupe le temps de réfléchir ou de répondre.", example: "Poser une question et compter mentalement jusqu'à 7 avant de reprendre la parole." },
+            { term: "Contact visuel", emoji: "👀", def: "Technique d'animation indispensable consistant à balayer l'ensemble du groupe du regard.", example: "Ne pas regarder seulement l'apprenant qui parle, mais englober toute la salle." },
+            { term: "Anxiété d'apprentissage", emoji: "😰", def: "Peur de l'échec ou du jugement bloquant la capacité de l'adulte à apprendre.", example: "Dédramatiser l'évaluation pour faire baisser cette anxiété." },
+            { term: "Gestion du temps", emoji: "⏱️", def: "Compétence vitale de l'animateur pour respecter le scénario pédagogique.", example: "Utiliser un 'Time Timer' (chronomètre visuel) lors des exercices de groupe." }
+        ];
+
+        const container = document.getElementById('glossaryContainer');
+        const alphabetBox = document.getElementById('alphabetContainer');
+        const searchInput = document.getElementById('searchInput');
+        const countDisplay = document.getElementById('resultCount');
+        const emptyState = document.getElementById('emptyState');
+        const msColors = ['ms-blue', 'ms-red', 'ms-yellow'];
+
+        function renderAlphabet() {
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+            alphabetBox.innerHTML = `<button class="alpha-btn active" onclick="filterByLetter(null, this)">ALL</button>`;
+            letters.forEach(l => {
+                alphabetBox.innerHTML += `<button class="alpha-btn" onclick="filterByLetter('${l}', this)">${l}</button>`;
+            });
+        }
+
+        let currentLetter = null;
+        function filterByLetter(l, btn) {
+            document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active'); currentLetter = l; renderCards();
+        }
+
+        function renderCards() {
+            const term = searchInput.value.toLowerCase();
+            container.innerHTML = '';
+            const filtered = data.filter(i => {
+                const matchSearch = i.term.toLowerCase().includes(term) || i.def.toLowerCase().includes(term);
+                const matchLetter = currentLetter ? i.term.toUpperCase().startsWith(currentLetter) : true;
+                return matchSearch && matchLetter;
+            });
+
+            countDisplay.innerText = `${filtered.length} MOTS DÉTECTÉS`;
+
+            if(filtered.length === 0) { emptyState.classList.replace('hidden', 'flex'); }
+            else {
+                emptyState.classList.replace('flex', 'hidden');
+                filtered.forEach((i, idx) => {
+                    const color = msColors[idx % msColors.length];
+                    const card = document.createElement('div');
+                    card.className = `bento-card ${color} bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700`;
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="icon-box">${i.emoji}</div>
+                                <h3 class="font-black text-sm md:text-base leading-tight text-paia-blue dark:text-white">${i.term}</h3>
+                            </div>
+                            <button onclick="lireTexte(\`${i.term.replace(/'/g, "\\'")}\`, \`${i.def.replace(/'/g, "\\'")}\`, \`${i.example.replace(/'/g, "\\'")}\`)" class="text-[var(--card-accent)] opacity-60 hover:opacity-100 hover:scale-110 transition-transform"><i class="fas fa-volume-up text-lg"></i></button>
+                        </div>
+                        <p class="text-[13px] leading-relaxed mb-4 flex-grow text-paia-blue/80 dark:text-gray-300">${i.def}</p>
+                        <div class="mt-auto bg-paia-blue dark:bg-paia-dark border-l-4 border-[var(--card-accent)] p-2.5 rounded-r-lg shadow-inner">
+                            <p class="text-[10px] text-[var(--card-accent)] font-bold uppercase mb-0.5"><i class="fas fa-lightbulb mr-1"></i>Exemple / Contexte</p>
+                            <p class="text-[12px] italic text-white opacity-90">${i.example}</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        window.resetFilters = () => { searchInput.value = ''; filterByLetter(null, document.querySelector('.alpha-btn')); };
+        searchInput.addEventListener('input', renderCards);
+        renderAlphabet(); renderCards();
+    </script>
 </body>
 </html>
