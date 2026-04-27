@@ -4,9 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mon Parcours FPA - V27 (Ultra Compact UI)</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        paia: {
+                            ivory: '#F6F2E8',
+                            blue: '#0F2C48',
+                            yellow: '#D9A526',
+                            bronze: '#B4792A',
+                            dark: '#0f172a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                        mono: ['Space Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&family=Open+Dyslexic&display=swap" rel="stylesheet" />
 
@@ -110,6 +136,17 @@
         box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5);
         border-bottom: 4px solid #831843;
       }
+
+      .tab-btn-certif {
+        background: linear-gradient(135deg, #D9A526 0%, #B4792A 100%);
+        color: white; border: none; box-shadow: 0 4px 15px rgba(217, 165, 38, 0.3);
+      }
+      .tab-btn-certif.active {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(217, 165, 38, 0.5);
+        border-bottom: 4px solid #8B5A19;
+      }
+
       /* --- Menu Vertical Flottant --- */
       @keyframes floatUpDown { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
       .floating-side-menu {
@@ -219,6 +256,38 @@
 
       .scrollbar-hide::-webkit-scrollbar { display: none; }
       .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+      /* --- Styles ajoutés pour Certifications --- */
+      .module-list::-webkit-scrollbar { width: 6px; }
+      .module-list::-webkit-scrollbar-track { background: rgba(15, 44, 72, 0.05); border-radius: 4px; }
+      .module-list::-webkit-scrollbar-thumb { background: rgba(15, 44, 72, 0.2); border-radius: 4px; }
+      .module-list::-webkit-scrollbar-thumb:hover { background: theme('colors.paia.bronze'); }
+
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+
+      .certif-tab-content { display: none; opacity: 0; }
+      .certif-tab-content.active { display: block; opacity: 1; animation: fadeIn 0.4s ease-out; }
+
+      .certif-tabs-container { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+      .certif-tab-btn {
+          border: 2px solid rgba(15, 44, 72, 0.15); border-radius: 10px;
+          padding: 12px 24px; font-size: 0.95rem; font-weight: 700;
+          cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); flex-grow: 1; text-align: center;
+      }
+      @media (min-width: 768px) { .certif-tab-btn { flex-grow: 0; } }
+      .certif-tab-btn:hover:not(.active) {
+          border-color: theme('colors.paia.bronze'); color: theme('colors.paia.bronze'); transform: translateY(-3px);
+      }
+      .certif-tab-btn.active {
+          background: linear-gradient(135deg, #0F2C48 0%, #1a4a7a 100%);
+          color: #D9A526 !important; border-color: transparent;
+          box-shadow: 0 6px 15px rgba(15, 44, 72, 0.4); transform: scale(1.02);
+      }
+
+      .chart-container { position: relative; width: 100%; max-width: 600px; margin: auto; height: 350px; }
+      .sujet-checkbox:checked + label { text-decoration: line-through; opacity: 0.6; }
     </style>
   </head>
   <body class="relative">
@@ -260,9 +329,6 @@
             <a href="Examen.html" target="_blank" class="btn-nav-app btn-exam group">
               <span>🎓</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Examen</span>
             </a>
-            <a href="%C3%89valuations.html" target="_blank" class="btn-nav-app btn-eval group">
-              <span>📊</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Évaluations</span>
-            </a>
             <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="btn-nav-app btn-teams group">
               <i class="fab fa-microsoft text-[1.8rem]"></i><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Communauté</span>
             </a>
@@ -284,6 +350,10 @@
         <button class="tab-btn tab-btn-cal" id="tab-CAL" onclick="filtrerBloc('CAL')">
             <i class="fas fa-clock mr-2"></i> Mon Planning
         </button>
+
+        <button class="tab-btn tab-btn-certif" id="tab-CERTIF" onclick="filtrerBloc('CERTIF')">
+            <i class="fas fa-certificate mr-2"></i> Certifications
+        </button>
       </div>
 
       <div id="globalProgressHeader" class="bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-lg border border-white mb-8 flex flex-col md:flex-row items-center gap-6">
@@ -303,6 +373,115 @@
 
       <div id="listContainer" class="flex flex-col gap-4 pb-12 w-full"></div>
       <div id="calendarContainer" class="hidden flex-col gap-8 pb-12 w-full animate-slideIn"></div>
+
+      <div id="certifContainer" class="hidden flex-col gap-8 pb-12 w-full animate-slideIn">
+            <div class="mb-6 rounded-b-xl md:rounded-none">
+                <div class="certif-tabs-container">
+                    <button onclick="switchCertifTab('c2-dashboard')" id="btn-c2-dashboard" class="certif-tab-btn active"><i class="fas fa-chart-pie mr-2 text-paia-yellow"></i>Vue d'ensemble</button>
+                    <button onclick="switchCertifTab('c2-programme')" id="btn-c2-programme" class="certif-tab-btn bg-white"><i class="fas fa-book-open mr-2 text-paia-bronze"></i>Ma Progression</button>
+                    <button onclick="switchCertifTab('c2-evaluations')" id="btn-c2-evaluations" class="certif-tab-btn bg-white"><i class="fas fa-clipboard-check mr-2 text-paia-yellow"></i>Mes Évaluations</button>
+                </div>
+            </div>
+
+            <section id="c2-dashboard" class="certif-tab-content active">
+                <header class="mb-8 border-b-2 border-paia-blue/10 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h1 class="text-3xl font-extrabold text-paia-blue mb-2">Avancement global</h1>
+                        <p class="text-lg text-paia-blue/70">Formation FPA : <strong class="text-paia-bronze">Mathilde Martine PAISLEY</strong></p>
+                    </div>
+                    <div class="bg-white px-6 py-4 rounded-xl shadow-sm border border-paia-blue/10 text-center">
+                        <p class="text-xs text-paia-bronze uppercase font-black tracking-wider mb-1">Progression Totale</p>
+                        <p class="text-4xl font-black text-paia-blue"><span id="global-percentage">0</span>%</p>
+                        <p class="text-xs font-bold text-paia-blue/50 mt-1"><span id="global-completed-count">0</span> / <span id="global-total-count">0</span> sujets</p>
+                    </div>
+                </header>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="dashboard-blocs-container">
+                        </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-lg border border-paia-blue/10">
+                        <h2 class="text-xl font-black text-paia-blue text-center mb-4 uppercase tracking-wider">Volume de la formation</h2>
+                        <div class="chart-container">
+                            <canvas id="blocsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="c2-programme" class="certif-tab-content">
+                <header class="mb-8 border-b-2 border-paia-blue/10 pb-6">
+                    <h1 class="text-3xl font-extrabold text-paia-blue mb-2">Le Programme Détaillé</h1>
+                    <p class="text-lg text-paia-blue/70">Cochez les cases au fur et à mesure de votre apprentissage sur la plateforme.</p>
+                </header>
+
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8" id="bloc-selectors">
+                    </div>
+
+                <div class="bg-white rounded-2xl shadow-lg border border-paia-blue/10 overflow-hidden flex flex-col">
+                    <div class="bg-paia-ivory px-6 py-4 border-b border-paia-blue/10 flex justify-between items-center">
+                        <h2 id="current-bloc-title" class="text-xl font-black text-paia-blue uppercase">Sélectionnez un bloc pédagogique</h2>
+                    </div>
+                    <div class="p-6 h-[550px] overflow-y-auto module-list bg-white" id="modules-container">
+                        <div class="flex flex-col items-center justify-center h-full text-paia-blue/30">
+                            <i class="fas fa-list-check text-5xl mb-4 animate-bounce"></i>
+                            <p class="font-bold">Cliquez sur un bloc pour révéler ses modules.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="c2-evaluations" class="certif-tab-content">
+                <header class="mb-6 border-b-2 border-paia-blue/10 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h1 class="text-3xl font-extrabold text-paia-blue mb-2">Vos évaluations et Livrables</h1>
+                        <p class="text-lg text-paia-blue/70">
+                            Planifiez, cochez <strong class="text-paia-bronze">"En cours"</strong>, et validez pour célébrer ! 🎉
+                        </p>
+                    </div>
+                    <div class="bg-white px-6 py-3 rounded-xl shadow-sm border border-paia-blue/10 text-center">
+                        <p class="text-xs text-paia-bronze uppercase font-black tracking-wider mb-1">Rendus Validés</p>
+                        <p class="text-3xl font-black text-paia-blue"><span id="eval-global-completed">0</span> / <span id="eval-global-total">0</span></p>
+                    </div>
+                </header>
+
+                <div class="mb-8 bg-paia-ivory rounded-2xl shadow-md border border-paia-yellow p-6 relative overflow-hidden">
+                    <div class="absolute left-0 top-0 h-full w-2 bg-paia-yellow"></div>
+                    <h3 class="text-lg font-black text-paia-blue mb-4 flex items-center gap-2">
+                        <i class="fas fa-stopwatch text-paia-yellow text-xl"></i> Simulateur de délai de correction (Studi)
+                    </h3>
+
+                    <div class="flex flex-col md:flex-row gap-4 items-end">
+                        <div class="flex-1 w-full">
+                            <label class="block text-sm font-bold text-paia-blue mb-1">Date de votre dépôt</label>
+                            <input type="date" id="calc-date-depot" class="w-full border-paia-blue/20 rounded-lg shadow-sm focus:border-paia-yellow focus:ring-paia-yellow p-2.5 border bg-white font-bold text-paia-blue">
+                        </div>
+                        <div class="flex-1 w-full">
+                            <label class="block text-sm font-bold text-paia-blue mb-1">Délai Studi (Jours ouvrés)</label>
+                            <select id="calc-delai" class="w-full border-paia-blue/20 rounded-lg shadow-sm focus:border-paia-yellow focus:ring-paia-yellow p-2.5 border bg-white font-bold text-paia-blue cursor-pointer">
+                                <option value="7">7 jours ouvrés</option>
+                                <option value="10" selected>10 jours ouvrés</option>
+                            </select>
+                        </div>
+                        <div class="w-full md:w-auto">
+                            <button onclick="calculateReturnDate()" class="w-full md:w-auto bg-paia-yellow hover:bg-yellow-500 text-paia-blue font-black py-2.5 px-8 rounded-lg shadow-md transition-all uppercase tracking-wide">
+                                Calculer
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="calc-result-container" class="mt-5 hidden animate-fade-in">
+                        <div class="bg-white border border-paia-yellow rounded-lg p-4 flex flex-col md:flex-row items-start md:items-center gap-4 shadow-sm">
+                            <label class="text-sm font-black text-paia-bronze uppercase tracking-wide whitespace-nowrap"><i class="fas fa-calendar-check mr-1"></i> Retour estimé :</label>
+                            <input type="text" id="calc-resultat" readonly class="w-full md:max-w-md border border-paia-blue/10 rounded-md px-4 py-2 text-base font-black text-paia-blue capitalize bg-paia-ivory shadow-inner text-center cursor-not-allowed" placeholder="...">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="eval-columns" class="w-full"></div>
+            </section>
+      </div>
+
     </main>
 
     <footer class="py-12 flex flex-col items-center gap-5 bg-[#0F2C48]/5 backdrop-blur-md border-t border-white/40 mt-auto relative z-10">
@@ -319,7 +498,6 @@
       </div>
     </footer>
 
-    <!-- Menu Accessibilité Vertical (Boutons style Office) -->
     <div class="floating-side-menu">
       <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn-fab bg-gradient-to-br from-blue-400 to-blue-600 group">
         <i class="fas fa-arrow-up"></i>
@@ -347,7 +525,6 @@
       </button>
     </div>
 
-    <!-- MODALE CODE PIN POUR PDF -->
     <div id="pinModal" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
       <div class="bg-white p-10 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-sm w-full mx-4 transform scale-95 transition-transform duration-300" id="pinModalContent">
         <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full mx-auto flex items-center justify-center shadow-inner mb-6 border border-gray-300"><span class="text-4xl">🔒</span></div>
@@ -361,7 +538,6 @@
       </div>
     </div>
 
-    <!-- MODALE : SMART RECALL -->
     <div id="srModal" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
       <div class="bg-white p-8 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-md w-full mx-4 transform scale-95 transition-transform duration-300 relative overflow-hidden" id="srModalContent">
         <div id="sr-step-1">
@@ -395,7 +571,6 @@
       </div>
     </div>
 
-    <!-- MODALE : ALERTE RÉVISIONS DU JOUR -->
     <div id="dailyRevisionsModal" class="fixed inset-0 bg-[#0F2C48]/95 backdrop-blur-md hidden items-center justify-center z-[8000]">
       <div class="bg-white p-8 rounded-[30px] border border-white/20 shadow-[0_30px_80px_rgba(0,0,0,0.8)] text-center max-w-lg w-full mx-4 transform scale-95 transition-transform duration-300 relative overflow-hidden" id="dailyRevisionsContent">
         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 via-yellow-500 to-red-500"></div>
@@ -412,7 +587,6 @@
       </div>
     </div>
 
-    <!-- MODALE : TRAVAUX EN COURS -->
     <div id="modalTravaux" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
       <div class="bg-white p-8 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-sm w-full mx-4 transform transition-transform duration-300 relative overflow-hidden">
         <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-red-200">
@@ -458,6 +632,514 @@
       let currentBloc = "ALL";
       let currentMod = "ALL";
 
+      // ==============================================
+      // SECTION DATA CERTIFICATIONS
+      // ==============================================
+      const dataProgram = {
+            bloc0: { id: "bloc0", themeKey: "trans", title: "0. Fondamentaux & Transverses", icon: "🧠", modules: [
+                { title: "M01 : Méthodes & Jeux", sujets: ["000_FPA_B0_M01_S001 - Présentation du module et auto positionnement", "000_FPA_B0_M01_S002 - Plus de 15 jeux pédagogiques 1", "000_FPA_B0_M01_S003 - Plus de 15 jeux pédagogiques 2", "000_FPA_B0_M01_S004 - Plus de 10 scénarios pédagogiques", "000_FPA_B0_M01_S005 - Panorama de plus de 40 techniques pédagogiques"] },
+                { title: "M02 : Classe Virtuelle", sujets: ["000_FPA_B0_M02_S001 - Les usages de la classe virtuelle", "000_FPA_B0_M02_S002 - Se lancer dans la classe virtuelle", "000_FPA_B0_M02_S003 - Préparer l'animation d'une classe virtuelle", "000_FPA_B0_M02_S004 - Animer une classe virtuelle", "000_FPA_B0_M02_S005 - Les outils de la classe virtuelle"] },
+                { title: "M03 : Pédagogie Inversée", sujets: ["000_FPA_B0_M03_S001 - Auto-positionnement pédagogie inversée", "000_FPA_B0_M03_S002 - Qu'est-ce que la pédagogie inversée", "000_FPA_B0_M03_S003 - Le Learning by Doing", "000_FPA_B0_M03_S004 - Styles d'apprentissage et rôle du formateur", "000_FPA_B0_M03_S005 - Les différents niveaux de la classe inversée", "000_FPA_B0_M03_S006 - Quelques outils pour inverser sa classe"] }
+            ]},
+            bloc1: { id: "bloc1", themeKey: "bloc1", title: "1. Concevoir et préparer", icon: "🏗️", modules: [
+                { title: "M01 : Analyse demande", sujets: ["000_FPA_B1_M01_S000 - Graduate Formateur pour adultes", "001_FPA_B1_M01_S001 - L'analyse de la demande", "002_FPA_B1_M01_S002 - La demande formelle ou informelle et les besoins en formation", "003_ FPA_B1_M01_S003 - Les caractéristiques des publics"] },
+                { title: "M02 : Obligations légales", sujets: ["004_FPA_B1_M02_S001 - Le cadre légal de la formation professionnelle", "005_FPA_B1_M02_S002 - Le cadre règlementaires, législatif de l'activité de formation", "006_FPA_B1_M02_S003 - Les obligations administratives des OF", "007_FPA_B1_M02_S004 - La mise en œuvre des prestations"] },
+                { title: "M03 : Financements", sujets: ["008_FPA_B1_M03_S001 - Gouvernance et financement", "009_FPA_B1_M03_S002 - Financements public TNS", "010_FPA_B1_M03_S003 - Financements public salarié", "011_FPA_B1_M03_S004 - Financement demandeurs d'emploi", "012_FPA_B1_M03_S005 - Financement autres publics", "013_FPA_B1_M03_S006 - Le Compte Personnel de Formation"] },
+                { title: "M04 : Ingénierie", sujets: ["014_FPA_B1_M04_S001 - Les référentiels en formation", "015_FPA_B1_M04_S002 - La pédagogie des adultes", "016_FPA_B1_M04_S003 - Concepts de base ingénierie", "017_FPA_B1_M04_S004 - Structurer en blocs de compétences"] },
+                { title: "M05 : Moyens", sujets: ["018_FPA_B1_M05_S001 - Modalités pédagogiques & accompagnement", "019_FPA_B1_M05_S002 - Apprentissage, accompagnement et éval.", "020_FPA_B1_M05_S003 - L'accompagnement pédagogique"] },
+                { title: "M06 : Progression", sujets: ["021_FPA_B1_M06_S001 - Étapes formation & durées", "022_FPA_B1_M06_S002 - Rédaction progression pédagogique", "023_FPA_B1_M06_S003 - Organisation logistique", "024_FPA_B1_M06_S004 - Application - Élaborer la progression"] },
+                { title: "M07 : Techniques", sujets: ["025_FPA_B1_M07_S001 - Les méthodes pédagogiques", "026_FPA_B1_M07_S002 - Concepts, modalités et démarches", "027_FPA_B1_M07_S003 - Les techniques pédagogiques", "028_FPA_B1_M07_S004 - L'outillage pédagogique", "029_FPA_B1_M07_S005 - Stratégies analyse réflexive", "030_FPA_B1_M07_S006 - Évaluation et positionnement", "031_FPA_B1_M07_S007 - Ingénierie adaptée aux adultes"] },
+                { title: "M08 : Individualisation", sujets: ["032_FPA_B1_M08_S001 - Outils auto-formation", "033_FPA_B1_M08_S002 - Spécificités individualisées", "034_FPA_B1_M08_S003 - Alternance et AFEST"] },
+                { title: "M09 : Scénarisation", sujets: ["035_FPA_B1_M09_S001 - Théories apprentissage social", "036_FPA_B1_M09_S002 - Différents styles d'apprentissage", "037_FPA_B1_M09_S003 - Environnements et services numériques", "038_FPA_B1_M09_S004 - Obligations handicap", "039_FPA_B1_M09_S005 - Étapes clés temps de formation", "040_FPA_B1_M09_S006 - Construction scénario pédagogique"] },
+                { title: "M10 : Scénario Tutoral", sujets: ["041_FPA_B1_M10_S001 - Types d'accompagnement & outils", "042_FPA_B1_M10_S002 - Situations d'accueil & accompagnement", "043_FPA_B1_M10_S003 - Rédaction scénario tutoral"] },
+                { title: "M11 : Multimodalité", sujets: ["044_FPA_B1_M11_S001 - La scénarisation d'un parcours", "045_FPA_B1_M11_S002 - Parcours blended-learning", "046_FPA_B1_M11_S003 - Accueil entrées/sorties permanentes", "047_FPA_B1_M11_S004 - Application - Concevoir scénario multimodal"] },
+                { title: "M12 : Communication", sujets: ["048_FPA_B1_M12_S001 - Attention images & schémas", "049_FPA_B1_M12_S002 - Règles écriture consigne & graphisme", "050_FPA_B1_M12_S003 - La méthode FALC"] },
+                { title: "M13 : Conception", sujets: ["051_FPA_B1_M13_S001 - Conception support & activité", "052_FPA_B1_M13_S002 - Activité spécifique autoformation", "053_FPA_B1_M13_S003 - La digitalisation d'une formation", "054_FPA_B1_M13_S004 - La réalisation d'un storyboard", "055_FPA_B1_M13_S005 - Questionnaire de satisfaction", "056_FPA_B1_M13_S006 - Projets de conception"] },
+                { title: "M14 : Veille", sujets: ["057_FPA_B1_M14_S001 - Concept veille & méthodologie", "058_FPA_B1_M14_S002 - Dispositif de veille efficace", "059_FPA_B1_M14_S003 - Veille technologique - outils", "060_FPA_B1_M14_S004 - La synthèse des veilles", "061_FPA_B1_M14_S005 - Application - Concevoir activités"] }
+            ]},
+            bloc2: { id: "bloc2", themeKey: "bloc2", title: "2. Animer et évaluer", icon: "🎤", modules: [
+                { title: "M01 : Facilitation", sujets: ["062_FPA_B2_M01_S001 - Posture de facilitateur", "063_FPA_B2_M01_S002 - Communication pédagogique", "064_FPA_B2_M01_S003 - Intelligence collective", "065_FPA_B2_M01_S004 - Consignes & gestion du temps", "066_FPA_B2_M01_S005 - Exploitation interventions"] },
+                { title: "M02 : Animation", sujets: ["067_FPA_B2_M02_S001 - Préparer posture & animation", "068_FPA_B2_M02_S002 - Démarrer session (ateliers)", "069_FPA_B2_M02_S003 - Impact démarrage & conclusion", "070_FPA_B2_M02_S004 - L'écoute active", "071_FPA_B2_M02_S005 - Lancement séquences", "072_FPA_B2_M02_S006 - Dynamique de groupe", "073_FPA_B2_M02_S007 - Stimuler & canaliser"] },
+                { title: "M03 : Digital", sujets: ["074_FPA_B2_M03_S001 - Le digital Learning", "075_FPA_B2_M03_S002 - Préparer classe virtuelle", "076_FPA_B2_M03_S003 - Animer classe virtuelle"] },
+                { title: "M04 : Neurosciences", sujets: ["077_FPA_B2_M04_S001 - L'individualisation", "078_FPA_B2_M04_S002 - Difficultés app. collectives", "079_FPA_B2_M04_S003 - Désamorcer conflits", "080_FPA_B2_M04_S004 - Troubles DYS", "081_FPA_B2_M04_S005 - Autres types handicaps", "082_FPA_B2_M04_S006 - Mécanismes attention/neuro", "083_FPA_B2_M04_S007 - Application - Animer formation"] },
+                { title: "M05 : Planif Eval.", sujets: ["084_FPA_B2_M05_S001 - Planification évaluation", "085_FPA_B2_M05_S002 - Le dispositif d'évaluation", "086_FPA_B2_M05_S003 - Référentiels & indicateurs", "087_FPA_B2_M05_S004 - Réglementation adaptation handicap", "088_FPA_B2_M05_S005 - Alignement pédagogique"] },
+                { title: "M06 : Outils Eval.", sujets: ["089_FPA_B2_M06_S001 - L'évaluation des acquis", "090_FPA_B2_M06_S002 - Les outils d'évaluation", "091_FPA_B2_M06_S003 - Construction outils éval."] },
+                { title: "M07 : Restitution", sujets: ["092_FPA_B2_M07_S001 - Modalités restitution", "093_FPA_B2_M07_S002 - Exploitation résultats", "094_FPA_B2_M07_S003 - Planification temps", "095_FPA_B2_M07_S004 - Bilans pédagogiques", "096_FPA_B2_M07_S005 - Application - Evaluer acquis"] },
+                { title: "M08 : Difficultés", sujets: ["097_FPA_B2_M08_S001 - Obstacles à l’apprentissage", "098_FPA_B2_M08_S002 - Remédier aux difficultés", "099_FPA_B2_M08_S003 - Indicateurs de décrochage"] },
+                { title: "M09 : Stratégies", sujets: ["100_FPA_B2_M09_S001 - Adaptation formation", "101_FPA_B2_M09_S002 - Techniques résolution problème", "102_FPA_B2_M09_S003 - Posture remédiation", "103_FPA_B2_M09_S004 - Application - Remédier difficultés"] }
+            ]},
+            bloc3: { id: "bloc3", themeKey: "bloc3", title: "3. Accompagner", icon: "🤝", modules: [
+                { title: "M01 : Diagnostiquer", sujets: ["104_FPA_B3_M01_S001 - Difficultés périphériques", "105_FPA_B3_M01_S002 - Démarches diagnostiques"] },
+                { title: "M02 : Entretien", sujets: ["106_FPA_B3_M02_S001 - Techniques d'entretien", "107_FPA_B3_M02_S002 - Types d'entretien", "108_FPA_B3_M02_S003 - Outils suivi & bilan", "109_FPA_B3_M02_S004 - Outils accompagnement"] },
+                { title: "M03 : Émotions", sujets: ["110_FPA_B3_M03_S001 - L'intelligence émotionnelle", "111_FPA_B3_M03_S002 - Réadaptation d'un parcours", "112_FPA_B3_M03_S003 - Acteurs de l'accompagnement", "113_FPA_B3_M03_S004 - Communication situation"] },
+                { title: "M04 : Gestion", sujets: ["114_FPA_B3_M04_S001 - Flux d'apprenants", "115_FPA_B3_M04_S002 - Administrer parcours plateforme", "116_FPA_B3_M04_S003 - Application - Accompagner parcours"] },
+                { title: "M05 : Co-construction", sujets: ["117_FPA_B3_M05_S001 - Le positionnement", "118_FPA_B3_M05_S002 - Analyse restitution positionnement", "119_FPA_B3_M05_S003 - Co-construction parcours", "120_FPA_B3_M05_S004 - Protocole individuel formation"] },
+                { title: "M06 : Accueil", sujets: ["121_FPA_B3_M06_S001 - L'accueil individuel", "122_FPA_B3_M06_S002 - Analyse réflexive & auto-évaluation", "123_FPA_B3_M06_S002 - Application - Accueil & co-construction"] },
+                { title: "M07 : Distance", sujets: ["124_FPA_B3_M07_S001 - Fonctions tutorales", "125_FPA_B3_M07_S002 - Mécanismes motivation/attention", "126_FPA_B3_M07_S003 - Leviers & freins distance", "127_FPA_B3_M07_S004 - Remédiation technique"] },
+                { title: "M08 : Communautés", sujets: ["128_FPA_B3_M08_S001 - Communautés d'apprentissage", "129_FPA_B3_M08_S002 - Écriture réseaux sociaux", "130_FPA_B3_M08_S003 - Feed-back distance", "131_FPA_B3_M08_S004 - Protection données RGPD", "132_FPA_B3_M08_S005 - Spécificités apprenants tutorat", "133_FPA_B3_M08_S006 - Application - Tutorer distance"] },
+                { title: "M09 : Alternance", sujets: ["134_FPA_B3_M09_S001 - Enjeux alternance", "135_FPA_B3_M09_S002 - Contrats apprentissage/pro", "136_FPA_B3_M09_S003 - Reconversion PRO-A"] },
+                { title: "M10 : AFEST", sujets: ["137_FPA_B3_M10_S001 - Le tutorat en entreprise (AFEST)"] },
+                { title: "M11 : Insertion", sujets: ["138_FPA_B3_M11_S001 - Insertion sociale & pro", "139_FPA_B3_M11_S002 - Problématiques & freins projet", "140_FPA_B3_M11_S003 - La démarche HANDICAP", "141_FPA_B3_M11_S004 - Suivi développement pro", "142_FPA_B3_M11_S005 - Outils numériques recherche", "143_FPA_B3_M11_S006 - Méthodes accompagnement projet"] },
+                { title: "M12 : Emploi", sujets: ["144_FPA_B3_M12_S001 - Techniques recherche d'emploi", "145_FPA_B3_M12_S002 - Mesures accès formation emploi", "146_FPA_B3_M12_S003 - Application - Accompagner dév."] }
+            ]},
+            bloc4: { id: "bloc4", themeKey: "bloc4", title: "4. Qualité et RSE", icon: "🔎", modules: [
+                { title: "M01 : Réglementation", sujets: ["147_FPA_B4_M01_S001 - Cadre légale activité formation", "148_FPA_B4_M01_S002 - La démarche Qualiopi", "149_FPA_B4_M01_S003 - Réglementations Qualiopi", "150_FPA_B4_M01_S004 - Bilan pédagogique financier"] },
+                { title: "M02 : Prévention", sujets: ["151_FPA_B4_M02_S001 - Égalité professionnelle", "152_FPA_B4_M02_S002 - Démarche prévention activité", "153_FPA_B4_M02_S003 - Risques activité physique", "154_FPA_B4_M02_S004 - Risques professionnels", "155_FPA_B4_M02_S005 - La démarche ergonomique", "156_FPA_B4_M02_S006 - La charge mentale", "157_FPA_B4_M02_S007 - RPS & QVT", "158_FPA_B4_M02_S008 - Réglementation hygiène/sécurité", "159_FPA_B4_M02_S009 - Principes & enjeux RSE", "160_FPA_B4_M02_S010 - Lutte discrimination", "161_FPA_B4_M02_S011 - Application - Respecter réglementation"] },
+                { title: "M03 : Veille", sujets: ["162_FPA_B4_M03_S001 - La veille professionnelle", "163_FPA_B4_M03_S002 - Cadre légal diffusion ressources", "164_FPA_B4_M03_S003 - Méthodologies recherche & capitalisation", "165_FPA_B4_M03_S004 - Outils surveillance & recherche"] },
+                { title: "M04 : Actualiser", sujets: ["166_FPA_B4_M04_S001 - Code propriété intellectuelle", "167_FPA_B4_M04_S002 - Actualiser ingénierie & supports", "168_FPA_B4_M04_S003 - Application - Faire respecter réglementation"] },
+                { title: "M05 : Analyse pratique", sujets: ["169_FPA_B4_M05_S001 - L'analyse de pratique", "170_FPA_B4_M05_S002 - L'analyse réflexive", "171_FPA_B4_M05_S003 - Axes d'amélioration parcours", "172_FPA_B4_M05_S004 - Analyser pratiques formation", "173_FPA_B4_M05_S005 - Application - Analyser pratiques pro"] }
+            ]}
+        };
+
+      const dataEvaluations = {
+            eval_ccp1: { id: "eval_ccp1", themeKey: "bloc1", title: "Concevoir et préparer", subtitle: "Évaluations du Bloc 1", icon: "🏗️", items: [
+                { id: "e_c1_ecf_ent", title: "ECF d'entrainement - CCP1" }, { id: "e_c1_dt_d1", title: "Dossier technique Chap. 1 - Dépôt 1" }, { id: "e_c1_dt_d2", title: "Dossier technique Chap. 1 - Dépôt 2" }, { id: "e_c1_dt_df", title: "Dossier technique Chap. 1 - Dépôt final" }, { id: "e_c1_ecf_fin", title: "ECF Finale 2026 - CCP1" }
+            ]},
+            eval_ccp2: { id: "eval_ccp2", themeKey: "bloc2", title: "Animer et évaluer", subtitle: "Évaluations du Bloc 2", icon: "🎤", items: [
+                { id: "e_c2_ecf_ent", title: "ECF d'entraînement - CCP2" }, { id: "e_c2_dt_d1", title: "Dossier technique Chap. 2 - Dépôt 1" }, { id: "e_c2_dt_d2", title: "Dossier technique Chap. 2 - Dépôt 2" }, { id: "e_c2_dt_df", title: "Dossier technique Chap. 2 - Dépôt final" }, { id: "e_c2_ecf_fin", title: "ECF Finale 2026 - CCP2" }
+            ]},
+            eval_ccp3: { id: "eval_ccp3", themeKey: "bloc3", title: "Accompagner", subtitle: "Évaluations du Bloc 3", icon: "🤝", items: [
+                { id: "e_c3_ecf_ent", title: "ECF d'entraînement - CCP3" }, { id: "e_c3_dt_d1", title: "Dossier technique Chap. 3 - Dépôt 1" }, { id: "e_c3_dt_d2", title: "Dossier technique Chap. 3 - Dépôt 2" }, { id: "e_c3_dt_df", title: "Dossier technique Chap. 3 - Dépôt final" }, { id: "e_c3_ecf_fin", title: "ECF Finale 2026 - CCP3" }
+            ]},
+            eval_ccp4: { id: "eval_ccp4", themeKey: "bloc4", title: "Qualité et RSE", subtitle: "Évaluations du Bloc 4", icon: "🔎", items: [
+                { id: "e_c4_ecf_ent", title: "ECF d'entraînement - CCP4" }, { id: "e_c4_dt_d1", title: "Dossier technique Chap. 4 - Dépôt 1" }, { id: "e_c4_dt_d2", title: "Dossier technique Chap. 4 - Dépôt 2" }, { id: "e_c4_dt_df", title: "Dossier technique Chap. 4 - Dépôt final" }, { id: "e_c4_ecf_fin", title: "ECF Finale 2026 - CCP4" }
+            ]},
+            eval_trans: { id: "eval_trans", themeKey: "trans", title: "Évaluations Transverses", subtitle: "Dossier Pro & Examens Finaux", icon: "🏆", items: [
+                { id: "e_tr_dp_grille", title: "Dossier Professionnel - Grille de validation" }, { id: "e_tr_dp_d1", title: "Dossier Professionnel - 1er dépôt" }, { id: "e_tr_dp_d2", title: "Dossier Professionnel - 2ème dépôt" }, { id: "e_tr_dp_df", title: "Dossier Professionnel - Dépôt final" }, { id: "e_tr_stage", title: "Grille de stage : évaluation du tuteur" }, { id: "e_tr_test", title: "Tester mes connaissances" }, { id: "e_tr_oral_q", title: "Entrainement au questionnement (Oral)" }, { id: "e_tr_oral_t", title: "Entraînement à l'oral de l'entretien technique" }, { id: "e_tr_ecf_glob", title: "Evaluation ECF Finale - Dépôt global (19/11/26)" }
+            ]}
+      };
+
+      const themes = {
+            bloc1: { bg: 'bg-paia-blue', text: 'text-paia-blue', border: 'border-paia-blue', light: 'bg-paia-blue/10', fill: 'bg-paia-blue', hex: '#0F2C48' },
+            bloc2: { bg: 'bg-paia-yellow', text: 'text-paia-yellow', border: 'border-paia-yellow', light: 'bg-yellow-50', fill: 'bg-paia-yellow', hex: '#D9A526' },
+            bloc3: { bg: 'bg-paia-bronze', text: 'text-paia-bronze', border: 'border-paia-bronze', light: 'bg-orange-50', fill: 'bg-paia-bronze', hex: '#B4792A' },
+            bloc4: { bg: 'bg-paia-dark', text: 'text-paia-dark', border: 'border-paia-dark', light: 'bg-slate-100', fill: 'bg-paia-dark', hex: '#0f172a' },
+            trans: { bg: 'bg-sky-600', text: 'text-sky-600', border: 'border-sky-600', light: 'bg-sky-50', fill: 'bg-sky-600', hex: '#0284c7' }
+      };
+
+      const progressState = {
+            bloc0: { total: 0, completed: new Set() },
+            bloc1: { total: 0, completed: new Set() },
+            bloc2: { total: 0, completed: new Set() },
+            bloc3: { total: 0, completed: new Set() },
+            bloc4: { total: 0, completed: new Set() },
+            evaluations: { total: 0, inProgress: new Set(), completed: new Set(), statuses: {} }
+      };
+
+      let chartInstance = null;
+
+      function initProgressCounts() {
+            Object.values(dataProgram).forEach(bloc => {
+                let count = 0;
+                bloc.modules.forEach(mod => { if (mod.sujets) count += mod.sujets.length; });
+                progressState[bloc.id].total = count;
+            });
+            Object.values(dataEvaluations).forEach(col => {
+                progressState.evaluations.total += col.items.length;
+            });
+      }
+
+      function saveState() {
+            const serialized = {
+                bloc0: Array.from(progressState.bloc0.completed),
+                bloc1: Array.from(progressState.bloc1.completed),
+                bloc2: Array.from(progressState.bloc2.completed),
+                bloc3: Array.from(progressState.bloc3.completed),
+                bloc4: Array.from(progressState.bloc4.completed),
+                evalInProgress: Array.from(progressState.evaluations.inProgress),
+                evalCompleted: Array.from(progressState.evaluations.completed),
+                evalStatuses: progressState.evaluations.statuses
+            };
+            localStorage.setItem('paia_progression_complete', JSON.stringify(serialized));
+      }
+
+      function loadState() {
+            const data = JSON.parse(localStorage.getItem('paia_progression_complete'));
+            if (!data) return;
+            if (data.bloc0) progressState.bloc0.completed = new Set(data.bloc0);
+            if (data.bloc1) progressState.bloc1.completed = new Set(data.bloc1);
+            if (data.bloc2) progressState.bloc2.completed = new Set(data.bloc2);
+            if (data.bloc3) progressState.bloc3.completed = new Set(data.bloc3);
+            if (data.bloc4) progressState.bloc4.completed = new Set(data.bloc4);
+            if (data.evalInProgress) progressState.evaluations.inProgress = new Set(data.evalInProgress);
+            if (data.evalCompleted) progressState.evaluations.completed = new Set(data.evalCompleted);
+            if (data.evalStatuses) progressState.evaluations.statuses = data.evalStatuses;
+      }
+
+      function fireWorksCertif() {
+            var duration = 2.5 * 1000; var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000 };
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+              if (timeLeft <= 0) return clearInterval(interval);
+              var particleCount = 50 * (timeLeft / duration);
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+      }
+
+      function switchCertifTab(tabId) {
+            document.querySelectorAll('.certif-tab-btn').forEach(btn => { btn.classList.remove('active'); btn.classList.add('bg-white'); });
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if(activeBtn) { activeBtn.classList.add('active'); activeBtn.classList.remove('bg-white'); }
+            document.querySelectorAll('.certif-tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if (tabId === 'c2-dashboard') renderChart();
+      }
+
+      window.calculateReturnDate = function() {
+            const inputVal = document.getElementById('calc-date-depot').value;
+            const delayDays = parseInt(document.getElementById('calc-delai').value);
+            if (!inputVal) return;
+            const date = getWorkingDaysAdded(inputVal, delayDays);
+            document.getElementById('calc-resultat').value = date.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('calc-result-container').classList.remove('hidden');
+      };
+
+      function getWorkingDaysAdded(dateStr, delayDays) {
+            let date = new Date(dateStr); let addedDays = 0;
+            const fixedHolidays = ['01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25'];
+            const mobileHolidays = ['2026-04-06', '2026-05-14', '2026-05-25', '2027-03-29', '2027-05-06', '2027-05-17'];
+            while (addedDays < delayDays) {
+                date.setDate(date.getDate() + 1);
+                const dayOfWeek = date.getDay();
+                const monthDay = String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+                const fullDate = date.toISOString().split('T')[0];
+                if (dayOfWeek !== 0 && dayOfWeek !== 6 && !fixedHolidays.includes(monthDay) && !mobileHolidays.includes(fullDate)) addedDays++;
+            }
+            return date;
+      }
+
+      window.calcRowDate = function(evalId) {
+            const inputVal = document.getElementById('date-depot-' + evalId).value;
+            const resInput = document.getElementById('date-retour-' + evalId);
+            if (!resInput) return;
+            if (!inputVal) {
+                resInput.value = '';
+                resInput.className = 'w-full border border-paia-blue/10 rounded-md px-3 py-2 text-sm text-center bg-paia-ivory text-paia-blue/40 font-medium shadow-inner cursor-not-allowed';
+                return;
+            }
+            const date = getWorkingDaysAdded(inputVal, 10);
+            resInput.value = date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            resInput.className = 'w-full border border-paia-yellow rounded-md px-3 py-2 text-sm text-center bg-white text-paia-blue font-bold shadow-inner cursor-not-allowed';
+      };
+
+      window.toggleSujet = function(sujetCode, blocId) {
+            const set = progressState[blocId].completed;
+            if (set.has(sujetCode)) set.delete(sujetCode); else set.add(sujetCode);
+            saveState();
+            updateProgressUI();
+      };
+
+      window.toggleEvalInProgress = function(evalId) {
+            const set = progressState.evaluations.inProgress;
+            const chk = document.getElementById('chk-' + evalId);
+            if (chk.checked) set.add(evalId); else set.delete(evalId);
+            saveState();
+            applyEvalStyles(evalId);
+      };
+
+      window.setEvalStatus = function(evalId, status) {
+            progressState.evaluations.completed.add(evalId);
+            progressState.evaluations.statuses[evalId] = status;
+            applyEvalStyles(evalId);
+            saveState();
+            updateProgressUI();
+            if (['valide', 'livret_recu', 'termine'].includes(status)) {
+                fireWorksCertif();
+                if (evalId.endsWith('_d1')) {
+                    const d2Id = evalId.replace('_d1', '_d2');
+                    if (document.getElementById('li-' + d2Id)) {
+                        progressState.evaluations.completed.add(d2Id);
+                        progressState.evaluations.statuses[d2Id] = 'ignore';
+                        applyEvalStyles(d2Id);
+                        saveState();
+                    }
+                }
+            }
+      };
+
+      window.resetEvalStatus = function(evalId) {
+            progressState.evaluations.completed.delete(evalId);
+            delete progressState.evaluations.statuses[evalId];
+            saveState();
+            applyEvalStyles(evalId); updateProgressUI();
+      };
+
+      function applyEvalStyles(evalId) {
+            const li = document.getElementById('li-' + evalId);
+            const badgeEnCours = document.getElementById('badge-encours-' + evalId);
+            const details = document.getElementById('details-' + evalId);
+            const chkContainer = document.getElementById('chk-container-' + evalId);
+            const finalBadgeContainer = document.getElementById('final-badge-container-' + evalId);
+            const finalBadge = document.getElementById('status-badge-' + evalId);
+            const extraActions = document.getElementById('extra-actions-' + evalId);
+
+            if (!li) return;
+
+            const isCompleted = progressState.evaluations.completed.has(evalId);
+            const status = progressState.evaluations.statuses[evalId];
+            const isInProgress = progressState.evaluations.inProgress.has(evalId);
+
+            li.className = "flex flex-col p-4 bg-white rounded-xl border shadow-sm transition-all group mb-4";
+
+            if (isCompleted) {
+                chkContainer.classList.add('hidden'); details.classList.add('hidden');
+                finalBadgeContainer.classList.remove('hidden'); badgeEnCours.classList.add('hidden');
+                extraActions.innerHTML = '';
+
+                if (status === 'valide' || status === 'termine' || status === 'livret_recu') {
+                    li.classList.add('border-paia-yellow', 'bg-yellow-50/40');
+                    let txt = status === 'livret_recu' ? '📖 LIVRET REÇU ✅' : (status === 'termine' ? '✅ TERMINÉ 🎉' : '✨ VALIDÉ 🥳');
+                    finalBadge.innerHTML = txt;
+                    finalBadge.className = 'inline-flex items-center text-[11px] font-black px-3 py-1.5 rounded bg-paia-yellow text-paia-blue shadow-sm border border-paia-yellow/50';
+                } else if (status === 'refaire') {
+                    li.classList.add('border-paia-bronze', 'bg-orange-50/40');
+                    finalBadge.innerHTML = '💪 À REFAIRE 🛠️';
+                    finalBadge.className = 'inline-flex items-center text-[11px] font-black px-3 py-1.5 rounded bg-paia-bronze text-white shadow-sm border border-paia-bronze/50';
+                } else if (status === 'ignore') {
+                    li.classList.add('border-paia-blue/20', 'bg-paia-ivory', 'opacity-60');
+                    finalBadge.innerHTML = '⏭️ IGNORÉ (Dépôt 1 Validé)';
+                    finalBadge.className = 'inline-flex items-center text-[10px] font-bold px-3 py-1.5 rounded bg-paia-blue/10 text-paia-blue shadow-inner border border-paia-blue/20';
+                } else if (status === 'envoye') {
+                    li.classList.add('border-paia-blue', 'bg-blue-50/40');
+                    finalBadge.innerHTML = '🚀 ENVOYÉ (Attente Livret) ⏳';
+                    finalBadge.className = 'inline-flex items-center text-[11px] font-black px-3 py-1.5 rounded bg-paia-blue text-white shadow-sm border border-paia-blue/50';
+                    if (evalId.includes('_ecf_')) {
+                        extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'livret_recu')" class="text-[10px] font-bold px-3 py-1.5 bg-paia-yellow hover:bg-yellow-500 text-paia-blue rounded-md transition-colors shadow-sm flex items-center gap-1">📖 Marquer Livret Reçu</button>`;
+                    }
+                }
+            } else {
+                chkContainer.classList.remove('hidden'); details.classList.remove('hidden'); finalBadgeContainer.classList.add('hidden');
+                if (isInProgress) {
+                    li.classList.add('border-paia-blue', 'bg-blue-50/20', 'shadow-md');
+                    badgeEnCours.classList.remove('hidden');
+                } else {
+                    li.classList.add('border-paia-blue/10', 'hover:border-paia-blue/40', 'hover:shadow-md');
+                    badgeEnCours.classList.add('hidden');
+                }
+            }
+      }
+
+      function updateProgressUI() {
+            let globalTotal = 0; let globalCompleted = 0;
+            Object.values(dataProgram).forEach(bloc => {
+                const total = progressState[bloc.id].total;
+                const completed = progressState[bloc.id].completed.size;
+                const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+                globalTotal += total; globalCompleted += completed;
+
+                const dashBar = document.getElementById(`dash-prog-${bloc.id}`);
+                const dashTxt = document.getElementById(`dash-txt-${bloc.id}`);
+                if(dashBar) dashBar.style.width = `${percentage}%`;
+                if(dashTxt) dashTxt.innerText = `${completed}/${total}`;
+
+                const selectorBar = document.getElementById(`prog-bar-${bloc.id}`);
+                const selectorTxt = document.getElementById(`prog-txt-${bloc.id}`);
+                if(selectorBar) selectorBar.style.width = `${percentage}%`;
+                if(selectorTxt) selectorTxt.innerText = `${percentage}% complété`;
+            });
+
+            let evalTotal = progressState.evaluations.total; let evalCompleted = 0;
+            Object.values(dataEvaluations).forEach(col => {
+                let colTotal = col.items.length; let colCompleted = 0;
+                col.items.forEach(item => {
+                    const st = progressState.evaluations.statuses[item.id];
+                    if(['valide', 'livret_recu', 'termine', 'ignore'].includes(st)) colCompleted++;
+                });
+                const colBar = document.getElementById(`prog-eval-${col.id}`);
+                if(colBar) colBar.style.width = `${colTotal === 0 ? 0 : Math.round((colCompleted / colTotal) * 100)}%`;
+                evalCompleted += colCompleted;
+            });
+
+            if (document.getElementById('eval-global-completed')) document.getElementById('eval-global-completed').innerText = evalCompleted;
+            if (document.getElementById('eval-global-total')) document.getElementById('eval-global-total').innerText = evalTotal;
+
+            // Optional: The global percentage on the certif tab
+            globalTotal += evalTotal; globalCompleted += evalCompleted;
+            const globalPercentage = globalTotal === 0 ? 0 : Math.round((globalCompleted / globalTotal) * 100);
+
+            const gPerc = document.getElementById('global-percentage'); if(gPerc) gPerc.innerText = globalPercentage;
+            const gCompCount = document.getElementById('global-completed-count'); if(gCompCount) gCompCount.innerText = globalCompleted;
+            const gTotalCount = document.getElementById('global-total-count'); if(gTotalCount) gTotalCount.innerText = globalTotal;
+      }
+
+      window.switchEvalTab = function(evalId) {
+            Object.values(dataEvaluations).forEach(col => {
+                const btn = document.getElementById('btn-eval-' + col.id);
+                if(btn) btn.className = `flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-sm border bg-white ${themes[col.themeKey].text} hover:bg-paia-ivory border-paia-blue/20 flex items-center gap-2`;
+                const block = document.getElementById('block-eval-' + col.id);
+                if(block) { block.classList.add('hidden'); block.classList.remove('block'); }
+            });
+            const activeBtn = document.getElementById('btn-eval-' + evalId);
+            const activeCol = dataEvaluations[evalId];
+            if(activeBtn) activeBtn.className = `flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-sm border ${themes[activeCol.themeKey].bg} text-white border-transparent flex items-center gap-2`;
+            const activeBlock = document.getElementById('block-eval-' + evalId);
+            if(activeBlock) { activeBlock.classList.remove('hidden'); activeBlock.classList.add('block'); }
+      };
+
+      function renderDashboardBlocs() {
+            const container = document.getElementById('dashboard-blocs-container');
+            container.innerHTML = '';
+            Object.values(dataProgram).forEach(bloc => {
+                const t = themes[bloc.themeKey];
+                container.innerHTML += `
+                    <div class="bg-white border-l-4 ${t.border} p-5 rounded-r-xl shadow-sm flex flex-col justify-center transition-transform hover:scale-[1.02]">
+                        <h3 class="text-sm font-black ${t.text} uppercase tracking-wider mb-2">${bloc.title}</h3>
+                        <div class="w-full bg-paia-ivory rounded-full h-2 mb-2 border border-paia-blue/10">
+                            <div id="dash-prog-${bloc.id}" class="${t.bg} h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <p class="text-xs font-bold text-paia-blue/60 text-right"><span id="dash-txt-${bloc.id}">0/0</span> sujets</p>
+                    </div>`;
+            });
+      }
+
+      function selectBloc(blocId) {
+            const bloc = dataProgram[blocId];
+            const t = themes[bloc.themeKey];
+            Object.values(dataProgram).forEach(b => {
+                const btn = document.getElementById(`selector-${b.id}`);
+                btn.classList.remove('border-paia-blue', 'border-paia-yellow', 'border-paia-bronze', 'border-paia-dark', 'shadow-md');
+                if(b.id === blocId) btn.classList.add(t.border, 'shadow-md');
+            });
+            const titleEl = document.getElementById('current-bloc-title');
+            titleEl.innerHTML = `<span class="mr-2">${bloc.icon}</span> ${bloc.title}`;
+
+            const container = document.getElementById('modules-container');
+            container.innerHTML = '';
+            bloc.modules.forEach((mod, idx) => {
+                let sujetsHtml = '<ul class="mt-3 space-y-1">';
+                mod.sujets.forEach(sujet => {
+                    const parts = sujet.split(' - '); const code = parts[0]; const title = parts.slice(1).join(' - ');
+                    const isChecked = progressState[bloc.id].completed.has(code) ? 'checked' : '';
+                    sujetsHtml += `
+                        <li class="flex items-start gap-2 p-1.5 hover:bg-paia-ivory rounded transition-colors">
+                            <input type="checkbox" id="chk-${code}" class="sujet-checkbox mt-0.5 w-4 h-4 rounded text-paia-blue cursor-pointer" onclick="toggleSujet('${code}', '${bloc.id}')" ${isChecked}>
+                            <label for="chk-${code}" class="text-xs text-paia-blue cursor-pointer font-medium select-none transition-all"><span class="font-bold">${code}</span> - ${title}</label>
+                        </li>`;
+                });
+                container.innerHTML += `
+                    <div class="mb-6 bg-gray-50/50 p-5 rounded-xl border border-gray-100">
+                        <p class="text-sm font-black text-paia-blue uppercase tracking-tight">${mod.title}</p>
+                        ${sujetsHtml}</ul>
+                    </div>`;
+            });
+      }
+
+      function renderEvaluations() {
+            const container = document.getElementById('eval-columns');
+            container.innerHTML = '';
+
+            let subNavHtml = '<div class="flex space-x-3 overflow-x-auto mb-8 pb-2 hide-scrollbar">';
+            Object.values(dataEvaluations).forEach((col, index) => {
+                const t = themes[col.themeKey];
+                const isActive = index === 0 ? `${t.bg} text-white border-transparent` : `bg-white ${t.text} hover:bg-paia-ivory border-paia-blue/20`;
+                subNavHtml += `<button onclick="switchEvalTab('${col.id}')" id="btn-eval-${col.id}" class="flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-sm border ${isActive} flex items-center gap-2"><span class="text-lg">${col.icon}</span> ${col.title}</button>`;
+            });
+            subNavHtml += '</div>';
+
+            let contentHtml = '<div class="relative w-full">';
+            Object.values(dataEvaluations).forEach((col, index) => {
+                const t = themes[col.themeKey];
+                let itemsHtml = '<ul class="mt-2">';
+                col.items.forEach(item => {
+                    const isChecked = progressState.evaluations.inProgress.has(item.id) ? 'checked' : '';
+                    const isEcf = item.id.includes('_ecf_');
+                    const isDossier = item.id.includes('_dt_') || item.id.includes('_dp_');
+
+                    let datesHtml = isEcf || isDossier ? `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="text-[10px] text-paia-blue/70 font-bold uppercase block mb-1">Date Dépôt</label>
+                                <input type="date" id="date-depot-${item.id}" class="w-full border rounded p-2 text-xs font-bold" onchange="calcRowDate('${item.id}')">
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-paia-blue/70 font-bold uppercase block mb-1">Retour (10j)</span>
+                                <input type="text" id="date-retour-${item.id}" readonly class="w-full bg-paia-ivory border rounded p-2 text-xs text-center font-bold outline-none" placeholder="-">
+                            </div>
+                        </div>` : `<div class="mb-4">
+                            <label class="text-[10px] text-paia-blue/70 font-bold uppercase block mb-1">Date réalisation</label>
+                            <input type="date" id="date-depot-${item.id}" class="w-full sm:w-1/2 border rounded p-2 text-xs font-bold">
+                        </div>`;
+
+                    let buttonsHtml = isEcf ? `
+                        <button onclick="setEvalStatus('${item.id}', 'envoye')" class="text-xs font-bold px-3 py-1.5 bg-paia-blue text-paia-yellow rounded hover:bg-opacity-90">🚀 Envoi</button>
+                        <button onclick="setEvalStatus('${item.id}', 'livret_recu')" class="text-xs font-bold px-3 py-1.5 bg-paia-yellow text-paia-blue rounded hover:bg-opacity-90">📖 Reçu</button>
+                    ` : (isDossier ? `
+                        <button onclick="setEvalStatus('${item.id}', 'valide')" class="text-xs font-bold px-3 py-1.5 bg-paia-yellow text-paia-blue rounded">✅ Validé</button>
+                        <button onclick="setEvalStatus('${item.id}', 'refaire')" class="text-xs font-bold px-3 py-1.5 bg-paia-bronze text-white rounded">❌ Refaire</button>
+                    ` : `<button onclick="setEvalStatus('${item.id}', 'termine')" class="text-xs font-bold px-4 py-2 bg-paia-yellow text-paia-blue rounded">✅ Terminé</button>`);
+
+                    itemsHtml += `
+                        <li id="li-${item.id}" class="flex flex-col p-4 bg-white rounded-xl border shadow-sm transition-all mb-4">
+                            <div class="flex items-center gap-4">
+                                <div id="chk-container-${item.id}"><input type="checkbox" id="chk-${item.id}" class="w-6 h-6 rounded text-paia-blue" onchange="toggleEvalInProgress('${item.id}')" ${isChecked}></div>
+                                <div class="flex-1 flex justify-between items-center">
+                                    <label for="chk-${item.id}" class="text-base font-bold cursor-pointer">${item.title}</label>
+                                    <span id="badge-encours-${item.id}" class="hidden text-[10px] font-black uppercase px-2 py-1 bg-paia-ivory rounded border border-paia-blue/20 animate-fade-in">⏳ En cours</span>
+                                </div>
+                            </div>
+                            <div id="details-${item.id}" class="mt-4 ml-10">
+                                <div class="bg-paia-ivory rounded-lg p-4 border border-paia-blue/5">
+                                    ${datesHtml}
+                                    <div class="flex justify-end gap-2">${buttonsHtml}</div>
+                                </div>
+                            </div>
+                            <div id="final-badge-container-${item.id}" class="hidden mt-3 ml-10 flex items-center gap-3">
+                                <div id="status-badge-${item.id}"></div>
+                                <div id="extra-actions-${item.id}"></div>
+                                <button onclick="resetEvalStatus('${item.id}')" class="text-[10px] font-bold text-paia-blue/50 hover:text-paia-blue">↩️ Modifier</button>
+                            </div>
+                        </li>`;
+                });
+                itemsHtml += '</ul>';
+
+                const displayClass = index === 0 ? 'block' : 'hidden';
+                contentHtml += `
+                    <div id="block-eval-${col.id}" class="${displayClass} animate-fade-in max-w-4xl mx-auto">
+                        <div class="${t.light} rounded-2xl border ${t.border} overflow-hidden shadow-md">
+                            <div class="${t.bg} text-white p-6 text-center">
+                                <span class="text-4xl block mb-2">${col.icon}</span>
+                                <h2 class="font-black text-xl uppercase">${col.title}</h2>
+                                <p class="text-white/80 text-sm font-medium">${col.subtitle}</p>
+                                <div class="w-full h-1.5 bg-black/20 mt-4 rounded-full"><div id="prog-eval-${col.id}" class="h-full bg-white transition-all" style="width: 0%"></div></div>
+                            </div>
+                            <div class="p-6">${itemsHtml}</div>
+                        </div>
+                    </div>`;
+            });
+            contentHtml += '</div>';
+            container.innerHTML = subNavHtml + contentHtml;
+            Object.values(dataEvaluations).forEach(col => col.items.forEach(item => applyEvalStyles(item.id)));
+      }
+
+      function renderChart() {
+            const ctx = document.getElementById('blocsChart')?.getContext('2d');
+            if(!ctx) return;
+            if(chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['B0: Socle', 'B1: Concevoir', 'B2: Animer', 'B3: Accompagner', 'B4: Qualité'],
+                    datasets: [{
+                        data: [16, 62, 42, 43, 27],
+                        backgroundColor: [themes.trans.hex, themes.bloc1.hex, themes.bloc2.hex, themes.bloc3.hex, themes.bloc4.hex],
+                        borderWidth: 5, borderColor: '#ffffff', hoverOffset: 15
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { font: { weight: 'bold', size: 12 }, padding: 20 } } },
+                    cutout: '70%'
+                }
+            });
+      }
+
+      // ==============================================
+      // INITIALISATION ET FONCTIONS GLOBALES
+      // ==============================================
+
       window.onload = () => {
           document.getElementById("audioIcon").className = isVoice ? "fas fa-volume-up" : "fas fa-volume-mute";
           document.getElementById("audioLabel").innerText = isVoice ? "Audio ON" : "Audio OFF";
@@ -481,6 +1163,27 @@
           document.getElementById("pinInput").addEventListener("keypress", function(event) {
               if (event.key === "Enter") { event.preventDefault(); verifyPin(); }
           });
+
+          // Initialisation du module Certifications/Evaluations
+          loadState();
+          initProgressCounts();
+          renderDashboardBlocs();
+
+          const sel = document.getElementById('bloc-selectors');
+          Object.values(dataProgram).forEach(b => {
+                const t = themes[b.themeKey];
+                sel.innerHTML += `
+                    <button id="selector-${b.id}" onclick="selectBloc('${b.id}')" class="bg-white p-4 rounded-2xl border-2 border-gray-100 hover:${t.border} transition-all flex flex-col items-center group">
+                        <span class="text-2xl mb-1">${b.icon}</span>
+                        <div class="w-full h-1 bg-gray-50 mt-2 rounded-full overflow-hidden">
+                            <div id="prog-bar-${b.id}" class="${t.bg} h-full transition-all" style="width:0%"></div>
+                        </div>
+                        <p id="prog-txt-${b.id}" class="text-[9px] font-black uppercase opacity-40 mt-1">0%</p>
+                    </button>`;
+          });
+
+          renderEvaluations();
+          updateProgressUI();
       };
 
       function filtrerBloc(bloc) {
@@ -491,16 +1194,31 @@
         const activeTabBtn = document.getElementById("tab-" + bloc);
         if (activeTabBtn) activeTabBtn.classList.add("active");
 
+        const listContainer = document.getElementById('listContainer');
+        const subTabsContainer = document.getElementById('subTabsContainer');
+        const globalProgressHeader = document.getElementById('globalProgressHeader');
+        const calendarContainer = document.getElementById('calendarContainer');
+        const certifContainer = document.getElementById('certifContainer');
+
         if (bloc === 'CAL') {
-            document.getElementById('listContainer').classList.add('hidden');
-            document.getElementById('subTabsContainer').classList.add('hidden');
-            document.getElementById('globalProgressHeader').classList.add('hidden');
-            document.getElementById('calendarContainer').classList.remove('hidden');
+            listContainer.classList.add('hidden');
+            subTabsContainer.classList.add('hidden');
+            globalProgressHeader.classList.add('hidden');
+            certifContainer.classList.add('hidden');
+            calendarContainer.classList.remove('hidden');
             renderCalendarView();
+        } else if (bloc === 'CERTIF') {
+            listContainer.classList.add('hidden');
+            subTabsContainer.classList.add('hidden');
+            globalProgressHeader.classList.add('hidden');
+            calendarContainer.classList.add('hidden');
+            certifContainer.classList.remove('hidden');
+            if (!chartInstance) renderChart();
         } else {
-            document.getElementById('calendarContainer').classList.add('hidden');
-            document.getElementById('listContainer').classList.remove('hidden');
-            document.getElementById('globalProgressHeader').classList.remove('hidden');
+            calendarContainer.classList.add('hidden');
+            certifContainer.classList.add('hidden');
+            listContainer.classList.remove('hidden');
+            globalProgressHeader.classList.remove('hidden');
             renderSubTabs();
             afficherModules(document.getElementById("searchInput") ? document.getElementById("searchInput").value : "");
         }
@@ -1086,9 +1804,6 @@
           }
       };
 
-      // ==============================================================
-      // SMART RECALL : MÉTHODE DES RÉPÉTITIONS ESPACÉES
-      // ==============================================================
       window.openSpacedRepetitionModal = function(id, titre) {
           document.getElementById('sr-module-id').innerText = id;
           document.getElementById('sr-module-title').innerText = titre;
@@ -1199,7 +1914,7 @@
       function renderSubTabs() {
         const sub = document.getElementById("subTabsContainer");
         sub.innerHTML = "";
-        if (currentBloc === "ALL" || currentBloc === "CAL") { sub.classList.add("hidden"); return; }
+        if (currentBloc === "ALL" || currentBloc === "CAL" || currentBloc === "CERTIF") { sub.classList.add("hidden"); return; }
         sub.classList.remove("hidden");
         const mods = configStructure[currentBloc] || [];
         const allBtn = document.createElement("button");
@@ -1274,7 +1989,6 @@
         afficherModules(document.getElementById("searchInput").value, false);
       };
 
-      // NOUVELLE FONCTION POUR VALIDER UN GROUPE ENTIER (Skill Up ou Créations)
       window.toggleGroup = function (id, groupType) {
         const itemObj = database.find(d => d.Code === id);
         if (!itemObj) return;
@@ -1341,13 +2055,11 @@
           if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
-          // 1. Documents Officiels Studi
           const resOfficiels = [
             { id: "pdf", em: "🔒", n: "Document Privé", b: "bg-locked", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
             { id: "lien", em: "🎓", n: "Plateforme Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" }
           ];
 
-          // 2. Ressources Cœur "SKILL UP"
           const resCore = [
             { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio", color: "#667eea" },
             { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel, type: "embed-doc", color: "#2563eb" },
@@ -1356,14 +2068,12 @@
             { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo, type: "embed-video", color: "#e52d27" },
           ];
 
-          // 3. Mes Créations Externes
           const resExternes = [
             { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, type: "embed-glo", color: "#4a5568" },
             { id: "map", em: "🧠", n: "Carte Mentale", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "embed-map", color: "#ffb900" },
             { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "external", color: "#b4792a" },
           ];
 
-          // --- Création HTML : Documents Officiels ---
           let htmlOff = resOfficiels.map((r) => {
               let displayEmoji = r.em;
               let tooltipText = r.n;
@@ -1384,7 +2094,6 @@
                       </div>`;
           }).join("");
 
-          // --- Création HTML : Ressources d'Apprentissage (Progression locale) ---
           const trackableRes = [...resCore, ...resExternes];
           const validRids = trackableRes.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
           totalCount += validRids.length;
@@ -1424,7 +2133,6 @@
           let htmlCore = buildTrackableHtml(resCore);
           let htmlExt = buildTrackableHtml(resExternes);
 
-          // Calcul des pourcentages locaux
           const validRidsCore = resCore.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
           let lineCheckedCore = 0;
           validRidsCore.forEach(rid => { if (progressRes[`${id}-${rid}`]) lineCheckedCore++; });
@@ -1437,8 +2145,6 @@
           const percentExt = validRidsExt.length > 0 ? Math.round((lineCheckedExt / validRidsExt.length) * 100) : 0;
           const isExtFull = validRidsExt.length > 0 && lineCheckedExt === validRidsExt.length;
 
-
-          // --- Création HTML : Calendrier ---
           const moduleRevs = savedRevisions.filter(r => r.moduleId === id);
           let btnCalendarHTML = '';
           if (moduleRevs.length > 0) {
@@ -1466,7 +2172,6 @@
 
           const isFull = validRids.length > 0 && (lineCheckedCore + lineCheckedExt) === validRids.length;
 
-          // Génération des blocs intégrés (avec barres de progression locales)
           let offBlock = `
               <div class="flex flex-col gap-1.5 bg-[#0F2C48]/5 pt-2 pb-1.5 px-2.5 rounded-xl border border-[#0F2C48]/10 shadow-inner shrink-0 relative overflow-hidden h-full">
                   <div class="flex gap-1.5 z-10">${htmlOff}</div>
@@ -1527,7 +2232,6 @@
                     </div>
                 </div>
 
-                <!-- LIGNE UNIQUE, COMPACTE ET ÉPURÉE -->
                 <div class="flex items-stretch w-full overflow-x-auto scrollbar-hide pb-2 snap-x mt-1 gap-3">
                     ${offBlock}
                     ${coreBlock}
