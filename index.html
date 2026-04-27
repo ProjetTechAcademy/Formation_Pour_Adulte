@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mon Parcours FPA - V25 (Corrected & Timeline)</title>
+    <title>Mon Parcours FPA - V26 (Smart Badges & Preview)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Moteur PapaParse pour lire la Base_FPA dynamique -->
@@ -160,6 +160,7 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
+      /* Gradients 3D Premium pour les Ressources */
       .bg-audio { background: linear-gradient(135deg, #667eea 0%, #5a68d8 100%); color: white; }
       .bg-pdf { background: linear-gradient(135deg, #0f2c48 0%, #174069 100%); color: #d9a526; }
       .bg-lien { background: linear-gradient(135deg, #0078d4 0%, #0060a8 100%); color: white; }
@@ -171,6 +172,7 @@
       .bg-map { background: linear-gradient(135deg, #ffb900 0%, #cc9400 100%); color: #0f2c48; }
       .bg-quiz { background: linear-gradient(135deg, #b4792a 0%, #906122 100%); color: white; }
       .bg-locked { background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important; color: #94a3b8 !important; border-color: #94a3b8 !important; box-shadow: none !important;}
+      .bg-calendar { background: linear-gradient(135deg, #4285F4 0%, #8A2BE2 100%); color: white; }
 
       /* Cartes avec effet 3D doux */
       .card-module {
@@ -207,6 +209,9 @@
 
       .card-animate { animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
       @keyframes slideIn { from { transform: translateY(20px) scale(0.98); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+
+      @keyframes glassShine { 100% { transform: translateX(100%); } }
+      .group-hover\:animate-glassShine:hover { animation: glassShine 0.6s forwards; }
 
       .accordion-content {
         display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -247,7 +252,7 @@
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo Paia Hub" class="w-14 h-14 rounded-xl border-2 border-[#0F2C48] object-cover shadow-md" />
           <div>
             <h1 class="text-xl font-black uppercase text-[#0F2C48] drop-shadow-sm">Mon Parcours FPA</h1>
-            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Suivi programme FPA • V25</p>
+            <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest">Suivi programme FPA • V26</p>
           </div>
         </div>
 
@@ -396,14 +401,14 @@
       </div>
     </div>
 
-    <!-- MODALE : TRAVAUX EN COURS (RÉTABLIE) -->
+    <!-- MODALE : TRAVAUX EN COURS -->
     <div id="modalTravaux" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
       <div class="bg-white p-8 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-sm w-full mx-4 transform transition-transform duration-300 relative overflow-hidden">
-        <div class="w-16 h-16 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-yellow-200">
-            <span class="text-3xl">🚧</span>
+        <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-red-200">
+            <span class="text-3xl text-red-500"><i class="fas fa-times"></i></span>
         </div>
-        <h2 class="font-black text-[#0F2C48] text-xl uppercase mb-2">En construction</h2>
-        <p class="text-gray-500 text-xs mb-6 font-medium leading-relaxed">Le support pour <strong id="modalTxt" class="text-[#0F2C48]"></strong> n'est pas encore disponible. Mathilde y travaille !</p>
+        <h2 class="font-black text-[#0F2C48] text-xl uppercase mb-2">Ressource Vide</h2>
+        <p class="text-gray-500 text-xs mb-6 font-medium leading-relaxed">Le support pour <strong id="modalTxt" class="text-[#0F2C48]"></strong> n'a pas encore été renseigné dans la base de données. Mathilde y travaille !</p>
         <button onclick="document.getElementById('modalTravaux').style.display = 'none';" class="w-full bg-[#0F2C48] text-white px-4 py-3 rounded-xl font-black text-xs hover:shadow-lg transition-all hover:-translate-y-1">RETOUR</button>
       </div>
     </div>
@@ -522,7 +527,6 @@
               if(el) { el.classList.add('opacity-0', 'scale-95'); setTimeout(() => { el.remove(); }, 300); }
           }
 
-          // Confetti seulement au moment où on COCHE la case
           if (isNowDone && !fromPopup) {
              confetti({ particleCount: 30, spread: 40, origin: { y: 0.8 } });
           }
@@ -857,10 +861,15 @@
           setTimeout(() => { document.getElementById('pinModal').style.display = 'none'; }, 200);
       }
 
-      window.verifyPin = function() {
+      window.verifyPin = async function() {
           const input = document.getElementById('pinInput').value;
 
-          if (btoa(input) === ENCODED_PIN) {
+          const msgBuffer = new TextEncoder().encode(input);
+          const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          const inputHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+          if (inputHash === SECRET_HASH) {
               localStorage.setItem('paia_unlocked', 'true');
               closePinModal();
               afficherToast("Authentification réussie 🔓");
@@ -1004,6 +1013,37 @@
           document.body.removeChild(link);
       };
 
+      function getActionLink(url, titre, type, emoji, id) {
+          if (!url || url.trim() === "") {
+             return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
+          }
+
+          let finalUrl = url;
+          if (finalUrl.includes("drive.google.com")) {
+              let match = finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+              if (match && match[1]) {
+                  finalUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
+              } else {
+                  finalUrl = finalUrl.replace("/view", "/preview").replace("?usp=sharing", "");
+                  if (!finalUrl.includes("/preview")) finalUrl += "/preview";
+              }
+          }
+
+          const safeUrl = finalUrl.replace(/'/g, "\\'");
+          const safeTitre = (titre || "").replace(/'/g, "\\'");
+          const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
+
+          if (type === 'external') {
+              return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
+          }
+
+          if (type === 'embed-pdf' && !isUnlocked) {
+              return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
+          }
+
+          return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"` };
+      }
+
       function filtrerBloc(bloc) {
         currentBloc = bloc;
         currentMod = "ALL";
@@ -1049,20 +1089,38 @@
         }, 250);
       }
 
-      window.toggleRes = function (id, rid, emoji, colorHex, totalExpected, currentChecked) {
+      // CORRECTION DU BUG : RECALCUL DYNAMIQUE DES RESSOURCES
+      window.toggleRes = function (id, rid, emoji, colorHex) {
         const key = `${id}-${rid}`;
-
-        // On récupère le statut de validation des éléments qui comptent pour "Valider Tout"
-        // On ne gère le popup que si c'est un check positif (passage de false à true)
         const wasChecked = !!progressRes[key];
 
         progressRes[key] = !progressRes[key];
         localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
 
-        let newCount = progressRes[key] ? currentChecked + 1 : currentChecked - 1;
-        const isAllNow = newCount === totalExpected;
+        // On récupère le module pour calculer les ressources *réellement* présentes (URL valides)
+        const itemObj = database.find(d => d.Code === id);
+        if (!itemObj) return;
 
-        // FIESTA + MESSAGE si tout est validé
+        const titre = itemObj.Titre || "Sans titre";
+        const safeFileName = encodeURIComponent(`${id} - ${titre}`) + '.html';
+
+        const resRaw = [
+            { id: "audio", url: itemObj.Audio },
+            { id: "pdf", url: itemObj.Cours },
+            { id: "lien", url: itemObj.Lien_Studi },
+            { id: "excel", url: itemObj.Excel },
+            { id: "infog", url: itemObj.Infographie },
+            { id: "slide", url: itemObj.Slides },
+            { id: "video", url: itemObj.Vidéo },
+            { id: "glo", url: `Glossaire/${safeFileName}` },
+            { id: "map", url: `Carte Mentale/${safeFileName}` },
+            { id: "quiz", url: `Quiz/${safeFileName}` },
+        ];
+
+        // On ne compte que les ressources ayant une URL valide
+        const validRids = resRaw.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
+        const isAllNow = validRids.every(r => progressRes[`${id}-${r}`]);
+
         if (isAllNow && progressRes[key]) {
             shootFireworks();
             const toastHtml = `
@@ -1072,9 +1130,7 @@
               </div>
             `;
             afficherToastCustom(toastHtml, '#3b82f6');
-        }
-        // Ou message standard si on vient d'activer une ressource et que ce n'est pas "Valider tout"
-        else if (progressRes[key] && !wasChecked) {
+        } else if (progressRes[key] && !wasChecked) {
             confetti({ particleCount: 50, spread: 60, origin: { y: 0.9 }, colors: ['#3b82f6', '#1e3a8a', '#ffffff', '#ffb900'] });
             const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
             const icon = emoji || "🏅";
@@ -1090,11 +1146,32 @@
         afficherModules(document.getElementById("searchInput").value, false);
       };
 
+      // CORRECTION DU BUG : RECALCUL DYNAMIQUE POUR "VALIDER TOUT"
       window.toggleLine = function (id) {
-        const rids = ["audio", "pdf", "lien", "excel", "infog", "slide", "video", "glo", "map", "quiz"];
-        const keys = rids.map((rid) => `${id}-${rid}`);
-        const isAll = keys.every((k) => progressRes[k]);
-        keys.forEach((k) => (progressRes[k] = !isAll));
+        const itemObj = database.find(d => d.Code === id);
+        if (!itemObj) return;
+
+        const titre = itemObj.Titre || "Sans titre";
+        const safeFileName = encodeURIComponent(`${id} - ${titre}`) + '.html';
+
+        const resRaw = [
+            { id: "audio", url: itemObj.Audio },
+            { id: "pdf", url: itemObj.Cours },
+            { id: "lien", url: itemObj.Lien_Studi },
+            { id: "excel", url: itemObj.Excel },
+            { id: "infog", url: itemObj.Infographie },
+            { id: "slide", url: itemObj.Slides },
+            { id: "video", url: itemObj.Vidéo },
+            { id: "glo", url: `Glossaire/${safeFileName}` },
+            { id: "map", url: `Carte Mentale/${safeFileName}` },
+            { id: "quiz", url: `Quiz/${safeFileName}` },
+        ];
+
+        // Seules les ressources avec un lien s'allument
+        const validRids = resRaw.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
+        const isAll = validRids.every(r => progressRes[`${id}-${r}`]);
+
+        validRids.forEach(r => { progressRes[`${id}-${r}`] = !isAll; });
         localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
 
         if (!isAll) {
@@ -1121,33 +1198,6 @@
         setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 9000);
       }
 
-      function afficherToast(m) {
-        afficherToastCustom(`<span class="text-xl">✨</span><span class="text-[#0F2C48] font-bold text-sm mt-1">${m}</span>`, '#0F2C48');
-      }
-
-      function getActionLink(url, titre, type, emoji, id) {
-          if (!url || url.trim() === "") return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
-
-          let finalUrl = url;
-          if (finalUrl.includes("drive.google.com")) {
-              let match = finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-              if (match && match[1]) finalUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
-              else {
-                  finalUrl = finalUrl.replace("/view", "/preview").replace("?usp=sharing", "");
-                  if (!finalUrl.includes("/preview")) finalUrl += "/preview";
-              }
-          }
-
-          const safeUrl = finalUrl.replace(/'/g, "\\'");
-          const safeTitre = (titre || "").replace(/'/g, "\\'");
-          const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
-
-          if (type === 'external') return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
-          if (type === 'embed-pdf' && !isUnlocked) return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
-
-          return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"` };
-      }
-
       function afficherModules(filtre = "", anim = true) {
         const list = document.getElementById("listContainer");
         if (!list) return;
@@ -1168,8 +1218,8 @@
           if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
-          // Tous les 10 boutons sont forcés d'être affichés, qu'il y ait une URL ou pas
-          const res = [
+          // CORRECTION UX : On boucle sur TOUTES les ressources pour afficher les 10 onglets
+          const resRaw = [
             { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio", color: "#667eea" },
             { id: "pdf", em: "📄", n: "PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
             { id: "lien", em: "🎓", n: "Lien Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" },
@@ -1182,14 +1232,23 @@
             { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "external", color: "#b4792a" },
           ];
 
-          let lineChecked = 0;
-          let htmlRes = res.map((r) => {
-            totalCount++;
-            const isV = progressRes[`${id}-${r.id}`];
-            if (isV) { vueCount++; lineChecked++; }
-            const checkC = isV ? "bg-[#3b82f6] text-white border-[#3b82f6]" : "bg-white text-gray-200 border-gray-200 hover:border-[#3b82f6] hover:text-[#3b82f6]";
+          // On compte uniquement le total des ressources existantes (pour le %), mais on affiche TOUT.
+          const validRids = resRaw.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
+          const totalExpected = validRids.length;
+          totalCount += totalExpected;
 
-            const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
+          let lineChecked = 0;
+          validRids.forEach(rid => {
+              if (progressRes[`${id}-${rid}`]) {
+                  vueCount++;
+                  lineChecked++;
+              }
+          });
+
+          // Création de l'HTML pour les 10 onglets
+          let htmlRes = resRaw.map((r) => {
+            const hasUrl = r.url && r.url.trim() !== '';
+            const isV = hasUrl && progressRes[`${id}-${r.id}`];
 
             let displayEmoji = r.em;
             let tooltipText = r.n;
@@ -1199,9 +1258,29 @@
                 displayEmoji = "🔒"; tooltipText = "Accès Restreint"; btnClass = "bg-locked";
             }
 
-            return `<div class="relative tooltip-container">
+            const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
+
+            let checkC = "";
+            let checkIcon = "";
+            let badgeAction = "";
+            let extraDivClass = "";
+
+            if (!hasUrl) {
+                // LA CROIX ROUGE POUR LES RESSOURCES VIDES
+                checkC = "bg-red-50 text-red-500 border-red-400 cursor-not-allowed";
+                checkIcon = "fas fa-times";
+                badgeAction = `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')"`;
+                extraDivClass = "opacity-60 grayscale-[30%]";
+            } else {
+                // LA COCHE NORMALE POUR LES RESSOURCES ALIMENTÉES
+                checkC = isV ? "bg-[#3b82f6] text-white border-[#3b82f6]" : "bg-white text-gray-200 border-gray-200 hover:border-[#3b82f6] hover:text-[#3b82f6]";
+                checkIcon = "fas fa-check";
+                badgeAction = `onclick="toggleRes('${id}','${r.id}','${displayEmoji}','${r.color}')"`;
+            }
+
+            return `<div class="relative tooltip-container ${extraDivClass}">
                         <${linkProps.tag} ${linkProps.action} class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText.replace(/'/g, "\\'")}')"><span>${displayEmoji}</span></${linkProps.tag}>
-                        <button onclick="toggleRes('${id}','${r.id}','${displayEmoji}','${r.color}', ${res.length}, ${lineChecked})" class="check-badge ${checkC}"><i class="fas fa-check"></i></button>
+                        <button ${badgeAction} class="check-badge ${checkC}"><i class="${checkIcon}"></i></button>
                         <span class="tooltip">${tooltipText}</span>
                     </div>`;
           }).join("");
@@ -1221,8 +1300,8 @@
             </div>
           `;
 
-          const isFull = res.length > 0 && lineChecked === res.length;
-          const linePercent = res.length > 0 ? Math.round((lineChecked / res.length) * 100) : 0;
+          const isFull = totalExpected > 0 && lineChecked === totalExpected;
+          const linePercent = totalExpected > 0 ? Math.round((lineChecked / totalExpected) * 100) : 0;
 
           const moduleRevs = savedRevisions.filter(r => r.moduleId === id);
           let timelineHtml = '';
@@ -1290,8 +1369,7 @@
                   const appleLink = `data:text/calendar;charset=utf8,${encodeURIComponent(appleIcs)}`;
 
                   const borderClass = rev.done ? 'border-blue-300 bg-blue-50' : (isPast ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-white');
-                  // MODIF: on force le vert vif sur le checkmark de la timeline quand c'est fait !
-                  const checkIconClass = rev.done ? 'bg-green-500 text-white border-green-500' : 'bg-white text-gray-300 border-gray-300 hover:border-green-400 hover:text-green-500';
+                  const checkIconClass = rev.done ? 'bg-[#3b82f6] text-white border-[#3b82f6]' : 'bg-white text-gray-300 border-gray-300 hover:border-blue-400 hover:text-blue-500';
 
                   timelineHtml += `
                     <div class="shrink-0 w-[110px] ${borderClass} border rounded-[16px] flex flex-col items-center p-3 relative shadow-sm transition-all hover:shadow-md snap-start">
@@ -1382,11 +1460,11 @@
     <!-- MODALE : TRAVAUX EN COURS -->
     <div id="modalTravaux" class="fixed inset-0 bg-[#0F2C48]/90 backdrop-blur-lg hidden items-center justify-center z-[6000]">
       <div class="bg-white p-8 rounded-[30px] border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] text-center max-w-sm w-full mx-4 transform transition-transform duration-300 relative overflow-hidden">
-        <div class="w-16 h-16 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-yellow-200">
-            <span class="text-3xl">🚧</span>
+        <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-red-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border border-red-200">
+            <span class="text-3xl text-red-500"><i class="fas fa-times"></i></span>
         </div>
-        <h2 class="font-black text-[#0F2C48] text-xl uppercase mb-2">En construction</h2>
-        <p class="text-gray-500 text-xs mb-6 font-medium leading-relaxed">Le support pour <strong id="modalTxt" class="text-[#0F2C48]"></strong> n'est pas encore disponible. Mathilde y travaille !</p>
+        <h2 class="font-black text-[#0F2C48] text-xl uppercase mb-2">Ressource Vide</h2>
+        <p class="text-gray-500 text-xs mb-6 font-medium leading-relaxed">Le support pour <strong id="modalTxt" class="text-[#0F2C48]"></strong> n'a pas encore été renseigné dans la base de données. Mathilde y travaille !</p>
         <button onclick="document.getElementById('modalTravaux').style.display = 'none';" class="w-full bg-[#0F2C48] text-white px-4 py-3 rounded-xl font-black text-xs hover:shadow-lg transition-all hover:-translate-y-1">RETOUR</button>
       </div>
     </div>
