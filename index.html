@@ -691,13 +691,14 @@
             trans: { bg: 'bg-sky-600', text: 'text-sky-600', border: 'border-sky-600', light: 'bg-sky-50', fill: 'bg-sky-600', hex: '#0284c7' }
       };
 
+      // ADDED: dates: {} pour enregistrer les dates en local
       const progressState = {
             bloc0: { total: 0, completed: new Set() },
             bloc1: { total: 0, completed: new Set() },
             bloc2: { total: 0, completed: new Set() },
             bloc3: { total: 0, completed: new Set() },
             bloc4: { total: 0, completed: new Set() },
-            evaluations: { total: 0, inProgress: new Set(), completed: new Set(), statuses: {} }
+            evaluations: { total: 0, inProgress: new Set(), completed: new Set(), statuses: {}, dates: {} }
       };
 
       let chartInstance = null;
@@ -722,7 +723,8 @@
                 bloc4: Array.from(progressState.bloc4.completed),
                 evalInProgress: Array.from(progressState.evaluations.inProgress),
                 evalCompleted: Array.from(progressState.evaluations.completed),
-                evalStatuses: progressState.evaluations.statuses
+                evalStatuses: progressState.evaluations.statuses,
+                evalDates: progressState.evaluations.dates
             };
             localStorage.setItem('paia_progression_complete', JSON.stringify(serialized));
       }
@@ -738,6 +740,7 @@
             if (data.evalInProgress) progressState.evaluations.inProgress = new Set(data.evalInProgress);
             if (data.evalCompleted) progressState.evaluations.completed = new Set(data.evalCompleted);
             if (data.evalStatuses) progressState.evaluations.statuses = data.evalStatuses;
+            if (data.evalDates) progressState.evaluations.dates = data.evalDates;
       }
 
       function fireWorksCertif() {
@@ -785,21 +788,34 @@
             return date;
       }
 
+      window.handleEvalDateChange = function(evalId, val) {
+            progressState.evaluations.dates[evalId] = val;
+            saveState();
+
+            // Update all input fields (both in the Certif tab and the new reminder block)
+            const inputs = document.querySelectorAll(`.eval-date-input-${evalId}`);
+            inputs.forEach(inp => {
+                if (inp.value !== val) inp.value = val;
+            });
+
+            // Update the computed return date if we are looking at it
+            calcRowDate(evalId);
+      };
+
       window.calcRowDate = function(evalId) {
-            const inputVal = document.getElementById('date-depot-' + evalId).value;
+            const val = progressState.evaluations.dates[evalId];
             const resInput = document.getElementById('date-retour-' + evalId);
             if (!resInput) return;
-            if (!inputVal) {
+            if (!val) {
                 resInput.value = '';
                 resInput.className = 'w-full border border-paia-blue/10 rounded-md px-3 py-2 text-sm text-center bg-paia-ivory text-paia-blue/40 font-medium shadow-inner cursor-not-allowed';
                 return;
             }
-            const date = getWorkingDaysAdded(inputVal, 10);
+            const date = getWorkingDaysAdded(val, 10);
             resInput.value = date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
             resInput.className = 'w-full border border-paia-yellow rounded-md px-3 py-2 text-sm text-center bg-white text-paia-blue font-bold shadow-inner cursor-not-allowed';
       };
 
-      // Modification de la fonction pour synchroniser avec l'accueil global
       window.toggleSujet = function(sujetCode, blocId) {
             const set = progressState[blocId].completed;
             const isNowCompleted = !set.has(sujetCode);
@@ -810,7 +826,6 @@
                 set.delete(sujetCode);
             }
 
-            // Sync vers la vue globale
             const itemObj = database.find(d => d.Code === sujetCode);
             if (itemObj) {
                 const allCheckable = ["audio", "excel", "infog", "slide", "video", "glo", "map", "quiz"];
@@ -831,7 +846,6 @@
             saveState();
             updateProgressUI();
 
-            // Rafraichit la vue globale en fond si besoin
             if (document.getElementById('listContainer') && !document.getElementById('listContainer').classList.contains('hidden')) {
                 afficherModules(document.getElementById("searchInput") ? document.getElementById("searchInput").value : "", false);
             }
@@ -843,6 +857,11 @@
             if (chk.checked) set.add(evalId); else set.delete(evalId);
             saveState();
             applyEvalStyles(evalId);
+
+            // Rafraichit la vue pour mettre à jour le statut dans le bloc rappel si visible
+            if (document.getElementById('listContainer') && !document.getElementById('listContainer').classList.contains('hidden')) {
+                afficherModules(document.getElementById("searchInput") ? document.getElementById("searchInput").value : "", false);
+            }
       };
 
       window.setEvalStatus = function(evalId, status) {
@@ -863,6 +882,10 @@
                     }
                 }
             }
+
+            if (document.getElementById('listContainer') && !document.getElementById('listContainer').classList.contains('hidden')) {
+                afficherModules(document.getElementById("searchInput") ? document.getElementById("searchInput").value : "", false);
+            }
       };
 
       window.resetEvalStatus = function(evalId) {
@@ -870,6 +893,10 @@
             delete progressState.evaluations.statuses[evalId];
             saveState();
             applyEvalStyles(evalId); updateProgressUI();
+
+            if (document.getElementById('listContainer') && !document.getElementById('listContainer').classList.contains('hidden')) {
+                afficherModules(document.getElementById("searchInput") ? document.getElementById("searchInput").value : "", false);
+            }
       };
 
       function applyEvalStyles(evalId) {
@@ -961,7 +988,6 @@
             if (document.getElementById('eval-global-completed')) document.getElementById('eval-global-completed').innerText = evalCompleted;
             if (document.getElementById('eval-global-total')) document.getElementById('eval-global-total').innerText = evalTotal;
 
-            // Optional: The global percentage on the certif tab
             globalTotal += evalTotal; globalCompleted += evalCompleted;
             const globalPercentage = globalTotal === 0 ? 0 : Math.round((globalCompleted / globalTotal) * 100);
 
@@ -1050,6 +1076,7 @@
                 let itemsHtml = '<ul class="mt-2">';
                 col.items.forEach(item => {
                     const isChecked = progressState.evaluations.inProgress.has(item.id) ? 'checked' : '';
+                    const val = progressState.evaluations.dates[item.id] || '';
                     const isEcf = item.id.includes('_ecf_');
                     const isDossier = item.id.includes('_dt_') || item.id.includes('_dp_');
 
@@ -1057,7 +1084,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label class="text-[10px] text-paia-blue/70 font-bold uppercase block mb-1">Date Dépôt</label>
-                                <input type="date" id="date-depot-${item.id}" class="w-full border rounded p-2 text-xs font-bold" onchange="calcRowDate('${item.id}')">
+                                <input type="date" id="date-depot-${item.id}" class="eval-date-input-${item.id} w-full border rounded p-2 text-xs font-bold" value="${val}" onchange="handleEvalDateChange('${item.id}', this.value)">
                             </div>
                             <div>
                                 <span class="text-[10px] text-paia-blue/70 font-bold uppercase block mb-1">Retour (10j)</span>
@@ -1065,7 +1092,7 @@
                             </div>
                         </div>` : `<div class="mb-4">
                             <label class="text-[10px] text-paia-blue/70 font-bold uppercase block mb-1">Date réalisation</label>
-                            <input type="date" id="date-depot-${item.id}" class="w-full sm:w-1/2 border rounded p-2 text-xs font-bold">
+                            <input type="date" id="date-depot-${item.id}" class="eval-date-input-${item.id} w-full sm:w-1/2 border rounded p-2 text-xs font-bold" value="${val}" onchange="handleEvalDateChange('${item.id}', this.value)">
                         </div>`;
 
                     let buttonsHtml = isEcf ? `
@@ -1116,7 +1143,14 @@
             });
             contentHtml += '</div>';
             container.innerHTML = subNavHtml + contentHtml;
-            Object.values(dataEvaluations).forEach(col => col.items.forEach(item => applyEvalStyles(item.id)));
+
+            // Appliquer les styles et calculer les dates de retour si existantes
+            Object.values(dataEvaluations).forEach(col => col.items.forEach(item => {
+                applyEvalStyles(item.id);
+                if(progressState.evaluations.dates[item.id]) {
+                    calcRowDate(item.id);
+                }
+            }));
       }
 
       function renderChart() {
@@ -1958,7 +1992,6 @@
         }, 250);
       }
 
-      // Modification pour synchroniser avec l'onglet Certification
       window.toggleRes = function (id, rid, emoji, colorHex) {
         const checkableRids = ["audio", "excel", "infog", "slide", "video", "glo", "map", "quiz"];
         if (!checkableRids.includes(rid)) return;
@@ -1978,7 +2011,6 @@
         const validRids = checkableRids.filter(r => resMap[r] && resMap[r].trim() !== '');
         const isModuleAll = validRids.every(r => progressRes[`${id}-${r}`]);
 
-        // Sync vers Certification
         let blocKey = "bloc0";
         if(id.includes("_B1_")) blocKey = "bloc1";
         else if(id.includes("_B2_")) blocKey = "bloc2";
@@ -2016,7 +2048,6 @@
         afficherModules(document.getElementById("searchInput").value, false);
       };
 
-      // Modification pour synchroniser avec l'onglet Certification
       window.toggleGroup = function (id, groupType) {
         const itemObj = database.find(d => d.Code === id);
         if (!itemObj) return;
@@ -2040,7 +2071,6 @@
         const allValidRids = allCheckable.filter(r => resMap[r] && resMap[r].trim() !== '');
         const isModuleAll = allValidRids.every(r => progressRes[`${id}-${r}`]);
 
-        // Sync vers Certification
         let blocKey = "bloc0";
         if(id.includes("_B1_")) blocKey = "bloc1";
         else if(id.includes("_B2_")) blocKey = "bloc2";
@@ -2288,6 +2318,72 @@
           list.appendChild(card);
           cardIdx++;
         });
+
+        // -------------------------------------------------------------
+        // NOUVEAUTÉ : Ajout du rappel des évaluations à la fin du bloc
+        // -------------------------------------------------------------
+        const evalMap = { 'B0': 'eval_trans', 'B1': 'eval_ccp1', 'B2': 'eval_ccp2', 'B3': 'eval_ccp3', 'B4': 'eval_ccp4' };
+        const evalKey = evalMap[currentBloc];
+
+        if (evalKey && dataEvaluations[evalKey] && currentMod === "ALL") {
+            const evalData = dataEvaluations[evalKey];
+
+            let evalHtml = `
+            <div class="mt-8 bg-gradient-to-br from-slate-50 to-white p-6 rounded-3xl border border-gray-200 shadow-sm w-full relative overflow-hidden animate-slideIn" style="animation-delay: ${cardIdx * 0.03}s">
+                <div class="absolute top-0 left-0 w-2 h-full ${themes[evalData.themeKey].bg}"></div>
+                <h3 class="text-xl font-black text-[#0F2C48] mb-1 flex items-center gap-2">
+                    <i class="fas fa-tasks text-[#D9A526]"></i> Évaluations & Livrables de ce bloc
+                </h3>
+                <p class="text-xs text-gray-500 mb-5 font-medium">Renseignez vos dates d'évaluations ici. Elles seront automatiquement synchronisées dans l'onglet Certification.</p>
+                <div class="flex flex-col gap-3">
+            `;
+
+            evalData.items.forEach(item => {
+                const val = progressState.evaluations.dates[item.id] || '';
+                const st = progressState.evaluations.statuses[item.id];
+
+                let statusBadge = '';
+                if (st === 'valide' || st === 'termine' || st === 'livret_recu') {
+                    statusBadge = '<span class="text-[10px] font-bold px-2 py-1 bg-green-100 text-green-700 rounded-md border border-green-200"><i class="fas fa-check mr-1"></i>Validé</span>';
+                } else if (st === 'envoye') {
+                    statusBadge = '<span class="text-[10px] font-bold px-2 py-1 bg-blue-100 text-blue-700 rounded-md border border-blue-200"><i class="fas fa-paper-plane mr-1"></i>Envoyé</span>';
+                } else if (st === 'refaire') {
+                    statusBadge = '<span class="text-[10px] font-bold px-2 py-1 bg-orange-100 text-orange-700 rounded-md border border-orange-200"><i class="fas fa-tools mr-1"></i>À refaire</span>';
+                } else if (progressState.evaluations.inProgress.has(item.id)) {
+                    statusBadge = '<span class="text-[10px] font-bold px-2 py-1 bg-yellow-100 text-yellow-700 rounded-md border border-yellow-200"><i class="fas fa-hourglass-half mr-1"></i>En cours</span>';
+                } else {
+                    statusBadge = '<span class="text-[10px] font-bold px-2 py-1 bg-gray-100 text-gray-500 rounded-md border border-gray-200"><i class="fas fa-calendar mr-1"></i>À planifier</span>';
+                }
+
+                const isDossier = item.id.includes('_dt_') || item.id.includes('_dp_') || item.id.includes('_ecf_');
+                const dateLabel = isDossier ? "Date Dépôt" : "Date Réa.";
+
+                evalHtml += `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white p-4 rounded-xl border border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] gap-4 transition-all hover:shadow-md hover:border-[#D9A526]/30">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm text-[#0F2C48] leading-snug mb-1.5">${item.title}</h4>
+                            ${statusBadge}
+                        </div>
+                        <div class="flex flex-col sm:items-end gap-1 shrink-0">
+                            <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest">${dateLabel}</label>
+                            <input type="date" class="eval-date-input-${item.id} border-2 border-gray-100 rounded-lg px-3 py-2 text-xs font-bold text-[#0F2C48] focus:border-[#D9A526] outline-none shadow-inner bg-gray-50 transition-colors" value="${val}" onchange="handleEvalDateChange('${item.id}', this.value)">
+                        </div>
+                    </div>
+                `;
+            });
+
+            evalHtml += `
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button onclick="filtrerBloc('CERTIF')" class="flex items-center gap-2 bg-[#0F2C48] text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:shadow-[0_8px_15px_rgba(15,44,72,0.3)] hover:-translate-y-0.5 transition-all">
+                        Ouvrir le module Certification <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>`;
+
+            list.insertAdjacentHTML('beforeend', evalHtml);
+        }
+        // -------------------------------------------------------------
 
         const gP = totalCount === 0 ? 0 : Math.round((vueCount / totalCount) * 100);
         document.getElementById("progressBar").style.width = gP + "%";
