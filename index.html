@@ -270,6 +270,17 @@
 
       input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.6; transition: 0.2s; }
       input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+
+      /* Animation Radar Watcher */
+      @keyframes radar-pulse {
+          0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4); }
+          70% { box-shadow: 0 0 0 10px rgba(225, 29, 72, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+      }
+      .radar-active {
+          animation: radar-pulse 2s infinite;
+          background: #e11d48;
+      }
     </style>
   </head>
   <body class="relative">
@@ -1043,9 +1054,11 @@
                 });
             }
             saveState();
+            // Rafraîchir l'affichage du livrable spécifique pour mettre à jour le message d'attente
+            applyEvalStyles(evalId);
       };
 
-      function generateEvalRowHtml(item, isCompact) {
+      function generateEvalRowHtml(item, isAccordion) {
           const val = progressState.evaluations.dates[item.id] || '';
           const retVal = progressState.evaluations.returnDates?.[item.id] || '';
           const isChecked = progressState.evaluations.inProgress.has(item.id) || progressState.evaluations.completed.has(item.id) ? 'checked' : '';
@@ -1053,36 +1066,60 @@
           const isDossier = item.id.includes('_dt_') || item.id.includes('_dp_');
           const dateLabel = isDossier || isEcf ? "Dépôt" : "Réa.";
 
+          // Watcher Retour Intelligent
+          const status = progressState.evaluations.statuses[item.id];
+          let watcherHtml = '';
+          if (status === 'envoye' && retVal) {
+              const today = new Date().toISOString().split('T')[0];
+              const isLate = retVal < today;
+              const dateObj = new Date(retVal);
+              const formattedRetDate = dateObj.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+
+              watcherHtml = `
+                <div class="flex items-center gap-2 mt-1 px-3 py-1 bg-white/50 rounded-full border border-rose-100 animate-pulse">
+                    <div class="w-2 h-2 rounded-full radar-active"></div>
+                    <span class="text-[10px] font-black uppercase tracking-widest ${isLate ? 'text-red-600 animate-bounce' : 'text-rose-500'}">
+                        Radar : Retour attendu le ${formattedRetDate} ${isLate ? ' (RETARD !)' : ''}
+                    </span>
+                </div>
+              `;
+          }
+
           let datesHtml = `
               <div class="flex items-center gap-2 shrink-0">
                   <div class="flex items-center gap-1">
-                      <span class="text-[9px] font-bold text-gray-400">${dateLabel}</span>
-                      <input type="date" class="eval-date-input-${item.id} border border-gray-200 rounded px-1 text-[10px] h-6 outline-none text-[#0F2C48]" value="${val}" onchange="handleEvalDateChange('${item.id}', this.value, 'depot')">
+                      <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">${dateLabel}</span>
+                      <input type="date" class="eval-date-input-${item.id} border border-gray-200 rounded-lg px-2 text-[11px] h-8 outline-none text-[#0F2C48] focus:ring-2 focus:ring-paia-yellow" value="${val}" onchange="handleEvalDateChange('${item.id}', this.value, 'depot')">
                   </div>
                   ${(isDossier || isEcf) ? `
                   <div class="flex items-center gap-1">
-                      <span class="text-[9px] font-bold text-gray-400">Retour</span>
-                      <input type="date" class="eval-date-retour-${item.id} border border-gray-200 rounded px-1 text-[10px] h-6 outline-none text-[#B4792A]" value="${retVal}" onchange="handleEvalDateChange('${item.id}', this.value, 'retour')">
+                      <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Retour</span>
+                      <input type="date" class="eval-date-retour-${item.id} border border-gray-200 rounded-lg px-2 text-[11px] h-8 outline-none text-[#B4792A] focus:ring-2 focus:ring-paia-bronze" value="${retVal}" onchange="handleEvalDateChange('${item.id}', this.value, 'retour')">
                   </div>
                   ` : ''}
               </div>
           `;
 
-          if (isCompact) {
+          if (isAccordion) {
               return `
-                  <div class="row-eval-${item.id} flex items-center justify-between gap-2 p-2 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
-                      <div class="flex items-center gap-2 flex-1 min-w-0">
-                          <input type="checkbox" class="chk-eval w-3.5 h-3.5 rounded text-paia-blue cursor-pointer shrink-0" onchange="toggleEvalInProgress('${item.id}')" ${isChecked}>
-                          <span class="text-[11px] font-bold text-[#0F2C48] truncate" title="${item.title}">${item.title}</span>
-                          <span class="badge-encours hidden text-[8px] font-black uppercase px-1.5 py-0.5 bg-yellow-50 text-yellow-600 rounded border border-yellow-200 leading-none">En cours</span>
-                      </div>
-                      <div class="flex items-center gap-3 shrink-0">
-                          ${datesHtml}
-                          <div class="main-actions flex gap-1 items-center shrink-0 w-[110px] justify-end"></div>
-                          <div class="final-badge-container hidden flex items-center gap-1 shrink-0 w-[110px] justify-end">
-                              <div class="status-badge"></div>
-                              <div class="extra-actions"></div>
+                  <div class="row-eval-${item.id} flex flex-col gap-1 p-3 border-b border-gray-100 last:border-0 hover:bg-gray-50/80 transition-all rounded-xl">
+                      <div class="flex items-center justify-between gap-3">
+                          <div class="flex items-center gap-3 flex-1 min-w-0">
+                              <input type="checkbox" class="chk-eval w-5 h-5 rounded-md text-paia-blue cursor-pointer shrink-0 border-gray-300" onchange="toggleEvalInProgress('${item.id}')" ${isChecked}>
+                              <span class="text-sm font-black text-[#0F2C48] truncate" title="${item.title}">${item.title}</span>
+                              <span class="badge-encours hidden text-[9px] font-black uppercase px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full border border-yellow-200 leading-none shadow-sm">En cours</span>
                           </div>
+                          <div class="flex items-center gap-3 shrink-0">
+                              <div class="main-actions flex gap-1.5 items-center shrink-0 w-[140px] justify-end"></div>
+                              <div class="final-badge-container hidden flex items-center gap-1.5 shrink-0 w-[140px] justify-end">
+                                  <div class="status-badge"></div>
+                                  <div class="extra-actions"></div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="flex items-center justify-between mt-1 pl-8">
+                          ${datesHtml}
+                          ${watcherHtml}
                       </div>
                   </div>
               `;
@@ -1091,9 +1128,9 @@
           return `
               <div class="row-eval-${item.id} flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 bg-white rounded-xl border shadow-sm mb-4 transition-colors">
                   <div class="flex items-center gap-3 flex-1 min-w-0">
-                      <input type="checkbox" class="chk-eval w-4 h-4 rounded text-paia-blue cursor-pointer shrink-0" onchange="toggleEvalInProgress('${item.id}')" ${isChecked}>
+                      <input type="checkbox" class="chk-eval w-5 h-5 rounded text-paia-blue cursor-pointer shrink-0" onchange="toggleEvalInProgress('${item.id}')" ${isChecked}>
                       <span class="text-sm font-bold text-[#0F2C48] truncate" title="${item.title}">${item.title}</span>
-                      <span class="badge-encours hidden text-[8px] font-black uppercase px-1.5 py-0.5 bg-yellow-50 text-yellow-600 rounded border border-yellow-200 leading-none">En cours</span>
+                      <span class="badge-encours hidden text-[9px] font-black uppercase px-2 py-1 bg-yellow-50 text-yellow-600 rounded border border-yellow-200 leading-none">En cours</span>
                   </div>
                   <div class="flex items-center gap-3 shrink-0 flex-wrap sm:flex-nowrap justify-between w-full sm:w-auto bg-gray-50/80 sm:bg-transparent p-2 sm:p-0 rounded-lg">
                       ${datesHtml}
@@ -1103,6 +1140,7 @@
                           <div class="extra-actions"></div>
                       </div>
                   </div>
+                  ${watcherHtml ? `<div class="w-full sm:w-auto ml-8">${watcherHtml}</div>` : ''}
               </div>
           `;
       }
@@ -1197,7 +1235,9 @@
 
                 let badgeHtml = '';
                 let buttonsHtml = '';
-                let isCompact = row.classList.contains('p-2');
+
+                // On détecte si on est dans l'accordéon (compact) ou l'onglet certif
+                let isAccordion = row.querySelector('.main-actions').parentElement.classList.contains('w-[140px]');
 
                 if (isCompleted) {
                     if (actionBtns) actionBtns.classList.add('hidden');
@@ -1207,32 +1247,32 @@
 
                     if (status === 'valide' || status === 'termine') {
                         row.classList.add('bg-blue-50', 'border-blue-200');
-                        badgeHtml = '<span class="text-[9px] px-2 py-0.5 bg-blue-500 text-white font-bold rounded uppercase shadow-sm">Validé ✅</span>';
+                        badgeHtml = '<span class="text-[10px] px-3 py-1 bg-blue-500 text-white font-black rounded-full uppercase shadow-md">Validé ✅</span>';
                     } else if (status === 'livret_recu') {
                         row.classList.add('bg-blue-50', 'border-blue-200');
-                        badgeHtml = '<span class="text-[9px] px-2 py-0.5 bg-blue-600 text-white font-bold rounded uppercase shadow-sm">Livret Reçu 📖✅</span>';
+                        badgeHtml = '<span class="text-[10px] px-3 py-1 bg-blue-600 text-white font-black rounded-full uppercase shadow-md">Livret Reçu 📖✅</span>';
                     } else if (status === 'envoye') {
                         row.classList.add('bg-teal-50', 'border-teal-200');
-                        badgeHtml = '<span class="text-[9px] px-2 py-0.5 bg-teal-500 text-white font-bold rounded uppercase shadow-sm">Envoyé 🚀</span>';
+                        badgeHtml = '<span class="text-[10px] px-3 py-1 bg-teal-500 text-white font-black rounded-full uppercase shadow-md">Envoyé 🚀</span>';
                         if (isEcf && extraActions) {
-                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'livret_recu')" class="text-[9px] px-1.5 py-1 bg-paia-yellow text-[#0F2C48] font-bold rounded shadow-sm hover:bg-yellow-500 transition-colors" title="Marquer comme reçu"><i class="fas fa-book-open"></i></button>`;
+                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'livret_recu')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-paia-yellow text-[#0F2C48] font-bold rounded-lg shadow-md hover:bg-yellow-500 transition-all hover:scale-110" title="Marquer comme reçu"><i class="fas fa-book-open"></i></button>`;
                         } else if (isDossier && extraActions) {
-                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'valide')" class="text-[9px] px-1.5 py-1 bg-blue-500 text-white font-bold rounded shadow-sm hover:bg-blue-600 transition-colors" title="Valider définitivement"><i class="fas fa-check"></i></button>`;
+                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'valide')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600 transition-all hover:scale-110" title="Valider définitivement"><i class="fas fa-check"></i></button>`;
                         }
                     } else if (status === 'refaire') {
                         row.classList.add('bg-pink-50', 'border-pink-200');
-                        badgeHtml = '<span class="text-[9px] px-2 py-0.5 bg-pink-500 text-white font-bold rounded uppercase shadow-sm">À Refaire ❌</span>';
+                        badgeHtml = '<span class="text-[10px] px-3 py-1 bg-pink-500 text-white font-black rounded-full uppercase shadow-md">À Refaire ❌</span>';
                         if (isEcf && extraActions) {
-                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'envoye')" class="text-[9px] px-1.5 py-1 bg-[#0F2C48] text-white font-bold rounded hover:bg-blue-900 shadow-sm transition-colors" title="Renvoyer"><i class="fas fa-paper-plane"></i></button>`;
+                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'envoye')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-[#0F2C48] text-white font-bold rounded-lg hover:bg-blue-900 shadow-md transition-all hover:scale-110" title="Renvoyer"><i class="fas fa-paper-plane"></i></button>`;
                         } else if (isDossier && extraActions) {
-                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'valide')" class="text-[9px] px-1.5 py-1 bg-blue-500 text-white font-bold rounded hover:bg-blue-600 shadow-sm transition-colors" title="Re-Valider"><i class="fas fa-check"></i></button>`;
+                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'valide')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 shadow-md transition-all hover:scale-110" title="Re-Valider"><i class="fas fa-check"></i></button>`;
                         }
                     } else if (status === 'ignore') {
                         row.classList.add('bg-gray-100', 'opacity-50');
-                        badgeHtml = '<span class="text-[9px] px-2 py-0.5 bg-gray-400 text-white font-bold rounded uppercase">Ignoré</span>';
+                        badgeHtml = '<span class="text-[10px] px-3 py-1 bg-gray-400 text-white font-bold rounded-full uppercase shadow-sm">Ignoré</span>';
                     }
 
-                    if (extraActions) extraActions.innerHTML += `<button onclick="resetEvalStatus('${evalId}')" class="text-[9px] text-gray-400 hover:text-gray-700 ml-1" title="Annuler le statut"><i class="fas fa-undo"></i></button>`;
+                    if (extraActions) extraActions.innerHTML += `<button onclick="resetEvalStatus('${evalId}')" class="text-[10px] text-gray-400 hover:text-red-500 ml-1 transition-colors" title="Réinitialiser"><i class="fas fa-undo"></i></button>`;
                     if (statusBadge) statusBadge.innerHTML = badgeHtml;
 
                 } else {
@@ -1246,16 +1286,16 @@
                         if (badgeEnCours) badgeEnCours.classList.add('hidden');
                     }
 
-                    const btnClass = "text-[9px] px-2 py-1 font-bold rounded shadow-sm transition-transform hover:scale-105 ";
+                    const btnBase = "text-[10px] px-3 py-1.5 font-black rounded-lg shadow-md transition-all hover:scale-105 active:scale-95 ";
                     if (isEcf) {
-                        buttonsHtml = `<button onclick="setEvalStatus('${evalId}', 'envoye')" class="${btnClass} bg-[#0F2C48] text-white">Envoyer</button>`;
+                        buttonsHtml = `<button onclick="setEvalStatus('${evalId}', 'envoye')" class="${btnBase} bg-[#0F2C48] text-white uppercase tracking-wider">Envoyer</button>`;
                     } else if (isDossier) {
                         buttonsHtml = `
-                            <button onclick="setEvalStatus('${evalId}', 'valide')" class="${btnClass} bg-blue-500 text-white"><i class="fas fa-check"></i></button>
-                            <button onclick="setEvalStatus('${evalId}', 'refaire')" class="${btnClass} bg-pink-500 text-white"><i class="fas fa-times"></i></button>
+                            <button onclick="setEvalStatus('${evalId}', 'valide')" class="${btnBase} bg-blue-500 text-white"><i class="fas fa-check"></i></button>
+                            <button onclick="setEvalStatus('${evalId}', 'refaire')" class="${btnBase} bg-pink-500 text-white ml-1"><i class="fas fa-times"></i></button>
                         `;
                     } else {
-                        buttonsHtml = `<button onclick="setEvalStatus('${evalId}', 'termine')" class="${btnClass} bg-blue-500 text-white">Terminer</button>`;
+                        buttonsHtml = `<button onclick="setEvalStatus('${evalId}', 'termine')" class="${btnBase} bg-emerald-500 text-white uppercase tracking-wider">Terminer</button>`;
                     }
                     if (actionBtns) actionBtns.innerHTML = buttonsHtml;
                 }
@@ -1354,8 +1394,8 @@
                     const isChecked = progressState[bloc.id].completed.has(code) ? 'checked' : '';
                     sujetsHtml += `
                         <li class="flex items-start gap-2 p-1.5 hover:bg-paia-ivory rounded transition-colors">
-                            <input type="checkbox" id="chk-${code}" class="sujet-checkbox mt-0.5 w-4 h-4 rounded text-paia-blue cursor-pointer" onclick="toggleSujet('${code}', '${bloc.id}')" ${isChecked}>
-                            <label for="chk-${code}" class="text-xs text-paia-blue cursor-pointer font-medium select-none transition-all"><span class="font-bold">${code}</span> - ${title}</label>
+                            <input type="checkbox" id="chk-${code}" class="sujet-checkbox mt-0.5 w-5 h-5 rounded-md text-paia-blue cursor-pointer border-gray-300" onclick="toggleSujet('${code}', '${bloc.id}')" ${isChecked}>
+                            <label for="chk-${code}" class="text-sm text-paia-blue cursor-pointer font-medium select-none transition-all"><span class="font-black text-[#B4792A]">${code}</span> - ${title}</label>
                         </li>`;
                 });
                 container.innerHTML += `
@@ -1805,7 +1845,7 @@
 
       window.closeDailyRevisionsModal = function() {
           document.getElementById('dailyRevisionsContent').classList.remove('scale-100');
-          document.getElementById('dailyRevisionsContent').classList.add('scale-95');
+          document.getElementById('dailyRevisionsContent').classList.add('scale-100');
           setTimeout(() => { document.getElementById('dailyRevisionsModal').style.display = 'none'; }, 200);
       };
 
@@ -2318,30 +2358,42 @@
         let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
 
         // -------------------------------------------------------------
-        // NOUVEAUTÉ : Ajout du rappel des évaluations TOUT EN HAUT de la liste
+        // NOUVEAUTÉ : Accordéon Certification Ultra-Amélioré (3D, Couleurs, Radar)
         // -------------------------------------------------------------
         const evalMap = { 'B0': 'eval_trans', 'B1': 'eval_ccp1', 'B2': 'eval_ccp2', 'B3': 'eval_ccp3', 'B4': 'eval_ccp4' };
         const evalKey = evalMap[currentBloc];
 
         if (evalKey && dataEvaluations[evalKey] && currentMod === "ALL") {
             const evalData = dataEvaluations[evalKey];
+            const theme = themes[evalData.themeKey];
             let accordionId = 'eval-accordion-' + evalKey;
 
             let evalHtml = `
-            <div class="mb-6 w-full animate-slideIn" style="animation-delay: 0s">
+            <div class="mb-8 w-full animate-slideIn" style="animation-delay: 0s">
                 <button onclick="document.getElementById('${accordionId}').classList.toggle('hidden'); document.getElementById('icon-${accordionId}').classList.toggle('rotate-180');"
-                        class="w-full flex items-center justify-between bg-white px-5 py-3.5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all text-[#0F2C48] focus:outline-none">
-                    <div class="flex items-center gap-3">
-                        <i class="fas fa-certificate text-[#D9A526] text-lg"></i>
-                        <span class="font-black uppercase tracking-widest text-xs">Livrables Certification</span>
+                        class="w-full flex items-center justify-between px-6 py-4 rounded-2xl border-2 ${theme.border} bg-white shadow-[0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.15)] transition-all text-[#0F2C48] focus:outline-none transform hover:-translate-y-1">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl ${theme.bg} flex items-center justify-center text-white shadow-lg shadow-${theme.hex}/30">
+                            <i class="fas fa-award text-xl animate-pulse"></i>
+                        </div>
+                        <div class="text-left">
+                            <span class="font-black uppercase tracking-[0.2em] text-[10px] ${theme.text} opacity-70">Certification Hub</span>
+                            <h2 class="font-black uppercase text-sm tracking-widest block">${evalData.title}</h2>
+                        </div>
                     </div>
-                    <i id="icon-${accordionId}" class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                    <div class="flex items-center gap-4">
+                        <div class="hidden sm:flex flex-col items-end">
+                            <span class="text-[9px] font-black uppercase text-gray-400">Statut Livrables</span>
+                            <span class="text-[11px] font-black text-[#0F2C48]">Suivi en temps réel</span>
+                        </div>
+                        <i id="icon-${accordionId}" class="fas fa-chevron-down text-gray-400 transition-transform duration-500 text-lg"></i>
+                    </div>
                 </button>
-                <div id="${accordionId}" class="hidden mt-2 bg-white border border-gray-100 shadow-sm rounded-xl p-2 flex flex-col gap-1">
+                <div id="${accordionId}" class="hidden mt-3 bg-white/70 backdrop-blur-md border-2 ${theme.border} shadow-xl rounded-2xl overflow-hidden p-2 flex flex-col gap-1 ring-4 ring-white/50">
             `;
 
             evalData.items.forEach(item => {
-                evalHtml += generateEvalRowHtml(item, true); // true = compact version
+                evalHtml += generateEvalRowHtml(item, true); // true = Accordion mode
             });
 
             evalHtml += `
