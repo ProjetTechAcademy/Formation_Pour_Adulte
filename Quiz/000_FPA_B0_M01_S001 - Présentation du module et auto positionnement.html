@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Interactif FPA | PAIA</title>
+    <title>000_FPA_B0_M01_S001 - Présentation du module et auto positionnement | PAIA</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -54,6 +54,7 @@
         body.dark-mode .opt-btn { background: #153a5e; color: #F6F2E8; border-color: #1a4a7a; }
         body.dark-mode .diploma { background: var(--blanc); border: 3px solid var(--cta-yellow); color: var(--title-blue); }
         body.dark-mode .footer-paia { border-top-color: rgba(246, 242, 232, 0.1); }
+        body.dark-mode .quiz-main-title { color: var(--cta-yellow); }
 
         /* --- CONTENEUR --- */
         #quiz-container {
@@ -98,10 +99,22 @@
             background: var(--cta-yellow); color: var(--title-blue); border-color: var(--cta-yellow);
         }
 
+        /* --- TITRE PRINCIPAL DU QUIZ --- */
+        .quiz-main-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--title-blue);
+            margin: 10px 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
         .module-banner {
             background: var(--title-blue); color: var(--cta-yellow);
-            padding: 10px 25px; border-radius: 8px; font-weight: 700; margin-bottom: 20px; display: inline-block;
-            border: 1px solid var(--cta-yellow); text-align: center; width: 100%;
+            padding: 12px 25px; border-radius: 8px; font-weight: 700; margin-bottom: 25px; display: inline-block;
+            border: 1px solid var(--cta-yellow); text-align: center; width: 100%; font-size: 1.1rem;
         }
 
         /* --- ECRANS --- */
@@ -151,13 +164,12 @@
 
         .diploma { text-align: center; }
 
-        /* --- FOOTER PAIA (STRUCTURE 2 LIGNES DISTINCTES) --- */
+        /* --- FOOTER PAIA (DEUX LIGNES STRICTEMENT DISTINCTES) --- */
         .footer-paia { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(15, 44, 72, 0.1); }
         .footer-logo { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--cta-yellow); object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.2s ease; }
         .footer-logo:hover { transform: scale(1.05); }
         .footer-text-container { text-align: center; max-width: 900px; padding: 0 15px; }
 
-        /* Les deux lignes distinctes */
         .signature-line1 { font-size: 13px; color: var(--title-blue); font-weight: 700; margin-bottom: 5px; }
         .signature-line2 { font-size: 11px; color: var(--title-blue); font-weight: 400; opacity: 0.8; font-style: italic; }
 
@@ -200,7 +212,7 @@
                 <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="PAIA Logo" class="header-logo">
                 <div class="header-titles">
                     <div class="platform-name">Paia</div>
-                    <div class="platform-sub">Quiz Formation pour Adultes</div>
+                    <div class="platform-sub">Adult Learning Hub</div>
                 </div>
             </a>
 
@@ -214,7 +226,10 @@
                 </a>
             </div>
         </div>
-        <div class="module-banner">📌 FPA - Le Grand Quiz Interactif</div>
+
+        <!-- LE VRAI TITRE DU QUIZ EST ICI -->
+        <h1 class="quiz-main-title">000_FPA_B0_M01_S001</h1>
+        <div class="module-banner">📌 Présentation du module et auto positionnement</div>
     </div>
 
     <div id="screen-setup" class="screen active-screen">
@@ -249,7 +264,7 @@
             </div>
         </div>
         <div id="ui-motivation-start" class="motivation-banner">
-            Bienvenue Mathilde ! Prête à tester vos connaissances globales sur le métier de Formateur d'Adultes ?
+            Bienvenue Mathilde ! Prête à évaluer vos pratiques initiales d'animation ?
         </div>
         <button class="btn-action" onclick="startGame()">DÉMARRER LA SESSION 🚀</button>
     </div>
@@ -271,7 +286,7 @@
     <div id="screen-result" class="screen diploma">
         <div class="diploma-content">
             <span style="font-size: 3.5rem; display:block; margin-bottom:10px;" id="ui-diploma-icon">🎓</span>
-            <h2 id="final-title" style="font-weight:900; text-transform:uppercase;">BILAN FPA</h2>
+            <h2 id="final-title" style="font-weight:900; text-transform:uppercase;">BILAN DE POSITIONNEMENT</h2>
             <div id="ui-final-score" style="font-size:4rem; font-weight:900; margin:10px 0; color:var(--cta-yellow);">0/0</div>
             <p id="ui-humor" style="font-weight:500; padding:0 20px;"></p>
 
@@ -285,7 +300,7 @@
                         Glossaire Expert
                         <button class="acc-btn" style="padding:2px 8px; font-size:1.1rem; color:var(--alert-bronze); border:1px solid rgba(180, 121, 42, 0.3);" onclick="speakGlossary()" title="Écouter les termes affichés">🔊</button>
                     </span>
-                    <span id="ui-glossary-progress" style="font-size:0.85rem; background:var(--title-blue); color:var(--cta-yellow); padding:4px 12px; border-radius:50px;">0 / 15</span>
+                    <span id="ui-glossary-progress" style="font-size:0.85rem; background:var(--title-blue); color:var(--cta-yellow); padding:4px 12px; border-radius:50px;">0 / 8</span>
                 </h3>
                 <ul class="glossary-list" id="ui-glossary-list"></ul>
                 <button id="btn-new-words" class="opt-btn" style="margin-top:15px; text-align:center; background:transparent; font-weight:700; border-style:dashed;" onclick="generateGlossary(true)">🔄 Termes suivants</button>
@@ -308,70 +323,64 @@
 </div>
 
 <script>
-    // --- BANQUE DE 30 QUESTIONS (MIX GLOBAL FPA) ---
+    // --- BANQUE DE 30 QUESTIONS (FICHE 000 ANIMATION ET AUTO-POSITIONNEMENT) ---
     const questionBank = [
-        {q: "Que signifie le sigle FPA ?", options: ["Formation Permanente pour Adolescents", "Formateur Professionnel d'Adultes", "Fonds de Participation à l'Apprentissage"], correct: 1, rationale: "FPA est l'acronyme officiel du Titre Professionnel de Formateur d'Adultes." },
-        {q: "Qu'est-ce que l'andragogie ?", options: ["L'étude du comportement des enfants", "L'art et la science d'enseigner aux adultes", "L'analyse financière d'un projet"], correct: 1, rationale: "L'andragogie s'oppose à la pédagogie en prenant en compte le vécu et l'autonomie de l'adulte." },
-        {q: "Quel est l'objectif de la méthode QQOQCPC ?", options: ["Vendre une formation plus chère", "Structurer un entretien pour n'oublier aucun aspect de la demande", "Calculer le Bilan Pédagogique et Financier"], correct: 1, rationale: "C'est la méthode de référence pour analyser rigoureusement une demande de formation." },
-        {q: "La certification Qualiopi est obligatoire pour :", options: ["Toutes les entreprises de France", "Accéder aux financements publics et mutualisés (CPF, OPCO, Pôle Emploi)", "Donner des cours particuliers"], correct: 1, rationale: "Qualiopi atteste de la qualité du processus mis en œuvre par le prestataire d'actions concourant au développement des compétences." },
-        {q: "Qu'est-ce qu'un scénario pédagogique ?", options: ["Un film sur l'histoire de l'éducation", "Le document détaillant le déroulé chronologique d'une séquence de formation", "Une convention de stage"], correct: 1, rationale: "Il sert de feuille de route au formateur pour animer sa session étape par étape." },
-        {q: "Quelle loi a profondément réformé la formation professionnelle en 2018 ?", options: ["La loi de modernisation sociale", "La loi pour la liberté de choisir son avenir professionnel", "La loi Fillon"], correct: 1, rationale: "C'est la loi du 5 septembre 2018 qui a monétisé le CPF et créé France Compétences." },
-        {q: "Que signifie AFEST ?", options: ["Action de Formation En Situation de Travail", "Association Française pour l'Enseignement et le Suivi Technique", "Analyse Financière et Stratégique"], correct: 0, rationale: "L'AFEST est une modalité légale permettant d'apprendre directement sur le poste de travail avec une phase réflexive." },
-        {q: "Quel est le rôle principal d'un 'Ice breaker' en début de formation ?", options: ["Rafraîchir la salle", "Briser la glace et créer une dynamique de groupe", "Évaluer les connaissances théoriques"], correct: 1, rationale: "L'Ice breaker favorise l'implication émotionnelle et l'inclusion de tous les participants." },
-        {q: "Le sigle NDA, indispensable à tout organisme de formation, correspond à :", options: ["Nouveau Document d'Apprentissage", "Numéro de Déclaration d'Activité", "Niveau de Diplôme Atteint"], correct: 1, rationale: "Le NDA s'obtient auprès du préfet de région (DREETS) et autorise la facturation d'actions de formation." },
-        {q: "Le Bilan Pédagogique et Financier (BPF) doit être déclaré chaque année avant quelle date ?", options: ["Le 1er janvier", "Le 30 avril", "Le 31 décembre"], correct: 1, rationale: "Le BPF est obligatoire pour conserver son NDA ; la date limite est généralement le 30 avril." },
-        {q: "Quel organisme assure la régulation et le financement du système de la formation professionnelle ?", options: ["L'Éducation Nationale", "France Compétences", "La Mairie"], correct: 1, rationale: "Créée en 2019, France Compétences est l'autorité nationale unique." },
-        {q: "Quel organisme collecte aujourd'hui les contributions formation des entreprises ?", options: ["Les OPCO", "L'URSSAF (ou la MSA)", "Le FMI"], correct: 1, rationale: "Pour simplifier les démarches, la collecte de la CUFPA a été transférée à l'URSSAF." },
-        {q: "À quoi sert l'évaluation des acquis en fin de formation ?", options: ["À punir les stagiaires distraits", "À vérifier l'atteinte des objectifs pédagogiques par les apprenants", "À facturer plus cher"], correct: 1, rationale: "L'évaluation est une obligation légale pour justifier de l'efficacité de l'action de formation." },
-        {q: "Quelle est la principale différence entre une convention et un contrat de formation ?", options: ["Aucune", "La convention est B2B (entreprise), le contrat est B2C (particulier)", "La convention est orale, le contrat est écrit"], correct: 1, rationale: "Le contrat de formation professionnelle protège le consommateur qui finance lui-même sa formation." },
-        {q: "Pour les salariés du secteur privé, le CPF est crédité en :", options: ["Heures", "Euros", "Points"], correct: 1, rationale: "Depuis la réforme de 2018, le compte est crédité de 500 € par an pour un temps plein." },
-        {q: "Qu'est-ce que la FOAD ?", options: ["Fonds des Organisations d'Aide au Développement", "Formation Ouverte et À Distance", "Fiche d'Observation et d'Analyse Documentaire"], correct: 1, rationale: "La FOAD regroupe l'ensemble des modalités d'apprentissage à distance (e-learning, classe virtuelle)." },
-        {q: "Un formateur adoptant une posture de 'facilitateur' cherche avant tout à :", options: ["Donner la réponse immédiatement", "Guider le groupe et favoriser les échanges constructifs", "Faire le travail à la place des apprenants"], correct: 1, rationale: "Le facilitateur favorise l'intelligence collective et l'apprentissage par les pairs." },
-        {q: "Que recense le RNCP (Répertoire National des Certifications Professionnelles) ?", options: ["Les organismes de formation", "Les diplômes et titres à finalité professionnelle validés par l'État", "Les offres d'emploi"], correct: 1, rationale: "Le RNCP garantit que la formation prépare à l'exercice d'un métier identifié." },
-        {q: "Que signifie l'acronyme OPCO ?", options: ["Opérateur de Compétences", "Organisme Public de Contrôle", "Office de Protection des Consommateurs"], correct: 0, rationale: "Les 11 OPCO accompagnent la formation professionnelle des entreprises selon leur branche d'activité." },
-        {q: "Qu'est-ce qu'un 'prérequis' en ingénierie de formation ?", options: ["Un supplément financier", "Les connaissances et aptitudes nécessaires pour pouvoir suivre la formation", "L'examen final"], correct: 1, rationale: "Vérifier les prérequis évite de mettre un apprenant en situation d'échec." },
-        {q: "De combien de jours dispose un particulier pour se rétracter après la signature d'un contrat de formation (hors distance) ?", options: ["Aucun", "10 jours", "30 jours"], correct: 1, rationale: "Le délai légal est de 10 jours francs (14 jours en cas d'inscription à distance)." },
-        {q: "Le sigle QVT, souvent abordé dans le bien-être au travail, signifie :", options: ["Quantité de Ventes Totales", "Qualité de Vie au Travail", "Quotas Valides Trimestriels"], correct: 1, rationale: "La QVT est un enjeu majeur, y compris pour la santé mentale et l'ergonomie du formateur." },
-        {q: "Le livret d'accueil d'une formation en centre doit obligatoirement inclure :", options: ["Le menu du restaurant", "Le règlement intérieur applicable aux stagiaires", "Les photos des formateurs"], correct: 1, rationale: "Le règlement intérieur fixe les règles de santé, de sécurité et de discipline." },
-        {q: "Une formation 'intra-entreprise' se caractérise par :", options: ["La présence de salariés de différentes entreprises", "Une formation sur mesure organisée exclusivement pour les salariés d'une même entreprise", "Une formation à l'étranger"], correct: 1, rationale: "C'est l'opposé de l'inter-entreprises qui mélange les publics." },
-        {q: "Quel public spécifique nécessite souvent un accompagnement de type FLE (Français Langue Étrangère) ?", options: ["Les cadres supérieurs", "Les personnes allophones (dont le français n'est pas la langue maternelle)", "Les étudiants en droit"], correct: 1, rationale: "L'accompagnement FLE permet de lever la barrière de la langue avant les apprentissages techniques." },
-        {q: "Que signifie VAE ?", options: ["Vérification des Aptitudes en Entreprise", "Validation des Acquis de l'Expérience", "Visite Annuelle d'Évaluation"], correct: 1, rationale: "La VAE permet d'obtenir un diplôme sans repasser par la case formation, grâce à son expérience pro." },
-        {q: "Quel est l'intérêt principal de l'entretien d'explicitation ?", options: ["Négocier les tarifs", "Clarifier une demande initiale souvent floue pour identifier le vrai besoin", "Faire passer un test de niveau"], correct: 1, rationale: "Il permet de passer de la 'demande' (le souhait) au 'besoin' réel (l'écart de compétences)." },
-        {q: "L'alternance repose sur quel principe pédagogique ?", options: ["Des cours uniquement le soir", "Une succession de périodes en centre de formation et de mises en pratique en entreprise", "Un changement de formateur chaque jour"], correct: 1, rationale: "L'alternance (contrat pro ou apprentissage) permet une immersion directe dans le monde du travail." },
-        {q: "À quel niveau de diplôme correspond le Titre Professionnel FPA ?", options: ["Niveau 3 (CAP)", "Niveau 5 (Bac+2)", "Niveau 7 (Bac+5)"], correct: 1, rationale: "Le titre de Formateur Professionnel d'Adultes est certifié par l'État au niveau 5." },
-        {q: "Lors d'une formation, quel document est la preuve juridique de l'assiduité du stagiaire ?", options: ["La facture", "La feuille d'émargement (ou les logs de connexion en FOAD)", "La convocation"], correct: 1, rationale: "Signée par demi-journée, elle est indispensable pour justifier la facturation auprès des financeurs." }
+        {q: "En session 2, combien de techniques d'Ice breakers sont présentées ?", options: ["5 techniques", "15 techniques", "30 techniques"], correct: 1, rationale: "Le module présente 15 techniques spécifiques pour briser la glace au démarrage." },
+        {q: "Quelle session est consacrée à la matrice synthétique des 45 activités ?", options: ["Session 1", "Session 4", "Session 6"], correct: 2, rationale: "La session 6 compile toutes les activités dans une matrice de choix stratégique." },
+        {q: "Quel format est utilisé pour visualiser la mise en œuvre des 45 activités ?", options: ["Format texte PDF", "Format Vidéo", "Format Podcast"], correct: 1, rationale: "Toutes les activités pédagogiques du module sont illustrées en vidéo." },
+        {q: "Combien de jeux pédagogiques sont abordés dans les sessions 3 et 4 ?", options: ["5 environ", "10 environ", "15 environ"], correct: 2, rationale: "Une quinzaine de jeux pédagogiques sont détaillés pour dynamiser les séquences." },
+        {q: "Le formateur doit-il oublier l'implication émotionnelle des participants ?", options: ["Oui, seul le cognitif compte", "Non, elle demande du rythme et des pauses", "Seulement en formation théorique"], correct: 1, rationale: "L'émotion est le moteur de l'apprentissage ; elle nécessite une gestion fine du rythme." },
+        {q: "Que permet la matrice de la session 6 ?", options: ["De calculer le coût de la salle", "D'identifier les activités selon la typologie, le nombre d'apprenants et le temps", "De noter les participants"], correct: 1, rationale: "C'est un outil de décision pour choisir l'activité la plus adaptée au contexte." },
+        {q: "Quel est l'objectif de l'auto-positionnement au début du module ?", options: ["Définir le menu du déjeuner", "Évaluer ses propres compétences et pratiques initiales", "Valider l'examen final"], correct: 1, rationale: "C'est un diagnostic pour situer son niveau avant d'entamer le parcours." },
+        {q: "Combien de scénarios pédagogiques sont abordés en session 5 ?", options: ["2", "Une dizaine", "25"], correct: 1, rationale: "La session 5 propose une dizaine de scénarios types pour structurer les interventions." },
+        {q: "Sur un même cours, que suggère-t-on concernant les techniques d'animation ?", options: ["De ne jamais en changer", "De les varier selon le nombre de participants", "D'utiliser uniquement l'exposé"], correct: 1, rationale: "L'adaptation au volume du groupe est une compétence clé du formateur." },
+        {q: "Renouveler ses jeux pédagogiques chaque année est un signe de :", options: ["Manque de temps", "Innovation et agilité pédagogique", "Confusion technique"], correct: 1, rationale: "L'agilité demande de tester et d'adapter continuellement ses outils." },
+        {q: "Qu'est-ce qu'un format 'hors-piste' dans l'auto-évaluation ?", options: ["Une sortie en montagne", "Un format innovant expérimenté régulièrement", "Une erreur pédagogique"], correct: 1, rationale: "L'expérimentation de nouveaux formats 'hors-piste' enrichit la palette du facilitateur." },
+        {q: "Le partage de scénarios entre collègues est :", options: ["Interdit par Qualiopi", "Encouragé pour progresser ensemble", "Inutile si l'on est expert"], correct: 1, rationale: "La collaboration entre pairs est un puissant levier de montée en compétences." },
+        {q: "Un Ice breaker sert principalement à :", options: ["Évaluer les connaissances", "Démarrer un cours et créer une dynamique de groupe", "Faire la sieste"], correct: 1, rationale: "Il sert à 'briser la glace' et mettre les apprenants en confiance." },
+        {q: "Le rythme d'une formation est soutenu par :", options: ["La musique uniquement", "L'alternance entre activités actives et pauses de réflexion", "Le volume de la voix"], correct: 1, rationale: "Le rythme évite la saturation cognitive." },
+        {q: "Combien d'activités au total sont identifiées dans le module ?", options: ["20", "30", "45"], correct: 2, rationale: "Le module compile 45 activités (Ice breakers + Jeux + Scénarios)." },
+        {q: "Dans l'auto-positionnement, le critère 'Ludification' concerne :", options: ["Le fait de s'amuser seul", "L'utilisation de mécaniques de jeu pour apprendre", "Le jeu de cartes uniquement"], correct: 1, rationale: "Le jeu pédagogique sert des objectifs d'apprentissage précis." },
+        {q: "L'implication émotionnelle demande au formateur d'être :", options: ["Indifférent", "Un facilitateur attentif aux besoins du groupe", "Un acteur de théâtre uniquement"], correct: 1, rationale: "Le facilitateur gère l'énergie et l'engagement du groupe." },
+        {q: "La matrice des activités aide à gérer quel paramètre logistique ?", options: ["Le budget", "Le temps alloué à l'activité", "La température"], correct: 1, rationale: "Le temps est un critère majeur de la matrice de la session 6." },
+        {q: "Une session qui démarre mal peut nuire à l'apprentissage. Quel outil prévient cela ?", options: ["L'émargement", "L'Ice breaker de lancement", "Le diaporama"], correct: 1, rationale: "Un bon lancement conditionne l'engagement pour toute la suite." },
+        {q: "Les 15 jeux des sessions 3 et 4 visent quel bloc de compétences ?", options: ["La gestion financière", "L'animation de la formation", "La création de support de cours"], correct: 1, rationale: "Le module B1M5 est centré sur les techniques d'animation." },
+        {q: "L'innovation pédagogique est une compétence :", options: ["Facultative", "Indispensable pour rester pertinent face aux publics", "Inutile"], correct: 1, rationale: "L'adaptation permanente est le propre du formateur d'adultes." },
+        {q: "La fiche mentionne-t-elle des supports de lecture ?", options: ["Non, uniquement du texte", "Oui, l'ensemble est visible en vidéo", "Uniquement par téléphone"], correct: 1, rationale: "L'aspect visuel (vidéo) est central pour ce module d'animation." },
+        {q: "L'auto-positionnement interroge sur la fréquence de renouvellement des cours. Quelle est la réponse cible ?", options: ["Tous les 5 ans", "Chaque année", "Jamais"], correct: 1, rationale: "Un renouvellement annuel garantit une veille et une pertinence optimale." },
+        {q: "Le formateur expert utilise des techniques spécifiques pour démarrer. Lesquelles ?", options: ["L'exposé long", "Les ateliers de lancement ou Ice breakers", "Le test écrit immédiat"], correct: 1, rationale: "Les techniques de lancement sont vitales pour instaurer le cadre." },
+        {q: "La représentation matricielle est un outil de :", options: ["Synthèse visuelle", "Vente", "Recrutement"], correct: 0, rationale: "Elle résume graphiquement les options d'animation du formateur." },
+        {q: "Le module B1M5S1 est-il une séance de cours théorique ?", options: ["Oui, 100% théorique", "Non, c'est une séance de présentation et de diagnostic", "C'est l'examen final"], correct: 1, rationale: "C'est la porte d'entrée et le diagnostic du module." },
+        {q: "L'implication des participants est favorisée par :", options: ["Le silence total", "La diversité des activités pédagogiques", "L'obscurité"], correct: 1, rationale: "La variété maintient l'éveil et l'engagement émotionnel." },
+        {q: "Un facilitateur doit-il créer ses propres scénarios ?", options: ["Non, il doit suivre des manuels", "Oui, et les partager avec ses collègues", "C'est facultatif"], correct: 1, rationale: "La conception sur mesure et le partage sont des signes de maîtrise." },
+        {q: "Quel est le nombre total de participants gérable via la matrice ?", options: ["Seulement 5", "Le nombre varie selon la typologie de l'activité choisie", "Illimité"], correct: 1, rationale: "La matrice aide à choisir en fonction du nombre réel d'apprenants." },
+        {q: "En session 5, on apprend à structurer quoi ?", options: ["Un budget de formation", "Un scénario pédagogique type", "Une offre d'emploi"], correct: 1, rationale: "Le scénario est la partition de l'animation du formateur." }
     ];
 
     const glossaryTerms = [
-        { word: "FPA", def: "Formateur Professionnel d'Adultes. Titre certifié de niveau 5 (Bac+2)." },
-        { word: "Andragogie", def: "Science et pratique de l'éducation des adultes, fondée sur leur autonomie et leur expérience." },
-        { word: "Ingénierie de formation", def: "Démarche globale de pilotage de projet, de l'analyse du besoin à l'évaluation des impacts." },
-        { word: "QQOQCPC", def: "Outil de questionnement exhaustif : Qui, Quoi, Où, Quand, Comment, Pourquoi, Combien." },
-        { word: "NDA", def: "Numéro de Déclaration d'Activité. Indispensable pour exercer légalement la facturation de la FP." },
-        { word: "Qualiopi", def: "Référentiel National Qualité (RNQ), certification obligatoire pour les fonds publics." },
-        { word: "France Compétences", def: "Autorité de régulation et de financement de la FP et de l'apprentissage." },
-        { word: "AFEST", def: "Action de Formation En Situation de Travail. Inclut une phase de mise en situation et une phase réflexive." },
-        { word: "FOAD", def: "Formation Ouverte et À Distance. Apprentissage asynchrone ou synchrone via le numérique." },
-        { word: "Ice breaker", def: "Technique d'animation courte pour dynamiser le groupe et briser la glace." },
-        { word: "Scénario pédagogique", def: "Document détaillant le chronométrage et le séquençage d'une session." },
-        { word: "Évaluation des acquis", def: "Étape de vérification de l'atteinte des objectifs de compétences par l'apprenant." },
-        { word: "OPCO", def: "Opérateur de Compétences. Structure accompagnant financièrement les branches professionnelles." },
-        { word: "RNCP", def: "Répertoire National des Certifications Professionnelles. Base des diplômes d'État." },
-        { word: "LMS", def: "Learning Management System. Plateforme de diffusion de contenus e-learning." }
+        { word: "Auto-positionnement", def: "Bilan diagnostique réalisé par l'apprenant pour évaluer ses acquis avant de commencer." },
+        { word: "Ice breaker", def: "Technique courte de début de session pour briser la glace et créer une dynamique." },
+        { word: "Ludification", def: "Intégration de mécaniques de jeu dans l'apprentissage pour booster l'engagement." },
+        { word: "Facilitateur", def: "Posture du formateur qui guide le groupe sans imposer, en favorisant les échanges." },
+        { word: "Scénario pédagogique", def: "Fiche de route chronologique détaillant chaque phase d'une session." },
+        { word: "Matrice d'activités", def: "Outil de choix stratégique classant les techniques selon des critères logistiques." },
+        { word: "Implication émotionnelle", def: "Engagement affectif de l'apprenant, facilitant l'ancrage et la mémorisation." },
+        { word: "Dynamisation", def: "Action de maintenir l'énergie et l'attention du groupe par des activités variées." }
     ];
 
     const anecdotes = [
-        "Un formateur FPA n'est pas un conférencier : il parle 20% du temps et fait agir les apprenants 80% du temps !",
-        "En France, oublier de déclarer son BPF avant le 30 avril entraîne la perte immédiate du droit d'exercer en tant qu'OF.",
-        "Le mot 'Andragogie' vient du grec *andros* (homme adulte) et *agogos* (guide). Vous êtes le guide, pas le maître absolu !",
-        "Le droit de rétractation d'un particulier signant un contrat de formation à distance est de 14 jours. Ne l'oubliez jamais.",
-        "L'AFEST n'est pas juste 'apprendre sur le tas'. C'est la phase de réflexion accompagnée qui lui donne sa valeur légale."
+        "Un bon Ice breaker réduit le stress des apprenants de 30% dès les 10 premières minutes !",
+        "Le cerveau humain décroche après 20 minutes de discours passif : d'où l'importance du rythme.",
+        "Renouveler ses outils chaque année permet de ne jamais tomber dans la routine pédagogique."
     ];
 
     let gameMode = 'chrono', activeSet = [], current = 0, score = 0, timer, timeLeft, totalQ = 10, lives = 3;
     let isDarkMode = false, isDys = false, isContrast = false, isCalm = false, isMuted = false, speechRate = 1.1, globalVolume = 1.0;
 
-    let seenGlossaryTerms = new Set(JSON.parse(localStorage.getItem('paia_vocab_grand_fpa') || '[]'));
+    // Array global pour éviter le garbage collection de Chrome (coupure de voix)
+    window.activeUtterances = [];
+
+    let seenGlossaryTerms = new Set(JSON.parse(localStorage.getItem('paia_vocab_000_anim') || '[]'));
     const maxGlossary = glossaryTerms.length;
 
     // --- SÉLECTION VOIX QUALITÉ (FEMME FRANÇAISE) ---
@@ -390,7 +399,7 @@
     function toggleContrast(b) { isContrast = !isContrast; document.body.classList.toggle('high-contrast'); b.classList.toggle('selected-config', isContrast); }
     function toggleAnimations(b) { isCalm = !isCalm; document.body.classList.toggle('no-anim'); b.classList.toggle('selected-config', isCalm); }
 
-    // --- AUDIO CONTROLS (VITESSE 1.1 ET DÉLAI DE 250ms) ---
+    // --- AUDIO CONTROLS (VITESSE INITIALE 1.1) ---
     function changeSpeechRate(s) { speechRate = Math.min(1.5, Math.max(0.5, speechRate + s)); document.getElementById('ui-rate').innerText = "x" + speechRate.toFixed(1); }
     function changeVolume(v) { globalVolume = Math.min(1, Math.max(0, globalVolume + v)); if(globalVolume > 0 && isMuted) toggleMute(); }
     function toggleMute() { isMuted = !isMuted; document.getElementById('btn-mute').innerText = isMuted ? "🔇" : "🔊"; if(isMuted) window.speechSynthesis.cancel(); }
@@ -398,16 +407,18 @@
     function speak(txt) {
         if (isMuted) return;
         window.speechSynthesis.cancel();
+        window.activeUtterances = []; // Réinitialisation de la file pour éviter la coupure
 
         const englishTerms = ["Ice breaker", "Ice breakers", "Full coaching", "Flex coaching", "Career Center", "Student Success", "Training assistance", "LMS", "E-learning", "Blended learning", "Storyboarding", "Business", "Coaching", "Digital learning", "Soft skills", "Upskilling", "Feedback", "Brainstorming"];
         const regex = new RegExp(`\\b(${englishTerms.join('|')})\\b`, 'gi');
         const fragments = txt.split(regex);
 
-        // Délai de sécurité pour éviter la coupure du début
+        // Délai de sécurité de 250ms pour stabiliser le moteur TTS
         setTimeout(() => {
             fragments.forEach(frag => {
                 if (!frag || frag.trim() === "") return;
                 const utterance = new SpeechSynthesisUtterance(frag);
+                window.activeUtterances.push(utterance); // Stockage pour éviter le Garbage Collector
                 utterance.rate = speechRate;
                 utterance.volume = globalVolume;
                 utterance.pitch = 1.1;
@@ -454,8 +465,12 @@
         activeSet = [...questionBank].sort(() => Math.random() - 0.5).slice(0, totalQ);
         document.getElementById('screen-setup').classList.remove('active-screen');
         document.getElementById('screen-game').classList.add('active-screen');
-        speak("C'est parti ! Bonne chance Mathilde pour ce grand quiz.");
-        setTimeout(loadQuestion, 2000);
+
+        // Délai avant l'annonce de départ
+        setTimeout(() => {
+            speak("C'est parti ! Bonne chance Mathilde pour ce module.");
+            setTimeout(loadQuestion, 2500);
+        }, 300);
     }
 
     function loadQuestion() {
@@ -471,7 +486,10 @@
             const b = document.createElement('button'); b.className = "opt-btn"; b.innerText = (i+1) + ". " + o;
             b.onclick = () => validate(i); box.appendChild(b);
         });
+
+        // On pose la question à l'oral
         speak(d.q + ". Quelles sont vos propositions ?");
+
         if(gameMode === 'chrono' && timeLimit > 0) startTimer();
     }
 
@@ -523,18 +541,37 @@
         if(pool.length < 4) { seenGlossaryTerms.clear(); pool = glossaryTerms; }
         const selection = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
         selection.forEach(t => seenGlossaryTerms.add(t.word));
-        localStorage.setItem('paia_vocab_grand_fpa', JSON.stringify([...seenGlossaryTerms]));
+        localStorage.setItem('paia_vocab_000_anim', JSON.stringify([...seenGlossaryTerms]));
 
         listEl.innerHTML = selection.map(t => `<li><strong>${t.word} :</strong> ${t.def}</li>`).join('');
         document.getElementById('ui-glossary-progress').innerText = `${seenGlossaryTerms.size} / ${maxGlossary}`;
-        if(isManual) speak("Voici de nouveaux concepts FPA à maîtriser.");
+        if(isManual) speak("Voici de nouveaux concepts à maîtriser.");
     }
 
     function finish(lose) {
         document.getElementById('screen-game').classList.remove('active-screen');
         document.getElementById('screen-result').classList.add('active-screen');
-        document.getElementById('ui-final-score').innerText = `${score} / ${lose ? current : totalQ}`;
-        let msg = lose ? "Session interrompue. Prenez le temps de revoir vos basiques FPA." : "C'est validé ! Vous avez une excellente vue d'ensemble du métier.";
+
+        let finalScoreText = `${score} / ${lose ? current : totalQ}`;
+        document.getElementById('ui-final-score').innerText = finalScoreText;
+
+        // Logique intelligente des tranches de score
+        let msg = "";
+        if (lose) {
+            msg = "Session interrompue. Prenez le temps de revoir vos bases.";
+        } else {
+            let ratio = score / totalQ;
+            if (ratio === 1) {
+                msg = "Performance exceptionnelle ! L'animation n'a plus de secret pour vous.";
+            } else if (ratio >= 0.8) {
+                msg = "C'est validé ! Vous maîtrisez la grande majorité des concepts.";
+            } else if (ratio >= 0.5) {
+                msg = "C'est un bon début, mais il reste des notions à approfondir.";
+            } else {
+                msg = "Aïe, il va falloir revoir les bases. Ne vous découragez pas !";
+            }
+        }
+
         document.getElementById('ui-humor').innerText = msg;
         document.getElementById('ui-anecdote').innerText = anecdotes[Math.floor(Math.random()*anecdotes.length)];
         generateGlossary(false);
