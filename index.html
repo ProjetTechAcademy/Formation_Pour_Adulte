@@ -610,57 +610,290 @@
 
       const dataProgram = {
             bloc0: { id: "bloc0", themeKey: "trans", title: "0. Fondamentaux & Transverses", icon: "🧠", modules: [
-                { title: "M01 : Méthodes & Jeux", sujets: ["000_FPA_B0_M01_S001 - Présentation du module et auto positionnement", "000_FPA_B0_M01_S002 - Plus de 15 jeux pédagogiques 1", "000_FPA_B0_M01_S003 - Plus de 15 jeux pédagogiques 2", "000_FPA_B0_M01_S004 - Plus de 10 scénarios pédagogiques", "000_FPA_B0_M01_S005 - Panorama de plus de 40 techniques pédagogiques"] },
-                { title: "M02 : Classe Virtuelle", sujets: ["000_FPA_B0_M02_S001 - Les usages de la classe virtuelle", "000_FPA_B0_M02_S002 - Se lancer dans la classe virtuelle", "000_FPA_B0_M02_S003 - Préparer l'animation d'une classe virtuelle", "000_FPA_B0_M02_S004 - Animer une classe virtuelle", "000_FPA_B0_M02_S005 - Les outils de la classe virtuelle"] },
-                { title: "M03 : Pédagogie Inversée", sujets: ["000_FPA_B0_M03_S001 - Auto-positionnement pédagogie inversée", "000_FPA_B0_M03_S002 - Qu'est-ce que la pédagogie inversée", "000_FPA_B0_M03_S003 - Le Learning by Doing", "000_FPA_B0_M03_S004 - Styles d'apprentissage et rôle du formateur", "000_FPA_B0_M03_S005 - Les différents niveaux de la classe inversée", "000_FPA_B0_M03_S006 - Quelques outils pour inverser sa classe"] }
+                { title: "M01 : Méthodes & Jeux", sujets: [
+                    "000_FPA_B0_M01_S001 - Présentation du module et auto positionnement",
+                    "000_FPA_B0_M01_S002 - Plus de 15 jeux pédagogiques 1",
+                    "000_FPA_B0_M01_S003 - Plus de 15 jeux pédagogiques 2",
+                    "000_FPA_B0_M01_S004 - Plus de 10 scénarios pédagogiques",
+                    "000_FPA_B0_M01_S005 - Panorama de plus de 40 techniques pédagogiques"
+                ]},
+                { title: "M02 : Classe Virtuelle", sujets: [
+                    "000_FPA_B0_M02_S001 - Les usages de la classe virtuelle",
+                    "000_FPA_B0_M02_S002 - Se lancer dans la classe virtuelle",
+                    "000_FPA_B0_M02_S003 - Préparer l’animation d’une classe virtuelle",
+                    "000_FPA_B0_M02_S004 - Animer une classe virtuelle",
+                    "000_FPA_B0_M02_S005 - Les outils de la classe virtuelle"
+                ]},
+                { title: "M03 : Pédagogie Inversée", sujets: [
+                    "000_FPA_B0_M03_S001 - Auto-positionnement pédagogie inversée",
+                    "000_FPA_B0_M03_S002 - Qu’est-ce que la pédagogie inversée",
+                    "000_FPA_B0_M03_S003 - Le Learning by Doing",
+                    "000_FPA_B0_M03_S004 - Styles d’apprentissage et rôle du formateur",
+                    "000_FPA_B0_M03_S005 - Les différents niveaux de la classe inversée",
+                    "000_FPA_B0_M03_S006 - Quelques outils pour inverser sa classe"
+                ]}
             ]},
             bloc1: { id: "bloc1", themeKey: "bloc1", title: "1. Concevoir et préparer", icon: "🏗️", modules: [
-                { title: "M01 : Analyse demande", sujets: ["000_FPA_B1_M01_S000 - Graduate Formateur pour adultes", "001_FPA_B1_M01_S001 - L'analyse de la demande", "002_FPA_B1_M01_S002 - La demande formelle ou informelle et les besoins en formation", "003_ FPA_B1_M01_S003 - Les caractéristiques des publics"] },
-                { title: "M02 : Obligations légales", sujets: ["004_FPA_B1_M02_S001 - Le cadre légal de la formation professionnelle", "005_FPA_B1_M02_S002 - Le cadre règlementaires, législatif de l'activité de formation", "006_FPA_B1_M02_S003 - Les obligations administratives des OF", "007_FPA_B1_M02_S004 - La mise en œuvre des prestations"] },
-                { title: "M03 : Financements", sujets: ["008_FPA_B1_M03_S001 - Gouvernance et financement", "009_FPA_B1_M03_S002 - Financements public TNS", "010_FPA_B1_M03_S003 - Financements public salarié", "011_FPA_B1_M03_S004 - Financement demandeurs d'emploi", "012_FPA_B1_M03_S005 - Financement autres publics", "013_FPA_B1_M03_S006 - Le Compte Personnel de Formation"] },
-                { title: "M04 : Ingénierie", sujets: ["014_FPA_B1_M04_S001 - Les référentiels en formation", "015_FPA_B1_M04_S002 - La pédagogie des adultes", "016_FPA_B1_M04_S003 - Concepts de base ingénierie", "017_FPA_B1_M04_S004 - Structurer en blocs de compétences"] },
-                { title: "M05 : Moyens", sujets: ["018_FPA_B1_M05_S001 - Modalités pédagogiques & accompagnement", "019_FPA_B1_M05_S002 - Apprentissage, accompagnement et éval.", "020_FPA_B1_M05_S003 - L'accompagnement pédagogique"] },
-                { title: "M06 : Progression", sujets: ["021_FPA_B1_M06_S001 - Étapes formation & durées", "022_FPA_B1_M06_S002 - Rédaction progression pédagogique", "023_FPA_B1_M06_S003 - Organisation logistique", "024_FPA_B1_M06_S004 - Application - Élaborer la progression"] },
-                { title: "M07 : Techniques", sujets: ["025_FPA_B1_M07_S001 - Les méthodes pédagogiques", "026_FPA_B1_M07_S002 - Concepts, modalités et démarches", "027_FPA_B1_M07_S003 - Les techniques pédagogiques", "028_FPA_B1_M07_S004 - L'outillage pédagogique", "029_FPA_B1_M07_S005 - Stratégies analyse réflexive", "030_FPA_B1_M07_S006 - Évaluation et positionnement", "031_FPA_B1_M07_S007 - Ingénierie adaptée aux adultes"] },
-                { title: "M08 : Individualisation", sujets: ["032_FPA_B1_M08_S001 - Outils auto-formation", "033_FPA_B1_M08_S002 - Spécificités individualisées", "034_FPA_B1_M08_S003 - Alternance et AFEST"] },
-                { title: "M09 : Scénarisation", sujets: ["035_FPA_B1_M09_S001 - Théories apprentissage social", "036_FPA_B1_M09_S002 - Différents styles d'apprentissage", "037_FPA_B1_M09_S003 - Environnements et services numériques", "038_FPA_B1_M09_S004 - Obligations handicap", "039_FPA_B1_M09_S005 - Étapes clés temps de formation", "040_FPA_B1_M09_S006 - Construction scénario pédagogique"] },
-                { title: "M10 : Scénario Tutoral", sujets: ["041_FPA_B1_M10_S001 - Types d'accompagnement & outils", "042_FPA_B1_M10_S002 - Situations d'accueil & accompagnement", "043_FPA_B1_M10_S003 - Rédaction scénario tutoral"] },
-                { title: "M11 : Multimodalité", sujets: ["044_FPA_B1_M11_S001 - La scénarisation d'un parcours", "045_FPA_B1_M11_S002 - Parcours blended-learning", "046_FPA_B1_M11_S003 - Accueil entrées/sorties permanentes", "047_FPA_B1_M11_S004 - Application - Concevoir scénario multimodal"] },
-                { title: "M12 : Communication", sujets: ["048_FPA_B1_M12_S001 - Attention images & schémas", "049_FPA_B1_M12_S002 - Règles écriture consigne & graphisme", "050_FPA_B1_M12_S003 - La méthode FALC"] },
-                { title: "M13 : Conception", sujets: ["051_FPA_B1_M13_S001 - Conception support & activité", "052_FPA_B1_M13_S002 - Activité spécifique autoformation", "053_FPA_B1_M13_S003 - La digitalisation d'une formation", "054_FPA_B1_M13_S004 - La réalisation d'un storyboard", "055_FPA_B1_M13_S005 - Questionnaire de satisfaction", "056_FPA_B1_M13_S006 - Projets de conception"] },
-                { title: "M14 : Veille", sujets: ["057_FPA_B1_M14_S001 - Concept veille & méthodologie", "058_FPA_B1_M14_S002 - Dispositif de veille efficace", "059_FPA_B1_M14_S003 - Veille technologique - outils", "060_FPA_B1_M14_S004 - La synthèse des veilles", "061_FPA_B1_M14_S005 - Application - Concevoir activités"] }
+                { title: "M01 : Analyse demande", sujets: [
+                    "000_FPA_B1_M01_S000 - Graduate Formateur pour adultes",
+                    "001_FPA_B1_M01_S001 - L’analyse de la demande",
+                    "002_FPA_B1_M01_S002 - La demande formelle ou informelle et les besoins en formation",
+                    "003_ FPA_B1_M01_S003 - Les caractéristiques des publics"
+                ]},
+                { title: "M02 : Obligations légales", sujets: [
+                    "004_FPA_B1_M02_S001 - Le cadre légal de la formation professionnelle",
+                    "005_FPA_B1_M02_S002 - Le cadre règlementaires, législatif de l’activité de formation",
+                    "006_FPA_B1_M02_S003 - Les obligations administratives des organismes de formation",
+                    "007_FPA_B1_M02_S004 - La mise en œuvre des prestations"
+                ]},
+                { title: "M03 : Financements", sujets: [
+                    "008_FPA_B1_M03_S001 - La gouvernance et le financement du système de la formation professionnelle",
+                    "009_FPA_B1_M03_S002 - Les financements du public Travailleur Non Salarié",
+                    "010_FPA_B1_M03_S003 - Les financements du public salarié",
+                    "011_FPA_B1_M03_S004 - Le financement des demandeurs d’emploi",
+                    "012_FPA_B1_M03_S005 - Le financement des autres publics",
+                    "013_FPA_B1_M03_S006 - Le Compte Personnel de Formation"
+                ]},
+                { title: "M04 : Ingénierie", sujets: [
+                    "014_FPA_B1_M04_S001 - Les référentiels en formation",
+                    "015_FPA_B1_M04_S002 - La pédagogie des adultes",
+                    "016_FPA_B1_M04_S003 - Les concepts de base de l’ingénierie et le vocabulaire de formation",
+                    "017_FPA_B1_M04_S004 - Structurer sa formation en blocs de compétences"
+                ]},
+                { title: "M05 : Moyens", sujets: [
+                    "018_FPA_B1_M05_S001 - Les modalités pédagogiques et les modalités d’accompagnement",
+                    "019_FPA_B1_M05_S002 - Les situations d’apprentissage, d’accompagnement et d’évaluation",
+                    "020_FPA_B1_M05_S003 - L’accompagnement pédagogique"
+                ]},
+                { title: "M06 : Progression", sujets: [
+                    "021_FPA_B1_M06_S001 - Les étapes de la formation et de l’accompagnement et les durées associées",
+                    "022_FPA_B1_M06_S002 - La rédaction d’une progression pédagogique et d’un plan d’accompagnement",
+                    "023_FPA_B1_M06_S003 - L’organisation logistique des moyens pédagogiques",
+                    "024_FPA_B1_M06_S004 - Application - Élaborer la progression pédagogique d’une formation multimodale à partir d’une demande"
+                ]},
+                { title: "M07 : Techniques", sujets: [
+                    "025_FPA_B1_M07_S001 - Les méthodes pédagogiques",
+                    "026_FPA_B1_M07_S002 - Les concepts, modalités et démarches pédagogiques",
+                    "027_FPA_B1_M07_S003 - Les techniques pédagogiques",
+                    "028_FPA_B1_M07_S004 - L’outillage pédagogique",
+                    "029_FPA_B1_M07_S005 - Les stratégies favorisant l’analyse réflexive, les pédagogies actives et l’apprentissage par les pairs",
+                    "030_FPA_B1_M07_S006 - Les types d’évaluation et de positionnement",
+                    "031_FPA_B1_M07_S007 - Les concepts de base de l’ingénierie pédagogique adaptée aux adultes"
+                ]},
+                { title: "M08 : Individualisation", sujets: [
+                    "032_FPA_B1_M08_S001 - Les outils d’auto-formation et d’auto-évaluation",
+                    "033_FPA_B1_M08_S002 - Les spécificités des formations individualisées",
+                    "034_FPA_B1_M08_S003 - La formation en alternance et l’AFEST"
+                ]},
+                { title: "M09 : Scénarisation", sujets: [
+                    "035_FPA_B1_M09_S001 - Les théories de l’apprentissage social et des outils collaboratifs",
+                    "036_FPA_B1_M09_S002 - Les différents styles d’apprentissage",
+                    "037_FPA_B1_M09_S003 - Les environnements et services numériques mobilisables",
+                    "038_FPA_B1_M09_S004 - Les principales obligations des organismes de formation sur le handicap",
+                    "039_FPA_B1_M09_S005 - Les étapes clés structurant un temps de formation",
+                    "040_FPA_B1_M09_S006 - La construction du scénario pédagogique"
+                ]},
+                { title: "M10 : Scénario Tutoral", sujets: [
+                    "041_FPA_B1_M10_S001 - Les types d’accompagnement et des outils de suivi associés",
+                    "042_FPA_B1_M10_S002 - Les situations d’accueil et d’accompagnements des apprenants",
+                    "043_FPA_B1_M10_S003 - La rédaction d’un scénario tutoral d’accompagnement"
+                ]},
+                { title: "M11 : Multimodalité", sujets: [
+                    "044_FPA_B1_M11_S001 - La scénarisation d’un parcours",
+                    "045_FPA_B1_M11_S002 - Scénariser ses parcours avec les blended-learning",
+                    "046_FPA_B1_M11_S003 - La planification et l’accueil de nouveaux apprenants y compris dans les formations à entrées et sorties permanentes",
+                    "047_FPA_B1_M11_S004 - Application - Concevoir un scénario pédagogique et d’accompagnement en intégrant la multimodalité"
+                ]},
+                { title: "M12 : Communication", sujets: [
+                    "048_FPA_B1_M12_S001 - Capter l’attention grâce aux images et aux schémas",
+                    "049_FPA_B1_M12_S002 - Les règles d’écriture d’une consigne, de communication et de conception graphique",
+                    "050_FPA_B1_M12_S003 - La méthode FALC"
+                ]},
+                { title: "M13 : Conception", sujets: [
+                    "051_FPA_B1_M13_S001 - La conception d’un support de formation et d’une activité d’apprentissage",
+                    "052_FPA_B1_M13_S002 - La conception d’un support de formation et d’une activité d’apprentissage spécifique à l’autoformation",
+                    "053_FPA_B1_M13_S003 - La digitalisation d’une formation",
+                    "054_FPA_B1_M13_S004 - La réalisation d’un storyboard",
+                    "055_FPA_B1_M13_S005 - Comment construire un questionnaire de satisfaction ?",
+                    "056_FPA_B1_M13_S006 - Travailler sur des projets de conception d’activités d’apprentissage ou d’évaluation"
+                ]},
+                { title: "M14 : Veille", sujets: [
+                    "057_FPA_B1_M14_S001 - Le concept de veille et sa méthodologie",
+                    "058_FPA_B1_M14_S002 - Organiser un dispositif de veille efficace",
+                    "059_FPA_B1_M14_S003 - La veille technologique - sources, référents, outils et bonnes pratiques",
+                    "060_FPA_B1_M14_S004 - La synthèse des veilles",
+                    "061_FPA_B1_M14_S005 - Application - Concevoir des activités d’apprentissage et d’évaluation"
+                ]}
             ]},
             bloc2: { id: "bloc2", themeKey: "bloc2", title: "2. Animer et évaluer", icon: "🎤", modules: [
-                { title: "M01 : Facilitation", sujets: ["062_FPA_B2_M01_S001 - Posture de facilitateur", "063_FPA_B2_M01_S002 - Communication pédagogique", "064_FPA_B2_M01_S003 - Intelligence collective", "065_FPA_B2_M01_S004 - Consignes & gestion du temps", "066_FPA_B2_M01_S005 - Exploitation interventions"] },
-                { title: "M02 : Animation", sujets: ["067_FPA_B2_M02_S001 - Préparer posture & animation", "068_FPA_B2_M02_S002 - Démarrer session (ateliers)", "069_FPA_B2_M02_S003 - Impact démarrage & conclusion", "070_FPA_B2_M02_S004 - L'écoute active", "071_FPA_B2_M02_S005 - Lancement séquences", "072_FPA_B2_M02_S006 - Dynamique de groupe", "073_FPA_B2_M02_S007 - Stimuler & canaliser"] },
-                { title: "M03 : Digital", sujets: ["074_FPA_B2_M03_S001 - Le digital Learning", "075_FPA_B2_M03_S002 - Préparer classe virtuelle", "076_FPA_B2_M03_S003 - Animer classe virtuelle"] },
-                { title: "M04 : Neurosciences", sujets: ["077_FPA_B2_M04_S001 - L'individualisation", "078_FPA_B2_M04_S002 - Difficultés app. collectives", "079_FPA_B2_M04_S003 - Désamorcer conflits", "080_FPA_B2_M04_S004 - Troubles DYS", "081_FPA_B2_M04_S005 - Autres types handicaps", "082_FPA_B2_M04_S006 - Mécanismes attention/neuro", "083_FPA_B2_M04_S007 - Application - Animer formation"] },
-                { title: "M05 : Planif Eval.", sujets: ["084_FPA_B2_M05_S001 - Planification évaluation", "085_FPA_B2_M05_S002 - Le dispositif d'évaluation", "086_FPA_B2_M05_S003 - Référentiels & indicateurs", "087_FPA_B2_M05_S004 - Réglementation adaptation handicap", "088_FPA_B2_M05_S005 - Alignement pédagogique"] },
-                { title: "M06 : Outils Eval.", sujets: ["089_FPA_B2_M06_S001 - L'évaluation des acquis", "090_FPA_B2_M06_S002 - Les outils d'évaluation", "091_FPA_B2_M06_S003 - Construction outils éval."] },
-                { title: "M07 : Restitution", sujets: ["092_FPA_B2_M07_S001 - Modalités restitution", "093_FPA_B2_M07_S002 - Exploitation résultats", "094_FPA_B2_M07_S003 - Planification temps", "095_FPA_B2_M07_S004 - Bilans pédagogiques", "096_FPA_B2_M07_S005 - Application - Evaluer acquis"] },
-                { title: "M08 : Difficultés", sujets: ["097_FPA_B2_M08_S001 - Obstacles à l’apprentissage", "098_FPA_B2_M08_S002 - Remédier aux difficultés", "099_FPA_B2_M08_S003 - Indicateurs de décrochage"] },
-                { title: "M09 : Stratégies", sujets: ["100_FPA_B2_M09_S001 - Adaptation formation", "101_FPA_B2_M09_S002 - Techniques résolution problème", "102_FPA_B2_M09_S003 - Posture remédiation", "103_FPA_B2_M09_S004 - Application - Remédier difficultés"] }
+                { title: "M01 : Facilitation", sujets: [
+                    "062_FPA_B2_M01_S001 - La posture de facilitateur",
+                    "063_FPA_B2_M01_S002 - La communication pédagogique",
+                    "064_FPA_B2_M01_S003 - L’intelligence collective en formation",
+                    "065_FPA_B2_M01_S004 - Les consignes de travail, la gestion du temps",
+                    "066_FPA_B2_M01_S005 - La facilitation et l’exploitation des interventions des stagiaires"
+                ]},
+                { title: "M02 : Animation", sujets: [
+                    "067_FPA_B2_M02_S001 - Préparer sa posture professionnelle et son animation",
+                    "068_FPA_B2_M02_S002 - Démarrer une session de formation, plus de 15 ateliers de lancement",
+                    "069_FPA_B2_M02_S003 - L’impact du démarrage et de la conclusion d’une formation",
+                    "070_FPA_B2_M02_S004 - L’écoute active",
+                    "071_FPA_B2_M02_S005 - Le lancement des séquences pédagogiques",
+                    "072_FPA_B2_M02_S006 - La dynamique de groupe",
+                    "073_FPA_B2_M02_S007 - Stimuler et canaliser les participants"
+                ]},
+                { title: "M03 : Digital", sujets: [
+                    "074_FPA_B2_M03_S001 - Le digital Learning",
+                    "075_FPA_B2_M03_S002 - Préparer l’animation d’une classe virtuelle",
+                    "076_FPA_B2_M03_S003 - Animer une classe virtuelle"
+                ]},
+                { title: "M04 : Neurosciences", sujets: [
+                    "077_FPA_B2_M04_S001 - L’individualisation",
+                    "078_FPA_B2_M04_S002 - Les difficultés individuelles et collectives d’apprentissage",
+                    "079_FPA_B2_M04_S003 - Désamorcer une situation conflictuelle",
+                    "080_FPA_B2_M04_S004 - Les troubles DYS dans les apprentissages",
+                    "081_FPA_B2_M04_S005 - Les autres types de handicaps et leurs conséquences en formation",
+                    "082_FPA_B2_M04_S006 - Les mécanismes de l’attention, de la motivation et les neurosciences",
+                    "083_FPA_B2_M04_S007 - Application - Animer une formation et faciliter les apprentissages selon différentes modalités"
+                ]},
+                { title: "M05 : Planif Eval.", sujets: [
+                    "084_FPA_B2_M05_S001 - La planification et la mise en place d’une évaluation",
+                    "085_FPA_B2_M05_S002 - Le dispositif d’évaluation",
+                    "086_FPA_B2_M05_S003 - Les référentiels, les critères et indicateurs de l’évaluation",
+                    "087_FPA_B2_M05_S004 - La réglementation sur l’adaptation des évaluations pour les apprenants en situation de handicap",
+                    "088_FPA_B2_M05_S005 - L’alignement pédagogique entre les objectifs d’apprentissage, les activités et l’évaluation"
+                ]},
+                { title: "M06 : Outils Eval.", sujets: [
+                    "089_FPA_B2_M06_S001 - L’évaluation des acquis",
+                    "090_FPA_B2_M06_S002 - Les outils d’évaluation",
+                    "091_FPA_B2_M06_S003 - La construction d’activités et d’outils d’évaluation des acquis"
+                ]},
+                { title: "M07 : Restitution", sujets: [
+                    "092_FPA_B2_M07_S001 - Les modalités de restitution d’une évaluation",
+                    "093_FPA_B2_M07_S002 - L’exploitation des résultats en tant que situation d’apprentissage",
+                    "094_FPA_B2_M07_S003 - La planification des temps d’évaluation, de correction, de restitution",
+                    "095_FPA_B2_M07_S004 - La restitution de bilans pédagogiques individuels et collectifs",
+                    "096_FPA_B2_M07_S005 - Application - Evaluer les acquis de formation des apprenants"
+                ]},
+                { title: "M08 : Difficultés", sujets: [
+                    "097_FPA_B2_M08_S001 - Les difficultés et obstacles à l’apprentissage",
+                    "098_FPA_B2_M08_S002 - Remédier aux difficultés d’apprentissage",
+                    "099_FPA_B2_M08_S003 - Les indicateurs de décrochage et les stratégies de remédiation"
+                ]},
+                { title: "M09 : Stratégies", sujets: [
+                    "100_FPA_B2_M09_S001 - L’adaptation de la formation en cas de difficultés individuelles",
+                    "101_FPA_B2_M09_S002 - Les techniques de résolution de problème",
+                    "102_FPA_B2_M09_S003 - La posture à adopter pour remédier aux difficultés individuelles d’apprentissage",
+                    "103_FPA_B2_M09_S004 - Application - Remédier aux difficultés individuelles d’apprentissage"
+                ]}
             ]},
             bloc3: { id: "bloc3", themeKey: "bloc3", title: "3. Accompagner", icon: "🤝", modules: [
-                { title: "M01 : Diagnostiquer", sujets: ["104_FPA_B3_M01_S001 - Difficultés périphériques", "105_FPA_B3_M01_S002 - Démarches diagnostiques"] },
-                { title: "M02 : Entretien", sujets: ["106_FPA_B3_M02_S001 - Techniques d'entretien", "107_FPA_B3_M02_S002 - Types d'entretien", "108_FPA_B3_M02_S003 - Outils suivi & bilan", "109_FPA_B3_M02_S004 - Outils accompagnement"] },
-                { title: "M03 : Émotions", sujets: ["110_FPA_B3_M03_S001 - L'intelligence émotionnelle", "111_FPA_B3_M03_S002 - Réadaptation d'un parcours", "112_FPA_B3_M03_S003 - Acteurs de l'accompagnement", "113_FPA_B3_M03_S004 - Communication situation"] },
-                { title: "M04 : Gestion", sujets: ["114_FPA_B3_M04_S001 - Flux d'apprenants", "115_FPA_B3_M04_S002 - Administrer parcours plateforme", "116_FPA_B3_M04_S003 - Application - Accompagner parcours"] },
-                { title: "M05 : Co-construction", sujets: ["117_FPA_B3_M05_S001 - Le positionnement", "118_FPA_B3_M05_S002 - Analyse restitution positionnement", "119_FPA_B3_M05_S003 - Co-construction parcours", "120_FPA_B3_M05_S004 - Protocole individuel formation"] },
-                { title: "M06 : Accueil", sujets: ["121_FPA_B3_M06_S001 - L'accueil individuel", "122_FPA_B3_M06_S002 - Analyse réflexive & auto-évaluation", "123_FPA_B3_M06_S002 - Application - Accueil & co-construction"] },
-                { title: "M07 : Distance", sujets: ["124_FPA_B3_M07_S001 - Fonctions tutorales", "125_FPA_B3_M07_S002 - Mécanismes motivation/attention", "126_FPA_B3_M07_S003 - Leviers & freins distance", "127_FPA_B3_M07_S004 - Remédiation technique"] },
-                { title: "M08 : Communautés", sujets: ["128_FPA_B3_M08_S001 - Communautés d'apprentissage", "129_FPA_B3_M08_S002 - Écriture réseaux sociaux", "130_FPA_B3_M08_S003 - Feed-back distance", "131_FPA_B3_M08_S004 - Protection données RGPD", "132_FPA_B3_M08_S005 - Spécificités apprenants tutorat", "133_FPA_B3_M08_S006 - Application - Tutorer distance"] },
-                { title: "M09 : Alternance", sujets: ["134_FPA_B3_M09_S001 - Enjeux alternance", "135_FPA_B3_M09_S002 - Contrats apprentissage/pro", "136_FPA_B3_M09_S003 - Reconversion PRO-A"] },
-                { title: "M10 : AFEST", sujets: ["137_FPA_B3_M10_S001 - Le tutorat en entreprise (AFEST)"] },
-                { title: "M11 : Insertion", sujets: ["138_FPA_B3_M11_S001 - Insertion sociale & pro", "139_FPA_B3_M11_S002 - Problématiques & freins projet", "140_FPA_B3_M11_S003 - La démarche HANDICAP", "141_FPA_B3_M11_S004 - Suivi développement pro", "142_FPA_B3_M11_S005 - Outils numériques recherche", "143_FPA_B3_M11_S006 - Méthodes accompagnement projet"] },
-                { title: "M12 : Emploi", sujets: ["144_FPA_B3_M12_S001 - Techniques recherche d'emploi", "145_FPA_B3_M12_S002 - Mesures accès formation emploi", "146_FPA_B3_M12_S003 - Application - Accompagner dév."] }
+                { title: "M01 : Diagnostiquer", sujets: [
+                    "104_FPA_B3_M01_S001 - Les différents types de difficultés périphériques et besoin d’accompagnement",
+                    "105_FPA_B3_M01_S002 - Les démarches diagnostiques"
+                ]},
+                { title: "M02 : Entretien", sujets: [
+                    "106_FPA_B3_M02_S001 - Les techniques d’entretien",
+                    "107_FPA_B3_M02_S002 - Les différents types d’entretien",
+                    "108_FPA_B3_M02_S003 - Les outils de suivi et de bilan",
+                    "109_FPA_B3_M02_S004 - Les outils d’accompagnement pédagogique"
+                ]},
+                { title: "M03 : Émotions", sujets: [
+                    "110_FPA_B3_M03_S001 - L’intelligence émotionnelle - au coeur de l’être humain",
+                    "111_FPA_B3_M03_S002 - La réadaptation d’un parcours de formation",
+                    "112_FPA_B3_M03_S003 - Les acteurs de l’accompagnement",
+                    "113_FPA_B3_M03_S004 - La communication de la situation d’un apprenant"
+                ]},
+                { title: "M04 : Gestion", sujets: [
+                    "114_FPA_B3_M04_S001 - Les flux d’apprenants dans la gestion d’un parcours",
+                    "115_FPA_B3_M04_S002 - Administrer et suivre un parcours de formation sur une plateforme numérique",
+                    "116_FPA_B3_M04_S003 - Application - Accompagner les apprenants dans leurs parcours de formation"
+                ]},
+                { title: "M05 : Co-construction", sujets: [
+                    "117_FPA_B3_M05_S001 - Le positionnement des apprenants",
+                    "118_FPA_B3_M05_S002 - L’analyse et la restitution du résultat d’un positionnement",
+                    "119_FPA_B3_M05_S003 - La co-construction d’un parcours de formation",
+                    "120_FPA_B3_M05_S004 - La mise en place d’un protocole individuel de formation"
+                ]},
+                { title: "M06 : Accueil", sujets: [
+                    "121_FPA_B3_M06_S001 - L’accueil individuel d’un apprenant en formation",
+                    "122_FPA_B3_M06_S002 - L’analyse réflexive et l’auto-évaluation",
+                    "123_FPA_B3_M06_S003 - Application - Accueillir un apprenant en formation et co-construire un parcours"
+                ]},
+                { title: "M07 : Distance", sujets: [
+                    "124_FPA_B3_M07_S001 - Fonctions tutorales et besoins de l’apprenant en formation à distance",
+                    "125_FPA_B3_M07_S002 - Les mécanismes motivationnels et attentionnels en formation à distance",
+                    "126_FPA_B3_M07_S003 - Les leviers et freins aux apprentissages dans la relation à distance",
+                    "127_FPA_B3_M07_S004 - La remédiation aux difficultés techniques"
+                ]},
+                { title: "M08 : Communautés", sujets: [
+                    "128_FPA_B3_M08_S001 - Les principes de fonctionnement des communautés d’apprentissage",
+                    "129_FPA_B3_M08_S002 - L’écriture pour les réseaux sociaux",
+                    "130_FPA_B3_M08_S003 - Le feed-back dans une situation de formation à distance",
+                    "131_FPA_B3_M08_S004 - La protection des données personnelles - Grands principes et lois informatique et Libertés",
+                    "132_FPA_B3_M08_S005 - Les spécificités des apprenants dans le tutorat à distance",
+                    "133_FPA_B3_M08_S006 - Application - Tutorer les apprenants à distance"
+                ]},
+                { title: "M09 : Alternance", sujets: [
+                    "134_FPA_B3_M09_S001 - Les enjeux de l’alternance",
+                    "135_FPA_B3_M09_S002 - Les contrats d’apprentissage et de professionnalisation",
+                    "136_FPA_B3_M09_S003 - La reconversion ou promotion par l’alternance, le “PRO-A”"
+                ]},
+                { title: "M10 : AFEST", sujets: [
+                    "137_FPA_B3_M10_S001 - Le tutorat en entreprise"
+                ]},
+                { title: "M11 : Insertion", sujets: [
+                    "138_FPA_B3_M11_S001 - L’insertion sociale et professionnelle",
+                    "139_FPA_B3_M11_S002 - Les problématiques pouvant constituer des freins à la mise en œuvre du projet",
+                    "140_FPA_B3_M11_S003 - La démarche HANDICAP",
+                    "141_FPA_B3_M11_S004 - Le suivi dans le développement professionnel des apprenants",
+                    "142_FPA_B3_M11_S005 - Les outils numériques d’accompagnement au projet professionnel et de recherche d’emploi",
+                    "143_FPA_B3_M11_S006 - Les méthodes d’accompagnement au projet professionnel"
+                ]},
+                { title: "M12 : Emploi", sujets: [
+                    "144_FPA_B3_M12_S001 - Les techniques de recherche d’emploi",
+                    "145_FPA_B3_M12_S002 - Les mesures d’accès à la formation et à l’emploi",
+                    "146_FPA_B3_M12_S003 - Application - Accompagner le développement des apprenants"
+                ]}
             ]},
             bloc4: { id: "bloc4", themeKey: "bloc4", title: "4. Qualité et RSE", icon: "🔎", modules: [
-                { title: "M01 : Réglementation", sujets: ["147_FPA_B4_M01_S001 - Cadre légale activité formation", "148_FPA_B4_M01_S002 - La démarche Qualiopi", "149_FPA_B4_M01_S003 - Réglementations Qualiopi", "150_FPA_B4_M01_S004 - Bilan pédagogique financier"] },
-                { title: "M02 : Prévention", sujets: ["151_FPA_B4_M02_S001 - Égalité professionnelle", "152_FPA_B4_M02_S002 - Démarche prévention activité", "153_FPA_B4_M02_S003 - Risques activité physique", "154_FPA_B4_M02_S004 - Risques professionnels", "155_FPA_B4_M02_S005 - La démarche ergonomique", "156_FPA_B4_M02_S006 - La charge mentale", "157_FPA_B4_M02_S007 - RPS & QVT", "158_FPA_B4_M02_S008 - Réglementation hygiène/sécurité", "159_FPA_B4_M02_S009 - Principes & enjeux RSE", "160_FPA_B4_M02_S010 - Lutte discrimination", "161_FPA_B4_M02_S011 - Application - Respecter réglementation"] },
-                { title: "M03 : Veille", sujets: ["162_FPA_B4_M03_S001 - La veille professionnelle", "163_FPA_B4_M03_S002 - Cadre légal diffusion ressources", "164_FPA_B4_M03_S003 - Méthodologies recherche & capitalisation", "165_FPA_B4_M03_S004 - Outils surveillance & recherche"] },
-                { title: "M04 : Actualiser", sujets: ["166_FPA_B4_M04_S001 - Code propriété intellectuelle", "167_FPA_B4_M04_S002 - Actualiser ingénierie & supports", "168_FPA_B4_M04_S003 - Application - Faire respecter réglementation"] },
-                { title: "M05 : Analyse pratique", sujets: ["169_FPA_B4_M05_S001 - L'analyse de pratique", "170_FPA_B4_M05_S002 - L'analyse réflexive", "171_FPA_B4_M05_S003 - Axes d'amélioration parcours", "172_FPA_B4_M05_S004 - Analyser pratiques formation", "173_FPA_B4_M05_S005 - Application - Analyser pratiques pro"] }
+                { title: "M01 : Réglementation", sujets: [
+                    "147_FPA_B4_M01_S001 - Le cadre légale de l’activité de formation",
+                    "148_FPA_B4_M01_S002 - La démarche Qualiopi",
+                    "149_FPA_B4_M01_S003 - Les réglementations Qualiopi",
+                    "150_FPA_B4_M01_S004 - Le bilan pédagogique et financier"
+                ]},
+                { title: "M02 : Prévention", sujets: [
+                    "151_FPA_B4_M02_S001 - Les principes de l’égalité professionnelle appliquée à la formation professionnelle",
+                    "152_FPA_B4_M02_S002 - La démarche de prévention appliquée à une activité de travail",
+                    "153_FPA_B4_M02_S003 - Les risques liés à l’activité physique du métier",
+                    "154_FPA_B4_M02_S004 - Les risques professionnels dans l’activité de travail",
+                    "155_FPA_B4_M02_S005 - La démarche ergonomique",
+                    "156_FPA_B4_M02_S006 - La charge mentale",
+                    "157_FPA_B4_M02_S007 - Les risques psychosociaux et la qualité de vie au travail",
+                    "158_FPA_B4_M02_S008 - Les réglementation sur l’hygiène, la santé et la sécurité de la FP",
+                    "159_FPA_B4_M02_S009 - Les principes et enjeux de la RSE en formation",
+                    "160_FPA_B4_M02_S010 - La lutte contre la discrimination en formation",
+                    "161_FPA_B4_M02_S011 - Application - Respecter et faire respecter la réglementation en vigueur en formation et dans son domaine de spécialité"
+                ]},
+                { title: "M03 : Veille", sujets: [
+                    "162_FPA_B4_M03_S001 - La veille professionnelle",
+                    "163_FPA_B4_M03_S002 - Le cadre légal autour de la diffusion de ressources",
+                    "164_FPA_B4_M03_S003 - Méthodologies de recherche, de capitalisation d’informations et d’organisation de la veille",
+                    "165_FPA_B4_M03_S004 - Les outils de surveillance et de recherche"
+                ]},
+                { title: "M04 : Actualiser", sujets: [
+                    "166_FPA_B4_M04_S001 - Le Code de la propriété intellectuelle",
+                    "167_FPA_B4_M04_S002 - Actualiser son ingénierie, ses pratiques et ses supports de formation",
+                    "168_FPA_B4_M04_S003 - Application - Respecter et faire respecter la réglementation en vigueur en formation et dans sa spécialité"
+                ]},
+                { title: "M05 : Analyse pratique", sujets: [
+                    "169_FPA_B4_M05_S001 - L’analyse de pratique",
+                    "170_FPA_B4_M05_S002 - L’analyse réflexive",
+                    "171_FPA_B4_M05_S003 - Les axes d’amélioration du parcours",
+                    "172_FPA_B4_M05_S004 - Analyser ses pratiques de formation",
+                    "173_FPA_B4_M05_S005 - Application - Analyser ses pratiques professionnelles"
+                ]}
             ]}
         };
 
@@ -1382,7 +1615,7 @@
               document.getElementById('daily-revisions-list').innerHTML = html;
               document.getElementById('dailyRevisionsModal').style.display = 'flex';
               setTimeout(() => {
-                  document.getElementById('dailyRevisionsContent').classList.remove('scale-95');
+                  document.getElementById('dailyRevisionsContent').classList.remove('scale-100');
                   document.getElementById('dailyRevisionsContent').classList.add('scale-100');
               }, 10);
           }
@@ -1613,16 +1846,41 @@
         window.speechSynthesis.speak(u);
       }
 
+      // FONCTION D'EXTRACTION PUISSANTE DRIVE
+      function convertDriveLink(url) {
+          if (!url) return "";
+
+          let fileId = "";
+
+          // Cas 1: open?id=
+          if (url.includes("open?id=")) {
+              fileId = url.split("open?id=")[1].split("&")[0];
+          }
+          // Cas 2: /file/d/
+          else if (url.includes("/file/d/")) {
+              fileId = url.split("/file/d/")[1].split("/")[0];
+          }
+
+          // Cas 3: déjà preview (on laisse tel quel)
+          if (url.includes("/preview")) {
+              return url;
+          }
+
+          if (fileId) {
+              return `https://drive.google.com/file/d/${fileId}/preview`;
+          }
+
+          return url;
+      }
+
       function normalizeUrl(url) {
         if (!url) return "";
-        if (url.includes("open?id=")) {
-          const id = url.split("open?id=")[1].split("&")[0];
-          return `https://drive.google.com/file/d/${id}/preview`;
+
+        // Appliquer la correction Google Drive
+        if (url.includes("drive.google.com")) {
+            return convertDriveLink(url);
         }
-        if (url.includes("drive.google.com/file/d/")) {
-          const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-          if (match) return `https://drive.google.com/file/d/${match[1]}/preview`;
-        }
+
         if (url.includes("youtube.com/watch")) return url.replace("watch?v=", "embed/");
         if (url.includes("youtu.be/")) {
           const id = url.split("youtu.be/")[1];
@@ -1712,6 +1970,7 @@
                       src="${finalUrl}"
                       class="absolute top-0 left-0 w-full h-full border-none z-10"
                       sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                      allow="autoplay"
                       allowfullscreen
                   ></iframe>
               </div>
@@ -1874,6 +2133,32 @@
           container.classList.remove('hidden');
       };
 
+      function getActionLink(url, titre, type, emoji, id) {
+          if (!url || url.trim() === "") {
+             return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
+          }
+
+          let finalUrl = url;
+          // Utilisation propre de convertDriveLink pour TOUS les liens Google Drive
+          if (finalUrl.includes("drive.google.com")) {
+              finalUrl = convertDriveLink(finalUrl);
+          }
+
+          const safeUrl = finalUrl.replace(/'/g, "\\'");
+          const safeTitre = (titre || "").replace(/'/g, "\\'");
+          const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
+
+          if (type === 'external') {
+              return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
+          }
+
+          if (type === 'embed-pdf' && !isUnlocked) {
+              return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
+          }
+
+          return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"` };
+      }
+
       window.handleProtectedClick = function(url, id, titre) {
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
           if (isUnlocked) {
@@ -1980,11 +2265,11 @@
           }
       };
 
-      function saveRevisionsLocally(moduleId, titre, datesArray) {
+      function saveRevisionsLocally(moduleId, titre, days) {
            let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
            savedRevisions = savedRevisions.filter(r => r.moduleId !== moduleId);
 
-           datesArray.forEach(d => {
+           days.forEach(d => {
                const yyyy = d.date.getFullYear();
                const mm = String(d.date.getMonth() + 1).padStart(2, '0');
                const dd = String(d.date.getDate()).padStart(2, '0');
@@ -2002,37 +2287,6 @@
                });
            });
            localStorage.setItem('paia_revisions', JSON.stringify(savedRevisions));
-      }
-
-      function getActionLink(url, titre, type, emoji, id) {
-          if (!url || url.trim() === "") {
-             return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
-          }
-
-          let finalUrl = url;
-          if (finalUrl.includes("drive.google.com")) {
-              let match = finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-              if (match && match[1]) {
-                  finalUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
-              } else {
-                  finalUrl = finalUrl.replace("/view", "/preview").replace("?usp=sharing", "");
-                  if (!finalUrl.includes("/preview")) finalUrl += "/preview";
-              }
-          }
-
-          const safeUrl = finalUrl.replace(/'/g, "\\'");
-          const safeTitre = (titre || "").replace(/'/g, "\\'");
-          const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
-
-          if (type === 'external') {
-              return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
-          }
-
-          if (type === 'embed-pdf' && !isUnlocked) {
-              return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
-          }
-
-          return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"` };
       }
 
       function renderSubTabs() {
@@ -2053,22 +2307,6 @@
           btn.onclick = () => { currentMod = m.id; renderSubTabs(); afficherModules(document.getElementById("searchInput").value, false); };
           sub.appendChild(btn);
         });
-      }
-
-      function shootFireworks() {
-        var duration = 4 * 1000;
-        var animationEnd = Date.now() + duration;
-        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9000, colors: ['#3b82f6', '#1e3a8a', '#ffffff', '#ffb900'] };
-
-        function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-
-        var interval = setInterval(function() {
-          var timeLeft = animationEnd - Date.now();
-          if (timeLeft <= 0) { return clearInterval(interval); }
-          var particleCount = 50 * (timeLeft / duration);
-          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-        }, 250);
       }
 
       function afficherModules(filtre = "", anim = true, openTimelineId = null) {
@@ -2289,17 +2527,15 @@
 
           const card = document.createElement("div");
           card.className = `card-module p-6 rounded-2xl mb-3 ${isFull ? "border-blue-300 bg-blue-50/50" : ""} ${anim ? "card-animate" : ""}`;
-          if (anim) card.style.animationDelay = `${(cardIdx + 1) * 0.03}s`; // +1 to account for accordion
+          if (anim) card.style.animationDelay = `${(cardIdx + 1) * 0.03}s`;
 
           card.innerHTML = `
             <div class="flex flex-col relative z-10">
                 <div class="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2">
-                    <div>
-                        <div class="flex items-center gap-3 mb-1">
-                            <span class="text-black font-black text-2xl pr-2 opacity-80">${id.split("_")[0]}</span>
-                            <h3 class="font-bold text-lg text-[#0F2C48] leading-tight">${titre}</h3>
-                        </div>
-                        <p class="text-[10px] text-[#B4792A] font-bold uppercase tracking-widest opacity-80">${id}</p>
+                    <div class="flex flex-col md:flex-row md:items-center gap-2">
+                        <span class="font-black text-xl text-[#B4792A] uppercase tracking-tight">${id}</span>
+                        <span class="text-gray-300 hidden md:block">|</span>
+                        <h3 class="font-bold text-lg text-[#0F2C48] leading-tight">${titre}</h3>
                     </div>
                 </div>
 
@@ -2317,7 +2553,6 @@
           cardIdx++;
         });
 
-        // Appliquer les styles après injection pour l'accordéon si présent
         if (evalKey && dataEvaluations[evalKey] && currentMod === "ALL") {
             const evalData = dataEvaluations[evalKey];
             evalData.items.forEach(item => applyEvalStyles(item.id));
