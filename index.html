@@ -89,15 +89,17 @@
       body.high-contrast .bg-animated-blob { display: none; }
       body.high-contrast header { background-color: #1a1a1a !important; border-bottom: 2px solid #ffffff !important; }
 
+      /* --- DESIGN MENU HAUT (Couleurs peps + fil bleu marine) --- */
       .btn-nav-app {
-        width: 68px; height: 68px; border-radius: 20px; display: flex; align-items: center; justify-content: center;
-        font-size: 2rem; color: white !important; position: relative; text-decoration: none;
+        width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center;
+        font-size: 1.6rem; color: white !important; position: relative; text-decoration: none;
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15), inset 0 2px 2px rgba(255, 255, 255, 0.5), inset 0 -2px 4px rgba(0, 0, 0, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.5); z-index: 1;
+        border: 2px solid var(--title-blue); /* Le fameux fil bleu marine ! */
+        z-index: 1;
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
       .btn-nav-app::before {
-        content: ''; position: absolute; width: 44px; height: 44px;
+        content: ''; position: absolute; width: 38px; height: 38px;
         background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
         border-radius: 50%; z-index: -1; pointer-events: none;
       }
@@ -311,22 +313,26 @@
         </div>
 
         <div class="flex items-center gap-4">
-          <div class="flex justify-center items-center gap-4 hidden md:flex">
+          <div class="flex justify-center items-center gap-3 hidden md:flex">
             <a href="Card.html" target="_blank" class="btn-nav-app btn-contact group">
-              <span>✉️</span>
+              <i class="fa-solid fa-envelope-open-text"></i>
               <span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Contact</span>
             </a>
             <a href="https://app.studi.fr/v3/blog" target="_blank" class="btn-nav-app btn-news group">
-              <span>📰</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Newsletter</span>
+              <i class="fa-solid fa-newspaper"></i>
+              <span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Newsletter</span>
             </a>
             <button onclick="filtrerBloc('CAL')" class="btn-nav-app btn-planning group">
-              <span>⏰</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Planning</span>
+              <i class="fa-solid fa-calendar-days"></i>
+              <span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Planning</span>
             </button>
             <button onclick="filtrerBloc('CERTIF')" class="btn-nav-app btn-certif-nav group">
-              <span>🏆</span><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Certification</span>
+              <i class="fa-solid fa-award"></i>
+              <span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Certification</span>
             </button>
             <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="btn-nav-app btn-teams group">
-              <i class="fab fa-microsoft text-[1.8rem]"></i><span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Communauté</span>
+              <i class="fa-brands fa-microsoft"></i>
+              <span class="absolute top-full mt-3 left-1/2 -translate-x-1/2 bg-[#0F2C48] text-white px-3 py-1 rounded-lg text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-md z-50">Communauté</span>
             </a>
           </div>
         </div>
@@ -1054,7 +1060,6 @@
                 });
             }
             saveState();
-            // Rafraîchir l'affichage du livrable spécifique pour mettre à jour le message d'attente
             applyEvalStyles(evalId);
       };
 
@@ -1066,7 +1071,6 @@
           const isDossier = item.id.includes('_dt_') || item.id.includes('_dp_');
           const dateLabel = isDossier || isEcf ? "Dépôt" : "Réa.";
 
-          // Watcher Retour Intelligent
           const status = progressState.evaluations.statuses[item.id];
           let watcherHtml = '';
           if (status === 'envoye' && retVal) {
@@ -1236,7 +1240,6 @@
                 let badgeHtml = '';
                 let buttonsHtml = '';
 
-                // On détecte si on est dans l'accordéon (compact) ou l'onglet certif
                 let isAccordion = row.querySelector('.main-actions').parentElement.classList.contains('w-[140px]');
 
                 if (isCompleted) {
@@ -1655,7 +1658,7 @@
               document.getElementById('daily-revisions-list').innerHTML = html;
               document.getElementById('dailyRevisionsModal').style.display = 'flex';
               setTimeout(() => {
-                  document.getElementById('dailyRevisionsContent').classList.remove('scale-100');
+                  document.getElementById('dailyRevisionsContent').classList.remove('scale-95');
                   document.getElementById('dailyRevisionsContent').classList.add('scale-100');
               }, 10);
           }
@@ -1845,7 +1848,7 @@
 
       window.closeDailyRevisionsModal = function() {
           document.getElementById('dailyRevisionsContent').classList.remove('scale-100');
-          document.getElementById('dailyRevisionsContent').classList.add('scale-100');
+          document.getElementById('dailyRevisionsContent').classList.add('scale-95');
           setTimeout(() => { document.getElementById('dailyRevisionsModal').style.display = 'none'; }, 200);
       };
 
@@ -1929,6 +1932,17 @@
         return url;
       }
 
+      function getDriveThumbnailUrl(url) {
+          if (!url) return 'https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg';
+          let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+          let id = match ? match[1] : null;
+          if (!id && url.includes("open?id=")) {
+              id = url.split("open?id=")[1].split("&")[0];
+          }
+          if (id) return `https://drive.google.com/thumbnail?id=${id}&sz=w400`;
+          return 'https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg';
+      }
+
       function buildMiniPlayer(url, originalUrl, type, titre) {
         const finalUrl = normalizeUrl(url);
         let containerClass = "w-full aspect-video";
@@ -1979,6 +1993,18 @@
             iconEmoji = "🧠";
             titleText = "Carte Mentale - " + titre;
             pulseColor = "bg-[#ffb900]";
+        } else if (type === 'embed-video') {
+            containerClass = "w-full aspect-video";
+            headerBg = "bg-red-100/40";
+            iconEmoji = "🎬";
+            titleText = "Vidéo - " + titre;
+            pulseColor = "bg-[#e52d27]";
+        } else if (type === 'embed-quiz') {
+            containerClass = "w-full h-[65vh] min-h-[500px]";
+            headerBg = "bg-yellow-100/40";
+            iconEmoji = "⚡";
+            titleText = "Quiz - " + titre;
+            pulseColor = "bg-[#b4792a]";
         }
 
         const iframeId = 'iframe-' + Math.random().toString(36).substr(2, 9);
@@ -2070,9 +2096,14 @@
 
           let contentHtml = '';
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
-          const comboEligibleTypes = ['embed-audio', 'embed-presentation', 'embed-image', 'embed-doc', 'embed-glo', 'embed-map', 'embed-pdf'];
 
-          if (comboEligibleTypes.includes(type)) {
+          // ---------------------------------------------------------
+          // LOGIQUE MISE À JOUR :
+          // Seul l'audio ouvre l'espace de travail combiné interactif.
+          // Les autres boutons (Slide, Infog, Map, Lexique...) ouvrent
+          // un encart unique direct (mini player).
+          // ---------------------------------------------------------
+          if (type === 'embed-audio') {
               const itemObj = database.find(d => d.Code === id);
               const fullItemName = `${id} - ${titre}`;
               const safeFileName = encodeURIComponent(fullItemName) + '.html';
@@ -2086,37 +2117,19 @@
                   let pdfUrl = itemObj.Cours;
                   let slideUrl = itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null;
 
-                  let hasAudio = audioUrl && audioUrl.trim() !== '';
-                  let hasInfog = infogUrl && infogUrl.trim() !== '';
-                  let hasSlide = slideUrl && slideUrl.trim() !== '';
-                  let hasExcel = excelUrl && excelUrl.trim() !== '';
-                  let hasPdf = pdfUrl && pdfUrl.trim() !== '';
-
                   let visuals = [];
-                  if (hasSlide) visuals.push({ id: 'slide', url: slideUrl, type: 'embed-presentation', icon: '📽️', label: 'Diaporama' });
-                  if (hasInfog) visuals.push({ id: 'infog', url: infogUrl, type: 'embed-image', icon: '🖼️', label: 'Infographie' });
-                  if (hasExcel) visuals.push({ id: 'excel', url: excelUrl, type: 'embed-doc', icon: '📊', label: 'Tableur Excel' });
+                  if (slideUrl && slideUrl.trim() !== '') visuals.push({ id: 'slide', url: slideUrl, type: 'embed-presentation', icon: '📽️', label: 'Diaporama' });
+                  if (infogUrl && infogUrl.trim() !== '') visuals.push({ id: 'infog', url: infogUrl, type: 'embed-image', icon: '🖼️', label: 'Infographie' });
+                  if (excelUrl && excelUrl.trim() !== '') visuals.push({ id: 'excel', url: excelUrl, type: 'embed-doc', icon: '📊', label: 'Tableur Excel' });
                   visuals.push({ id: 'map', url: mapUrl, type: 'embed-map', icon: '🧠', label: 'Carte Mentale' });
                   visuals.push({ id: 'glo', url: gloUrl, type: 'embed-glo', icon: '📚', label: 'Lexique' });
 
-                  if (hasPdf && (isUnlocked || type === 'embed-pdf')) {
+                  if (pdfUrl && pdfUrl.trim() !== '' && isUnlocked) {
                       visuals.push({ id: 'pdf', url: pdfUrl, type: 'embed-pdf', icon: '📄', label: 'Document PDF' });
                   }
 
-                  let activeVisualId = null;
-                  if (type === 'embed-presentation') activeVisualId = 'slide';
-                  else if (type === 'embed-image') activeVisualId = 'infog';
-                  else if (type === 'embed-doc') activeVisualId = 'excel';
-                  else if (type === 'embed-glo') activeVisualId = 'glo';
-                  else if (type === 'embed-map') activeVisualId = 'map';
-                  else if (type === 'embed-pdf') activeVisualId = 'pdf';
-                  else if (type === 'embed-audio' && visuals.length > 0) activeVisualId = visuals[0].id;
-
-                  let comboHtml = '';
-
-                  if (hasAudio) {
-                      comboHtml += buildMiniPlayer(audioUrl, audioUrl, 'embed-audio', titre);
-                  }
+                  let activeVisualId = visuals.length > 0 ? visuals[0].id : null;
+                  let comboHtml = buildMiniPlayer(url, url, 'embed-audio', titre);
 
                   if (visuals.length > 0) {
                       comboHtml += `
@@ -2152,12 +2165,11 @@
                           </div>`;
                       });
                       comboHtml += `</div></div></div>`;
-                  } else if (!hasAudio) {
-                     comboHtml += buildMiniPlayer(url, url, type, titre);
                   }
                   contentHtml = comboHtml;
               }
           } else if (type.startsWith("embed-")) {
+              // Tous les autres outils ouvrent un visualiseur simple (Video, Excel, Infographie, Quiz, etc.)
               contentHtml = buildMiniPlayer(url, url, type, titre);
           } else {
               contentHtml = `
@@ -2432,7 +2444,7 @@
           const resExternes = [
             { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, type: "embed-glo", color: "#4a5568" },
             { id: "map", em: "🧠", n: "Carte Mentale", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "embed-map", color: "#ffb900" },
-            { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "external", color: "#b4792a" },
+            { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "embed-quiz", color: "#b4792a" },
           ];
 
           let htmlOff = resOfficiels.map((r) => {
@@ -2577,6 +2589,85 @@
                   </div>
               </div>`;
 
+          // -----------------------------------------------------
+          // NOUVEAUTÉ : BLOC APERÇU MINIATURE (INFOGRAPHIE / SLIDE)
+          // -----------------------------------------------------
+          let previewBlock = '';
+          let audioUrl = itemObj.Audio;
+          let infogUrl = itemObj.Infographie;
+          let slideUrl = itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null;
+          let hasAudio = audioUrl && audioUrl.trim() !== '';
+
+          let visualUrlForThumb = infogUrl && infogUrl.trim() !== '' ? infogUrl : null;
+          let visualType = 'embed-image';
+          let visualLabel = 'Infographie';
+
+          if (!visualUrlForThumb && slideUrl && slideUrl.trim() !== '') {
+              visualUrlForThumb = slideUrl;
+              visualType = 'embed-presentation';
+              visualLabel = 'Diaporama';
+          }
+
+          if (visualUrlForThumb) {
+              let thumbUrl = getDriveThumbnailUrl(visualUrlForThumb);
+              let linkProps = getActionLink(visualUrlForThumb, titre, visualType, '🖼️', id);
+
+              let audioInsideHtml = '';
+              if (hasAudio) {
+                  audioInsideHtml = `
+                      <button class="absolute top-2 right-2 w-7 h-7 rounded-full bg-indigo-500 text-white flex items-center justify-center backdrop-blur-md shadow-lg border border-white/20 hover:scale-110 hover:bg-indigo-400 transition-all z-20" title="Écouter le podcast" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
+                          <i class="fas fa-play text-[10px] ml-0.5"></i>
+                      </button>
+                  `;
+              }
+
+              previewBlock = `
+              <div class="flex-grow min-w-[160px] max-w-[300px] shrink-0 ml-auto h-full">
+                  <div class="w-full h-full min-h-[64px] rounded-xl overflow-hidden shadow-sm border border-[#0F2C48]/10 group relative cursor-pointer bg-white" ${linkProps.action}>
+                      <div class="absolute inset-0 bg-gray-100 flex items-center justify-center">
+                          <i class="fas fa-image text-gray-300 text-2xl"></i>
+                      </div>
+                      <img src="${thumbUrl}" alt="Aperçu" class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 z-10" onerror="this.style.opacity='0'">
+                      <div class="absolute inset-0 bg-gradient-to-t from-[#0F2C48]/90 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity z-10"></div>
+
+                      ${audioInsideHtml}
+
+                      <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between z-20">
+                          <div class="flex flex-col">
+                              <span class="text-[7px] text-[#FFB900] font-black uppercase tracking-widest drop-shadow-md mb-0.5">Aperçu rapide</span>
+                              <span class="text-[10px] font-black uppercase text-white drop-shadow-md truncate">
+                                  ${visualLabel}
+                              </span>
+                          </div>
+                          <div class="w-5 h-5 rounded-full bg-white/20 backdrop-blur flex items-center justify-center border border-white/30 text-white group-hover:bg-white group-hover:text-[#0F2C48] transition-colors">
+                              <i class="fas fa-search-plus text-[9px]"></i>
+                          </div>
+                      </div>
+                  </div>
+              </div>`;
+          } else {
+              let audioInsideHtml = '';
+              if (hasAudio) {
+                  audioInsideHtml = `
+                      <button class="w-9 h-9 rounded-full bg-indigo-50 text-indigo-500 flex items-center justify-center shadow-sm border border-indigo-100 hover:scale-110 hover:bg-indigo-500 hover:text-white transition-all z-20" title="Écouter le podcast" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
+                          <i class="fas fa-play text-sm ml-0.5"></i>
+                      </button>
+                      <span class="text-[8px] font-black text-indigo-400 uppercase tracking-widest mt-2">Podcast Audio</span>
+                  `;
+              }
+
+              previewBlock = `
+              <div class="flex-grow min-w-[160px] max-w-[300px] shrink-0 ml-auto h-full">
+                  <div class="w-full h-full min-h-[64px] rounded-xl border border-dashed border-gray-300 bg-gray-50 flex flex-col items-center justify-center p-2">
+                      ${hasAudio ? audioInsideHtml : `
+                      <i class="fas fa-image mb-1 text-gray-300 text-lg"></i>
+                      <span class="text-[8px] font-bold uppercase tracking-widest text-gray-400">Visuel à venir</span>
+                      `}
+                  </div>
+              </div>`;
+          }
+          // -----------------------------------------------------
+
           const card = document.createElement("div");
           card.className = `card-module p-6 rounded-2xl mb-3 ${isFull ? "border-blue-300 bg-blue-50/50" : ""} ${anim ? "card-animate" : ""}`;
           if (anim) card.style.animationDelay = `${(cardIdx + 1) * 0.03}s`;
@@ -2597,6 +2688,7 @@
                     ${extBlock}
                     <div class="w-[2px] h-8 self-center bg-gray-200 rounded-full shrink-0 mx-1 hidden md:block"></div>
                     ${calBlock}
+                    ${previewBlock}
                 </div>
             </div>
             <div id="inline-media-${id}" class="hidden w-full flex-col relative z-0 mt-4" data-current-url=""></div>
