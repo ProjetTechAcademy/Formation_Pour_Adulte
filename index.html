@@ -199,13 +199,13 @@
 
       /* Ressources Tracker Badges */
       .btn-resource {
-        width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-        font-size: 1.2rem; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
+        width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+        font-size: 1rem; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), inset 0 2px 2px rgba(255, 255, 255, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.4); z-index: 1; text-decoration: none;
       }
       .btn-resource::before {
-        content: ''; position: absolute; width: 26px; height: 26px;
+        content: ''; position: absolute; width: 22px; height: 22px;
         background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
         border-radius: 50%; z-index: -1; pointer-events: none;
       }
@@ -1656,11 +1656,12 @@
         if (!itemObj) return;
 
         const safeFileName = encodeURIComponent(`${id} - ${itemObj.Titre}`) + '.html';
-        const resMap = { audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie, slide: itemObj.Slides, video: itemObj.Vidéo, glo: `Glossaire/${safeFileName}`, map: `Carte Mentale/${safeFileName}`, quiz: `Quiz/${safeFileName}` };
+        const resMap = { audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie, slide: itemObj.Slides, video: itemObj.Vidéo, notebook: itemObj.NoteBook_LM, glo: `Glossaire/${safeFileName}`, map: `Carte Mentale/${safeFileName}`, quiz: `Quiz/${safeFileName}` };
 
         let checkableRids = [];
         if (groupType === 'core') checkableRids = ["audio", "excel", "infog", "slide", "video"];
         if (groupType === 'ext') checkableRids = ["glo", "map", "quiz"];
+        if (groupType === 'note') checkableRids = ["notebook"];
 
         const validRids = checkableRids.filter(r => resMap[r] && resMap[r].trim() !== '');
         if (validRids.length === 0) return;
@@ -1670,7 +1671,7 @@
         validRids.forEach(r => { progressRes[`${id}-${r}`] = !isGroupAll; });
         localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
 
-        const allCheckable = ["audio", "excel", "infog", "slide", "video", "glo", "map", "quiz"];
+        const allCheckable = ["audio", "excel", "infog", "slide", "video", "notebook", "glo", "map", "quiz"];
         const allValidRids = allCheckable.filter(r => resMap[r] && resMap[r].trim() !== '');
         const isModuleAll = allValidRids.every(r => progressRes[`${id}-${r}`]);
 
@@ -1701,6 +1702,48 @@
 
         const searchInputEl = document.getElementById("searchInput");
         afficherModules(searchInputEl ? searchInputEl.value : "", false);
+      };
+
+      window.toggleRes = function(id, resId, em, color) {
+          progressRes[`${id}-${resId}`] = !progressRes[`${id}-${resId}`];
+          localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
+
+          const itemObj = database.find(d => d.Code === id);
+          if (itemObj) {
+              const allCheckable = ["audio", "excel", "infog", "slide", "video", "notebook", "glo", "map", "quiz"];
+              const safeFileName = encodeURIComponent(`${id} - ${itemObj.Titre}`) + '.html';
+              const resMap = { audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie, slide: itemObj.Slides, video: itemObj.Vidéo, notebook: itemObj.NoteBook_LM, glo: `Glossaire/${safeFileName}`, map: `Carte Mentale/${safeFileName}`, quiz: `Quiz/${safeFileName}` };
+
+              const allValidRids = allCheckable.filter(r => resMap[r] && resMap[r].trim() !== '');
+              const isModuleAll = allValidRids.every(r => progressRes[`${id}-${r}`]);
+
+              let blocKey = "bloc0";
+              if(id.includes("_B1_")) blocKey = "bloc1";
+              else if(id.includes("_B2_")) blocKey = "bloc2";
+              else if(id.includes("_B3_")) blocKey = "bloc3";
+              else if(id.includes("_B4_")) blocKey = "bloc4";
+
+              if (isModuleAll) {
+                  if (!progressState[blocKey].completed.has(id)) {
+                      progressState[blocKey].completed.add(id);
+                      if (typeof confetti === 'function') confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
+                      const toastHtml = `
+                          <div class="flex flex-col gap-2 w-[300px]">
+                            <div class="text-sm font-black uppercase text-blue-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
+                            <div class="text-[12px] font-bold text-[#0F2C48] leading-snug">Félicitations ! Tu viens de franchir une étape majeure. La persévérance est la clé de la réussite.</div>
+                          </div>
+                      `;
+                      afficherToastCustom(toastHtml, '#3b82f6');
+                  }
+              } else {
+                  progressState[blocKey].completed.delete(id);
+              }
+              saveState();
+              updateProgressUI();
+          }
+
+          const searchInputEl = document.getElementById("searchInput");
+          afficherModules(searchInputEl ? searchInputEl.value : "", false);
       };
 
       function afficherToastCustom(htmlContent, borderColorHex) {
@@ -2639,24 +2682,30 @@
           if (currentBloc !== "ALL" && !id.includes(`_${currentBloc}_`)) return;
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
+          // MODIFICATION ICI : NoteBook_LM est retiré de resOfficiels
           const resOfficiels = [
             { id: "pdf", em: "📄", n: "Cours Officiel PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
-            { id: "lien", em: "🎓", n: "Plateforme Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" },
-            { id: "notebook", em: "📓", n: "NoteBook_LM", b: "bg-notebook", url: itemObj.NoteBook_LM, type: "external", color: "#d946ef" }
+            { id: "lien", em: "🎓", n: "Plateforme Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" }
           ];
 
+          // MODIFICATION ICI : Création d'un bloc distinct pour le NoteBook (retiré de resCore)
           const resCore = [
             { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio", color: "#667eea" },
             { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel, type: "embed-doc", color: "#2563eb" },
             { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie, type: "embed-image", color: "#e81123" },
             { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null, type: "embed-presentation", color: "#d83b01" },
-            { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo, type: "embed-video", color: "#e52d27" },
+            { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo, type: "embed-video", color: "#e52d27" }
           ];
 
           const resExternes = [
             { id: "glo", em: "📚", n: "Lexique", b: "bg-glo", url: `Glossaire/${safeFileName}`, type: "embed-glo", color: "#4a5568" },
             { id: "map", em: "🧠", n: "Carte Mentale", b: "bg-map", url: `Carte Mentale/${safeFileName}`, type: "embed-map", color: "#ffb900" },
             { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "embed-quiz", color: "#b4792a" },
+          ];
+
+          // NOUVEAU BLOC : NoteBook dédié
+          const resNote = [
+            { id: "notebook", em: "📓", n: "NoteBook_LM", b: "bg-notebook", url: itemObj.NoteBook_LM, type: "external", color: "#d946ef" }
           ];
 
           let htmlOff = resOfficiels.map((r, index) => {
@@ -2672,13 +2721,8 @@
 
               const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
 
-              if (r.id === "notebook" && (!r.url || r.url.trim() === "")) {
-                  linkProps.tag = "div";
-                  linkProps.action = `onclick="afficherTravaux('NoteBook_LM - ${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"`;
-              }
-
-              let extraDivClass = (!r.url || r.url.trim() === '') && r.id !== "notebook" ? "opacity-40 grayscale pointer-events-none" : "";
-              let colSpanClass = index === 2 ? "col-span-2 flex justify-center mt-1" : "flex justify-center";
+              let extraDivClass = (!r.url || r.url.trim() === '') ? "opacity-40 grayscale pointer-events-none" : "";
+              let colSpanClass = "flex justify-center";
 
               return `<div class="relative tooltip-container ${extraDivClass} ${colSpanClass}">
                           <${linkProps.tag} ${linkProps.action} aria-label="Ressource ${tooltipText}" class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText.replace(/'/g, "\\'")}')"><span>${displayEmoji}</span></${linkProps.tag}>
@@ -2686,7 +2730,8 @@
                       </div>`;
           }).join("");
 
-          const trackableRes = [...resCore, ...resExternes];
+          // trackableRes inclut maintenant resNote pour que cela soit comptabilisé dans le % global de Mon Parcours
+          const trackableRes = [...resCore, ...resExternes, ...resNote];
           const validRids = trackableRes.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
           totalCount += validRids.length;
 
@@ -2696,7 +2741,14 @@
               return arr.map((r) => {
                 const hasUrl = r.url && r.url.trim() !== '';
                 const isV = hasUrl && progressRes[`${id}-${r.id}`];
-                const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
+
+                // Préfixe spécial pour le NoteBook_LM si on doit afficher la modale "en chantier"
+                let displayTitre = titre || "";
+                if (r.id === "notebook" && !hasUrl) {
+                    displayTitre = "NoteBook_LM - " + displayTitre;
+                }
+
+                const linkProps = getActionLink(r.url, displayTitre, r.type, r.em, id);
 
                 let checkC = "";
                 let checkIcon = "";
@@ -2706,8 +2758,8 @@
                 if (!hasUrl) {
                     checkC = "bg-red-50 text-red-500 border-red-400 cursor-not-allowed";
                     checkIcon = "fas fa-times";
-                    badgeAction = `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')"`;
-                    extraDivClass = "opacity-60 grayscale-[30%]";
+                    badgeAction = `onclick="afficherTravaux('${displayTitre.replace(/'/g, "\\'")}')"`;
+                    extraDivClass = r.id === "notebook" ? "" : "opacity-60 grayscale-[30%]";
                 } else {
                     checkC = isV ? "bg-[#3b82f6] text-white border-[#3b82f6]" : "bg-white text-gray-200 border-gray-200 hover:border-[#3b82f6] hover:text-[#3b82f6]";
                     checkIcon = "fas fa-check";
@@ -2724,6 +2776,7 @@
 
           let htmlCore = buildTrackableHtml(resCore);
           let htmlExt = buildTrackableHtml(resExternes);
+          let htmlNote = buildTrackableHtml(resNote);
 
           const validRidsCore = resCore.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
           let lineCheckedCore = 0;
@@ -2755,7 +2808,7 @@
               </div>
           `;
 
-          const isFull = validRids.length > 0 && (lineCheckedCore + lineCheckedExt) === validRids.length;
+          const isFull = validRids.length > 0 && (lineCheckedCore + lineCheckedExt + (progressRes[`${id}-notebook`] ? 1 : 0)) === validRids.length;
 
           let offBlock = `
               <div class="flex flex-col items-center justify-center bg-[#0F2C48]/5 py-3 px-4 rounded-2xl border-2 border-[#0F2C48]/10 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative overflow-hidden h-full">
@@ -2787,6 +2840,17 @@
                   </div>
                   <div class="absolute bottom-0 left-0 w-full h-[6px] bg-black/5 z-0"></div>
                   <div class="absolute bottom-0 left-0 h-[6px] ${isExtFull ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-amber-400 to-amber-500'} transition-all duration-700 ease-out z-0" style="width: ${percentExt}%;"></div>
+              </div>`;
+          }
+
+          let noteBlock = '';
+          if (resNote[0].url && resNote[0].url.trim() !== '') {
+              noteBlock = `
+              <div class="flex flex-col gap-2 bg-fuchsia-50 pt-3 pb-2 px-3 rounded-2xl border-2 border-fuchsia-200 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative overflow-hidden h-full">
+                  <div class="flex justify-center z-10 w-full">${htmlNote}</div>
+                  <div class="flex items-center justify-center w-full px-1 z-10 mt-1 border-t-2 border-fuchsia-200 pt-1">
+                      <span class="text-[8px] font-black uppercase text-fuchsia-600 tracking-widest leading-none">Notes</span>
+                  </div>
               </div>`;
           }
 
@@ -2828,7 +2892,7 @@
               }
 
               previewBlock = `
-              <div class="w-full lg:w-[40%] xl:w-[35%] max-w-[480px] shrink-0 h-full min-h-[220px] mt-4 lg:mt-0 lg:ml-auto">
+              <div class="w-full lg:w-[35%] xl:w-[30%] max-w-[400px] shrink-0 h-full min-h-[220px] mt-4 lg:mt-0 lg:ml-auto">
                   <div class="relative w-full h-full rounded-[24px] border-2 border-paia-blue overflow-hidden bg-paia-blue group cursor-zoom-in shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all"
               onclick="event.stopPropagation(); window.open('${visualUrlForThumb.replace(/'/g, "\\'")}', '_blank')">
                       <div class="absolute inset-0 bg-gray-100 flex items-center justify-center">
@@ -2866,7 +2930,7 @@
               }
 
               previewBlock = `
-              <div class="w-full lg:w-[40%] xl:w-[35%] max-w-[480px] shrink-0 h-full min-h-[220px] mt-4 lg:mt-0 lg:ml-auto">
+              <div class="w-full lg:w-[35%] xl:w-[30%] max-w-[400px] shrink-0 h-full min-h-[220px] mt-4 lg:mt-0 lg:ml-auto">
                   <div class="w-full h-full rounded-[24px] border-2 border-dashed border-gray-300 bg-gray-50 flex flex-col items-center justify-center p-4 hover:border-paia-blue hover:bg-white transition-colors">
                       ${hasAudio ? audioInsideHtml : `
                       <i class="fas fa-image mb-3 text-gray-300 text-3xl"></i>
@@ -2882,7 +2946,7 @@
 
           card.innerHTML = `
             <div class="flex flex-col lg:flex-row gap-4 xl:gap-6 items-stretch w-full">
-                <div class="w-full lg:w-[60%] xl:w-[65%] flex flex-col min-w-0">
+                <div class="w-full lg:w-[65%] xl:w-[70%] flex flex-col min-w-0">
                     <div class="flex flex-col xl:flex-row xl:items-center gap-3 mb-4">
                         <span class="self-start px-3 py-1.5 bg-paia-blue text-white font-black rounded-lg text-xs shadow-[2px_2px_0px_#B4792A] shrink-0 tracking-wider">${id}</span>
                         <h3 class="text-lg md:text-xl font-black text-paia-blue uppercase tracking-tight leading-tight">${titre}</h3>
@@ -2892,6 +2956,7 @@
                         ${coreBlock}
                         ${extBlock}
                         <div class="w-[2px] self-stretch bg-gray-200 rounded-full shrink-0 mx-1 hidden md:block"></div>
+                        ${noteBlock}
                         ${calBlock}
                     </div>
                 </div>
@@ -2927,11 +2992,11 @@
 
             const itemObj = database.find(d => d.Code === sujetCode);
             if (itemObj) {
-                const allCheckable = ["audio", "excel", "infog", "slide", "video", "glo", "map", "quiz"];
+                const allCheckable = ["audio", "excel", "infog", "slide", "video", "notebook", "glo", "map", "quiz"];
                 const safeFileName = encodeURIComponent(`${sujetCode} - ${itemObj.Titre}`) + '.html';
                 const resMap = {
                     audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie,
-                    slide: itemObj.Slides, video: itemObj.Vidéo,
+                    slide: itemObj.Slides, video: itemObj.Vidéo, notebook: itemObj.NoteBook_LM,
                     glo: `Glossaire/${safeFileName}`, map: `Carte Mentale/${safeFileName}`, quiz: `Quiz/${safeFileName}`
                 };
 
