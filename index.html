@@ -2468,11 +2468,6 @@
           }
           const safeUrl = finalUrl.replace(/'/g, "\\'");
           const safeTitre = (titre || "").replace(/'/g, "\\'");
-          const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
-
-          if (type === 'embed-pdf' && !isUnlocked) {
-              return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
-          }
 
           // L'Audio reste en inline, tout le reste s'ouvre dans un nouvel onglet
           if (type === 'embed-audio') {
@@ -2626,7 +2621,7 @@
           if (currentMod !== "ALL" && !id.includes(`_${currentBloc}_${currentMod}`)) return;
 
           const resOfficiels = [
-            { id: "pdf", em: "🔒", n: "Document Privé", b: "bg-locked", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
+            { id: "pdf", em: "📄", n: "Cours Officiel PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
             { id: "lien", em: "🎓", n: "Plateforme Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" }
           ];
 
@@ -2648,12 +2643,6 @@
               let displayEmoji = r.em;
               let tooltipText = r.n;
               let btnClass = r.b;
-
-              if (r.id === 'pdf' && !isUnlocked) {
-                  displayEmoji = "🔒"; tooltipText = "Document Privé (Droits d'auteur)"; btnClass = "bg-locked";
-              } else if (r.id === 'pdf' && isUnlocked) {
-                  displayEmoji = "📄"; tooltipText = "Cours Officiel PDF"; btnClass = "bg-pdf";
-              }
 
               const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
               let extraDivClass = (!r.url || r.url.trim() === '') ? "opacity-40 grayscale pointer-events-none" : "";
@@ -2787,15 +2776,14 @@
           let slideUrl = itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null;
           let hasAudio = audioUrl && audioUrl.trim() !== '';
 
-          // NOUVEAUTÉ : On donne la priorité à la SLIDE (Diaporama)
-          let visualUrlForThumb = slideUrl && slideUrl.trim() !== '' ? slideUrl : null;
-          let visualType = 'embed-presentation';
-          let visualLabel = 'Diaporama';
+          let visualUrlForThumb = infogUrl && infogUrl.trim() !== '' ? infogUrl : null;
+          let visualType = 'embed-image';
+          let visualLabel = 'Infographie';
 
-          if (!visualUrlForThumb && infogUrl && infogUrl.trim() !== '') {
-              visualUrlForThumb = infogUrl;
-              visualType = 'embed-image';
-              visualLabel = 'Infographie';
+          if (!visualUrlForThumb && slideUrl && slideUrl.trim() !== '') {
+              visualUrlForThumb = slideUrl;
+              visualType = 'embed-presentation';
+              visualLabel = 'Diaporama';
           }
 
           if (visualUrlForThumb) {
@@ -2862,28 +2850,29 @@
           }
 
           const card = document.createElement("div");
-          card.className = `card-3d bg-white p-6 rounded-[32px] border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] flex flex-col lg:flex-row gap-6 items-stretch mb-6 ${isFull ? "bg-blue-50/30 border-paia-blue shadow-[4px_4px_0px_#3b82f6]" : ""} ${anim ? "card-animate" : ""}`;
+          card.className = `card-3d bg-white p-6 rounded-[32px] border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] flex flex-col gap-6 items-stretch mb-6 ${isFull ? "bg-blue-50/30 border-paia-blue shadow-[4px_4px_0px_#3b82f6]" : ""} ${anim ? "card-animate" : ""}`;
           if (anim) card.style.animationDelay = `${(cardIdx + 1) * 0.03}s`;
 
-          // CORRECTION ICI: Le bloc inline-media est maintenant à l'intérieur de la colonne de gauche (le flex-grow flex-col)
-          // Il s'affichera donc en dessous des onglets (offBlock, coreBlock, extBlock, calBlock) mais l'infographie (previewBlock) restera visible à sa droite.
+          // CORRECTION ICI: Le bloc inline-media est complètement en dessous du wrapper contenant la gauche et la droite
           card.innerHTML = `
-            <div class="flex-grow flex flex-col min-w-0">
-                <div class="flex flex-col xl:flex-row xl:items-center gap-3 mb-4">
-                    <span class="self-start px-3 py-1.5 bg-paia-blue text-white font-black rounded-lg text-xs shadow-[2px_2px_0px_#B4792A] shrink-0 tracking-wider">${id}</span>
-                    <h3 class="text-lg md:text-xl font-black text-paia-blue uppercase tracking-tight leading-tight">${titre}</h3>
+            <div class="flex flex-col lg:flex-row gap-6 items-stretch w-full">
+                <div class="flex-grow flex flex-col min-w-0">
+                    <div class="flex flex-col xl:flex-row xl:items-center gap-3 mb-4">
+                        <span class="self-start px-3 py-1.5 bg-paia-blue text-white font-black rounded-lg text-xs shadow-[2px_2px_0px_#B4792A] shrink-0 tracking-wider">${id}</span>
+                        <h3 class="text-lg md:text-xl font-black text-paia-blue uppercase tracking-tight leading-tight">${titre}</h3>
+                    </div>
+                    <div class="flex items-stretch w-full overflow-x-auto scrollbar-hide pb-3 pt-1 snap-x mt-2 gap-4">
+                        ${offBlock}
+                        ${coreBlock}
+                        ${extBlock}
+                        <div class="w-[2px] self-stretch bg-gray-200 rounded-full shrink-0 mx-1 hidden md:block"></div>
+                        ${calBlock}
+                    </div>
                 </div>
-                <div class="flex items-stretch w-full overflow-x-auto scrollbar-hide pb-3 pt-1 snap-x mt-2 gap-4">
-                    ${offBlock}
-                    ${coreBlock}
-                    ${extBlock}
-                    <div class="w-[2px] self-stretch bg-gray-200 rounded-full shrink-0 mx-1 hidden md:block"></div>
-                    ${calBlock}
-                </div>
-                <!-- BOÎTE DE DIALOGUE AUDIO PLACÉE SOUS LES ONGLETS, PLEINE LARGEUR DE LA COLONNE GAUCHE -->
-                <div id="inline-media-${id}" class="hidden w-full mt-2" data-current-url=""></div>
+                ${previewBlock}
             </div>
-            ${previewBlock}
+            <!-- BOÎTE DE DIALOGUE AUDIO PLACÉE EN DESSOUS, PLEINE LARGEUR -->
+            <div id="inline-media-${id}" class="hidden w-full mt-2" data-current-url=""></div>
           `;
 
           list.appendChild(card);
