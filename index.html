@@ -319,7 +319,6 @@
 
     <div class="bg-animated-blob blob-1 fixed inset-0 pointer-events-none opacity-20"></div>
 
-    <!-- HEADER PREMIUM RESPONSIVE -->
     <header class="bg-white/90 backdrop-blur-xl border-b-2 border-paia-blue h-[90px] flex items-center sticky top-0 z-[1000]">
       <div class="w-full max-w-[1600px] mx-auto px-6 flex items-center justify-between">
         <div class="flex items-center gap-4 cursor-pointer" onclick="location.reload()">
@@ -343,6 +342,9 @@
             <button onclick="filtrerBloc('CERTIF')" class="btn-nav-app group" title="Certification" aria-label="Ouvrir le hub des certifications">
               <i class="fa-solid fa-trophy text-paia-bronze"></i>
             </button>
+            <a href="ECF_Finale.html" target="_blank" class="btn-nav-app group" title="Sujet ECF" aria-label="Consulter le Sujet ECF">
+              <i class="fa-solid fa-file-signature text-purple-500"></i>
+            </a>
             <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="btn-nav-app group" title="Communauté" aria-label="Rejoindre la communauté Teams">
               <i class="fa-brands fa-microsoft text-rose-400"></i>
             </a>
@@ -354,7 +356,6 @@
       </div>
     </header>
 
-    <!-- Mobile Overlay Menu -->
     <div id="mobile-menu" class="fixed inset-0 bg-paia-blue z-[900] hidden flex-col items-center justify-center gap-8 text-white p-10 transform translate-x-full transition-transform duration-300">
         <button onclick="toggleMobileMenu()" class="absolute top-8 right-8 text-4xl text-paia-ivory hover:scale-110 transition-transform" aria-label="Fermer le menu mobile"><i class="fas fa-times"></i></button>
         <a href="Card.html" class="text-2xl font-black uppercase tracking-widest hover:text-paia-yellow transition-colors"><i class="fas fa-paper-plane mr-4 text-paia-yellow"></i> Contact</a>
@@ -362,6 +363,7 @@
         <button onclick="filtrerBloc('CAL'); toggleMobileMenu()" class="text-2xl font-black uppercase tracking-widest hover:text-paia-yellow transition-colors"><i class="fas fa-calendar-check mr-4 text-emerald-400"></i> Planning</button>
         <button onclick="filtrerBloc('CERTIF'); toggleMobileMenu()" class="text-2xl font-black uppercase tracking-widest hover:text-paia-yellow transition-colors"><i class="fas fa-trophy mr-4 text-paia-bronze"></i> Certification</button>
         <button onclick="filtrerBloc('ECF'); toggleMobileMenu()" class="text-2xl font-black uppercase tracking-widest hover:text-purple-400 transition-colors"><i class="fas fa-graduation-cap mr-4 text-purple-400"></i> ECF Final</button>
+        <a href="ECF_Finale.html" target="_blank" class="text-2xl font-black uppercase tracking-widest hover:text-purple-400 transition-colors"><i class="fas fa-file-signature mr-4 text-purple-500"></i> Sujet ECF</a>
         <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="text-2xl font-black uppercase tracking-widest hover:text-paia-yellow transition-colors"><i class="fa-brands fa-microsoft mr-4 text-rose-400"></i> Communauté</a>
     </div>
 
@@ -401,7 +403,6 @@
 
       <div id="listContainer" class="grid grid-cols-1 gap-6 pb-20 px-1 md:px-0"></div>
 
-      <!-- CONTENEUR ECF -->
       <div id="ecfContainer" class="hidden flex-col gap-6 pb-20 px-1 md:px-0 animate-slideIn"></div>
 
       <div id="calendarContainer" class="hidden animate-slideIn px-2 md:px-0"></div>
@@ -513,7 +514,6 @@
 
     </main>
 
-    <!-- MODAL : PLANIFICATEUR INTELLIGENT DE BLOC -->
     <div id="bulkPlanModal" class="fixed inset-0 bg-paia-blue/95 backdrop-blur-md hidden items-center justify-center z-[10000] p-4">
         <div class="bg-white p-6 md:p-8 rounded-[30px] border-4 border-paia-blue shadow-[10px_10px_0px_rgba(0,0,0,1)] max-w-lg w-full transform scale-95 transition-transform duration-300 relative overflow-y-auto max-h-[90vh]" id="bulkPlanContent">
             <div class="w-16 h-16 bg-emerald-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border-2 border-emerald-200">
@@ -563,7 +563,6 @@
                 </div>
             </div>
 
-            <!-- APERÇU DYNAMIQUE DES DATES -->
             <div id="bulk-preview" class="text-[11px] font-medium text-emerald-800 bg-emerald-50 p-4 rounded-xl border-2 border-emerald-200 mt-4 hidden shadow-inner">
                 <strong class="block mb-2 font-black uppercase tracking-wider text-emerald-600"><i class="fas fa-eye mr-1"></i> Aperçu du planning généré</strong>
                 <ul id="bulk-preview-list" class="space-y-1 ml-1"></ul>
@@ -579,7 +578,6 @@
         </div>
     </div>
 
-    <!-- Modals Existants -->
     <div id="pinModal" class="fixed inset-0 bg-paia-blue/95 backdrop-blur-md hidden items-center justify-center z-[10000]">
         <div class="bg-paia-ivory p-10 rounded-3xl border-4 border-paia-blue max-w-sm w-full mx-4 text-center shadow-[10px_10px_0px_rgba(0,0,0,1)] transition-transform transform scale-95" id="pinModalContent">
             <div class="w-20 h-20 bg-paia-blue text-white rounded-full mx-auto flex items-center justify-center text-3xl mb-6 shadow-xl"><i class="fas fa-lock"></i></div>
@@ -658,7 +656,6 @@
 
     <div id="toastContainer" class="fixed bottom-10 right-10 flex flex-col gap-3 pointer-events-none z-[11000]"></div>
 
-    <!-- Floating Actions -->
     <div class="floating-side-menu">
       <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn-fab bg-gradient-to-br from-blue-400 to-blue-600 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]" aria-label="Remonter en haut de la page">
         <i class="fas fa-arrow-up"></i>
@@ -686,7 +683,6 @@
       </button>
     </div>
 
-    <!-- Footer -->
     <footer class="py-12 flex flex-col items-center gap-5 bg-[#0F2C48]/5 backdrop-blur-md border-t border-paia-blue/10 mt-auto relative z-10">
       <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo Mathilde Martine PAISLEY" class="w-16 h-16 rounded-full border-4 border-white shadow-lg object-cover" />
       <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest text-center text-[#0F2C48] leading-relaxed">
@@ -701,7 +697,6 @@
       </div>
     </footer>
 
-    <!-- SCRIPT -->
     <script>
       const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSJuJce5_6A5Yd0xbYLhb4OZRZ4dyvi0oArF2a_Ks1U_dvGflru_lb8XLgLVs6NApu6cJUS_C6GYU71/pub?gid=842464760&single=true&output=csv";
       let database = [];
