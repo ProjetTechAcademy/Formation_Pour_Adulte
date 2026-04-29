@@ -244,10 +244,10 @@
       }
 
       .tooltip-container .tooltip {
-        position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+        position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
         background: #0f2c48; color: white; padding: 6px 12px; border-radius: 8px;
         font-size: 0.65rem; font-weight: 800; white-space: nowrap; opacity: 0; visibility: hidden;
-        transition: 0.2s; z-index: 100; border: 1px solid var(--paia-yellow); pointer-events: none;
+        transition: 0.2s; z-index: 9999; border: 1px solid var(--paia-yellow); pointer-events: none;
         box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       }
       .tooltip-container:hover .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-5px); }
@@ -1704,48 +1704,6 @@
         afficherModules(searchInputEl ? searchInputEl.value : "", false);
       };
 
-      window.toggleRes = function(id, resId, em, color) {
-          progressRes[`${id}-${resId}`] = !progressRes[`${id}-${resId}`];
-          localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
-
-          const itemObj = database.find(d => d.Code === id);
-          if (itemObj) {
-              const allCheckable = ["audio", "excel", "infog", "slide", "video", "notebook", "glo", "map", "quiz"];
-              const safeFileName = encodeURIComponent(`${id} - ${itemObj.Titre}`) + '.html';
-              const resMap = { audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie, slide: itemObj.Slides, video: itemObj.Vidéo, notebook: itemObj.NoteBook_LM, glo: `Glossaire/${safeFileName}`, map: `Carte Mentale/${safeFileName}`, quiz: `Quiz/${safeFileName}` };
-
-              const allValidRids = allCheckable.filter(r => resMap[r] && resMap[r].trim() !== '');
-              const isModuleAll = allValidRids.every(r => progressRes[`${id}-${r}`]);
-
-              let blocKey = "bloc0";
-              if(id.includes("_B1_")) blocKey = "bloc1";
-              else if(id.includes("_B2_")) blocKey = "bloc2";
-              else if(id.includes("_B3_")) blocKey = "bloc3";
-              else if(id.includes("_B4_")) blocKey = "bloc4";
-
-              if (isModuleAll) {
-                  if (!progressState[blocKey].completed.has(id)) {
-                      progressState[blocKey].completed.add(id);
-                      if (typeof confetti === 'function') confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
-                      const toastHtml = `
-                          <div class="flex flex-col gap-2 w-[300px]">
-                            <div class="text-sm font-black uppercase text-blue-600 tracking-widest mb-1 flex items-center gap-2">🏆 MODULE ACCOMPLI !</div>
-                            <div class="text-[12px] font-bold text-[#0F2C48] leading-snug">Félicitations ! Tu viens de franchir une étape majeure. La persévérance est la clé de la réussite.</div>
-                          </div>
-                      `;
-                      afficherToastCustom(toastHtml, '#3b82f6');
-                  }
-              } else {
-                  progressState[blocKey].completed.delete(id);
-              }
-              saveState();
-              updateProgressUI();
-          }
-
-          const searchInputEl = document.getElementById("searchInput");
-          afficherModules(searchInputEl ? searchInputEl.value : "", false);
-      };
-
       function afficherToastCustom(htmlContent, borderColorHex) {
         const c = document.getElementById("toastContainer");
         const t = document.createElement("div");
@@ -2811,53 +2769,58 @@
           const isFull = validRids.length > 0 && (lineCheckedCore + lineCheckedExt + (progressRes[`${id}-notebook`] ? 1 : 0)) === validRids.length;
 
           let offBlock = `
-              <div class="flex flex-col items-center justify-center bg-[#0F2C48]/5 py-3 px-4 rounded-2xl border-2 border-[#0F2C48]/10 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative overflow-hidden h-full">
-                  <div class="grid grid-cols-2 gap-2 z-10 w-full place-items-center">${htmlOff}</div>
+              <div class="flex flex-col gap-2 bg-slate-50 pt-3 pb-2 px-3 rounded-2xl border-2 border-slate-200 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative transition-colors duration-500">
+                  <div class="flex gap-2 z-10 w-full place-items-center justify-center">${htmlOff}</div>
+                  <div class="flex items-center justify-center w-full px-1 z-10 mt-1 border-t-2 border-slate-200 pt-1 pb-1">
+                      <span class="text-[8px] font-black uppercase text-slate-500 tracking-widest leading-none">Officiel</span>
+                  </div>
               </div>`;
 
           let coreBlock = '';
           if (validRidsCore.length > 0) {
               coreBlock = `
-              <div class="flex flex-col gap-2 ${isCoreFull ? 'bg-emerald-50 border-emerald-400' : 'bg-cyan-50 border-cyan-300'} pt-3 pb-2 px-3 rounded-2xl border-2 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative overflow-hidden transition-colors duration-500">
+              <div class="flex flex-col gap-2 ${isCoreFull ? 'bg-emerald-50 border-emerald-400' : 'bg-cyan-50 border-cyan-300'} pt-3 pb-2 px-3 rounded-2xl border-2 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative transition-colors duration-500">
                   <div class="flex gap-2 z-10">${htmlCore}</div>
-                  <div class="flex items-center justify-between w-full px-1 z-10 mt-1 border-t-2 ${isCoreFull ? 'border-emerald-200' : 'border-cyan-200'} pt-1">
+                  <div class="flex items-center justify-between w-full px-1 z-10 mt-1 border-t-2 ${isCoreFull ? 'border-emerald-200' : 'border-cyan-200'} pt-1 pb-1">
                       <span class="text-[8px] font-black uppercase ${isCoreFull ? 'text-emerald-600' : 'text-cyan-600'} tracking-widest leading-none transition-colors">Skill Up</span>
-                      <button onclick="toggleGroup(event, '${id}', 'core')" class="text-[20px] p-2 md:p-1 hover:scale-125 transition-transform ${isCoreFull ? 'text-emerald-500' : 'text-cyan-500 drop-shadow-sm'}" title="${isCoreFull ? 'Annuler' : 'Valider Skill Up'}" aria-label="${isCoreFull ? 'Annuler la validation du groupe Skill Up' : 'Valider tout le groupe Skill Up'}">${isCoreFull ? '✅' : '🚀'}</button>
+                      <button onclick="toggleGroup(event, '${id}', 'core')" class="text-[20px] ml-2 leading-none hover:scale-125 transition-transform ${isCoreFull ? 'text-emerald-500' : 'text-cyan-500 drop-shadow-sm'}" title="${isCoreFull ? 'Annuler' : 'Valider Skill Up'}" aria-label="${isCoreFull ? 'Annuler la validation du groupe Skill Up' : 'Valider tout le groupe Skill Up'}">${isCoreFull ? '✅' : '🚀'}</button>
                   </div>
-                  <div class="absolute bottom-0 left-0 w-full h-[6px] bg-black/5 z-0"></div>
-                  <div class="absolute bottom-0 left-0 h-[6px] ${isCoreFull ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-cyan-400 to-cyan-500'} transition-all duration-700 ease-out z-0" style="width: ${percentCore}%;"></div>
+                  <div class="absolute bottom-0 left-0 w-full h-[6px] bg-black/5 z-0 rounded-b-[14px] overflow-hidden">
+                      <div class="absolute top-0 left-0 h-full ${isCoreFull ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-cyan-400 to-cyan-500'} transition-all duration-700 ease-out z-0" style="width: ${percentCore}%;"></div>
+                  </div>
               </div>`;
           }
 
           let extBlock = '';
           if (validRidsExt.length > 0) {
               extBlock = `
-              <div class="flex flex-col gap-2 ${isExtFull ? 'bg-emerald-50 border-emerald-400' : 'bg-amber-50 border-amber-300'} pt-3 pb-2 px-3 rounded-2xl border-2 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative overflow-hidden transition-colors duration-500">
+              <div class="flex flex-col gap-2 ${isExtFull ? 'bg-emerald-50 border-emerald-400' : 'bg-amber-50 border-amber-300'} pt-3 pb-2 px-3 rounded-2xl border-2 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative transition-colors duration-500">
                   <div class="flex gap-2 z-10">${htmlExt}</div>
-                  <div class="flex items-center justify-between w-full px-1 z-10 mt-1 border-t-2 ${isExtFull ? 'border-emerald-200' : 'border-amber-200'} pt-1">
+                  <div class="flex items-center justify-between w-full px-1 z-10 mt-1 border-t-2 ${isExtFull ? 'border-emerald-200' : 'border-amber-200'} pt-1 pb-1">
                       <span class="text-[8px] font-black uppercase ${isExtFull ? 'text-emerald-600' : 'text-amber-600'} tracking-widest leading-none transition-colors">Créations</span>
-                      <button onclick="toggleGroup(event, '${id}', 'ext')" class="text-[20px] p-2 md:p-1 hover:scale-125 transition-transform ${isExtFull ? 'text-emerald-500' : 'text-amber-500 drop-shadow-sm'}" title="${isExtFull ? 'Annuler' : 'Valider Créations'}" aria-label="${isExtFull ? 'Annuler la validation des créations' : 'Valider toutes les créations'}">${isExtFull ? '✅' : '🚀'}</button>
+                      <button onclick="toggleGroup(event, '${id}', 'ext')" class="text-[20px] ml-2 leading-none hover:scale-125 transition-transform ${isExtFull ? 'text-emerald-500' : 'text-amber-500 drop-shadow-sm'}" title="${isExtFull ? 'Annuler' : 'Valider Créations'}" aria-label="${isExtFull ? 'Annuler la validation des créations' : 'Valider toutes les créations'}">${isExtFull ? '✅' : '🚀'}</button>
                   </div>
-                  <div class="absolute bottom-0 left-0 w-full h-[6px] bg-black/5 z-0"></div>
-                  <div class="absolute bottom-0 left-0 h-[6px] ${isExtFull ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-amber-400 to-amber-500'} transition-all duration-700 ease-out z-0" style="width: ${percentExt}%;"></div>
+                  <div class="absolute bottom-0 left-0 w-full h-[6px] bg-black/5 z-0 rounded-b-[14px] overflow-hidden">
+                      <div class="absolute top-0 left-0 h-full ${isExtFull ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-amber-400 to-amber-500'} transition-all duration-700 ease-out z-0" style="width: ${percentExt}%;"></div>
+                  </div>
               </div>`;
           }
 
           let noteBlock = '';
           if (resNote[0].url && resNote[0].url.trim() !== '') {
               noteBlock = `
-              <div class="flex flex-col gap-2 bg-fuchsia-50 pt-3 pb-2 px-3 rounded-2xl border-2 border-fuchsia-200 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative overflow-hidden h-full">
+              <div class="flex flex-col gap-2 bg-fuchsia-50 pt-3 pb-2 px-3 rounded-2xl border-2 border-fuchsia-200 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative transition-colors duration-500">
                   <div class="flex justify-center z-10 w-full">${htmlNote}</div>
-                  <div class="flex items-center justify-center w-full px-1 z-10 mt-1 border-t-2 border-fuchsia-200 pt-1">
+                  <div class="flex items-center justify-center w-full px-1 z-10 mt-1 border-t-2 border-fuchsia-200 pt-1 pb-1">
                       <span class="text-[8px] font-black uppercase text-fuchsia-600 tracking-widest leading-none">Notes</span>
                   </div>
               </div>`;
           }
 
           let calBlock = `
-              <div class="flex flex-col gap-2 bg-rose-50 pt-3 pb-2 px-3 rounded-2xl border-2 border-rose-200 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative overflow-hidden h-full">
+              <div class="flex flex-col gap-2 bg-rose-50 pt-3 pb-2 px-3 rounded-2xl border-2 border-rose-200 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative transition-colors duration-500 h-full">
                   <div class="flex justify-center z-10">${btnCalendarHTML}</div>
-                  <div class="flex items-center justify-center w-full px-1 z-10 mt-1 border-t-2 border-rose-200 pt-1">
+                  <div class="flex items-center justify-center w-full px-1 z-10 mt-1 border-t-2 border-rose-200 pt-1 pb-1">
                       <span class="text-[8px] font-black uppercase text-rose-500 tracking-widest leading-none">Rappels</span>
                   </div>
               </div>`;
@@ -2946,16 +2909,16 @@
 
           card.innerHTML = `
             <div class="flex flex-col lg:flex-row gap-4 xl:gap-6 items-stretch w-full">
-                <div class="w-full lg:w-[65%] xl:w-[70%] flex flex-col min-w-0">
-                    <div class="flex flex-col xl:flex-row xl:items-center gap-3 mb-4">
-                        <span class="self-start px-3 py-1.5 bg-paia-blue text-white font-black rounded-lg text-xs shadow-[2px_2px_0px_#B4792A] shrink-0 tracking-wider">${id}</span>
-                        <h3 class="text-lg md:text-xl font-black text-paia-blue uppercase tracking-tight leading-tight">${titre}</h3>
+                <div class="w-full lg:w-[65%] xl:w-[70%] flex flex-col min-w-0 relative z-20">
+                    <div class="flex flex-col xl:flex-row xl:items-start gap-3 mb-0 relative z-20">
+                        <span class="self-start px-3 py-1.5 bg-paia-blue text-white font-black rounded-lg text-xs shadow-[2px_2px_0px_#B4792A] shrink-0 tracking-wider mt-1">${id}</span>
+                        <h3 class="text-lg md:text-xl font-black text-paia-blue uppercase tracking-tight leading-tight mt-1">${titre}</h3>
                     </div>
-                    <div class="flex items-stretch w-full overflow-x-auto scrollbar-hide pb-3 pt-1 snap-x mt-2 gap-4">
+                    <div class="flex items-stretch w-full overflow-x-auto scrollbar-hide pb-4 pt-12 -mt-6 snap-x gap-4 relative z-10 px-1">
                         ${offBlock}
                         ${coreBlock}
                         ${extBlock}
-                        <div class="w-[2px] self-stretch bg-gray-200 rounded-full shrink-0 mx-1 hidden md:block"></div>
+                        <div class="w-[2px] self-stretch bg-gray-200 rounded-full shrink-0 mx-1 hidden md:block mt-8 mb-2"></div>
                         ${noteBlock}
                         ${calBlock}
                     </div>
