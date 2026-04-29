@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -21,156 +22,336 @@
                     },
                     fontFamily: {
                         sans: ['Roboto', 'sans-serif'],
+                        mono: ['Space Mono', 'monospace'],
                     }
                 }
             }
         }
     </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&display=swap" rel="stylesheet" />
 
     <style>
-        body { font-family: "Roboto", sans-serif; }
+        :root {
+            --paia-blue: #0f2c48;
+            --paia-ivory: #f6f2e8;
+            --paia-bronze: #b4792a;
+        }
+
+        body {
+            font-family: "Roboto", sans-serif;
+            background-color: var(--paia-ivory);
+            color: var(--paia-blue);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- EFFETS 3D & PREMIUM --- */
+        .card-3d {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+        }
+        .card-3d:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(15, 44, 72, 0.1), 0 10px 10px -5px rgba(15, 44, 72, 0.04), 6px 6px 0px var(--paia-blue);
+        }
+
+        /* Styles des onglets Stick */
+        .tabs-sticky {
+            position: sticky;
+            top: 90px;
+            z-index: 50;
+            background: rgba(246, 242, 232, 0.95);
+            backdrop-filter: blur(16px);
+            border-bottom: 2px solid rgba(15, 44, 72, 0.1);
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        /* Blobs en fond */
+        .bg-animated-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.2;
+            animation: floatBlob 20s infinite alternate ease-in-out;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #e0e7ff; animation-delay: 0s; }
+        .blob-2 { bottom: -20%; right: -10%; width: 60vw; height: 60vw; background: #fef08a; animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 60%; width: 40vw; height: 40vw; background: #fce7f3; animation-delay: -10s; }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 10%) scale(1.1); }
+            100% { transform: translate(-5%, -5%) scale(0.9); }
+        }
+
+        /* Accordion Animations */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-out;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            opacity: 0;
         }
         .accordion-content.open {
-            max-height: 2000px; /* Assez grand pour le contenu */
+            max-height: 2500px;
+            opacity: 1;
         }
+
+        /* Tab Fade Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .btn-nav-app {
+            width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; color: var(--paia-blue); position: relative; text-decoration: none;
+            background-color: white;
+            box-shadow: 2px 2px 0px var(--paia-blue);
+            border: 2px solid var(--paia-blue);
+            z-index: 1;
+            transition: all 0.2s ease;
+        }
+        .btn-nav-app:hover {
+            transform: translate(-2px, -2px);
+            background-color: var(--paia-blue);
+            color: white !important;
+            box-shadow: 4px 4px 0px var(--paia-blue);
+            z-index: 10;
+        }
+
+        /* Floating Menu */
+        @keyframes floatUpDown { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        .floating-side-menu {
+            position: fixed; right: 10px; bottom: 30px; display: flex; flex-direction: column; align-items: center;
+            gap: 8px; z-index: 1000; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 8px 6px; width: 44px; border-radius: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.8); animation: floatUpDown 6s ease-in-out infinite;
+        }
+        .btn-fab {
+            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; color: white; box-shadow: 0 3px 8px rgba(0,0,0,0.15); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; border: 1px solid rgba(255,255,255,0.3); position: relative;
+        }
+        .btn-fab:hover { transform: scale(1.15) translateX(-3px); box-shadow: 0 5px 12px rgba(0,0,0,0.25); }
+
     </style>
 </head>
-<body class="bg-paia-ivory text-paia-blue min-h-screen flex flex-col">
+<body class="relative">
 
-    <!-- HEADER -->
-    <header class="bg-white border-b-4 border-paia-blue shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-paia-blue text-white rounded-xl flex items-center justify-center font-black text-2xl shadow-[2px_2px_0px_#D9A526]">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <div>
-                    <h1 class="text-2xl font-black text-paia-blue uppercase tracking-tight">Sujet ECF - TP FPA</h1>
-                    <p class="text-xs font-bold text-paia-bronze uppercase tracking-widest">Évaluation en cours de formation</p>
+    <!-- Fonds animés -->
+    <div class="bg-animated-blob blob-1 fixed inset-0 pointer-events-none opacity-20"></div>
+    <div class="bg-animated-blob blob-2 fixed inset-0 pointer-events-none opacity-20"></div>
+    <div class="bg-animated-blob blob-3 fixed inset-0 pointer-events-none opacity-20"></div>
+
+    <!-- HEADER PREMIUM RESPONSIVE -->
+    <header class="bg-white/90 backdrop-blur-xl border-b-2 border-paia-blue h-[90px] flex items-center sticky top-0 z-[1000]">
+        <div class="w-full max-w-[1600px] mx-auto px-6 flex items-center justify-between">
+            <div class="flex items-center gap-4 cursor-pointer" onclick="window.location.href='index.html'">
+                <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo" class="w-14 h-14 rounded-xl border-2 border-paia-blue object-cover shadow-[2px_2px_0px_#0F2C48]" />
+                <div class="hidden sm:block">
+                    <h1 class="text-xl font-black uppercase text-paia-blue tracking-tighter">Mon Parcours FPA</h1>
+                    <p class="text-[10px] text-purple-600 font-bold uppercase tracking-widest">Sujet ECF Final</p>
                 </div>
             </div>
-            <div class="hidden md:flex items-center gap-3 bg-paia-ivory px-4 py-2 rounded-lg border-2 border-paia-blue">
-                <i class="fas fa-stopwatch text-paia-yellow text-xl"></i>
-                <span class="font-black text-paia-blue text-sm">Durée indicative : 7h</span>
-            </div>
+
+            <nav class="flex items-center gap-4">
+                <a href="index.html" class="btn-nav-app group bg-paia-blue !text-white" title="Retour au parcours principal" aria-label="Retourner à l'accueil">
+                    <i class="fa-solid fa-home"></i>
+                </a>
+            </nav>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8 max-w-5xl flex-grow">
+    <main class="flex-grow w-full max-w-[1200px] mx-auto px-4 md:px-6 py-6 md:py-8">
 
-        <!-- EN-TÊTE DU SUJET -->
-        <section class="bg-white p-6 md:p-8 rounded-[24px] border-2 border-paia-blue shadow-[6px_6px_0px_#0F2C48] mb-10">
-            <div class="flex items-center gap-3 mb-4">
-                <i class="fas fa-info-circle text-3xl text-paia-yellow"></i>
-                <h2 class="text-2xl font-black uppercase text-paia-blue">Informations générales</h2>
+        <!-- ONGLETS DE NAVIGATION STICKY -->
+        <div class="tabs-sticky py-3 mb-8 flex flex-col xl:flex-row gap-4 justify-between items-center rounded-xl px-2 md:px-0">
+            <div class="flex flex-wrap gap-3 w-full xl:w-auto" id="tabs-menu">
+                <button onclick="switchTab('accueil')" id="btn-accueil" class="tab-btn px-6 py-3 rounded-xl border-2 border-paia-blue font-black text-sm uppercase tracking-wider transition-all bg-paia-blue text-white shadow-[3px_3px_0px_#0F2C48] transform -translate-y-1">
+                    <i class="fas fa-info-circle mr-2"></i>Contexte
+                </button>
+                <button onclick="switchTab('ccp1')" id="btn-ccp1" class="tab-btn px-6 py-3 rounded-xl border-2 border-gray-200 font-black text-sm uppercase tracking-wider transition-all bg-white text-gray-500 shadow-sm hover:border-paia-blue hover:text-paia-blue hover:shadow-[3px_3px_0px_#0F2C48] hover:-translate-y-1">
+                    CCP 1
+                </button>
+                <button onclick="switchTab('ccp2')" id="btn-ccp2" class="tab-btn px-6 py-3 rounded-xl border-2 border-gray-200 font-black text-sm uppercase tracking-wider transition-all bg-white text-gray-500 shadow-sm hover:border-paia-yellow hover:text-paia-yellow hover:shadow-[3px_3px_0px_#D9A526] hover:-translate-y-1">
+                    CCP 2
+                </button>
+                <button onclick="switchTab('ccp3')" id="btn-ccp3" class="tab-btn px-6 py-3 rounded-xl border-2 border-gray-200 font-black text-sm uppercase tracking-wider transition-all bg-white text-gray-500 shadow-sm hover:border-paia-bronze hover:text-paia-bronze hover:shadow-[3px_3px_0px_#B4792A] hover:-translate-y-1">
+                    CCP 3
+                </button>
+                <button onclick="switchTab('ccp4')" id="btn-ccp4" class="tab-btn px-6 py-3 rounded-xl border-2 border-gray-200 font-black text-sm uppercase tracking-wider transition-all bg-white text-gray-500 shadow-sm hover:border-paia-dark hover:text-paia-dark hover:shadow-[3px_3px_0px_#0f172a] hover:-translate-y-1">
+                    CCP 4
+                </button>
             </div>
-            <ul class="space-y-2 text-gray-700 font-medium mb-6">
-                <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Documents autorisés :</strong> annexes.</li>
-                <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Matériel autorisé :</strong> Ordinateur, feuilles, crayons, …</li>
-            </ul>
-            <div class="bg-blue-50 border-l-4 border-paia-blue p-4 rounded-r-lg text-sm text-paia-blue">
-                <p class="font-bold mb-1">Objectifs de l’évaluation :</p>
-                <p class="mb-2">L’évaluation en cours de formation que vous allez réaliser a pour vocation de figurer dans votre livret d’évaluation. Il sera donc remis à votre jury le jour des épreuves du titre professionnel accompagné de votre évaluation et du sujet initial.</p>
-                <p>Nous vous demandons de vous mettre en situation d’examen. Prenez le temps de lire le sujet et de manipuler les annexes afin de répondre en situation professionnelle aux questions et problématiques évoquées dans le sujet. <strong>À vous de jouer !</strong></p>
-            </div>
-        </section>
+        </div>
 
-        <!-- CONTEXTE DE L'ENTREPRISE -->
-        <section class="bg-paia-blue text-white p-6 md:p-8 rounded-[24px] shadow-[6px_6px_0px_#D9A526] mb-10">
-            <h2 class="text-2xl font-black uppercase mb-4 text-paia-yellow flex items-center gap-3">
-                <i class="fas fa-building"></i> Présentation de l'entreprise : TForm'
-            </h2>
-            <div class="space-y-4 text-sm md:text-base leading-relaxed text-paia-ivory">
-                <p>Ayant obtenu votre Titre Professionnel Formateur(trice) Professionnel(le) pour Adultes, vous venez d’être recruté(e) en tant que Formateur(trice) au sein de l’organisme <strong>TForm’</strong>.</p>
-                <p>Vous êtes le premier recruté dans cet organisme de formation, créé sous forme associative. L’association se positionne dans le champ de l’Économie Sociale et Solidaire (ESS) et a pour objet la formation qualifiante ou non, des personnes, en vue de leur insertion sociale. Elle se donne la possibilité de développer une offre de formation à d’autres structures de l’ESS.</p>
+        <!-- CONTENU : ACCUEIL / CONTEXTE -->
+        <div id="tab-accueil" class="tab-content active animate-fade-in space-y-8">
 
-                <h3 class="font-bold text-white mt-4">Moyens d'action de l'association :</h3>
-                <ul class="list-disc pl-5 space-y-1">
-                    <li>Mettre au point une offre exhaustive de formation,</li>
-                    <li>Mettre en place les moyens administratifs et de gestion nécessaires,</li>
-                    <li>S’appuyer sur les supports d’activités mis à disposition des bénéficiaires,</li>
-                    <li>Favoriser l’acquisition de compétences à l’aide de supports pédagogiques et de mises en situation pratiques.</li>
-                </ul>
-
-                <p>Les bénéficiaires sont prioritairement des salariés en contrat à durée déterminée d’insertion de structures d’insertion par l’activité économique, mais aussi les salariés permanents de ces structures.</p>
-
-                <div class="bg-white/10 p-4 rounded-xl border border-white/20 mt-4">
-                    <h3 class="font-bold text-paia-yellow mb-2">Votre Mission Immédiate :</h3>
-                    <p class="mb-2">Les membres du conseil d’administration (CA) vous demandent de travailler sur deux types de formation pour répondre au besoin d’une structure cliente :</p>
-                    <ul class="list-disc pl-5 mb-2">
-                        <li>Prévenir les risques professionnels liés à la manutention dans l’aménagement paysager (gestes et postures)</li>
-                        <li>Rédiger un CV et une lettre de motivation / Accompagner à l’emploi, les premières démarches</li>
-                    </ul>
-                    <p class="mb-2">L’organisme TForm’ étant tout juste créé, les membres du CA attendent une rédaction de documents conforme aux exigences du Référentiel national qualité <strong>QUALIOPI</strong>.</p>
-                    <p>Les formations proposées s’adressent à <strong>six salariés</strong> d’un Atelier Chantier d’Insertion (aménagement paysager). Sur les six salariés, <strong>deux sont allophones et un des deux est analphabète</strong>.</p>
+            <!-- EN-TÊTE DU SUJET -->
+            <section class="card-3d bg-white p-6 md:p-8 rounded-[32px] border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48]">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-paia-yellow text-white rounded-xl flex items-center justify-center font-black text-2xl shadow-[2px_2px_0px_#0F2C48]">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h2 class="text-2xl font-black uppercase text-paia-blue">Informations générales</h2>
                 </div>
-            </div>
-        </section>
 
-        <!-- CONTENEUR DES ACTIVITES TYPES (Généré par JS) -->
-        <h2 class="text-3xl font-black uppercase text-paia-blue mb-6 border-b-4 border-paia-yellow inline-block pr-4">Les 4 Activités Types</h2>
-        <div id="at-container" class="space-y-8"></div>
-
-        <!-- ANNEXES -->
-        <section class="mt-12 bg-gray-50 p-6 md:p-8 rounded-[24px] border-2 border-gray-300 shadow-sm">
-            <h2 class="text-2xl font-black uppercase text-gray-700 mb-6 flex items-center gap-3">
-                <i class="fas fa-paperclip"></i> Les Annexes du sujet
-            </h2>
-
-            <div class="space-y-6">
-                <!-- Annexe 1 -->
-                <div class="bg-white p-5 rounded-xl border border-gray-200">
-                    <h3 class="font-black text-paia-blue text-lg mb-3">Annexe 1 : Synopsis</h3>
-                    <div class="text-sm text-gray-700 space-y-2">
-                        <p><strong>Formation :</strong> Prévenir les risques professionnels liés à la manutention dans l’aménagement paysager</p>
-                        <p><strong>Date :</strong> 06/03/2026 | <strong>Horaires :</strong> 8h30 / 12h00 | <strong>Durée :</strong> 3,30 heures</p>
-                        <p><strong>Lieu :</strong> Salle de formation + Terrain</p>
-                        <p><strong>Public cible :</strong> Personnel d'entretien / jardinier / ouvrier polyvalent</p>
-                        <p><strong>Objectifs :</strong> Comprendre l'importance des gestes, acquérir les principes ergonomiques, identifier les risques, reconnaître les situations à risque, intégrer les bonnes pratiques.</p>
-                        <p><strong>Méthodes :</strong> Apports théoriques/pratiques, échanges, exercices. <strong>Formatrice :</strong> Mme X.</p>
-                        <table class="w-full text-left mt-3 border-collapse text-xs">
-                            <tr class="bg-gray-100 border-b border-gray-300"><th class="p-2">Modules</th><th class="p-2">Temps</th></tr>
-                            <tr class="border-b border-gray-200"><td class="p-2">M1 – Introduction / Accueil</td><td class="p-2">15 min</td></tr>
-                            <tr class="border-b border-gray-200"><td class="p-2">M2 – Les principes ergonomiques</td><td class="p-2">30 min</td></tr>
-                            <tr class="border-b border-gray-200"><td class="p-2">M3 – Les gestes et postures adaptés</td><td class="p-2">60 min</td></tr>
-                            <tr class="bg-gray-50 border-b border-gray-200"><td class="p-2 italic">Pause</td><td class="p-2 italic">15 min</td></tr>
-                            <tr class="border-b border-gray-200"><td class="p-2">M4 – Application pratique / Evaluation terrain</td><td class="p-2">60 min</td></tr>
-                            <tr class="border-b border-gray-200"><td class="p-2">M5 – Conclusion et bilan</td><td class="p-2">15 min</td></tr>
-                            <tr><td class="p-2">M6 – Clôture de la formation</td><td class="p-2">15 min</td></tr>
-                        </table>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-gray-50 border-2 border-gray-200 p-4 rounded-2xl">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Documents autorisés</p>
+                        <p class="font-bold text-paia-blue"><i class="fas fa-check text-green-500 mr-2"></i>Annexes</p>
+                    </div>
+                    <div class="bg-gray-50 border-2 border-gray-200 p-4 rounded-2xl">
+                        <p class="text-xs font-black uppercase text-gray-400 mb-1">Matériel autorisé</p>
+                        <p class="font-bold text-paia-blue"><i class="fas fa-check text-green-500 mr-2"></i>Ordinateur, feuilles, crayons...</p>
                     </div>
                 </div>
 
-                <!-- Annexe 2, 3, 4 placeholders for tables -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-white p-4 rounded-xl border border-gray-200 text-center flex flex-col items-center justify-center">
-                        <i class="fas fa-table text-paia-bronze text-3xl mb-2"></i>
-                        <h3 class="font-bold text-sm">Annexe 2 : Scénario Pédagogique</h3>
-                        <p class="text-xs text-gray-500 mt-1">(Tableau vide à compléter)</p>
+                <div class="bg-blue-50 border-2 border-paia-blue p-5 rounded-2xl text-sm text-paia-blue shadow-inner relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 text-paia-blue/10 text-9xl"><i class="fas fa-bullseye"></i></div>
+                    <p class="font-black text-lg mb-2 relative z-10">Objectifs de l’évaluation :</p>
+                    <p class="mb-3 relative z-10 leading-relaxed font-medium">L’évaluation en cours de formation que vous allez réaliser a pour vocation de figurer dans votre livret d’évaluation. Il sera donc remis à votre jury le jour des épreuves du titre professionnel accompagné de votre évaluation et du sujet initial.</p>
+                    <p class="relative z-10 leading-relaxed font-medium">Nous vous demandons de vous mettre en situation d’examen. Prenez le temps de lire le sujet et de manipuler les annexes afin de répondre en situation professionnelle aux questions et problématiques évoquées dans le sujet. <span class="bg-paia-yellow text-paia-blue px-2 py-0.5 rounded font-black ml-1">À vous de jouer !</span></p>
+                </div>
+            </section>
+
+            <!-- CONTEXTE DE L'ENTREPRISE -->
+            <section class="card-3d bg-paia-blue text-white p-6 md:p-8 rounded-[32px] border-2 border-paia-blue shadow-[4px_4px_0px_#D9A526] relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+
+                <h2 class="text-2xl font-black uppercase mb-6 text-paia-yellow flex items-center gap-3 relative z-10">
+                    <div class="w-12 h-12 bg-white/10 text-paia-yellow border border-white/20 rounded-xl flex items-center justify-center text-xl backdrop-blur-sm">
+                        <i class="fas fa-building"></i>
                     </div>
-                    <div class="bg-white p-4 rounded-xl border border-gray-200 text-center flex flex-col items-center justify-center">
-                        <i class="fas fa-clipboard-list text-paia-yellow text-3xl mb-2"></i>
-                        <h3 class="font-bold text-sm">Annexe 3 : Grille Évaluation</h3>
-                        <p class="text-xs text-gray-500 mt-1">(6 Critères de niveaux 1 à 3)</p>
+                    Présentation de l'entreprise : TForm'
+                </h2>
+
+                <div class="space-y-5 text-sm md:text-base leading-relaxed text-paia-ivory relative z-10">
+                    <p class="font-medium">Ayant obtenu votre Titre Professionnel Formateur(trice) Professionnel(le) pour Adultes, vous venez d’être recruté(e) en tant que Formateur(trice) au sein de l’organisme <strong class="text-white text-lg border-b-2 border-paia-yellow">TForm’</strong>.</p>
+
+                    <p class="font-medium">Vous êtes le premier recruté dans cet organisme de formation, créé sous forme associative. L’association se positionne dans le champ de l’Économie Sociale et Solidaire (ESS) et a pour objet la formation qualifiante ou non, des personnes, en vue de leur insertion sociale. Elle se donne la possibilité de développer une offre de formation à d’autres structures de l’ESS.</p>
+
+                    <div class="bg-black/20 p-5 rounded-2xl border border-white/10 mt-4">
+                        <h3 class="font-black text-white mb-3 text-sm uppercase tracking-wider">Moyens d'action de l'association :</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2"><i class="fas fa-caret-right text-paia-yellow mt-1"></i> Mettre au point une offre exhaustive de formation</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-caret-right text-paia-yellow mt-1"></i> Mettre en place les moyens administratifs et de gestion nécessaires</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-caret-right text-paia-yellow mt-1"></i> S’appuyer sur les supports d’activités mis à disposition des bénéficiaires</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-caret-right text-paia-yellow mt-1"></i> Favoriser l’acquisition de compétences à l’aide de supports pédagogiques et de mises en situation pratiques</li>
+                        </ul>
                     </div>
-                    <div class="bg-white p-4 rounded-xl border border-gray-200 text-center flex flex-col items-center justify-center">
-                        <i class="fas fa-tasks text-paia-blue text-3xl mb-2"></i>
-                        <h3 class="font-bold text-sm">Annexe 4 : Plan Général</h3>
-                        <p class="text-xs text-gray-500 mt-1">(Tableau Titre / Objectifs / Actions)</p>
+
+                    <p class="font-medium mt-4">Les bénéficiaires sont prioritairement des salariés en contrat à durée déterminée d’insertion de structures d’insertion par l’activité économique, mais aussi les salariés permanents de ces structures.</p>
+
+                    <div class="bg-white text-paia-blue p-6 rounded-2xl border-2 border-paia-yellow shadow-[4px_4px_0px_#D9A526] mt-6">
+                        <h3 class="font-black text-paia-blue text-lg mb-3 flex items-center gap-2"><i class="fas fa-rocket text-paia-yellow"></i> Votre Mission Immédiate :</h3>
+                        <p class="mb-3 font-medium text-gray-700">Les membres du conseil d’administration (CA) vous demandent de travailler sur deux types de formation pour répondre au besoin d’une structure cliente :</p>
+                        <ul class="space-y-2 mb-4 font-bold">
+                            <li class="flex items-center gap-2 bg-gray-50 p-2 rounded-lg border border-gray-200"><span class="w-2 h-2 bg-paia-blue rounded-full"></span> Prévenir les risques professionnels liés à la manutention dans l’aménagement paysager (gestes et postures)</li>
+                            <li class="flex items-center gap-2 bg-gray-50 p-2 rounded-lg border border-gray-200"><span class="w-2 h-2 bg-paia-blue rounded-full"></span> Rédiger un CV et une lettre de motivation / Accompagner à l’emploi, les premières démarches</li>
+                        </ul>
+                        <p class="mb-3 font-medium text-gray-700">L’organisme TForm’ étant tout juste créé, les membres du CA attendent une rédaction de documents conforme aux exigences du Référentiel national qualité <strong class="bg-paia-blue text-white px-2 py-0.5 rounded">QUALIOPI</strong>.</p>
+                        <div class="bg-yellow-50 border border-yellow-200 p-3 rounded-xl flex items-start gap-3">
+                            <i class="fas fa-users text-yellow-600 mt-0.5"></i>
+                            <p class="text-sm font-bold text-yellow-800">Les formations proposées s’adressent à <strong class="text-black">six salariés</strong> d’un Atelier Chantier d’Insertion (aménagement paysager). Sur les six salariés, <strong class="text-black bg-yellow-200 px-1 rounded">deux sont allophones et un des deux est analphabète</strong>.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <!-- ANNEXES -->
+            <section class="card-3d bg-gray-50 p-6 md:p-8 rounded-[32px] border-2 border-gray-300 shadow-[4px_4px_0px_#d1d5db]">
+                <h2 class="text-2xl font-black uppercase text-gray-700 mb-6 flex items-center gap-3">
+                    <div class="w-12 h-12 bg-white border-2 border-gray-300 text-gray-600 rounded-xl flex items-center justify-center text-xl shadow-sm">
+                        <i class="fas fa-paperclip"></i>
+                    </div>
+                    Les Annexes du sujet
+                </h2>
+
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm">
+                        <h3 class="font-black text-paia-blue text-lg mb-4 flex items-center gap-2"><i class="fas fa-file-alt text-gray-400"></i> Annexe 1 : Synopsis</h3>
+                        <div class="text-sm text-gray-700 space-y-3 font-medium">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                <div><span class="text-xs font-black uppercase text-gray-400 block">Formation</span>Prévenir les risques professionnels liés à la manutention dans l’aménagement paysager</div>
+                                <div><span class="text-xs font-black uppercase text-gray-400 block">Public cible</span>Personnel d'entretien / jardinier / ouvrier polyvalent</div>
+                                <div><span class="text-xs font-black uppercase text-gray-400 block">Date & Horaires</span>06/03/2026 | 8h30 - 12h00 (3h30)</div>
+                                <div><span class="text-xs font-black uppercase text-gray-400 block">Lieu & Formatrice</span>Salle + Terrain | Mme X</div>
+                            </div>
+
+                            <div>
+                                <span class="text-xs font-black uppercase text-gray-400 block mb-1">Objectifs</span>
+                                <p>Comprendre l'importance des gestes, acquérir les principes ergonomiques, identifier les risques, reconnaître les situations à risque, intégrer les bonnes pratiques.</p>
+                            </div>
+
+                            <div>
+                                <span class="text-xs font-black uppercase text-gray-400 block mb-1">Méthodes</span>
+                                <p>Apports théoriques/pratiques, échanges, exercices.</p>
+                            </div>
+
+                            <div class="overflow-x-auto mt-4 rounded-xl border border-gray-200">
+                                <table class="w-full text-left border-collapse text-sm">
+                                    <tr class="bg-gray-100 border-b border-gray-200"><th class="p-3 font-black text-gray-600">Modules</th><th class="p-3 font-black text-gray-600 w-24">Temps</th></tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50"><td class="p-3 font-bold">M1 – Introduction / Accueil</td><td class="p-3"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">15 min</span></td></tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50"><td class="p-3 font-bold">M2 – Les principes ergonomiques</td><td class="p-3"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">30 min</span></td></tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50"><td class="p-3 font-bold">M3 – Les gestes et postures adaptés</td><td class="p-3"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">60 min</span></td></tr>
+                                    <tr class="bg-gray-50 border-b border-gray-200 text-gray-400"><td class="p-3 italic font-bold"><i class="fas fa-coffee mr-2"></i>Pause</td><td class="p-3 italic font-bold">15 min</td></tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50"><td class="p-3 font-bold">M4 – Application pratique / Evaluation terrain</td><td class="p-3"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">60 min</span></td></tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50"><td class="p-3 font-bold">M5 – Conclusion et bilan</td><td class="p-3"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">15 min</span></td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 font-bold">M6 – Clôture de la formation</td><td class="p-3"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">15 min</span></td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-5 rounded-2xl border-2 border-gray-200 text-center flex flex-col items-center justify-center hover:border-paia-bronze transition-colors shadow-sm">
+                            <div class="w-12 h-12 rounded-full bg-orange-50 text-paia-bronze flex items-center justify-center text-xl mb-3"><i class="fas fa-table"></i></div>
+                            <h3 class="font-black text-paia-blue text-sm uppercase">Annexe 2<br/>Scénario Pédag.</h3>
+                            <p class="text-xs text-gray-400 mt-2 font-bold">(Tableau vide à compléter)</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border-2 border-gray-200 text-center flex flex-col items-center justify-center hover:border-paia-yellow transition-colors shadow-sm">
+                            <div class="w-12 h-12 rounded-full bg-yellow-50 text-paia-yellow flex items-center justify-center text-xl mb-3"><i class="fas fa-clipboard-list"></i></div>
+                            <h3 class="font-black text-paia-blue text-sm uppercase">Annexe 3<br/>Grille Évaluation</h3>
+                            <p class="text-xs text-gray-400 mt-2 font-bold">(6 Critères Niveaux 1 à 3)</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border-2 border-gray-200 text-center flex flex-col items-center justify-center hover:border-paia-blue transition-colors shadow-sm">
+                            <div class="w-12 h-12 rounded-full bg-blue-50 text-paia-blue flex items-center justify-center text-xl mb-3"><i class="fas fa-tasks"></i></div>
+                            <h3 class="font-black text-paia-blue text-sm uppercase">Annexe 4<br/>Plan Général</h3>
+                            <p class="text-xs text-gray-400 mt-2 font-bold">(Titre / Objectifs / Actions)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- CONTENEURS POUR LES ONGLETS CCP (Seront remplis par JS) -->
+        <div id="tab-ccp1" class="tab-content animate-fade-in space-y-6"></div>
+        <div id="tab-ccp2" class="tab-content animate-fade-in space-y-6"></div>
+        <div id="tab-ccp3" class="tab-content animate-fade-in space-y-6"></div>
+        <div id="tab-ccp4" class="tab-content animate-fade-in space-y-6"></div>
+
     </main>
 
-    <footer class="bg-paia-blue text-white py-6 text-center mt-12">
-        <p class="text-xs font-bold tracking-widest uppercase opacity-70">Outil de préparation ECF - Mathilde Martine PAISLEY - © 2026</p>
+    <!-- Floating Actions -->
+    <div class="floating-side-menu">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn-fab bg-gradient-to-br from-blue-400 to-blue-600 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]" aria-label="Remonter en haut de la page">
+            <i class="fas fa-arrow-up"></i>
+            <span class="absolute right-full mr-3 bg-paia-blue text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Haut de page</span>
+        </button>
+    </div>
+
+    <footer class="bg-paia-blue text-white py-8 text-center mt-12 border-t-4 border-paia-yellow relative z-10">
+        <p class="text-[10px] font-bold tracking-widest uppercase opacity-70">Outil de préparation ECF - Mathilde Martine PAISLEY - © 2026</p>
     </footer>
 
     <script>
@@ -178,6 +359,7 @@
         const ecfDataComplete = [
             {
                 id: "AT1",
+                tabTarget: "tab-ccp1",
                 title: "Activité Type 1 : Concevoir et préparer la formation",
                 theme: "blue",
                 questions: [
@@ -237,6 +419,7 @@
             },
             {
                 id: "AT2",
+                tabTarget: "tab-ccp2",
                 title: "Activité Type 2 : Animer une formation et évaluer les acquis des apprenants",
                 theme: "yellow",
                 questions: [
@@ -315,6 +498,7 @@
             },
             {
                 id: "AT3",
+                tabTarget: "tab-ccp3",
                 title: "Activité Type 3 : Accompagner les apprenants en formation",
                 theme: "bronze",
                 questions: [
@@ -408,6 +592,7 @@
             },
             {
                 id: "AT4",
+                tabTarget: "tab-ccp4",
                 title: "Activité Type 4 : Inscrire sa pratique professionnelle dans une démarche de qualité et de RSE",
                 theme: "dark",
                 questions: [
@@ -483,98 +668,147 @@
             }
         ];
 
-        // CONFIGURATION DES COULEURS PAR THEME
+        // CONFIGURATION DES COULEURS PAR THEME POUR LES TEXTES/BORDURES
         const themeStyles = {
-            "blue": { headerBg: "bg-[#0F2C48]", text: "text-[#0F2C48]", border: "border-[#0F2C48]", badgeBtn: "bg-blue-100 text-[#0F2C48]" },
-            "yellow": { headerBg: "bg-[#D9A526]", text: "text-[#D9A526]", border: "border-[#D9A526]", badgeBtn: "bg-yellow-100 text-[#D9A526]" },
-            "bronze": { headerBg: "bg-[#B4792A]", text: "text-[#B4792A]", border: "border-[#B4792A]", badgeBtn: "bg-orange-100 text-[#B4792A]" },
-            "dark": { headerBg: "bg-[#0f172a]", text: "text-[#0f172a]", border: "border-[#0f172a]", badgeBtn: "bg-gray-200 text-[#0f172a]" }
+            "blue": { headerBg: "bg-paia-blue", text: "text-paia-blue", border: "border-paia-blue" },
+            "yellow": { headerBg: "bg-paia-yellow", text: "text-paia-yellow", border: "border-paia-yellow" },
+            "bronze": { headerBg: "bg-paia-bronze", text: "text-paia-bronze", border: "border-paia-bronze" },
+            "dark": { headerBg: "bg-paia-dark", text: "text-paia-dark", border: "border-paia-dark" }
         };
 
-        // FONCTION DE RENDU
+        // THEMES DES BOUTONS D'ONGLETS POUR L'ACTIF
+        const tabThemes = {
+            'accueil': { active: 'bg-paia-blue text-white shadow-[3px_3px_0px_#0F2C48]', border: 'border-paia-blue' },
+            'ccp1': { active: 'bg-paia-blue text-white shadow-[3px_3px_0px_#0F2C48]', border: 'border-paia-blue', text: 'text-paia-blue' },
+            'ccp2': { active: 'bg-paia-yellow text-white shadow-[3px_3px_0px_#D9A526]', border: 'border-paia-yellow', text: 'text-paia-yellow' },
+            'ccp3': { active: 'bg-paia-bronze text-white shadow-[3px_3px_0px_#B4792A]', border: 'border-paia-bronze', text: 'text-paia-bronze' },
+            'ccp4': { active: 'bg-paia-dark text-white shadow-[3px_3px_0px_#0f172a]', border: 'border-paia-dark', text: 'text-paia-dark' }
+        };
+
+        // GESTION DU CHANGEMENT D'ONGLET
+        window.switchTab = function(tabId) {
+            // 1. Cacher tous les contenus
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // 2. Afficher le contenu ciblé
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            // 3. Réinitialiser le style de tous les boutons (état inactif)
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                const id = btn.id.replace('btn-', '');
+                btn.className = `tab-btn px-6 py-3 rounded-xl border-2 ${tabThemes[id].border} font-black text-sm uppercase tracking-wider transition-all bg-white text-gray-400 shadow-sm hover:shadow-[3px_3px_0px_currentColor] hover:-translate-y-1 hover:${tabThemes[id].text}`;
+            });
+
+            // 4. Appliquer le style actif au bouton cliqué
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if(activeBtn) {
+                activeBtn.className = `tab-btn px-6 py-3 rounded-xl border-2 ${tabThemes[tabId].border} font-black text-sm uppercase tracking-wider transition-all transform -translate-y-1 ${tabThemes[tabId].active}`;
+            }
+        };
+
+        // FONCTION DE RENDU DES BLOCS CCP DANS LEURS ONGLETS RESPECTIFS
         function renderECF() {
-            const container = document.getElementById('at-container');
-            let html = '';
-
             ecfDataComplete.forEach((at, atIndex) => {
-                const style = themeStyles[at.theme];
+                const container = document.getElementById(at.tabTarget);
+                if(!container) return;
 
+                const style = themeStyles[at.theme];
                 let questionsHtml = '';
+
                 at.questions.forEach((question, qIndex) => {
                     const uniqueId = `critere-${at.id}-${qIndex}`;
 
                     // Rendu des critères
                     let criteresHtml = '';
                     question.criteres.forEach(c => {
-                        criteresHtml += `<li class="mb-1"><i class="fas fa-check text-green-500 mr-2 text-xs"></i>${c}</li>`;
+                        criteresHtml += `<li class="mb-2 flex items-start gap-2"><i class="fas fa-check text-green-500 mt-1 text-xs"></i><span class="leading-snug">${c}</span></li>`;
                     });
 
-                    // Rendu des cours à lire pour cette question
+                    // Rendu des cours
                     let coursHtml = '';
                     if (question.cours && question.cours.length > 0) {
                         let badgesCoursHtml = '';
                         question.cours.forEach(c => {
                             badgesCoursHtml += `
-                                <span class="bg-gray-50 border border-gray-300 text-gray-700 text-[10px] font-medium px-2.5 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5 max-w-full hover:border-paia-blue hover:text-paia-blue transition-colors">
-                                    <span class="text-paia-blue font-black tracking-widest uppercase">${c.code}</span>
-                                    <span class="truncate">- ${c.titre}</span>
+                                <span class="bg-white border-2 border-gray-200 text-gray-700 text-[11px] font-medium px-3 py-2 rounded-xl shadow-[2px_2px_0px_rgba(15,44,72,0.1)] flex items-center gap-2 w-full transition-colors hover:border-gray-300">
+                                    <span class="${style.text} font-black tracking-widest uppercase shrink-0">${c.code}</span>
+                                    <span class="truncate block w-full border-l-2 border-gray-200 pl-2">- ${c.titre}</span>
                                 </span>
                             `;
                         });
-
                         coursHtml = `
-                            <div class="mt-4 pt-4 border-t border-gray-200">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-1.5"><i class="fas fa-book-open text-paia-bronze"></i> Cours associés à maîtriser :</p>
-                                <div class="flex flex-wrap gap-2">
+                            <div class="mt-6 pt-5 border-t-2 border-dashed border-gray-200">
+                                <p class="text-xs font-black uppercase tracking-widest text-gray-400 mb-3 flex items-center gap-2"><i class="fas fa-book-open ${style.text} text-sm"></i> Cours à maîtriser pour cette question :</p>
+                                <div class="flex flex-col gap-2">
                                     ${badgesCoursHtml}
                                 </div>
                             </div>
                         `;
                     }
 
+                    // ACCORDEON COMPLET PAR QUESTION FAÇON BRUTALISME PREMIUM
                     questionsHtml += `
-                        <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
-                            <p class="font-bold text-gray-800 text-lg mb-4 text-justify leading-relaxed">${question.q}</p>
-
-                            <div class="bg-white border-l-4 ${style.border} p-4 rounded-r-lg shadow-sm">
-                                <p class="text-xs font-black uppercase tracking-widest text-gray-500 mb-1">Compétence visée</p>
-                                <p class="text-sm font-bold ${style.text} mb-3 flex items-center gap-2"><i class="fas fa-bullseye"></i> ${question.competence}</p>
-
-                                <button onclick="toggleCriteres('${uniqueId}', this)" class="text-xs font-bold ${style.badgeBtn} px-3 py-1.5 rounded-full hover:brightness-95 transition-all flex items-center gap-2">
-                                    <span>Voir les critères d'évaluation de la compétence</span>
-                                    <i class="fas fa-chevron-down transition-transform"></i>
-                                </button>
-
-                                <div id="${uniqueId}" class="accordion-content mt-3 text-sm text-gray-600 pl-2">
-                                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 border-b border-gray-200 pb-1">Critères évalués par le jury :</p>
-                                    <ul class="space-y-1">${criteresHtml}</ul>
+                        <div class="card-3d bg-white border-2 border-paia-blue rounded-[24px] mb-5 shadow-[4px_4px_0px_#0F2C48] overflow-hidden group/question transition-all">
+                            <button onclick="toggleQuestion('${uniqueId}', this)" class="w-full text-left p-6 flex items-start sm:items-center justify-between focus:outline-none hover:bg-gray-50 transition-colors">
+                                <div class="flex flex-col gap-2 pr-4">
+                                    <span class="text-xs font-black uppercase tracking-[0.2em] bg-gray-100 text-gray-500 px-3 py-1 rounded-lg w-max border-2 border-transparent group-hover/question:border-gray-200 transition-colors">Question ${qIndex + 1}</span>
+                                    <p class="font-bold text-[#0F2C48] text-lg sm:text-xl leading-relaxed">${question.q}</p>
                                 </div>
+                                <div class="w-10 h-10 shrink-0 rounded-full border-2 border-paia-blue bg-white flex items-center justify-center text-paia-blue shadow-[2px_2px_0px_#0F2C48] transition-transform duration-300 group-hover/question:-translate-y-1 group-hover/question:shadow-[4px_4px_0px_#0F2C48]">
+                                    <i class="fas fa-chevron-down icon-arrow transition-transform duration-300"></i>
+                                </div>
+                            </button>
 
-                                ${coursHtml}
+                            <div id="${uniqueId}" class="accordion-content bg-paia-ivory">
+                                <div class="p-6 md:p-8 border-t-2 border-paia-blue">
+
+                                    <div class="bg-white border-2 ${style.border} p-5 md:p-6 rounded-2xl shadow-[4px_4px_0px_currentColor] relative overflow-hidden">
+                                        <div class="absolute -right-4 -top-4 text-9xl opacity-5"><i class="fas fa-bullseye"></i></div>
+
+                                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 relative z-10">Compétence évaluée</p>
+                                        <p class="text-base sm:text-lg font-black ${style.text} mb-5 flex items-center gap-2 relative z-10"><i class="fas fa-bullseye"></i> ${question.competence}</p>
+
+                                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 relative z-10">
+                                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-3 border-b border-gray-200 pb-2 flex items-center gap-2"><i class="fas fa-list-check"></i> Critères évalués par le jury :</p>
+                                            <ul class="text-sm font-medium text-gray-700">${criteresHtml}</ul>
+                                        </div>
+
+                                        ${coursHtml}
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     `;
                 });
 
-                html += `
-                    <div class="bg-white rounded-[24px] border-2 ${style.border} shadow-[4px_4px_0px_currentColor] overflow-hidden mb-8">
-                        <div class="${style.headerBg} text-white p-5 flex items-center gap-4">
-                            <h2 class="text-xl font-black uppercase tracking-wide">${at.title}</h2>
+                // Injection dans l'onglet avec le design 3D de l'en-tête
+                container.innerHTML = `
+                    <div class="bg-white rounded-[32px] border-2 ${style.border} shadow-[6px_6px_0px_currentColor] overflow-hidden">
+                        <div class="${style.headerBg} text-white p-6 md:p-8 flex items-center gap-5 relative overflow-hidden">
+                            <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-white/10 rounded-full blur-2xl"></div>
+                            <div class="w-16 h-16 shrink-0 bg-white/20 border-2 border-white/30 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl shadow-inner relative z-10">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div class="relative z-10">
+                                <h2 class="text-xl md:text-3xl font-black uppercase tracking-tight leading-tight">${at.title}</h2>
+                                <p class="text-xs md:text-sm font-bold opacity-80 mt-2 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-hand-pointer"></i> Cliquez sur une question pour dérouler son contenu</p>
+                            </div>
                         </div>
-                        <div class="p-6 space-y-6">
+                        <div class="p-4 sm:p-6 md:p-8 bg-white">
                             ${questionsHtml}
                         </div>
                     </div>
                 `;
             });
-
-            container.innerHTML = html;
         }
 
-        // FONCTION POUR OUVRIR/FERMER LES CRITERES
-        window.toggleCriteres = function(id, btnElement) {
+        // FONCTION POUR OUVRIR/FERMER L'ACCORDEON COMPLET DE LA QUESTION
+        window.toggleQuestion = function(id, btnElement) {
             const content = document.getElementById(id);
-            const icon = btnElement.querySelector('.fa-chevron-down');
+            const icon = btnElement.querySelector('.icon-arrow');
 
             if (content.classList.contains('open')) {
                 content.classList.remove('open');
