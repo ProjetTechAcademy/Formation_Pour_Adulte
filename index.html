@@ -189,19 +189,12 @@
         box-shadow: 0px 0px 0px var(--paia-blue);
       }
 
+      /* Onglets avec couleur modifiée en JS */
       .tab-btn {
-        background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
-        color: var(--paia-blue); border: 2px solid rgba(15, 44, 72, 0.2); border-radius: 12px;
-        padding: 12px 24px; font-weight: 900; font-size: 0.95rem; transition: 0.3s;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        transition: 0.3s;
       }
       @media (max-width: 768px) {
           .tab-btn { padding: 10px 18px; font-size: 0.85rem; flex: 1 1 auto; text-align: center; }
-      }
-      .tab-btn.active {
-        background: var(--paia-blue);
-        color: white; border-color: var(--paia-blue); box-shadow: 3px 3px 0px var(--paia-blue);
-        transform: translate(-1px, -1px);
       }
 
       /* Ressources Tracker Badges */
@@ -229,6 +222,7 @@
       .bg-audio { background: linear-gradient(135deg, #667eea 0%, #5a68d8 100%); color: white; }
       .bg-pdf { background: linear-gradient(135deg, #0f2c48 0%, #174069 100%); color: #d9a526; }
       .bg-lien { background: linear-gradient(135deg, #0078d4 0%, #0060a8 100%); color: white; }
+      .bg-notebook { background: linear-gradient(135deg, #d946ef 0%, #a21caf 100%); color: white; }
       .bg-excel { background: linear-gradient(135deg, #107c41 0%, #0d6334 100%); color: white; }
       .bg-infog { background: linear-gradient(135deg, #e81123 0%, #b80d1b 100%); color: white; }
       .bg-slide { background: linear-gradient(135deg, #d83b01 0%, #ad2f01 100%); color: white; }
@@ -352,24 +346,24 @@
         </div>
 
         <nav class="hidden lg:flex items-center gap-4">
-            <a href="Card.html" target="_blank" class="btn-nav-app group" title="Contact">
+            <a href="Card.html" target="_blank" class="btn-nav-app group" title="Contact" aria-label="Contacter Mathilde">
               <i class="fa-solid fa-paper-plane text-paia-yellow"></i>
             </a>
-            <a href="https://app.studi.fr/v3/blog" target="_blank" class="btn-nav-app group" title="Newsletter">
+            <a href="https://app.studi.fr/v3/blog" target="_blank" class="btn-nav-app group" title="Newsletter" aria-label="Consulter la newsletter Studi">
               <i class="fa-solid fa-bolt text-blue-400"></i>
             </a>
-            <button onclick="filtrerBloc('CAL')" class="btn-nav-app group" title="Planning">
+            <button onclick="filtrerBloc('CAL')" class="btn-nav-app group" title="Planning" aria-label="Ouvrir le calendrier et le planning">
               <i class="fa-solid fa-calendar-check text-emerald-400"></i>
             </button>
-            <button onclick="filtrerBloc('CERTIF')" class="btn-nav-app group" title="Certification">
+            <button onclick="filtrerBloc('CERTIF')" class="btn-nav-app group" title="Certification" aria-label="Ouvrir le hub des certifications">
               <i class="fa-solid fa-trophy text-paia-bronze"></i>
             </button>
-            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="btn-nav-app group" title="Communauté">
+            <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="btn-nav-app group" title="Communauté" aria-label="Rejoindre la communauté Teams">
               <i class="fa-brands fa-microsoft text-rose-400"></i>
             </a>
         </nav>
 
-        <button onclick="toggleMobileMenu()" class="lg:hidden w-12 h-12 flex items-center justify-center border-2 border-paia-blue rounded-xl text-paia-blue text-xl bg-white shadow-[2px_2px_0px_#0F2C48] transition-all hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_#0F2C48]">
+        <button onclick="toggleMobileMenu()" class="lg:hidden w-12 h-12 flex items-center justify-center border-2 border-paia-blue rounded-xl text-paia-blue text-xl bg-white shadow-[2px_2px_0px_#0F2C48] transition-all hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_#0F2C48]" aria-label="Ouvrir le menu mobile">
             <i id="burger-icon" class="fas fa-bars"></i>
         </button>
       </div>
@@ -377,7 +371,7 @@
 
     <!-- Mobile Overlay Menu -->
     <div id="mobile-menu" class="fixed inset-0 bg-paia-blue z-[900] hidden flex-col items-center justify-center gap-8 text-white p-10 transform translate-x-full transition-transform duration-300">
-        <button onclick="toggleMobileMenu()" class="absolute top-8 right-8 text-4xl text-paia-ivory hover:scale-110 transition-transform"><i class="fas fa-times"></i></button>
+        <button onclick="toggleMobileMenu()" class="absolute top-8 right-8 text-4xl text-paia-ivory hover:scale-110 transition-transform" aria-label="Fermer le menu mobile"><i class="fas fa-times"></i></button>
         <a href="Card.html" class="text-2xl font-black uppercase tracking-widest hover:text-paia-yellow transition-colors"><i class="fas fa-paper-plane mr-4 text-paia-yellow"></i> Contact</a>
         <a href="https://app.studi.fr/v3/blog" class="text-2xl font-black uppercase tracking-widest hover:text-paia-yellow transition-colors"><i class="fas fa-bolt mr-4 text-blue-400"></i> Newsletter</a>
         <button onclick="filtrerBloc('CAL'); toggleMobileMenu()" class="text-2xl font-black uppercase tracking-widest hover:text-paia-yellow transition-colors"><i class="fas fa-calendar-check mr-4 text-emerald-400"></i> Planning</button>
@@ -389,7 +383,7 @@
 
       <div class="tabs-sticky py-3 mb-8 flex flex-col xl:flex-row gap-4 justify-between items-center rounded-xl px-2 md:px-0">
           <div class="flex flex-wrap gap-3 w-full xl:w-auto" id="tabsMenu">
-            <button class="tab-btn active" id="tab-ALL" onclick="filtrerBloc('ALL')">Vue Globale</button>
+            <button class="tab-btn" id="tab-ALL" onclick="filtrerBloc('ALL')">Vue Globale</button>
             <button class="tab-btn" id="tab-B0" onclick="filtrerBloc('B0')">B0 : Socle</button>
             <button class="tab-btn" id="tab-B1" onclick="filtrerBloc('B1')">B1 : Concevoir</button>
             <button class="tab-btn" id="tab-B2" onclick="filtrerBloc('B2')">B2 : Animer</button>
@@ -686,27 +680,27 @@
 
     <!-- Floating Actions -->
     <div class="floating-side-menu">
-      <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn-fab bg-gradient-to-br from-blue-400 to-blue-600 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]">
+      <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn-fab bg-gradient-to-br from-blue-400 to-blue-600 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]" aria-label="Remonter en haut de la page">
         <i class="fas fa-arrow-up"></i>
         <span class="absolute right-full mr-3 bg-paia-blue text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Haut de page</span>
       </button>
 
-      <button onclick="toggleAudio()" class="btn-fab bg-gradient-to-br from-purple-400 to-purple-600 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]">
+      <button onclick="toggleAudio()" class="btn-fab bg-gradient-to-br from-purple-400 to-purple-600 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]" aria-label="Contrôle de l'audio">
         <i id="audioIcon" class="fas fa-volume-mute"></i>
         <span id="audioLabel" class="absolute right-full mr-3 bg-paia-blue text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Audio OFF</span>
       </button>
 
-      <button onclick="document.body.classList.toggle('dys-mode')" class="btn-fab bg-gradient-to-br from-emerald-400 to-emerald-600 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]">
+      <button onclick="document.body.classList.toggle('dys-mode')" class="btn-fab bg-gradient-to-br from-emerald-400 to-emerald-600 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]" aria-label="Mode Dyslexique">
         <i class="fas fa-glasses"></i>
         <span class="absolute right-full mr-3 bg-paia-blue text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Mode DYS</span>
       </button>
 
-      <button onclick="document.body.classList.toggle('high-contrast')" class="btn-fab bg-gradient-to-br from-amber-400 to-orange-500 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]">
+      <button onclick="document.body.classList.toggle('high-contrast')" class="btn-fab bg-gradient-to-br from-amber-400 to-orange-500 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]" aria-label="Mode Haut Contraste">
         <i class="fas fa-adjust"></i>
         <span class="absolute right-full mr-3 bg-paia-blue text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Contraste</span>
       </button>
 
-      <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" class="btn-fab bg-gradient-to-br from-rose-400 to-rose-600 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]">
+      <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" class="btn-fab bg-gradient-to-br from-rose-400 to-rose-600 group border-2 border-white shadow-[2px_2px_0px_#0F2C48]" aria-label="Bas de page">
         <i class="fas fa-arrow-down"></i>
         <span class="absolute right-full mr-3 bg-paia-blue text-white text-[10px] px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg font-bold pointer-events-none">Bas de page</span>
       </button>
@@ -830,7 +824,7 @@
                     "026_FPA_B1_M07_S002 - Les concepts, modalités et démarches pédagogiques",
                     "027_FPA_B1_M07_S003 - Les techniques pédagogiques",
                     "028_FPA_B1_M07_S004 - L'outillage pédagogique",
-                    "029_FPA_B1_M07_S005 - Les stratégies favorisant l'analyse réflexive, les pédagogies actives et l'apprentissage par les pairs",
+                    "029_FPA_B1_M07_S005 - Les strategies favorisant l'analyse réflexive, les pédagogies actives et l'apprentissage par les pairs",
                     "030_FPA_B1_M07_S006 - Les types d'évaluation et de positionnement",
                     "031_FPA_B1_M07_S007 - Les concepts de base de l'ingénierie pédagogique adaptée aux adultes"
                 ]},
@@ -1371,24 +1365,24 @@
                         row.classList.add('bg-teal-50');
                         badgeHtml = '<span class="text-[10px] px-3 py-1 bg-teal-500 text-white font-black rounded-full uppercase shadow-[2px_2px_0px_#0F2C48] border border-paia-blue">Envoyé 🚀</span>';
                         if (isEcf && extraActions) {
-                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'livret_recu')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-paia-yellow border-2 border-paia-blue text-[#0F2C48] font-bold rounded-lg shadow-[2px_2px_0px_#0F2C48] hover:translate-y-[-1px] transition-all" title="Marquer comme reçu"><i class="fas fa-book-open"></i></button>`;
+                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'livret_recu')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-paia-yellow border-2 border-paia-blue text-[#0F2C48] font-bold rounded-lg shadow-[2px_2px_0px_#0F2C48] hover:translate-y-[-1px] transition-all" title="Marquer comme reçu" aria-label="Marquer comme reçu"><i class="fas fa-book-open"></i></button>`;
                         } else if (isDossier && extraActions) {
-                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'valide')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-blue-500 border-2 border-paia-blue text-white font-bold rounded-lg shadow-[2px_2px_0px_#0F2C48] hover:translate-y-[-1px] transition-all" title="Valider définitivement"><i class="fas fa-check"></i></button>`;
+                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'valide')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-blue-500 border-2 border-paia-blue text-white font-bold rounded-lg shadow-[2px_2px_0px_#0F2C48] hover:translate-y-[-1px] transition-all" title="Valider définitivement" aria-label="Valider définitivement"><i class="fas fa-check"></i></button>`;
                         }
                     } else if (status === 'refaire') {
                         row.classList.add('bg-pink-50');
                         badgeHtml = '<span class="text-[10px] px-3 py-1 bg-pink-500 text-white font-black rounded-full uppercase shadow-[2px_2px_0px_#0F2C48] border border-paia-blue">À Refaire ❌</span>';
                         if (isEcf && extraActions) {
-                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'envoye')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-[#0F2C48] border-2 border-paia-blue text-white font-bold rounded-lg hover:bg-blue-900 shadow-[2px_2px_0px_#0F2C48] transition-all" title="Renvoyer"><i class="fas fa-paper-plane"></i></button>`;
+                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'envoye')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-[#0F2C48] border-2 border-paia-blue text-white font-bold rounded-lg hover:bg-blue-900 shadow-[2px_2px_0px_#0F2C48] transition-all" title="Renvoyer" aria-label="Renvoyer"><i class="fas fa-paper-plane"></i></button>`;
                         } else if (isDossier && extraActions) {
-                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'valide')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-blue-500 border-2 border-paia-blue text-white font-bold rounded-lg hover:bg-blue-600 shadow-[2px_2px_0px_#0F2C48] transition-all" title="Re-Valider"><i class="fas fa-check"></i></button>`;
+                            extraActions.innerHTML = `<button onclick="setEvalStatus('${evalId}', 'valide')" class="text-[10px] w-8 h-8 flex items-center justify-center bg-blue-500 border-2 border-paia-blue text-white font-bold rounded-lg hover:bg-blue-600 shadow-[2px_2px_0px_#0F2C48] transition-all" title="Re-Valider" aria-label="Re-Valider"><i class="fas fa-check"></i></button>`;
                         }
                     } else if (status === 'ignore') {
                         row.classList.add('bg-gray-100', 'opacity-50');
                         badgeHtml = '<span class="text-[10px] px-3 py-1 bg-gray-400 text-white font-bold rounded-full uppercase shadow-sm">Ignoré</span>';
                     }
 
-                    if (extraActions) extraActions.innerHTML += `<button onclick="resetEvalStatus('${evalId}')" class="text-[10px] text-gray-400 hover:text-red-500 ml-1 transition-colors" title="Réinitialiser"><i class="fas fa-undo"></i></button>`;
+                    if (extraActions) extraActions.innerHTML += `<button onclick="resetEvalStatus('${evalId}')" class="text-[10px] text-gray-400 hover:text-red-500 ml-1 transition-colors" title="Réinitialiser" aria-label="Réinitialiser l'évaluation"><i class="fas fa-undo"></i></button>`;
                     if (statusBadge) statusBadge.innerHTML = badgeHtml;
 
                 } else {
@@ -1407,8 +1401,8 @@
                         buttonsHtml = `<button onclick="setEvalStatus('${evalId}', 'envoye')" class="${btnBase} bg-[#0F2C48] text-white uppercase tracking-wider">Envoyer</button>`;
                     } else if (isDossier) {
                         buttonsHtml = `
-                            <button onclick="setEvalStatus('${evalId}', 'valide')" class="${btnBase} bg-blue-500 text-white"><i class="fas fa-check"></i></button>
-                            <button onclick="setEvalStatus('${evalId}', 'refaire')" class="${btnBase} bg-pink-500 text-white ml-1"><i class="fas fa-times"></i></button>
+                            <button onclick="setEvalStatus('${evalId}', 'valide')" class="${btnBase} bg-blue-500 text-white" aria-label="Valider l'évaluation"><i class="fas fa-check"></i></button>
+                            <button onclick="setEvalStatus('${evalId}', 'refaire')" class="${btnBase} bg-pink-500 text-white ml-1" aria-label="Marquer l'évaluation à refaire"><i class="fas fa-times"></i></button>
                         `;
                     } else {
                         buttonsHtml = `<button onclick="setEvalStatus('${evalId}', 'termine')" class="${btnBase} bg-emerald-500 text-white uppercase tracking-wider">Terminer</button>`;
@@ -1723,9 +1717,24 @@
         currentBloc = bloc;
         currentMod = "ALL";
 
-        document.querySelectorAll(".tab-btn").forEach((btn) => btn.classList.remove("active"));
+        // Style de base pour les onglets inactifs
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+            btn.className = "tab-btn bg-white/90 backdrop-blur-[10px] text-gray-500 border-2 border-gray-200 hover:border-paia-blue/30 hover:text-paia-blue transition-all rounded-xl px-4 py-2.5 font-black text-sm shadow-sm";
+        });
+
+        // Appliquer un style de couleur spécifique à l'onglet sélectionné
         const activeTabBtn = document.getElementById("tab-" + bloc);
-        if (activeTabBtn) activeTabBtn.classList.add("active");
+        if (activeTabBtn) {
+            let activeClass = "bg-paia-blue text-white border-paia-blue shadow-[3px_3px_0px_#0F2C48]";
+            if (bloc === "ALL") activeClass = "bg-gradient-to-r from-fuchsia-600 to-violet-600 text-white border-fuchsia-700 shadow-[3px_3px_0px_#4a044e]";
+            if (bloc === "B0") activeClass = "bg-sky-500 text-white border-sky-600 shadow-[3px_3px_0px_#0284c7]";
+            if (bloc === "B1") activeClass = "bg-paia-blue text-white border-blue-900 shadow-[3px_3px_0px_#0f172a]";
+            if (bloc === "B2") activeClass = "bg-paia-yellow text-white border-yellow-600 shadow-[3px_3px_0px_#b45309]";
+            if (bloc === "B3") activeClass = "bg-paia-bronze text-white border-orange-800 shadow-[3px_3px_0px_#7c2d12]";
+            if (bloc === "B4") activeClass = "bg-paia-dark text-white border-black shadow-[3px_3px_0px_#000000]";
+
+            activeTabBtn.className = `tab-btn active ${activeClass} transition-all rounded-xl px-4 py-2.5 font-black text-sm transform translate-y-[-2px]`;
+        }
 
         const listContainer = document.getElementById('listContainer');
         const subTabsContainer = document.getElementById('subTabsContainer');
@@ -1782,7 +1791,7 @@
                               <span class="text-sm font-bold text-[#0F2C48] leading-tight">${rev.moduleId}</span>
                               <span class="text-xs text-gray-500 truncate max-w-[200px]">${rev.titre}</span>
                           </div>
-                          <button onclick="markRevisionDone('${rev.id}', true)" class="shrink-0 bg-white border-2 border-paia-blue text-paia-blue hover:bg-emerald-400 hover:border-emerald-500 hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-[2px_2px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_#0F2C48]">
+                          <button onclick="markRevisionDone('${rev.id}', true)" class="shrink-0 bg-white border-2 border-paia-blue text-paia-blue hover:bg-emerald-400 hover:border-emerald-500 hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-[2px_2px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_#0F2C48]" aria-label="Marquer la révision comme faite">
                               <i class="fas fa-check"></i>
                           </button>
                       </div>
@@ -2212,7 +2221,7 @@
 
                       <div class="flex-grow min-w-0 flex flex-col">
                           <div class="flex items-center gap-2 mb-0.5">
-                              <button onclick="${goToModuleCode}" class="text-[10px] font-black text-[#0F2C48] bg-white border-2 border-paia-blue shadow-[1px_1px_0px_#0F2C48] px-1.5 py-0.5 rounded cursor-pointer hover:bg-[#0F2C48] hover:text-white transition-colors" title="Aller réviser ce cours">
+                              <button onclick="${goToModuleCode}" class="text-[10px] font-black text-[#0F2C48] bg-white border-2 border-paia-blue shadow-[1px_1px_0px_#0F2C48] px-1.5 py-0.5 rounded cursor-pointer hover:bg-[#0F2C48] hover:text-white transition-colors" title="Aller réviser ce cours" aria-label="Aller réviser ce cours">
                                   <i class="fas fa-external-link-alt text-[8px] mr-1"></i>${rev.moduleId}
                               </button>
                               ${isUrgent ? '<span class="text-[8px] font-black uppercase tracking-widest text-white bg-rose-500 px-1.5 py-0.5 rounded-full shadow-sm">À faire</span>' : ''}
@@ -2220,7 +2229,7 @@
                           <span onclick="${goToModuleCode}" class="text-xs font-bold text-gray-700 truncate cursor-pointer hover:text-indigo-600 transition-colors" title="Aller au cours">${rev.titre}</span>
                       </div>
 
-                      <button onclick="markRevisionDone('${rev.id}')" class="shrink-0 w-10 h-10 rounded-full border-2 ${rev.done ? 'bg-emerald-400 text-white border-emerald-600' : 'bg-white text-paia-blue border-paia-blue shadow-[2px_2px_0px_#0F2C48] hover:bg-emerald-400 hover:border-emerald-600 hover:text-white hover:shadow-none'} flex items-center justify-center transition-all">
+                      <button onclick="markRevisionDone('${rev.id}')" class="shrink-0 w-10 h-10 rounded-full border-2 ${rev.done ? 'bg-emerald-400 text-white border-emerald-600' : 'bg-white text-paia-blue border-paia-blue shadow-[2px_2px_0px_#0F2C48] hover:bg-emerald-400 hover:border-emerald-600 hover:text-white hover:shadow-none'} flex items-center justify-center transition-all" aria-label="Valider la révision">
                           <i class="fas fa-check text-[12px]"></i>
                       </button>
                   </div>
@@ -2539,7 +2548,20 @@
 
         const createBtn = (id, label) => {
             const btn = document.createElement("button");
-            btn.className = `px-6 py-3 rounded-xl border-2 font-black text-[13px] md:text-sm uppercase transition-all shadow-[2px_2px_0px_#0F2C48] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#0F2C48] flex-1 sm:flex-none text-center ${currentMod === id ? 'bg-paia-blue text-white border-paia-blue' : 'bg-white text-paia-blue border-paia-blue'}`;
+
+            // Couleurs basées sur le bloc en cours (Pep's)
+            let themeBg = 'bg-paia-blue';
+            let themeBorder = 'border-paia-blue';
+            if (currentBloc === 'B0') { themeBg = 'bg-sky-500'; themeBorder = 'border-sky-600'; }
+            if (currentBloc === 'B1') { themeBg = 'bg-paia-blue'; themeBorder = 'border-blue-900'; }
+            if (currentBloc === 'B2') { themeBg = 'bg-paia-yellow'; themeBorder = 'border-yellow-600'; }
+            if (currentBloc === 'B3') { themeBg = 'bg-paia-bronze'; themeBorder = 'border-orange-800'; }
+            if (currentBloc === 'B4') { themeBg = 'bg-paia-dark'; themeBorder = 'border-black'; }
+
+            const isActive = currentMod === id;
+
+            btn.className = `px-6 py-3 rounded-xl border-2 font-black text-[13px] md:text-sm uppercase transition-all flex-1 sm:flex-none text-center ${isActive ? themeBg + ' text-white ' + themeBorder + ' shadow-[3px_3px_0px_rgba(0,0,0,0.5)] transform translate-y-[-1px]' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700 shadow-sm'}`;
+
             btn.innerText = label;
             btn.onclick = () => { currentMod = id; renderSubTabs(); const searchInputEl = document.getElementById("searchInput"); afficherModules(searchInputEl ? searchInputEl.value : ""); };
             return btn;
@@ -2619,7 +2641,8 @@
 
           const resOfficiels = [
             { id: "pdf", em: "📄", n: "Cours Officiel PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" },
-            { id: "lien", em: "🎓", n: "Plateforme Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" }
+            { id: "lien", em: "🎓", n: "Plateforme Studi", b: "bg-lien", url: itemObj.Lien_Studi, type: "external", color: "#0078d4" },
+            { id: "notebook", em: "📓", n: "NoteBook_LM", b: "bg-notebook", url: itemObj.NoteBook_LM, type: "external", color: "#d946ef" }
           ];
 
           const resCore = [
@@ -2636,16 +2659,29 @@
             { id: "quiz", em: "⚡", n: "Quiz", b: "bg-quiz", url: `Quiz/${safeFileName}`, type: "embed-quiz", color: "#b4792a" },
           ];
 
-          let htmlOff = resOfficiels.map((r) => {
+          let htmlOff = resOfficiels.map((r, index) => {
               let displayEmoji = r.em;
               let tooltipText = r.n;
               let btnClass = r.b;
 
-              const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
-              let extraDivClass = (!r.url || r.url.trim() === '') ? "opacity-40 grayscale pointer-events-none" : "";
+              if (r.id === 'pdf' && !isUnlocked) {
+                  displayEmoji = "🔒"; tooltipText = "Document Privé (Droits d'auteur)"; btnClass = "bg-locked";
+              } else if (r.id === 'pdf' && isUnlocked) {
+                  displayEmoji = "📄"; tooltipText = "Cours Officiel PDF"; btnClass = "bg-pdf";
+              }
 
-              return `<div class="relative tooltip-container ${extraDivClass}">
-                          <${linkProps.tag} ${linkProps.action} class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText.replace(/'/g, "\\'")}')"><span>${displayEmoji}</span></${linkProps.tag}>
+              const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
+
+              if (r.id === "notebook" && (!r.url || r.url.trim() === "")) {
+                  linkProps.tag = "div";
+                  linkProps.action = `onclick="afficherTravaux('NoteBook_LM - ${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"`;
+              }
+
+              let extraDivClass = (!r.url || r.url.trim() === '') && r.id !== "notebook" ? "opacity-40 grayscale pointer-events-none" : "";
+              let colSpanClass = index === 2 ? "col-span-2 flex justify-center mt-1" : "flex justify-center";
+
+              return `<div class="relative tooltip-container ${extraDivClass} ${colSpanClass}">
+                          <${linkProps.tag} ${linkProps.action} aria-label="Ressource ${tooltipText}" class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText.replace(/'/g, "\\'")}')"><span>${displayEmoji}</span></${linkProps.tag}>
                           <span class="tooltip">${tooltipText}</span>
                       </div>`;
           }).join("");
@@ -2679,8 +2715,8 @@
                 }
 
                 return `<div class="relative tooltip-container ${extraDivClass}">
-                            <${linkProps.tag} ${linkProps.action} class="btn-resource ${r.b}" onmouseenter="lire('${r.n.replace(/'/g, "\\'")}')"><span>${r.em}</span></${linkProps.tag}>
-                            <button ${badgeAction} class="check-badge ${checkC}"><i class="${checkIcon}"></i></button>
+                            <${linkProps.tag} ${linkProps.action} aria-label="Ressource ${r.n}" class="btn-resource ${r.b}" onmouseenter="lire('${r.n.replace(/'/g, "\\'")}')"><span>${r.em}</span></${linkProps.tag}>
+                            <button ${badgeAction} class="check-badge ${checkC}" aria-label="Marquer la ressource comme lue ou non lue"><i class="${checkIcon}"></i></button>
                             <span class="tooltip">${r.n}</span>
                         </div>`;
               }).join("");
@@ -2703,17 +2739,15 @@
 
           const moduleRevs = savedRevisions.filter(r => r.moduleId === id);
 
-          // NOUVEAUTÉ : Affichage d'un badge 0/6 même si ce n'est pas encore programmé
           const nbTotal = moduleRevs.length > 0 ? moduleRevs.length : 6;
           const nbDone = moduleRevs.length > 0 ? moduleRevs.filter(r => r.done).length : 0;
 
-          // Si planifié: rouge ou vert. Si non planifié: gris.
           const badgeColorClass = moduleRevs.length > 0 ? "border-rose-700 bg-rose-500" : "border-gray-400 bg-gray-400 opacity-70";
           const btnCalendarClass = moduleRevs.length > 0 ? "bg-rose-500 text-white border-rose-700 shadow-[2px_2px_0px_#9f1239]" : "bg-white text-gray-400 border-gray-300 hover:text-rose-500 hover:border-rose-400 shadow-[2px_2px_0px_rgba(0,0,0,0.1)] transition-colors";
 
           let btnCalendarHTML = `
               <div class="relative tooltip-container">
-                  <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource border-2 transition-all ${btnCalendarClass}">
+                  <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource border-2 transition-all ${btnCalendarClass}" aria-label="Planifier les révisions de ce module">
                       <span>⏰</span>
                   </button>
                   <div class="cal-badge border-2 text-white ${badgeColorClass}">${nbDone}/${nbTotal}</div>
@@ -2724,11 +2758,8 @@
           const isFull = validRids.length > 0 && (lineCheckedCore + lineCheckedExt) === validRids.length;
 
           let offBlock = `
-              <div class="flex flex-col gap-2 bg-[#0F2C48]/5 pt-3 pb-2 px-3 rounded-2xl border-2 border-[#0F2C48]/10 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative overflow-hidden h-full">
-                  <div class="flex gap-2 z-10">${htmlOff}</div>
-                  <div class="flex items-center justify-center w-full px-1 z-10 mt-1 border-t-2 border-paia-blue/10 pt-1">
-                      <span class="text-[8px] font-black uppercase text-[#0F2C48]/50 tracking-widest leading-none">Officiel</span>
-                  </div>
+              <div class="flex flex-col items-center justify-center bg-[#0F2C48]/5 py-3 px-4 rounded-2xl border-2 border-[#0F2C48]/10 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative overflow-hidden h-full">
+                  <div class="grid grid-cols-2 gap-2 z-10 w-full place-items-center">${htmlOff}</div>
               </div>`;
 
           let coreBlock = '';
@@ -2738,7 +2769,7 @@
                   <div class="flex gap-2 z-10">${htmlCore}</div>
                   <div class="flex items-center justify-between w-full px-1 z-10 mt-1 border-t-2 ${isCoreFull ? 'border-emerald-200' : 'border-cyan-200'} pt-1">
                       <span class="text-[8px] font-black uppercase ${isCoreFull ? 'text-emerald-600' : 'text-cyan-600'} tracking-widest leading-none transition-colors">Skill Up</span>
-                      <button onclick="toggleGroup(event, '${id}', 'core')" class="text-[20px] p-2 md:p-1 hover:scale-125 transition-transform ${isCoreFull ? 'text-emerald-500' : 'text-cyan-500 drop-shadow-sm'}" title="${isCoreFull ? 'Annuler' : 'Valider Skill Up'}">${isCoreFull ? '✅' : '🚀'}</button>
+                      <button onclick="toggleGroup(event, '${id}', 'core')" class="text-[20px] p-2 md:p-1 hover:scale-125 transition-transform ${isCoreFull ? 'text-emerald-500' : 'text-cyan-500 drop-shadow-sm'}" title="${isCoreFull ? 'Annuler' : 'Valider Skill Up'}" aria-label="${isCoreFull ? 'Annuler la validation du groupe Skill Up' : 'Valider tout le groupe Skill Up'}">${isCoreFull ? '✅' : '🚀'}</button>
                   </div>
                   <div class="absolute bottom-0 left-0 w-full h-[6px] bg-black/5 z-0"></div>
                   <div class="absolute bottom-0 left-0 h-[6px] ${isCoreFull ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-cyan-400 to-cyan-500'} transition-all duration-700 ease-out z-0" style="width: ${percentCore}%;"></div>
@@ -2752,7 +2783,7 @@
                   <div class="flex gap-2 z-10">${htmlExt}</div>
                   <div class="flex items-center justify-between w-full px-1 z-10 mt-1 border-t-2 ${isExtFull ? 'border-emerald-200' : 'border-amber-200'} pt-1">
                       <span class="text-[8px] font-black uppercase ${isExtFull ? 'text-emerald-600' : 'text-amber-600'} tracking-widest leading-none transition-colors">Créations</span>
-                      <button onclick="toggleGroup(event, '${id}', 'ext')" class="text-[20px] p-2 md:p-1 hover:scale-125 transition-transform ${isExtFull ? 'text-emerald-500' : 'text-amber-500 drop-shadow-sm'}" title="${isExtFull ? 'Annuler' : 'Valider Créations'}">${isExtFull ? '✅' : '🚀'}</button>
+                      <button onclick="toggleGroup(event, '${id}', 'ext')" class="text-[20px] p-2 md:p-1 hover:scale-125 transition-transform ${isExtFull ? 'text-emerald-500' : 'text-amber-500 drop-shadow-sm'}" title="${isExtFull ? 'Annuler' : 'Valider Créations'}" aria-label="${isExtFull ? 'Annuler la validation des créations' : 'Valider toutes les créations'}">${isExtFull ? '✅' : '🚀'}</button>
                   </div>
                   <div class="absolute bottom-0 left-0 w-full h-[6px] bg-black/5 z-0"></div>
                   <div class="absolute bottom-0 left-0 h-[6px] ${isExtFull ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-amber-400 to-amber-500'} transition-all duration-700 ease-out z-0" style="width: ${percentExt}%;"></div>
@@ -2790,21 +2821,20 @@
               let audioInsideHtml = '';
               if (hasAudio) {
                   audioInsideHtml = `
-                      <button class="absolute top-3 right-3 w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[3px_3px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#0F2C48] transition-all z-20" title="Écouter le podcast inline" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl.replace(/'/g, "\\'")}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
+                      <button class="absolute top-3 right-3 w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[3px_3px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#0F2C48] transition-all z-20" title="Écouter le podcast inline" aria-label="Écouter le podcast audio" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl.replace(/'/g, "\\'")}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
                           <i class="fas fa-play text-[12px] ml-1"></i>
                       </button>
                   `;
               }
 
               previewBlock = `
-              <div class="lg:w-[320px] shrink-0 ml-auto h-full min-h-[180px]">
+              <div class="w-full lg:w-[40%] xl:w-[35%] max-w-[480px] shrink-0 h-full min-h-[220px] mt-4 lg:mt-0 lg:ml-auto">
                   <div class="relative w-full h-full rounded-[24px] border-2 border-paia-blue overflow-hidden bg-paia-blue group cursor-zoom-in shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all"
               onclick="event.stopPropagation(); window.open('${visualUrlForThumb.replace(/'/g, "\\'")}', '_blank')">
                       <div class="absolute inset-0 bg-gray-100 flex items-center justify-center">
                           <i class="fas fa-image text-gray-300 text-3xl"></i>
                       </div>
 
-                      <!-- L'image possède maintenant la classe 'animate-slow-pan' pour donner un effet défilement doux -->
                       <img src="${thumbUrl}" alt="Aperçu" class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 animate-slow-pan z-10" onerror="this.style.opacity='0'">
 
                       <div class="absolute inset-0 bg-gradient-to-t from-paia-blue/90 via-paia-blue/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity z-10"></div>
@@ -2828,7 +2858,7 @@
               let audioInsideHtml = '';
               if (hasAudio) {
                   audioInsideHtml = `
-                      <button class="w-14 h-14 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all z-20 mb-3" title="Écouter le podcast" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl.replace(/'/g, "\\'")}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
+                      <button class="w-14 h-14 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all z-20 mb-3" title="Écouter le podcast" aria-label="Écouter le podcast audio" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl.replace(/'/g, "\\'")}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
                           <i class="fas fa-play text-xl ml-1"></i>
                       </button>
                       <span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-100 px-3 py-1.5 rounded-xl border border-indigo-200">Podcast Audio</span>
@@ -2836,7 +2866,7 @@
               }
 
               previewBlock = `
-              <div class="lg:w-[320px] shrink-0 ml-auto h-full min-h-[180px]">
+              <div class="w-full lg:w-[40%] xl:w-[35%] max-w-[480px] shrink-0 h-full min-h-[220px] mt-4 lg:mt-0 lg:ml-auto">
                   <div class="w-full h-full rounded-[24px] border-2 border-dashed border-gray-300 bg-gray-50 flex flex-col items-center justify-center p-4 hover:border-paia-blue hover:bg-white transition-colors">
                       ${hasAudio ? audioInsideHtml : `
                       <i class="fas fa-image mb-3 text-gray-300 text-3xl"></i>
@@ -2850,10 +2880,9 @@
           card.className = `card-3d bg-white p-6 rounded-[32px] border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] flex flex-col gap-6 items-stretch mb-6 ${isFull ? "bg-blue-50/30 border-paia-blue shadow-[4px_4px_0px_#3b82f6]" : ""} ${anim ? "card-animate" : ""}`;
           if (anim) card.style.animationDelay = `${(cardIdx + 1) * 0.03}s`;
 
-          // CORRECTION ICI: Le bloc inline-media est complètement en dessous du wrapper contenant la gauche et la droite
           card.innerHTML = `
-            <div class="flex flex-col lg:flex-row gap-6 items-stretch w-full">
-                <div class="flex-grow flex flex-col min-w-0">
+            <div class="flex flex-col lg:flex-row gap-4 xl:gap-6 items-stretch w-full">
+                <div class="w-full lg:w-[60%] xl:w-[65%] flex flex-col min-w-0">
                     <div class="flex flex-col xl:flex-row xl:items-center gap-3 mb-4">
                         <span class="self-start px-3 py-1.5 bg-paia-blue text-white font-black rounded-lg text-xs shadow-[2px_2px_0px_#B4792A] shrink-0 tracking-wider">${id}</span>
                         <h3 class="text-lg md:text-xl font-black text-paia-blue uppercase tracking-tight leading-tight">${titre}</h3>
