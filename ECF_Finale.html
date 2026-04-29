@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ECF Final - TP FPA</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        paia: {
+                            ivory: '#F6F2E8',
+                            blue: '#0F2C48',
+                            yellow: '#D9A526',
+                            bronze: '#B4792A',
+                            dark: '#0f172a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet" />
+
+    <style>
+        body { font-family: "Roboto", sans-serif; }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-content.open {
+            max-height: 2000px; /* Assez grand pour le contenu */
+        }
+    </style>
+</head>
+<body class="bg-paia-ivory text-paia-blue min-h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="bg-white border-b-4 border-paia-blue shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-paia-blue text-white rounded-xl flex items-center justify-center font-black text-2xl shadow-[2px_2px_0px_#D9A526]">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black text-paia-blue uppercase tracking-tight">Sujet ECF - TP FPA</h1>
+                    <p class="text-xs font-bold text-paia-bronze uppercase tracking-widest">Évaluation en cours de formation</p>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center gap-3 bg-paia-ivory px-4 py-2 rounded-lg border-2 border-paia-blue">
+                <i class="fas fa-stopwatch text-paia-yellow text-xl"></i>
+                <span class="font-black text-paia-blue text-sm">Durée indicative : 7h</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-5xl flex-grow">
+
+        <!-- EN-TÊTE DU SUJET -->
+        <section class="bg-white p-6 md:p-8 rounded-[24px] border-2 border-paia-blue shadow-[6px_6px_0px_#0F2C48] mb-10">
+            <div class="flex items-center gap-3 mb-4">
+                <i class="fas fa-info-circle text-3xl text-paia-yellow"></i>
+                <h2 class="text-2xl font-black uppercase text-paia-blue">Informations générales</h2>
+            </div>
+            <ul class="space-y-2 text-gray-700 font-medium mb-6">
+                <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Documents autorisés :</strong> annexes.</li>
+                <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Matériel autorisé :</strong> Ordinateur, feuilles, crayons, …</li>
+            </ul>
+            <div class="bg-blue-50 border-l-4 border-paia-blue p-4 rounded-r-lg text-sm text-paia-blue">
+                <p class="font-bold mb-1">Objectifs de l’évaluation :</p>
+                <p class="mb-2">L’évaluation en cours de formation que vous allez réaliser a pour vocation de figurer dans votre livret d’évaluation. Il sera donc remis à votre jury le jour des épreuves du titre professionnel accompagné de votre évaluation et du sujet initial.</p>
+                <p>Nous vous demandons de vous mettre en situation d’examen. Prenez le temps de lire le sujet et de manipuler les annexes afin de répondre en situation professionnelle aux questions et problématiques évoquées dans le sujet. <strong>À vous de jouer !</strong></p>
+            </div>
+        </section>
+
+        <!-- CONTEXTE DE L'ENTREPRISE -->
+        <section class="bg-paia-blue text-white p-6 md:p-8 rounded-[24px] shadow-[6px_6px_0px_#D9A526] mb-10">
+            <h2 class="text-2xl font-black uppercase mb-4 text-paia-yellow flex items-center gap-3">
+                <i class="fas fa-building"></i> Présentation de l'entreprise : TForm'
+            </h2>
+            <div class="space-y-4 text-sm md:text-base leading-relaxed text-paia-ivory">
+                <p>Ayant obtenu votre Titre Professionnel Formateur(trice) Professionnel(le) pour Adultes, vous venez d’être recruté(e) en tant que Formateur(trice) au sein de l’organisme <strong>TForm’</strong>.</p>
+                <p>Vous êtes le premier recruté dans cet organisme de formation, créé sous forme associative. L’association se positionne dans le champ de l’Économie Sociale et Solidaire (ESS) et a pour objet la formation qualifiante ou non, des personnes, en vue de leur insertion sociale. Elle se donne la possibilité de développer une offre de formation à d’autres structures de l’ESS.</p>
+
+                <h3 class="font-bold text-white mt-4">Moyens d'action de l'association :</h3>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Mettre au point une offre exhaustive de formation,</li>
+                    <li>Mettre en place les moyens administratifs et de gestion nécessaires,</li>
+                    <li>S’appuyer sur les supports d’activités mis à disposition des bénéficiaires,</li>
+                    <li>Favoriser l’acquisition de compétences à l’aide de supports pédagogiques et de mises en situation pratiques.</li>
+                </ul>
+
+                <p>Les bénéficiaires sont prioritairement des salariés en contrat à durée déterminée d’insertion de structures d’insertion par l’activité économique, mais aussi les salariés permanents de ces structures.</p>
+
+                <div class="bg-white/10 p-4 rounded-xl border border-white/20 mt-4">
+                    <h3 class="font-bold text-paia-yellow mb-2">Votre Mission Immédiate :</h3>
+                    <p class="mb-2">Les membres du conseil d’administration (CA) vous demandent de travailler sur deux types de formation pour répondre au besoin d’une structure cliente :</p>
+                    <ul class="list-disc pl-5 mb-2">
+                        <li>Prévenir les risques professionnels liés à la manutention dans l’aménagement paysager (gestes et postures)</li>
+                        <li>Rédiger un CV et une lettre de motivation / Accompagner à l’emploi, les premières démarches</li>
+                    </ul>
+                    <p class="mb-2">L’organisme TForm’ étant tout juste créé, les membres du CA attendent une rédaction de documents conforme aux exigences du Référentiel national qualité <strong>QUALIOPI</strong>.</p>
+                    <p>Les formations proposées s’adressent à <strong>six salariés</strong> d’un Atelier Chantier d’Insertion (aménagement paysager). Sur les six salariés, <strong>deux sont allophones et un des deux est analphabète</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTENEUR DES ACTIVITES TYPES (Généré par JS) -->
+        <h2 class="text-3xl font-black uppercase text-paia-blue mb-6 border-b-4 border-paia-yellow inline-block pr-4">Les 4 Activités Types</h2>
+        <div id="at-container" class="space-y-8"></div>
+
+        <!-- ANNEXES -->
+        <section class="mt-12 bg-gray-50 p-6 md:p-8 rounded-[24px] border-2 border-gray-300 shadow-sm">
+            <h2 class="text-2xl font-black uppercase text-gray-700 mb-6 flex items-center gap-3">
+                <i class="fas fa-paperclip"></i> Les Annexes du sujet
+            </h2>
+
+            <div class="space-y-6">
+                <!-- Annexe 1 -->
+                <div class="bg-white p-5 rounded-xl border border-gray-200">
+                    <h3 class="font-black text-paia-blue text-lg mb-3">Annexe 1 : Synopsis</h3>
+                    <div class="text-sm text-gray-700 space-y-2">
+                        <p><strong>Formation :</strong> Prévenir les risques professionnels liés à la manutention dans l’aménagement paysager</p>
+                        <p><strong>Date :</strong> 06/03/2026 | <strong>Horaires :</strong> 8h30 / 12h00 | <strong>Durée :</strong> 3,30 heures</p>
+                        <p><strong>Lieu :</strong> Salle de formation + Terrain</p>
+                        <p><strong>Public cible :</strong> Personnel d'entretien / jardinier / ouvrier polyvalent</p>
+                        <p><strong>Objectifs :</strong> Comprendre l'importance des gestes, acquérir les principes ergonomiques, identifier les risques, reconnaître les situations à risque, intégrer les bonnes pratiques.</p>
+                        <p><strong>Méthodes :</strong> Apports théoriques/pratiques, échanges, exercices. <strong>Formatrice :</strong> Mme X.</p>
+                        <table class="w-full text-left mt-3 border-collapse text-xs">
+                            <tr class="bg-gray-100 border-b border-gray-300"><th class="p-2">Modules</th><th class="p-2">Temps</th></tr>
+                            <tr class="border-b border-gray-200"><td class="p-2">M1 – Introduction / Accueil</td><td class="p-2">15 min</td></tr>
+                            <tr class="border-b border-gray-200"><td class="p-2">M2 – Les principes ergonomiques</td><td class="p-2">30 min</td></tr>
+                            <tr class="border-b border-gray-200"><td class="p-2">M3 – Les gestes et postures adaptés</td><td class="p-2">60 min</td></tr>
+                            <tr class="bg-gray-50 border-b border-gray-200"><td class="p-2 italic">Pause</td><td class="p-2 italic">15 min</td></tr>
+                            <tr class="border-b border-gray-200"><td class="p-2">M4 – Application pratique / Evaluation terrain</td><td class="p-2">60 min</td></tr>
+                            <tr class="border-b border-gray-200"><td class="p-2">M5 – Conclusion et bilan</td><td class="p-2">15 min</td></tr>
+                            <tr><td class="p-2">M6 – Clôture de la formation</td><td class="p-2">15 min</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Annexe 2, 3, 4 placeholders for tables -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-table text-paia-bronze text-3xl mb-2"></i>
+                        <h3 class="font-bold text-sm">Annexe 2 : Scénario Pédagogique</h3>
+                        <p class="text-xs text-gray-500 mt-1">(Tableau vide à compléter)</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-clipboard-list text-paia-yellow text-3xl mb-2"></i>
+                        <h3 class="font-bold text-sm">Annexe 3 : Grille Évaluation</h3>
+                        <p class="text-xs text-gray-500 mt-1">(6 Critères de niveaux 1 à 3)</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-tasks text-paia-blue text-3xl mb-2"></i>
+                        <h3 class="font-bold text-sm">Annexe 4 : Plan Général</h3>
+                        <p class="text-xs text-gray-500 mt-1">(Tableau Titre / Objectifs / Actions)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-paia-blue text-white py-6 text-center mt-12">
+        <p class="text-xs font-bold tracking-widest uppercase opacity-70">Outil de préparation ECF - Mathilde Martine PAISLEY - © 2026</p>
+    </footer>
+
+    <script>
+        // DONNEES COMPLETES EXTRAITES DU DOCUMENT FOURNI ET ASSOCIATION DES COURS
+        const ecfDataComplete = [
+            {
+                id: "AT1",
+                title: "Activité Type 1 : Concevoir et préparer la formation",
+                theme: "blue",
+                questions: [
+                    {
+                        q: "1. Détaillez au minimum 5 raisons importantes d’élaborer une progression pédagogique d’une formation multimodale.",
+                        competence: "Élaborer la progression pédagogique d’une formation multimodale à partir d’une demande",
+                        criteres: [
+                            "L’analyse de la demande permet d’identifier les compétences et savoirs à acquérir, les caractéristiques des publics et les besoins d’accompagnement",
+                            "La progression pédagogique décrit les objectifs, les étapes, les modalités et les durées de formation",
+                            "Le plan d’accompagnement décrit les étapes de l’accompagnement, les modalités et les durées associées",
+                            "Le cadre contractuel et financier est pris en compte dans la progression pédagogique et le plan d’accompagnement",
+                            "Les moyens humains, matériels et pédagogiques sont pris en compte dans la progression pédagogique et le plan d’accompagnement"
+                        ],
+                        cours: [
+                            { code: "022_FPA_B1_M06_S002", titre: "La rédaction d'une progression pédagogique et d'un plan d'accompagnement" },
+                            { code: "021_FPA_B1_M06_S001", titre: "Les étapes de la formation et de l'accompagnement et les durées associées" },
+                            { code: "044_FPA_B1_M11_S001", titre: "La scénarisation d'un parcours" },
+                            { code: "046_FPA_B1_M11_S003", titre: "La planification et l'accueil de nouveaux apprenants y compris dans les formations à entrées et sorties permanentes" }
+                        ]
+                    },
+                    {
+                        q: "2. A partir du synopsis en annexe 1, rédigez le scénario pédagogique en utilisant le tableau de l’annexe 2.",
+                        competence: "Concevoir un scénario pédagogique et d’accompagnement en intégrant la multimodalité",
+                        criteres: [
+                            "Le scénario est structuré à partir des objectifs pédagogiques et précise les étapes clés de l’apprentissage, de l’évaluation et de d’accompagnement, ainsi que les durées associées",
+                            "Les situations d’apprentissage, d’évaluation et d’accompagnement précisent les objectifs pédagogiques, les intentions, les méthodes et techniques, les activités, les outils, les ressources et les modalités",
+                            "Le scénario respecte le cadre contractuel et réglementaire, et prend en compte l’hétérogénéité des besoins et les caractéristiques des publics",
+                            "Des scenarii alternatifs sont prévus pour prendre en compte les difficultés d’apprentissage",
+                            "Les moyens et l’organisation prévus dans le scénario permettent d’anticiper la mise en oeuvre de la formation"
+                        ],
+                        cours: [
+                            { code: "040_FPA_B1_M09_S006", titre: "La construction du scénario pédagogique" },
+                            { code: "039_FPA_B1_M09_S005", titre: "Les étapes clés structurant un temps de formation" },
+                            { code: "026_FPA_B1_M07_S002", titre: "Les concepts, modalités et démarches pédagogiques" },
+                            { code: "047_FPA_B1_M11_S004", titre: "Application - Concevoir un scénario pédagogique et d'accompagnement en intégrant la multimodalité" }
+                        ]
+                    },
+                    {
+                        q: "3. A partir de l’annexe 3, rédigez le contenu de la grille d’évaluation de mise en pratique sur le terrain de la formation « Prévenir les risques liés à la manutention dans l’aménagement paysager ».",
+                        competence: "Concevoir des activités d’apprentissage et d’évaluation en intégrant la multimodalité",
+                        criteres: [
+                            "L’état des lieux permet d’identifier les ressources pédagogiques disponibles et celles à concevoir",
+                            "Les ressources pédagogiques sont adaptées à l’objectif visé, aux règles d’hygiène et de sécurité, aux évolutions et à la règlementation du domaine de spécialité, ainsi qu’au public",
+                            "Les activités et les capsules pédagogiques sont produites à partir d’un plan ou d’un storyboard",
+                            "Les consignes destinées aux apprenants et aux formateurs sont explicites",
+                            "La règlementation en vigueur concernant la propriété intellectuelle est respectée"
+                        ],
+                        cours: [
+                            { code: "056_FPA_B1_M13_S006", titre: "Travailler sur des projets de conception d’activités d’apprentissage ou d’évaluation" },
+                            { code: "030_FPA_B1_M07_S006", titre: "Les types d'évaluation et de positionnement" },
+                            { code: "084_FPA_B2_M05_S001", titre: "La planification et la mise en place d'une évaluation" },
+                            { code: "090_FPA_B2_M06_S002", titre: "Les outils d'évaluation" },
+                            { code: "091_FPA_B2_M06_S003", titre: "La construction d'activités et d'outils d'évaluation des acquis" }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "AT2",
+                title: "Activité Type 2 : Animer une formation et évaluer les acquis des apprenants",
+                theme: "yellow",
+                questions: [
+                    {
+                        q: "1. Lors de la formation \"Prévenir les risques liés à la manutention...\", vous projetez un diaporama sur \"les principes ergonomiques\". Vous remarquez que les deux personnes allophones décrochent et ne vous écoutent plus. Proposez 5 actions minimum à mettre en place pour ces deux salariés.",
+                        competence: "Animer une formation et faciliter les apprentissages selon différentes modalités",
+                        criteres: [
+                            "Les apprentissages sont replacés dans la progression pédagogique",
+                            "Les objectifs visés et les étapes de l’animation sont présentés aux apprenants",
+                            "Les consignes permettant la réalisation des activités et l’utilisation des ressources sont explicites",
+                            "Les méthodes et techniques pédagogiques utilisées sont adaptées aux objectifs et au public",
+                            "Le scénario pédagogique et les moyens envisagés sont respectés, les éventuelles modifications sont motivées",
+                            "Les actions du formateur facilitent la dynamique de groupe, la participation des apprenants et leur collaboration"
+                        ],
+                        cours: [
+                            { code: "098_FPA_B2_M08_S002", titre: "Remédier aux difficultés d'apprentissage" },
+                            { code: "100_FPA_B2_M09_S001", titre: "L'adaptation de la formation en cas de difficultés individuelles" },
+                            { code: "072_FPA_B2_M02_S006", titre: "La dynamique de groupe" },
+                            { code: "078_FPA_B2_M04_S002", titre: "Les difficultés individuelles et collectives d'apprentissage" },
+                            { code: "097_FPA_B2_M08_S001", titre: "Les difficultés et obstacles à l’apprentissage" }
+                        ]
+                    },
+                    {
+                        q: "2. Pour anticiper et pallier la difficulté des salariés allophones à suivre un diaporama, il est essentiel d'adapter les supports et méthodes dès la préparation. Décrivez 5 propositions concrètes d’amélioration de votre support de présentation.",
+                        competence: "Animer une formation et faciliter les apprentissages selon différentes modalités",
+                        criteres: [
+                            "Les apprentissages sont replacés dans la progression pédagogique",
+                            "Les objectifs visés et les étapes de l’animation sont présentés aux apprenants",
+                            "Les consignes permettant la réalisation des activités et l’utilisation des ressources sont explicites",
+                            "Les méthodes et techniques pédagogiques utilisées sont adaptées aux objectifs et au public",
+                            "Le scénario pédagogique et les moyens envisagés sont respectés, les éventuelles modifications sont motivées",
+                            "Les actions du formateur facilitent la dynamique de groupe, la participation des apprenants et leur collaboration"
+                        ],
+                        cours: [
+                            { code: "050_FPA_B1_M12_S003", titre: "La méthode FALC" },
+                            { code: "048_FPA_B1_M12_S001", titre: "Capter l'attention grâce aux images et aux schémas" },
+                            { code: "049_FPA_B1_M12_S002", titre: "Les règles d'écriture d'une consigne, de communication et de conception graphique" },
+                            { code: "051_FPA_B1_M13_S001", titre: "La conception d'un support de formation et d'une activité d'apprentissage" }
+                        ]
+                    },
+                    {
+                        q: "3. Vous avez animé le module de formation. Les deux évaluations proposées pour la partie théorie et pratique ne vous satisfont pas. Décrivez 5 propositions d’évaluation en prenant en considération les deux salariés allophones.",
+                        competence: "Evaluer les acquis de formation des apprenants",
+                        criteres: [
+                            "Les modalités et les activités d’évaluation sont cohérentes avec les caractéristiques des apprenants et les moyens humains et matériels",
+                            "Les modalités et les activités d’évaluation respectent le cahier des charges de la formation ou le référentiel de certification ou de diplôme",
+                            "Les critères et les indicateurs d’évaluation sont adaptés aux objectifs visés",
+                            "Les consignes permettant la réalisation des activités d’évaluation sont explicites",
+                            "La restitution et l’analyse des résultats permettent aux apprenants de repérer leurs acquis et leurs axes de progrès"
+                        ],
+                        cours: [
+                            { code: "087_FPA_B2_M05_S004", titre: "La réglementation sur l’adaptation des évaluations pour les apprenants en situation de handicap" },
+                            { code: "088_FPA_B2_M05_S005", titre: "L'alignement pédagogique entre les objectifs d'apprentissage, les activités et l'évaluation" },
+                            { code: "089_FPA_B2_M06_S001", titre: "L'évaluation des acquis" }
+                        ]
+                    },
+                    {
+                        q: "4. Avec votre même groupe de salariés en insertion, vous devez travailler autour de la rédaction du CV. Un des salariés ne sait pas utiliser les outils informatiques. Explicitez 5 techniques vous permettant de l'accompagner et de l’impliquer dans la rédaction de son CV.",
+                        competence: "Remédier aux difficultés individuelles d’apprentissage",
+                        criteres: [
+                            "Les difficultés d’apprentissage sont repérées",
+                            "Une démarche diagnostique est mise en oeuvre",
+                            "Les causes des difficultés d’apprentissage sont identifiées",
+                            "La strategy de remédiation tient compte des causes de la difficulté, des caractéristiques de l’apprenant et de la progression pédagogique",
+                            "Les limites de ses champs d’intervention sont respectées"
+                        ],
+                        cours: [
+                            { code: "101_FPA_B2_M09_S002", titre: "Les techniques de résolution de problème" },
+                            { code: "102_FPA_B2_M09_S003", titre: "La posture à adopter pour remédier aux difficultés individuelles d'apprentissage" },
+                            { code: "138_FPA_B3_M11_S001", titre: "L'insertion sociale et professionnelle" },
+                            { code: "142_FPA_B3_M11_S005", titre: "Les outils numériques d'accompagnement au projet professionnel et de recherche d'emploi" },
+                            { code: "144_FPA_B3_M12_S001", titre: "Les techniques de recherche d'emploi" }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "AT3",
+                title: "Activité Type 3 : Accompagner les apprenants en formation",
+                theme: "bronze",
+                questions: [
+                    {
+                        q: "1. Lors d’un entretien de mi-parcours, un apprenant vous confie ses doutes quant à sa suite de parcours. Il a l’impression de ne pas être capable d’appliquer tout ce que vous avez abordé au préalable. À quoi allez-vous être vigilant durant cet entretien ? Citez au minimum 5 points de vigilance.",
+                        competence: "Accompagner les apprenants dans leur parcours de formation",
+                        criteres: [
+                            "Les étapes prévues dans le scénario d’accompagnement et les parcours individuels des apprenants sont respectées",
+                            "La conduite d’entretien s’appuie sur des étapes et des techniques adaptées à la situation",
+                            "Les ajustements de parcours sont formalisés et motivés",
+                            "Le choix des acteurs sollicités est cohérent avec les problématiques des apprenants",
+                            "L’utilisation des outils de suivi permet la traçabilité du parcours"
+                        ],
+                        cours: [
+                            { code: "106_FPA_B3_M02_S001", titre: "Les techniques d'entretien" },
+                            { code: "107_FPA_B3_M02_S002", titre: "Les différents types d'entretien" },
+                            { code: "108_FPA_B3_M02_S003", titre: "Les outils de suivi et de bilan" },
+                            { code: "110_FPA_B3_M03_S001", titre: "L'intelligence émotionnelle - au coeur de l'être humain" }
+                        ]
+                    },
+                    {
+                        q: "2. Vous avez débuté le module \"rédiger efficacement son CV et sa lettre de motivation\", lors de la deuxième séance vous accueillez un nouvel apprenant. Indiquez les étapes à mettre en place pour son accueil et la co-construction de son parcours de formation ?",
+                        competence: "Accueillir un apprenant en formation et co-construire son parcours",
+                        criteres: [
+                            "Le déroulement du positionnement respecte les étapes prévues",
+                            "Les consignes à destination de l’apprenant sont explicites",
+                            "Les pré acquis, les besoins de formation et les modalités préférentielles d’apprentissage sont identifiés",
+                            "Les objectifs, étapes et modalités du parcours proposé sont validés avec l’apprenant",
+                            "Les parcours de formation et d’accompagnement sont formalisés"
+                        ],
+                        cours: [
+                            { code: "121_FPA_B3_M06_S001", titre: "L'accueil individuel d'un apprenant en formation" },
+                            { code: "119_FPA_B3_M05_S003", titre: "La co-construction d'un parcours de formation" },
+                            { code: "117_FPA_B3_M05_S001", titre: "Le positionnement des apprenants" },
+                            { code: "120_FPA_B3_M05_S004", titre: "La mise en place d'un protocole individuel de formation" }
+                        ]
+                    },
+                    {
+                        q: "3. Un second apprenant, Martin, intègre la formation « Accompagner à l’emploi... ». Martin émet le souhait de se diriger dans le domaine du service aux personnes. Détaillez, à partir du document en annexe 4, le plan général en 5 étapes, que vous proposeriez pour l’accompagner de manière structurée et personnalisée.",
+                        competence: "Accompagner le développement professionnel des apprenants",
+                        criteres: [
+                            "Les temps d’accompagnement au projet professionnel sont mis en oeuvre",
+                            "Des situations d’évaluation et des activités réflexives sont organisées pour permettre aux apprenants d’identifier les compétences et les comportements relatifs à leur projet professionnel",
+                            "Des situations d’apprentissage sont organisées pour permettre l’appropriation des comportements et des compétences professionnelles et transversales nécessaires à la réalisation du projet professionnel des apprenants",
+                            "Les atouts et les freins au projet professionnel sont identifiés",
+                            "Les apprenants sont accompagnés dans leur recherche de stage ou d’emploi"
+                        ],
+                        cours: [
+                            { code: "143_FPA_B3_M11_S006", titre: "Les méthodes d'accompagnement au projet professionnel" },
+                            { code: "105_FPA_B3_M01_S002", titre: "Les démarches diagnostiques" },
+                            { code: "145_FPA_B3_M12_S002", titre: "Les mesures d'accès à la formation et à l'emploi" },
+                            { code: "146_FPA_B3_M12_S003", titre: "Application - Accompagner le développement des apprenants" }
+                        ]
+                    },
+                    {
+                        q: "4. Suite à la formation « Accompagner à l’emploi... » vous effectuez le suivi pendant 3 mois des apprenants. Les rendez-vous de suivi se réalisent en distanciel. Définissez une stratégie de tutorat, en 5 points minimum, pour aider Octave dans son développement de projet professionnel.",
+                        competence: "Tutorer les apprenants à distance",
+                        criteres: [
+                            "Les interventions tutorales sont adaptées aux besoins des apprenants et à la situation",
+                            "Les interventions tutorales favorisent l’autonomisation de l’apprenant à distance",
+                            "Le scénario tutoral et les moyens envisagés sont respectés, les éventuelles modifications sont motivées",
+                            "Les outils de communication collaboratifs sont animés et modérés",
+                            "Les interventions tutorales sont tracées dans un outil de suivi"
+                        ],
+                        cours: [
+                            { code: "133_FPA_B3_M08_S006", titre: "Application - Tutorer les apprenants à distance" },
+                            { code: "124_FPA_B3_M07_S001", titre: "Fonctions tutorales et besoins de l'apprenant en formation à distance" },
+                            { code: "125_FPA_B3_M07_S002", titre: "Les mécanismes motivationnels et attentionnels en formation à distance" },
+                            { code: "126_FPA_B3_M07_S003", titre: "Les leviers et freins aux apprentissages dans la relation à distance" },
+                            { code: "130_FPA_B3_M08_S003", titre: "Le feed-back dans une situation de formation à distance" }
+                        ]
+                    },
+                    {
+                        q: "5. En fin de formation, Martin a validé son projet professionnel d’aide à domicile. Vous avez identifié ses atouts et ses freins. Mettez en place un plan d’action post formation pour encourager Martin et suivre le développement de son projet professionnel.",
+                        competence: "Accompagner le développement professionnel des apprenants",
+                        criteres: [
+                            "Les temps d’accompagnement au projet professionnel sont mis en oeuvre",
+                            "Des situations d’évaluation et des activités réflexives sont organisées pour permettre aux apprenants d’identifier les compétences et les comportements relatifs à leur projet professionnel",
+                            "Des situations d’apprentissage sont organisées pour permettre l’appropriation des comportements et des compétences professionnelles et transversales nécessaires à la réalisation du projet professionnel des apprenants",
+                            "Les atouts et les freins au projet professionnel sont identifiés",
+                            "Les apprenants sont accompagnés dans leur recherche de stage ou d’emploi"
+                        ],
+                        cours: [
+                            { code: "141_FPA_B3_M11_S004", titre: "Le suivi dans le développement professionnel des apprenants" },
+                            { code: "139_FPA_B3_M11_S002", titre: "Les problématiques pouvant constituer des freins à la mise en œuvre du projet" },
+                            { code: "134_FPA_B3_M09_S001", titre: "Les enjeux de l'alternance" },
+                            { code: "144_FPA_B3_M12_S001", titre: "Les techniques de recherche d'emploi" }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "AT4",
+                title: "Activité Type 4 : Inscrire sa pratique professionnelle dans une démarche de qualité et de RSE",
+                theme: "dark",
+                questions: [
+                    {
+                        q: "1. L’organisme TForm’ souhaite obtenir la certification Qualiopi, dressez une liste des critères de conformité pour la formation continue pour adultes et les documents de preuves à fournir.",
+                        competence: "Respecter et faire respecter la réglementation en vigueur en formation et dans sa spécialité",
+                        criteres: [
+                            "Les obligations contractuelles et les obligations relevant du système de qualité et de conformité sont identifiées et respectées",
+                            "Les éléments de suivi et de preuves du système qualité sont collectés et mis à disposition",
+                            "Les bilans qualitatifs et quantitatifs sont synthétiques et permettent de tracer le déroulement de la formation et des parcours individuels",
+                            "Les situations et comportements à risque en termes d’hygiène, de santé et de sécurité, d’environnement et de discrimination sont identifiés",
+                            "Les pratiques professionnelles favorisent le respect des règles d’hygiène, de santé et de sécurité, du principe de non-discrimination et la mise en œuvre d’écogestes par les apprenants"
+                        ],
+                        cours: [
+                            { code: "149_FPA_B4_M01_S003", titre: "Les réglementations Qualiopi" },
+                            { code: "148_FPA_B4_M01_S002", titre: "La démarche Qualiopi" },
+                            { code: "006_FPA_B1_M02_S003", titre: "Les obligations administratives des organismes de formation" }
+                        ]
+                    },
+                    {
+                        q: "2. Élaborez une stratégie de veille professionnelle qui vous permettra de rester à la pointe dans le domaine de l’accompagnement à l’emploi et d'intégrer les dernières innovations pédagogiques et technologiques.",
+                        competence: "Réaliser une veille pour maintenir son expertise de formateur et de professionnel de sa spécialité",
+                        criteres: [
+                            "Les sources d’information, les évènements et les acteurs pertinents sont recensés",
+                            "Les données issues de la veille sectorielle et pédagogique sont collectées et organisées",
+                            "Les acteurs locaux mobilisables pour répondre aux demandes des apprenants sont identifiés",
+                            "Les contenus de formation prennent en compte les évolutions sectorielles et pédagogiques",
+                            "La règlementation relative à sa spécialité et à la formation professionnelle est connue"
+                        ],
+                        cours: [
+                            { code: "162_FPA_B4_M03_S001", titre: "La veille professionnelle" },
+                            { code: "057_FPA_B1_M14_S001", titre: "Le concept de veille et sa méthodologie" },
+                            { code: "058_FPA_B1_M14_S002", titre: "Organiser un dispositif de veille efficace" },
+                            { code: "167_FPA_B4_M04_S002", titre: "Actualiser son ingénierie, ses pratiques et ses supports de formation" }
+                        ]
+                    },
+                    {
+                        q: "3. Pour réaliser votre veille de manière efficace, sur \"Accompagner à l’emploi\" et \"Rédiger un CV\", vous utilisez différentes sources. Citez au minimum cinq types de sources.",
+                        competence: "Réaliser une veille pour maintenir son expertise de formateur et de professionnel de sa spécialité",
+                        criteres: [
+                            "Les sources d’information, les évènements et les acteurs pertinents sont recensés",
+                            "Les données issues de la veille sectorielle et pédagogique sont collectées et organisées",
+                            "Les acteurs locaux mobilisables pour répondre aux demandes des apprenants sont identifiés",
+                            "Les contenus de formation prennent en compte les évolutions sectorielles et pédagogiques",
+                            "La règlementation relative à sa spécialité et à la formation professionnelle est connue"
+                        ],
+                        cours: [
+                            { code: "164_FPA_B4_M03_S003", titre: "Méthodologies de recherche, de capitalisation d'informations et d'organisation de la veille" },
+                            { code: "165_FPA_B4_M03_S004", titre: "Les outils de surveillance et de recherche" },
+                            { code: "059_FPA_B1_M14_S003", titre: "La veille technologique - sources, référents, outils et bonnes pratiques" },
+                            { code: "060_FPA_B1_M14_S004", titre: "La synthèse des veilles" }
+                        ]
+                    },
+                    {
+                        q: "4. En tant que formateur junior recruté chez TForm', vous effectuez régulièrement des analyses de votre pratique professionnelle. Proposez un processus d'auto-évaluation et de développement professionnel continu pour affiner et améliorer vos pratiques.",
+                        competence: "Analyser ses pratiques professionnelles",
+                        criteres: [
+                            "La situation choisie est vécue et relève de la responsabilité du formateur",
+                            "Les faits, opinions et sentiments sont distingués",
+                            "Les facteurs déterminants de la situation sont identifiés",
+                            "L’analyse de pratiques suit une démarche formalisée et s’appuie sur des concepts ou méthodologies relatifs à la situation analysée",
+                            "Les propositions d’ajustement des pratiques sont pertinentes"
+                        ],
+                        cours: [
+                            { code: "172_FPA_B4_M05_S004", titre: "Analyser ses pratiques de formation" },
+                            { code: "169_FPA_B4_M05_S001", titre: "L'analyse de pratique" },
+                            { code: "170_FPA_B4_M05_S002", titre: "L'analyse réflexive" },
+                            { code: "171_FPA_B4_M05_S003", titre: "Les axes d'amélioration du parcours" },
+                            { code: "122_FPA_B3_M06_S002", titre: "L'analyse réflexive et l'auto-évaluation" }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // CONFIGURATION DES COULEURS PAR THEME
+        const themeStyles = {
+            "blue": { headerBg: "bg-[#0F2C48]", text: "text-[#0F2C48]", border: "border-[#0F2C48]", badgeBtn: "bg-blue-100 text-[#0F2C48]" },
+            "yellow": { headerBg: "bg-[#D9A526]", text: "text-[#D9A526]", border: "border-[#D9A526]", badgeBtn: "bg-yellow-100 text-[#D9A526]" },
+            "bronze": { headerBg: "bg-[#B4792A]", text: "text-[#B4792A]", border: "border-[#B4792A]", badgeBtn: "bg-orange-100 text-[#B4792A]" },
+            "dark": { headerBg: "bg-[#0f172a]", text: "text-[#0f172a]", border: "border-[#0f172a]", badgeBtn: "bg-gray-200 text-[#0f172a]" }
+        };
+
+        // FONCTION DE RENDU
+        function renderECF() {
+            const container = document.getElementById('at-container');
+            let html = '';
+
+            ecfDataComplete.forEach((at, atIndex) => {
+                const style = themeStyles[at.theme];
+
+                let questionsHtml = '';
+                at.questions.forEach((question, qIndex) => {
+                    const uniqueId = `critere-${at.id}-${qIndex}`;
+
+                    // Rendu des critères
+                    let criteresHtml = '';
+                    question.criteres.forEach(c => {
+                        criteresHtml += `<li class="mb-1"><i class="fas fa-check text-green-500 mr-2 text-xs"></i>${c}</li>`;
+                    });
+
+                    // Rendu des cours à lire pour cette question
+                    let coursHtml = '';
+                    if (question.cours && question.cours.length > 0) {
+                        let badgesCoursHtml = '';
+                        question.cours.forEach(c => {
+                            badgesCoursHtml += `
+                                <span class="bg-gray-50 border border-gray-300 text-gray-700 text-[10px] font-medium px-2.5 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5 max-w-full hover:border-paia-blue hover:text-paia-blue transition-colors">
+                                    <span class="text-paia-blue font-black tracking-widest uppercase">${c.code}</span>
+                                    <span class="truncate">- ${c.titre}</span>
+                                </span>
+                            `;
+                        });
+
+                        coursHtml = `
+                            <div class="mt-4 pt-4 border-t border-gray-200">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-1.5"><i class="fas fa-book-open text-paia-bronze"></i> Cours associés à maîtriser :</p>
+                                <div class="flex flex-wrap gap-2">
+                                    ${badgesCoursHtml}
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    questionsHtml += `
+                        <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <p class="font-bold text-gray-800 text-lg mb-4 text-justify leading-relaxed">${question.q}</p>
+
+                            <div class="bg-white border-l-4 ${style.border} p-4 rounded-r-lg shadow-sm">
+                                <p class="text-xs font-black uppercase tracking-widest text-gray-500 mb-1">Compétence visée</p>
+                                <p class="text-sm font-bold ${style.text} mb-3 flex items-center gap-2"><i class="fas fa-bullseye"></i> ${question.competence}</p>
+
+                                <button onclick="toggleCriteres('${uniqueId}', this)" class="text-xs font-bold ${style.badgeBtn} px-3 py-1.5 rounded-full hover:brightness-95 transition-all flex items-center gap-2">
+                                    <span>Voir les critères d'évaluation de la compétence</span>
+                                    <i class="fas fa-chevron-down transition-transform"></i>
+                                </button>
+
+                                <div id="${uniqueId}" class="accordion-content mt-3 text-sm text-gray-600 pl-2">
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 border-b border-gray-200 pb-1">Critères évalués par le jury :</p>
+                                    <ul class="space-y-1">${criteresHtml}</ul>
+                                </div>
+
+                                ${coursHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                    <div class="bg-white rounded-[24px] border-2 ${style.border} shadow-[4px_4px_0px_currentColor] overflow-hidden mb-8">
+                        <div class="${style.headerBg} text-white p-5 flex items-center gap-4">
+                            <h2 class="text-xl font-black uppercase tracking-wide">${at.title}</h2>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            ${questionsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // FONCTION POUR OUVRIR/FERMER LES CRITERES
+        window.toggleCriteres = function(id, btnElement) {
+            const content = document.getElementById(id);
+            const icon = btnElement.querySelector('.fa-chevron-down');
+
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                icon.style.transform = "rotate(0deg)";
+            } else {
+                content.classList.add('open');
+                icon.style.transform = "rotate(180deg)";
+            }
+        };
+
+        // INITIALISATION
+        document.addEventListener('DOMContentLoaded', () => {
+            renderECF();
+        });
+
+    </script>
+</body>
+</html>
