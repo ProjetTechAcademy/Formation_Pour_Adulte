@@ -2293,6 +2293,13 @@
       }
 
       window.toggleInlineContent = function(id, url, type, titre) {
+          // Cette fonction est conservée pour ne pas modifier la structure,
+          // mais on force tout vers le nouvel onglet pour répondre à ta demande.
+          if (url) {
+              window.open(url, '_blank');
+              return;
+          }
+
           const container = document.getElementById(`inline-media-${id}`);
           if (!container || !url) return;
 
@@ -2314,32 +2321,13 @@
 
           // V3 : Plus de boite de dialogue "Espace interactif", on simplifie au max pour la taille.
           if (type === 'embed-audio') {
-              const itemObj = database.find(d => d.Code === id);
-              if (itemObj) {
-                  let audioUrl = itemObj.Audio;
-                  let infogUrl = itemObj.Infographie;
-                  let slideUrl = itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null;
-
-                  let visualUrl = infogUrl && infogUrl.trim() !== '' ? infogUrl : null;
-                  let visualType = 'embed-image';
-                  if (!visualUrl && slideUrl && slideUrl.trim() !== '') {
-                      visualUrl = slideUrl;
-                      visualType = 'embed-presentation';
-                  }
-
-                  let comboHtml = `<div class="flex flex-col gap-4 mt-4 animate-slideIn">`;
-
-                  // L'Audio en haut
-                  comboHtml += buildMiniPlayer(url, url, 'embed-audio', titre);
-
-                  // Le visuel complet en bas s'il existe
-                  if (visualUrl) {
-                      comboHtml += buildMiniPlayer(visualUrl, visualUrl, visualType, titre);
-                  }
-
-                  comboHtml += `</div>`;
-                  contentHtml = comboHtml;
-              }
+            const itemObj = database.find(d => d.Code === id);
+            if (itemObj) {
+                let comboHtml = `<div class="flex flex-col gap-4 mt-4 animate-slideIn">`;
+                comboHtml += buildMiniPlayer(url, url, 'embed-audio', titre);
+                comboHtml += `</div>`;
+                contentHtml = comboHtml;
+            }
           } else if (type.startsWith("embed-")) {
               contentHtml = buildMiniPlayer(url, url, type, titre);
           } else {
@@ -2374,19 +2362,18 @@
           const safeTitre = (titre || "").replace(/'/g, "\\'");
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
 
-          if (type === 'external') {
-              return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
-          }
           if (type === 'embed-pdf' && !isUnlocked) {
               return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
           }
-          return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"` };
+          // MODIFICATION: Tout s'ouvre désormais dans un nouvel onglet
+          return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
       }
 
       window.handleProtectedClick = function(url, id, titre) {
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
           if (isUnlocked) {
-              toggleInlineContent(id, url, 'embed-pdf', titre);
+              // MODIFICATION: Ouvert dans un nouvel onglet si déverrouillé
+              window.open(url, '_blank');
           } else {
               pendingPdfUrl = url;
               pendingPdfId = id;
@@ -2424,7 +2411,8 @@
               if (typeof afficherModules === 'function') afficherModules(searchInputEl ? searchInputEl.value : "");
 
               if (pendingPdfUrl && pendingPdfId) {
-                  toggleInlineContent(pendingPdfId, pendingPdfUrl, 'embed-pdf', pendingPdfTitre);
+                  // MODIFICATION: Ouvert dans un nouvel onglet après avoir tapé le code pin
+                  window.open(pendingPdfUrl, '_blank');
                   pendingPdfUrl = ""; pendingPdfId = ""; pendingPdfTitre = "";
               } else if (pendingPdfUrl) {
                   window.open(pendingPdfUrl, '_blank');
@@ -2709,17 +2697,19 @@
 
               let audioInsideHtml = '';
               if (hasAudio) {
+                  // MODIFICATION: Bouton audio dans l'aperçu ouvre un nouvel onglet
                   audioInsideHtml = `
-                      <button class="absolute top-3 right-3 w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[3px_3px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#0F2C48] transition-all z-20" title="Écouter le podcast" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
+                      <button class="absolute top-3 right-3 w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[3px_3px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#0F2C48] transition-all z-20" title="Écouter le podcast" onclick="event.stopPropagation(); window.open('${audioUrl}', '_blank')">
                           <i class="fas fa-play text-[12px] ml-1"></i>
                       </button>
                   `;
               }
 
+              // MODIFICATION: Clic sur l'aperçu global ouvre un nouvel onglet
               previewBlock = `
               <div class="lg:w-[320px] shrink-0 ml-auto h-full min-h-[180px]">
                   <div class="relative w-full h-full rounded-[24px] border-2 border-paia-blue overflow-hidden bg-paia-blue group cursor-zoom-in shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all"
-              onclick="event.stopPropagation(); toggleInlineContent('${id}', '${visualUrlForThumb.replace(/'/g, "\\'")}', '${visualType}', '${titre.replace(/'/g, "\\'")}')">
+              onclick="event.stopPropagation(); window.open('${visualUrlForThumb.replace(/'/g, "\\'")}', '_blank')">
                       <div class="absolute inset-0 bg-gray-100 flex items-center justify-center">
                           <i class="fas fa-image text-gray-300 text-3xl"></i>
                       </div>
@@ -2744,8 +2734,9 @@
           } else {
               let audioInsideHtml = '';
               if (hasAudio) {
+                  // MODIFICATION: Bouton audio dans la zone vide ouvre un nouvel onglet
                   audioInsideHtml = `
-                      <button class="w-14 h-14 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all z-20 mb-3" title="Écouter le podcast" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
+                      <button class="w-14 h-14 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all z-20 mb-3" title="Écouter le podcast" onclick="event.stopPropagation(); window.open('${audioUrl}', '_blank')">
                           <i class="fas fa-play text-xl ml-1"></i>
                       </button>
                       <span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-100 px-3 py-1.5 rounded-xl border border-indigo-200">Podcast Audio</span>
@@ -2767,6 +2758,7 @@
           card.className = `card-3d bg-white p-6 rounded-[32px] border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] flex flex-col lg:flex-row gap-6 items-stretch mb-6 ${isFull ? "bg-blue-50/30 border-paia-blue shadow-[4px_4px_0px_#3b82f6]" : ""} ${anim ? "card-animate" : ""}`;
           if (anim) card.style.animationDelay = `${(cardIdx + 1) * 0.03}s`;
 
+          // MODIFICATION: Le bloc d'iframe en dessous devient redondant (il restera toujours caché et vide)
           card.innerHTML = `
             <div class="flex-grow flex flex-col min-w-0">
                 <div class="flex items-center gap-4 mb-4">
