@@ -2719,7 +2719,7 @@
               previewBlock = `
               <div class="lg:w-[320px] shrink-0 ml-auto h-full min-h-[180px]">
                   <div class="relative w-full h-full rounded-[24px] border-2 border-paia-blue overflow-hidden bg-paia-blue group cursor-zoom-in shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all"
-                       ${linkProps.action}>
+              onclick="event.stopPropagation(); toggleInlineContent('${id}', '${visualUrlForThumb.replace(/'/g, "\\'")}', '${visualType}', '${titre.replace(/'/g, "\\'")}')">
                       <div class="absolute inset-0 bg-gray-100 flex items-center justify-center">
                           <i class="fas fa-image text-gray-300 text-3xl"></i>
                       </div>
