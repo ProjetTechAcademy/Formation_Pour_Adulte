@@ -128,11 +128,26 @@
         .opt-btn {
             background: var(--blanc); border: 2px solid rgba(15, 44, 72, 0.2); color: var(--title-blue);
             padding: 14px 20px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: 500;
-            transition: all 0.2s ease; text-align: left;
+            transition: all 0.2s ease; text-align: left; display: flex; align-items: center;
         }
         .opt-btn:hover:not(:disabled) { border-color: var(--cta-yellow); background-color: rgba(217, 165, 38, 0.05); }
         .opt-btn.selected-config { background: var(--title-blue); color: var(--cta-yellow); border-color: var(--title-blue); }
-        .compact-btn { padding: 10px 18px; border-radius: 8px; text-align: center; width: auto; flex-grow: 0; font-weight: 700;}
+        .compact-btn { padding: 10px 18px; border-radius: 8px; text-align: center; width: auto; flex-grow: 0; font-weight: 700; display: inline-block;}
+
+        /* --- BADGE POUR LES LETTRES A, B, C --- */
+        .opt-badge {
+            display: inline-block;
+            background: var(--alert-bronze);
+            color: var(--blanc);
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
 
         .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 700;}
         .timer-box { font-weight: 900; color: var(--alert-bronze); font-size: 1.2rem; }
@@ -199,7 +214,8 @@
     <div class="divider-vert"></div>
     <div class="control-group-horiz">
         <button class="acc-btn" onclick="changeSpeechRate(-0.1)">🗣️-</button>
-        <span id="ui-rate" style="font-weight:700; font-size:0.85rem; min-width:35px; text-align:center;">x1.1</span>
+        <!-- VITESSE INITIALE A 1.0 POUR PRENDRE LE TEMPS -->
+        <span id="ui-rate" style="font-weight:700; font-size:0.85rem; min-width:35px; text-align:center;">x1.0</span>
         <button class="acc-btn" onclick="changeSpeechRate(0.1)">🗣️+</button>
     </div>
 </div>
@@ -207,7 +223,6 @@
 <div id="quiz-container">
     <div class="header">
         <div class="header-top">
-            <!-- Lien de retour vers le Hub sur le Logo -->
             <a href="https://projettechacademy.github.io/Formation_Pour_Adulte/" class="header-brand" title="Retour à l'accueil de la plateforme">
                 <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="PAIA Logo" class="header-logo">
                 <div class="header-titles">
@@ -217,7 +232,6 @@
             </a>
 
             <div class="header-buttons">
-                <!-- Nouveau bouton Accueil bien visible -->
                 <a href="https://projettechacademy.github.io/Formation_Pour_Adulte/" class="btn-home" title="Retour à l'accueil">
                     <span style="font-size:1.2rem;">🏠</span> Accueil
                 </a>
@@ -227,7 +241,6 @@
             </div>
         </div>
 
-        <!-- LE VRAI TITRE DU QUIZ EST ICI -->
         <h1 class="quiz-main-title">000_FPA_B0_M01_S001</h1>
         <div class="module-banner">📌 Présentation du module et auto positionnement</div>
     </div>
@@ -264,7 +277,7 @@
             </div>
         </div>
         <div id="ui-motivation-start" class="motivation-banner">
-            Bienvenue Mathilde ! Prête à évaluer vos pratiques initiales d'animation ?
+            Bienvenue ! Prêt(e) à évaluer vos pratiques initiales d'animation ?
         </div>
         <button class="btn-action" onclick="startGame()">DÉMARRER LA SESSION 🚀</button>
     </div>
@@ -375,7 +388,7 @@
     ];
 
     let gameMode = 'chrono', activeSet = [], current = 0, score = 0, timer, timeLeft, totalQ = 10, lives = 3;
-    let isDarkMode = false, isDys = false, isContrast = false, isCalm = false, isMuted = false, speechRate = 1.1, globalVolume = 1.0;
+    let isDarkMode = false, isDys = false, isContrast = false, isCalm = false, isMuted = false, speechRate = 1.0, globalVolume = 1.0;
 
     // Array global pour éviter le garbage collection de Chrome (coupure de voix)
     window.activeUtterances = [];
@@ -399,7 +412,7 @@
     function toggleContrast(b) { isContrast = !isContrast; document.body.classList.toggle('high-contrast'); b.classList.toggle('selected-config', isContrast); }
     function toggleAnimations(b) { isCalm = !isCalm; document.body.classList.toggle('no-anim'); b.classList.toggle('selected-config', isCalm); }
 
-    // --- AUDIO CONTROLS (VITESSE INITIALE 1.1) ---
+    // --- AUDIO CONTROLS (VITESSE INITIALE 1.0) ---
     function changeSpeechRate(s) { speechRate = Math.min(1.5, Math.max(0.5, speechRate + s)); document.getElementById('ui-rate').innerText = "x" + speechRate.toFixed(1); }
     function changeVolume(v) { globalVolume = Math.min(1, Math.max(0, globalVolume + v)); if(globalVolume > 0 && isMuted) toggleMute(); }
     function toggleMute() { isMuted = !isMuted; document.getElementById('btn-mute').innerText = isMuted ? "🔇" : "🔊"; if(isMuted) window.speechSynthesis.cancel(); }
@@ -407,39 +420,29 @@
     function speak(txt) {
         if (isMuted) return;
         window.speechSynthesis.cancel();
-        window.activeUtterances = []; // Réinitialisation de la file pour éviter la coupure
+        window.activeUtterances = []; // Réinitialisation
 
-        const englishTerms = ["Ice breaker", "Ice breakers", "Full coaching", "Flex coaching", "Career Center", "Student Success", "Training assistance", "LMS", "E-learning", "Blended learning", "Storyboarding", "Business", "Coaching", "Digital learning", "Soft skills", "Upskilling", "Feedback", "Brainstorming"];
-        const regex = new RegExp(`\\b(${englishTerms.join('|')})\\b`, 'gi');
-        const fragments = txt.split(regex);
-
-        // Délai de sécurité de 250ms pour stabiliser le moteur TTS
+        // Délai de sécurité de 600ms pour stabiliser le moteur TTS et éviter la coupure du premier mot
         setTimeout(() => {
-            fragments.forEach(frag => {
-                if (!frag || frag.trim() === "") return;
-                const utterance = new SpeechSynthesisUtterance(frag);
-                window.activeUtterances.push(utterance); // Stockage pour éviter le Garbage Collector
-                utterance.rate = speechRate;
-                utterance.volume = globalVolume;
-                utterance.pitch = 1.1;
-
-                const isEnglish = englishTerms.some(term => frag.toLowerCase().includes(term.toLowerCase()));
-                if (isEnglish) {
-                    utterance.lang = 'en-US';
-                } else {
-                    utterance.lang = 'fr-FR';
-                    if (mainVoice) utterance.voice = mainVoice;
-                }
-                window.speechSynthesis.speak(utterance);
-            });
-        }, 250);
+            const utterance = new SpeechSynthesisUtterance(txt);
+            window.activeUtterances.push(utterance); // Stockage pour éviter le Garbage Collector
+            utterance.rate = speechRate;
+            utterance.volume = globalVolume;
+            utterance.pitch = 1.1;
+            utterance.lang = 'fr-FR';
+            if (mainVoice) utterance.voice = mainVoice;
+            window.speechSynthesis.speak(utterance);
+        }, 600);
     }
 
     function speakCurrent() {
         if(!activeSet[current]) return;
         const d = activeSet[current];
-        let tts = d.q + ". Les propositions sont : ";
-        d.options.forEach((o, i) => tts += `Option ${i+1}, ${o}. `);
+        // Des ponctuations espacées pour obliger la voix à faire de longues pauses entre les options
+        let tts = "Question. . . " + d.q + " . . . Quelles sont vos propositions ? . . ";
+        d.options.forEach((o, i) => {
+            tts += `Proposition ${String.fromCharCode(65 + i)} : . . ${o} . . . `;
+        });
         speak(tts);
     }
     function speakGlossary() {
@@ -466,11 +469,12 @@
         document.getElementById('screen-setup').classList.remove('active-screen');
         document.getElementById('screen-game').classList.add('active-screen');
 
-        // Délai avant l'annonce de départ
+        // Délai long avant l'annonce de départ (800ms) pour chauffer le moteur vocal
         setTimeout(() => {
-            speak("C'est parti ! Bonne chance Mathilde pour ce module.");
-            setTimeout(loadQuestion, 2500);
-        }, 300);
+            speak("C'est parti ! . . . Je vous souhaite bonne chance.");
+            // On attend encore 4 secondes pour bien laisser la voix finir
+            setTimeout(loadQuestion, 4000);
+        }, 800);
     }
 
     function loadQuestion() {
@@ -483,14 +487,18 @@
         if(gameMode === 'vies') updateHearts();
 
         d.options.forEach((o, i) => {
-            const b = document.createElement('button'); b.className = "opt-btn"; b.innerText = (i+1) + ". " + o;
+            const b = document.createElement('button'); b.className = "opt-btn";
+            b.innerHTML = `<span class="opt-badge">${String.fromCharCode(65 + i)}</span> ${o}`;
             b.onclick = () => validate(i); box.appendChild(b);
         });
 
-        // On pose la question à l'oral
-        speak(d.q + ". Quelles sont vos propositions ?");
+        // On pose la question à l'oral (les options sont lues par speakCurrent avec les lettres)
+        speakCurrent();
 
-        if(gameMode === 'chrono' && timeLimit > 0) startTimer();
+        // Le timer ne démarre pas tout de suite, il laisse un répit de 4 secondes pour lire la question
+        if(gameMode === 'chrono' && timeLimit > 0) {
+            setTimeout(startTimer, 4000);
+        }
     }
 
     function startTimer() {
@@ -514,13 +522,15 @@
             score++;
             f.className = "feedback success";
             f.innerHTML = "✨ <b>Bravo !</b> " + d.rationale;
-            speak("Excellent ! " + d.rationale);
+            speak("Excellent ! . . " + d.rationale);
             rain();
         } else {
             if(gameMode === 'vies') lives--;
             f.className = "feedback error";
             f.innerHTML = `❌ Oups ! La réponse était : ${d.options[d.correct]}. ${d.rationale}`;
-            speak("Erreur. La réponse était : " + d.options[d.correct]);
+            // Annonce la lettre de la bonne réponse
+            let correctLetter = String.fromCharCode(65 + d.correct);
+            speak(`Erreur. . . La bonne réponse était la proposition ${correctLetter}. . . ${d.rationale}`);
         }
         document.getElementById('btn-next').style.display = "block";
     }
@@ -575,7 +585,7 @@
         document.getElementById('ui-humor').innerText = msg;
         document.getElementById('ui-anecdote').innerText = anecdotes[Math.floor(Math.random()*anecdotes.length)];
         generateGlossary(false);
-        speak(`Bilan de session terminé. ${msg}`);
+        speak(`Bilan de session terminé. . . . ${msg}`);
     }
 
     function rain() {
