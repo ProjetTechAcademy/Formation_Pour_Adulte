@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mon Parcours FPA - Premium UI V3</title>
+    <title>Mon Parcours FPA - Évolution Premium V2.ECF</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -54,7 +54,7 @@
         overflow-x: hidden;
       }
 
-      /* --- NOUVEAUX EFFETS 3D & PREMIUM (BRUTALISME) --- */
+      /* --- EFFETS 3D & PREMIUM (BRUTALISME) --- */
       .premium-border {
         border: 2px solid var(--paia-blue);
         box-shadow: 4px 4px 0px var(--paia-blue);
@@ -93,15 +93,6 @@
       .menu-open #mobile-menu { transform: translateX(0); }
       .menu-closed #mobile-menu { transform: translateX(100%); }
 
-      /* Miniature Adaptive */
-      .thumb-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        background: rgba(15, 44, 72, 0.03);
-        backdrop-filter: blur(5px);
-      }
-
       .radar-active {
         animation: radar-pulse 2s infinite;
         background: #e11d48;
@@ -127,7 +118,6 @@
           padding-bottom: 10px;
       }
 
-      /* Full Page Media */
       .full-page-media {
           height: calc(100vh - 200px);
           min-height: 500px;
@@ -167,7 +157,6 @@
       body.high-contrast .bg-animated-blob { display: none; }
       body.high-contrast header { background-color: #1a1a1a !important; border-bottom: 2px solid #ffffff !important; }
 
-      /* --- NOUVEAU DESIGN MENU HAUT --- */
       .btn-nav-app {
         width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
         font-size: 1.4rem; color: var(--paia-blue); position: relative; text-decoration: none;
@@ -189,7 +178,6 @@
         box-shadow: 0px 0px 0px var(--paia-blue);
       }
 
-      /* Onglets avec couleur modifiée en JS */
       .tab-btn {
         transition: 0.3s;
       }
@@ -197,7 +185,6 @@
           .tab-btn { padding: 10px 18px; font-size: 0.85rem; flex: 1 1 auto; text-align: center; }
       }
 
-      /* Ressources Tracker Badges */
       .btn-resource {
         width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
         font-size: 1rem; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
@@ -281,7 +268,6 @@
 
       .toast-msg { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-      /* Certifications */
       @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
       .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
       .certif-tab-content { display: none; opacity: 0; }
@@ -309,7 +295,6 @@
       .chart-container { position: relative; width: 100%; max-width: 600px; margin: auto; height: 350px; }
       input[type="date"], input[type="time"] { cursor: pointer; }
 
-      /* Day Checkbox style */
       .day-cb { display: none; }
       .day-cb + label {
           display: inline-flex; align-items: center; justify-content: center;
@@ -341,7 +326,7 @@
           <img src="https://projettechacademy.github.io/Projet_Python/Asset/2127845D-F95D-49C0-A22B-88C07817841B.png" alt="Logo" class="w-14 h-14 rounded-xl border-2 border-paia-blue object-cover shadow-[2px_2px_0px_#0F2C48]" />
           <div class="hidden sm:block">
             <h1 class="text-xl font-black uppercase text-paia-blue tracking-tighter">Mon Parcours FPA</h1>
-            <p class="text-[10px] text-paia-bronze font-bold uppercase tracking-widest">Évolution Premium V.003</p>
+            <p class="text-[10px] text-purple-600 font-bold uppercase tracking-widest">Évolution Premium V2.ECF</p>
           </div>
         </div>
 
@@ -376,6 +361,7 @@
         <a href="https://app.studi.fr/v3/blog" class="text-2xl font-black uppercase tracking-widest hover:text-paia-yellow transition-colors"><i class="fas fa-bolt mr-4 text-blue-400"></i> Newsletter</a>
         <button onclick="filtrerBloc('CAL'); toggleMobileMenu()" class="text-2xl font-black uppercase tracking-widest hover:text-paia-yellow transition-colors"><i class="fas fa-calendar-check mr-4 text-emerald-400"></i> Planning</button>
         <button onclick="filtrerBloc('CERTIF'); toggleMobileMenu()" class="text-2xl font-black uppercase tracking-widest hover:text-paia-yellow transition-colors"><i class="fas fa-trophy mr-4 text-paia-bronze"></i> Certification</button>
+        <button onclick="filtrerBloc('ECF'); toggleMobileMenu()" class="text-2xl font-black uppercase tracking-widest hover:text-purple-400 transition-colors"><i class="fas fa-graduation-cap mr-4 text-purple-400"></i> ECF Final</button>
         <a href="https://teams.live.com/l/community/FEAwwccidvd7W4wtgQ" target="_blank" class="text-2xl font-black uppercase tracking-widest hover:text-paia-yellow transition-colors"><i class="fa-brands fa-microsoft mr-4 text-rose-400"></i> Communauté</a>
     </div>
 
@@ -389,6 +375,7 @@
             <button class="tab-btn" id="tab-B2" onclick="filtrerBloc('B2')">B2 : Animer</button>
             <button class="tab-btn" id="tab-B3" onclick="filtrerBloc('B3')">B3 : Accompagner</button>
             <button class="tab-btn" id="tab-B4" onclick="filtrerBloc('B4')">B4 : Qualité</button>
+            <button class="tab-btn" id="tab-ECF" onclick="filtrerBloc('ECF')"><i class="fas fa-graduation-cap mr-1"></i> ECF Final</button>
           </div>
           <div class="relative w-full xl:max-w-sm mt-2 xl:mt-0">
             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-paia-blue/40 text-lg"></i>
@@ -413,6 +400,10 @@
       <div id="subTabsContainer" class="hidden mb-10 flex-wrap gap-3 px-2 md:px-0"></div>
 
       <div id="listContainer" class="grid grid-cols-1 gap-6 pb-20 px-1 md:px-0"></div>
+
+      <!-- CONTENEUR ECF -->
+      <div id="ecfContainer" class="hidden flex-col gap-6 pb-20 px-1 md:px-0 animate-slideIn"></div>
+
       <div id="calendarContainer" class="hidden animate-slideIn px-2 md:px-0"></div>
 
       <div id="certifContainer" class="hidden flex-col gap-8 pb-12 w-full animate-slideIn px-2 md:px-0">
@@ -438,9 +429,7 @@
                 </header>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="dashboard-blocs-container">
-                        </div>
-
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="dashboard-blocs-container"></div>
                     <div class="bg-white rounded-2xl p-6 shadow-[6px_6px_0px_#0F2C48] border-2 border-paia-blue overflow-hidden">
                         <h2 class="text-xl font-black text-paia-blue text-center mb-4 uppercase tracking-wider">Volume de la formation</h2>
                         <div class="chart-container">
@@ -456,8 +445,7 @@
                     <p class="text-lg text-paia-blue/70">Cochez les cases au fur et à mesure de votre apprentissage sur la plateforme.</p>
                 </header>
 
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8" id="bloc-selectors">
-                    </div>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8" id="bloc-selectors"></div>
 
                 <div class="bg-white rounded-2xl shadow-[6px_6px_0px_#0F2C48] border-2 border-paia-blue overflow-hidden flex flex-col">
                     <div class="bg-paia-ivory px-6 py-4 border-b-2 border-paia-blue flex justify-between items-center">
@@ -525,7 +513,7 @@
 
     </main>
 
-    <!-- NOUVEAU MODAL : PLANIFICATEUR INTELLIGENT DE BLOC -->
+    <!-- MODAL : PLANIFICATEUR INTELLIGENT DE BLOC -->
     <div id="bulkPlanModal" class="fixed inset-0 bg-paia-blue/95 backdrop-blur-md hidden items-center justify-center z-[10000] p-4">
         <div class="bg-white p-6 md:p-8 rounded-[30px] border-4 border-paia-blue shadow-[10px_10px_0px_rgba(0,0,0,1)] max-w-lg w-full transform scale-95 transition-transform duration-300 relative overflow-y-auto max-h-[90vh]" id="bulkPlanContent">
             <div class="w-16 h-16 bg-emerald-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border-2 border-emerald-200">
@@ -535,7 +523,6 @@
             <p class="text-[10px] text-center text-emerald-600 font-bold uppercase tracking-widest mb-6">Programmation par bloc</p>
 
             <div class="space-y-4">
-                <!-- Choix du Bloc -->
                 <div>
                     <label class="text-gray-600 text-xs font-bold mb-1 block">1. Sélectionner le Bloc à planifier :</label>
                     <select id="bulk-bloc-select" onchange="updateBulkPreview()" class="w-full bg-white border-2 border-paia-blue text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm shadow-[2px_2px_0px_#0F2C48] outline-none">
@@ -546,8 +533,6 @@
                         <option value="B4">B4 : Qualité</option>
                     </select>
                 </div>
-
-                <!-- Date de Début et Heure -->
                 <div class="flex gap-4">
                     <div class="flex-1">
                         <label class="text-gray-600 text-xs font-bold mb-1 block">2. Date de début :</label>
@@ -558,8 +543,6 @@
                         <input type="time" id="bulk-start-time" value="09:00" class="w-full bg-white border-2 border-paia-blue text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm shadow-[2px_2px_0px_#0F2C48] outline-none">
                     </div>
                 </div>
-
-                <!-- Jours de travail -->
                 <div>
                     <label class="text-gray-600 text-xs font-bold mb-2 block">3. Vos jours d'apprentissage réguliers :</label>
                     <div class="flex justify-between gap-1">
@@ -572,8 +555,6 @@
                         <input type="checkbox" id="d-0" class="day-cb" onchange="updateBulkPreview()"><label for="d-0">D</label>
                     </div>
                 </div>
-
-                <!-- Options supplémentaires -->
                 <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 mt-2">
                     <label class="flex items-center gap-3 cursor-pointer">
                         <input type="checkbox" id="bulk-exclude-holidays" checked onchange="updateBulkPreview()" class="w-5 h-5 rounded border-2 border-paia-blue text-paia-blue focus:ring-paia-blue cursor-pointer">
@@ -648,7 +629,6 @@
               </div>
             </div>
 
-            <!-- APERÇU DYNAMIQUE DES DATES POUR UN MODULE -->
             <div id="sr-preview" class="text-left mb-6 bg-gray-50 border border-gray-200 p-3 rounded-xl hidden">
                 <span class="text-[10px] font-black uppercase text-gray-500 tracking-wider mb-2 block"><i class="fas fa-eye mr-1"></i> Vos 6 rappels calculés :</span>
                 <div id="sr-preview-list" class="flex flex-wrap gap-2"></div>
@@ -741,6 +721,75 @@
           "« Croyez en vous-même et en tout ce que vous êtes. »",
           "« Un voyage de mille lieues commence toujours par un premier pas. »",
           "« L'expert en tout a un jour été un débutant. »"
+      ];
+
+      // MAPPING ECF FINAL: Associe les codes des cours aux questions de l'ECF pour générer le badge
+      const ecfMapping = {
+            "022_FPA_B1_M06_S002": ["AT1-Q1"],
+            "040_FPA_B1_M09_S006": ["AT1-Q2"],
+            "056_FPA_B1_M13_S006": ["AT1-Q3"],
+            "098_FPA_B2_M08_S002": ["AT2-Q1"],
+            "100_FPA_B2_M09_S001": ["AT2-Q1"],
+            "050_FPA_B1_M12_S003": ["AT2-Q2"],
+            "078_FPA_B2_M04_S002": ["AT2-Q2"],
+            "087_FPA_B2_M05_S004": ["AT2-Q3"],
+            "101_FPA_B2_M09_S002": ["AT2-Q4"],
+            "106_FPA_B3_M02_S001": ["AT3-Q1"],
+            "119_FPA_B3_M05_S003": ["AT3-Q2"],
+            "121_FPA_B3_M06_S001": ["AT3-Q2"],
+            "143_FPA_B3_M11_S006": ["AT3-Q3"],
+            "124_FPA_B3_M07_S001": ["AT3-Q4"],
+            "133_FPA_B3_M08_S006": ["AT3-Q4"],
+            "141_FPA_B3_M11_S004": ["AT3-Q5"],
+            "149_FPA_B4_M01_S003": ["AT4-Q1"],
+            "162_FPA_B4_M03_S001": ["AT4-Q2"],
+            "164_FPA_B4_M03_S003": ["AT4-Q3"],
+            "165_FPA_B4_M03_S004": ["AT4-Q3"],
+            "172_FPA_B4_M05_S004": ["AT4-Q4"]
+      };
+
+      // DONNÉES ECF FINAL POUR LE RENDU DU NOUVEL ONGLET (TEXTES EXACTS)
+      const ecfData = [
+          {
+              at: "Activité Type 1 : Concevoir et préparer la formation",
+              icon: "🏗️", color: "bg-paia-blue", border: "border-paia-blue", text: "text-paia-blue",
+              questions: [
+                  { q: "1. Détaillez au minimum 5 raisons importantes d’élaborer une progression pédagogique d’une formation multimodale.", links: [{ code: "022_FPA_B1_M06_S002", label: "022_FPA_B1_M06_S002 - La rédaction d'une progression pédagogique et d'un plan d'accompagnement", bloc: "B1" }] },
+                  { q: "2. A partir du synopsis en annexe 1, rédigez le scénario pédagogique en utilisant le tableau de l’annexe 2.", links: [{ code: "040_FPA_B1_M09_S006", label: "040_FPA_B1_M09_S006 - La construction du scénario pédagogique", bloc: "B1" }] },
+                  { q: "3. A partir de l’annexe 3, rédigez le contenu de la grille d’évaluation de mise en pratique sur le terrain de la formation « Prévenir les risques liés à la manutention dans l’aménagement paysager ».", links: [{ code: "056_FPA_B1_M13_S006", label: "056_FPA_B1_M13_S006 - Travailler sur des projets de conception d’activités d’apprentissage ou d’évaluation", bloc: "B1" }] }
+              ]
+          },
+          {
+              at: "Activité Type 2 : Animer une formation et évaluer les acquis des apprenants",
+              icon: "🎤", color: "bg-paia-yellow", border: "border-paia-yellow", text: "text-paia-yellow",
+              questions: [
+                  { q: "1. Lors de la formation \"Prévenir les risques liés à la manutention dans l’aménagement paysager\", vous projetez un diaporama sur \"les principes ergonomiques\". Vous remarquez que les deux personnes allophones décrochent et ne vous écoutent plus. Proposez 5 actions minimum à mettre en place pour ces deux salariés.", links: [{ code: "098_FPA_B2_M08_S002", label: "098_FPA_B2_M08_S002 - Remédier aux difficultés d'apprentissage", bloc: "B2" }, { code: "100_FPA_B2_M09_S001", label: "100_FPA_B2_M09_S001 - L'adaptation de la formation en cas de difficultés individuelles", bloc: "B2" }] },
+                  { q: "2. Pour anticiper et pallier la difficulté dessalariés allophones à suivre un diaporama sur \"les principes ergonomiques\" lors de cette formation, il est essentiel d'adapter les supports et méthodes dès la préparation. Décrivez 5 propositions concrètes d’amélioration de votre support de présentation.", links: [{ code: "050_FPA_B1_M12_S003", label: "050_FPA_B1_M12_S003 - La méthode FALC", bloc: "B1" }, { code: "078_FPA_B2_M04_S002", label: "078_FPA_B2_M04_S002 - Les difficultés individuelles et collectives d'apprentissage", bloc: "B2" }] },
+                  { q: "3. Vous avez animé le module de formation \"Prévenir les risques liés à la manutention dans l’aménagement paysager\". Les deux évaluations proposées pour la partie théorie et pratique ne vous satisfont pas. Décrivez 5 propositions d’évaluation en prenant en considération les deux salariés allophones.", links: [{ code: "087_FPA_B2_M05_S004", label: "087_FPA_B2_M05_S004 - La réglementation sur l’adaptation des évaluations pour les apprenants en situation de handicap", bloc: "B2" }] },
+                  { q: "4. Avec votre même groupe de salariés en insertion, vous devez travailler autour de la rédaction du CV. Un des salariés ne sait pas utiliser les outils informatiques. Explicitez 5 techniques vous permettant de l'accompagner et de l’impliquer dans la rédaction de son CV.", links: [{ code: "101_FPA_B2_M09_S002", label: "101_FPA_B2_M09_S002 - Les techniques de résolution de problème", bloc: "B2" }] }
+              ]
+          },
+          {
+              at: "Activité Type 3 : Accompagner les apprenants en formation",
+              icon: "🤝", color: "bg-paia-bronze", border: "border-paia-bronze", text: "text-paia-bronze",
+              questions: [
+                  { q: "1. Lors d’un entretien de mi-parcours, un apprenant vous confie ses doutes quant à sa suite de parcours. Il a l’impression de ne pas être capable d’appliquer tout ce que vous avez abordé au préalable. À quoi allez-vous être vigilant durant cet entretien ? Citez au minimum 5 points de vigilance à avoir pour mener à bien votre entretien.", links: [{ code: "106_FPA_B3_M02_S001", label: "106_FPA_B3_M02_S001 - Les techniques d'entretien", bloc: "B3" }] },
+                  { q: "2. Vous avez débuté le module \"rédiger efficacement son CV et sa lettre de motivation\", lors de la deuxième séance vous accueillez un nouvel apprenant. Indiquez les étapes à mettre en place pour son accueil et la co-construction de son parcours de formation ?", links: [{ code: "121_FPA_B3_M06_S001", label: "121_FPA_B3_M06_S001 - L'accueil individuel d'un apprenant en formation", bloc: "B3" }, { code: "119_FPA_B3_M05_S003", label: "119_FPA_B3_M05_S003 - La co-construction d'un parcours de formation", bloc: "B3" }] },
+                  { q: "3. Un second apprenant, Martin, intègre la formation « Accompagner à l’emploi, les premières démarches pour intégrer une entreprise ». Martin émet le souhait de se diriger dans le domaine du service aux personnes. Détaillez, à partir du document en annexe 4, le plan général en 5 étapes, que vous proposeriez pour l’accompagner de manière structurée et personnalisée.", links: [{ code: "143_FPA_B3_M11_S006", label: "143_FPA_B3_M11_S006 - Les méthodes d'accompagnement au projet professionnel", bloc: "B3" }] },
+                  { q: "4. Suite à la formation « Accompagner à l’emploi, les premières démarches pour intégrer une entreprise » vous effectuez le suivi pendant 3 mois des apprenants. Les rendez-vous de suivi se réalisent en distanciel. Définissez une stratégie de tutorat, en 5 points minimum, pour aider Octave dans son développement de projet professionnel de responsable de secteur en espaces verts.", links: [{ code: "133_FPA_B3_M08_S006", label: "133_FPA_B3_M08_S006 - Application - Tutorer les apprenants à distance", bloc: "B3" }, { code: "124_FPA_B3_M07_S001", label: "124_FPA_B3_M07_S001 - Fonctions tutorales et besoins de l'apprenant en formation à distance", bloc: "B3" }] },
+                  { q: "5. En fin de formation, Martin a validé son projet professionnel d’aide à domicile. Vous avez identifié ses atouts (empathie, disponibilité, écoute) et ses freins (permis sans véhicule, absence de diplôme). Mettez en place un plan d’action post formation pour encourager Martin et suivre le développement de son projet professionnel.", links: [{ code: "141_FPA_B3_M11_S004", label: "141_FPA_B3_M11_S004 - Le suivi dans le développement professionnel des apprenants", bloc: "B3" }] }
+              ]
+          },
+          {
+              at: "Activité Type 4 : Inscrire sa pratique professionnelle dans une démarche de qualité et de responsabilité sociale des entreprises",
+              icon: "🔎", color: "bg-paia-dark", border: "border-paia-dark", text: "text-paia-dark",
+              questions: [
+                  { q: "1. L’organisme TForm’ souhaite obtenir la certification Qualiopi, dressez une liste des critères de conformité pour la formation continue pour adultes et les documents de preuves à fournir.", links: [{ code: "149_FPA_B4_M01_S003", label: "149_FPA_B4_M01_S003 - Les réglementations Qualiopi", bloc: "B4" }] },
+                  { q: "2. Élaborez une stratégie de veille professionnelle qui vous permettra de rester à la pointe dans le domaine de l’accompagnement à l’emploi (rédaction de CV, aide au recrutement, …) et d'intégrer les dernières innovations pédagogiques et technologiques dans vos formations.", links: [{ code: "162_FPA_B4_M03_S001", label: "162_FPA_B4_M03_S001 - La veille professionnelle", bloc: "B4" }] },
+                  { q: "3. Pour réaliser votre veille de manière efficace,sur \"Accompagner à l’emploi, les premières démarches de manière efficace\" \"Rédiger un CV\", vous utilisez différentes sources. Citez au minimum cinq types de sources.", links: [{ code: "164_FPA_B4_M03_S003", label: "164_FPA_B4_M03_S003 - Méthodologies de recherche, de capitalisation d'informations et d'organisation de la veille", bloc: "B4" }, { code: "165_FPA_B4_M03_S004", label: "165_FPA_B4_M03_S004 - Les outils de surveillance et de recherche", bloc: "B4" }] },
+                  { q: "4. En tant que formateur junior recruté chez TForm', vous effectuez régulièrement des analyses de votre pratique professionnelle. Proposez un processus d'auto-évaluation et de développement professionnel continu pour affiner et améliorer vos pratiques de formateur.", links: [{ code: "172_FPA_B4_M05_S004", label: "172_FPA_B4_M05_S004 - Analyser ses pratiques de formation", bloc: "B4" }] }
+              ]
+          }
       ];
 
       const configStructure = {
@@ -1714,6 +1763,57 @@
         setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 9000);
       }
 
+      // RENDU DE L'ONGLET ECF
+      function renderEcfContainer() {
+          const ecfCont = document.getElementById("ecfContainer");
+          if (!ecfCont) return;
+          ecfCont.innerHTML = `
+            <div class="bg-gradient-to-br from-purple-600 to-indigo-800 rounded-3xl p-8 shadow-[8px_8px_0px_rgba(15,44,72,1)] border-2 border-paia-blue flex flex-col items-center justify-center text-center relative overflow-hidden mb-8">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+                <h2 class="text-4xl font-black text-white mb-2 tracking-tight drop-shadow-md"><i class="fas fa-graduation-cap mr-2"></i> Préparation ECF Finale</h2>
+                <p class="text-purple-100 text-sm font-medium max-w-2xl">Retrouvez ici toutes les questions de votre évaluation finale classées par Activité Type, avec des raccourcis directs vers les cours correspondants pour réviser efficacement.</p>
+            </div>
+          `;
+
+          ecfData.forEach((atGroup, idx) => {
+              let cardsHtml = '';
+              atGroup.questions.forEach((qObj) => {
+                  let linksHtml = '';
+                  qObj.links.forEach(link => {
+                      linksHtml += `
+                        <button onclick="filtrerBloc('${link.bloc}'); document.getElementById('searchInput').value = '${link.code}'; afficherModules('${link.code}'); window.scrollTo({top: 0, behavior: 'smooth'});" class="bg-white hover:bg-gray-50 text-[10px] font-black text-paia-blue border-2 border-paia-blue px-3 py-1.5 rounded-lg shadow-[2px_2px_0px_#0F2C48] transition-all hover:-translate-y-1 flex items-center gap-1.5 shrink-0 max-w-full overflow-hidden text-left">
+                            <i class="fas fa-external-link-alt shrink-0"></i> <span class="truncate block w-full whitespace-normal leading-tight">${link.label}</span>
+                        </button>
+                      `;
+                  });
+
+                  cardsHtml += `
+                    <div class="bg-white border-2 border-paia-blue rounded-xl p-5 shadow-[4px_4px_0px_#0F2C48] hover:-translate-y-1 hover:shadow-[6px_6px_0px_#0F2C48] transition-all flex flex-col gap-4">
+                        <p class="text-sm font-bold text-[#0F2C48] leading-relaxed text-justify">${qObj.q}</p>
+                        <div class="flex flex-col gap-2 pt-4 border-t-2 border-dashed border-gray-200">
+                            <span class="text-[9px] font-black uppercase text-gray-400 tracking-widest flex items-center"><i class="fas fa-lightbulb text-paia-yellow mr-1"></i> Cours liés :</span>
+                            <div class="flex flex-col items-start gap-2">${linksHtml}</div>
+                        </div>
+                    </div>
+                  `;
+              });
+
+              ecfCont.innerHTML += `
+                <div class="mb-8 w-full animate-slideIn" style="animation-delay: ${(idx+1)*0.1}s">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                        <div class="w-12 h-12 shrink-0 rounded-xl ${atGroup.color} flex items-center justify-center text-white border-2 border-paia-blue shadow-[2px_2px_0px_#0F2C48]">
+                            <span class="text-2xl">${atGroup.icon}</span>
+                        </div>
+                        <h2 class="font-black uppercase text-lg text-paia-blue tracking-tight">${atGroup.at}</h2>
+                    </div>
+                    <div class="flex flex-col gap-4 pl-0 md:pl-16">
+                        ${cardsHtml}
+                    </div>
+                </div>
+              `;
+          });
+      }
+
       function filtrerBloc(bloc) {
         currentBloc = bloc;
         currentMod = "ALL";
@@ -1733,6 +1833,7 @@
             if (bloc === "B2") activeClass = "bg-paia-yellow text-white border-yellow-600 shadow-[3px_3px_0px_#b45309]";
             if (bloc === "B3") activeClass = "bg-paia-bronze text-white border-orange-800 shadow-[3px_3px_0px_#7c2d12]";
             if (bloc === "B4") activeClass = "bg-paia-dark text-white border-black shadow-[3px_3px_0px_#000000]";
+            if (bloc === "ECF") activeClass = "bg-purple-600 text-white border-purple-800 shadow-[3px_3px_0px_#4c1d95]";
 
             activeTabBtn.className = `tab-btn active ${activeClass} transition-all rounded-xl px-4 py-2.5 font-black text-sm transform translate-y-[-2px]`;
         }
@@ -1742,12 +1843,14 @@
         const globalProgressHeader = document.getElementById('globalProgressHeader');
         const calendarContainer = document.getElementById('calendarContainer');
         const certifContainer = document.getElementById('certifContainer');
+        const ecfContainer = document.getElementById('ecfContainer');
 
         if (bloc === 'CAL') {
             listContainer.classList.add('hidden');
             subTabsContainer.classList.add('hidden');
             globalProgressHeader.classList.add('hidden');
             certifContainer.classList.add('hidden');
+            ecfContainer.classList.add('hidden');
             calendarContainer.classList.remove('hidden');
             renderCalendarView();
         } else if (bloc === 'CERTIF') {
@@ -1755,11 +1858,21 @@
             subTabsContainer.classList.add('hidden');
             globalProgressHeader.classList.add('hidden');
             calendarContainer.classList.add('hidden');
+            ecfContainer.classList.add('hidden');
             certifContainer.classList.remove('hidden');
             if (!chartInstance) renderChart();
+        } else if (bloc === 'ECF') {
+            listContainer.classList.add('hidden');
+            subTabsContainer.classList.add('hidden');
+            globalProgressHeader.classList.add('hidden');
+            calendarContainer.classList.add('hidden');
+            certifContainer.classList.add('hidden');
+            ecfContainer.classList.remove('hidden');
+            renderEcfContainer();
         } else {
             calendarContainer.classList.add('hidden');
             certifContainer.classList.add('hidden');
+            ecfContainer.classList.add('hidden');
             listContainer.classList.remove('hidden');
             globalProgressHeader.classList.remove('hidden');
             renderSubTabs();
@@ -2547,7 +2660,7 @@
         const sub = document.getElementById("subTabsContainer");
         if (!sub) return;
         sub.innerHTML = "";
-        if (currentBloc === "ALL" || currentBloc === "CAL" || currentBloc === "CERTIF") { sub.classList.add("hidden"); return; }
+        if (currentBloc === "ALL" || currentBloc === "CAL" || currentBloc === "CERTIF" || currentBloc === "ECF") { sub.classList.add("hidden"); return; }
         sub.classList.remove("hidden");
         const mods = configStructure[currentBloc] || [];
 
@@ -2907,60 +3020,128 @@
               </div>`;
           }
 
+          // CRÉATION DU BADGE ECF FINAL EN DESSOUS DU TITRE
+          let ecfBadgeHtml = '';
+          if (ecfMapping[id]) {
+              ecfBadgeHtml = `<span class="bg-purple-100 text-purple-700 border-2 border-purple-300 text-[10px] font-black uppercase px-2.5 py-1 rounded-md shadow-[1px_1px_0px_rgba(107,33,168,0.5)] self-start tracking-wider flex items-center" title="Indispensable pour l'ECF Final"><i class="fas fa-bullseye mr-1.5"></i> Objectif ECF Final</span>`;
+          }
+
           const card = document.createElement("div");
           card.className = `card-3d bg-white p-6 rounded-[32px] border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] flex flex-col gap-6 items-stretch mb-6 ${isFull ? "bg-blue-50/30 border-paia-blue shadow-[4px_4px_0px_#3b82f6]" : ""} ${anim ? "card-animate" : ""}`;
           if (anim) card.style.animationDelay = `${(cardIdx + 1) * 0.03}s`;
 
           card.innerHTML = `
-            <div class="flex flex-col lg:flex-row gap-4 xl:gap-6 items-stretch w-full">
-                <div class="w-full lg:w-[65%] xl:w-[70%] flex flex-col min-w-0 relative z-20">
-                    <div class="flex flex-col xl:flex-row xl:items-start gap-3 mb-0 relative z-20">
-                        <span class="self-start px-3 py-1.5 bg-paia-blue text-white font-black rounded-lg text-xs shadow-[2px_2px_0px_#B4792A] shrink-0 tracking-wider mt-1">${id}</span>
-                        <h3 class="text-lg md:text-xl font-black text-paia-blue uppercase tracking-tight leading-tight mt-1">${titre}</h3>
-                    </div>
-                    <div class="flex items-stretch w-full overflow-x-auto scrollbar-hide pb-4 pt-14 -mt-8 snap-x gap-4 relative z-10 px-1">
-                        ${offBlock}
-                        ${coreBlock}
-                        ${extBlock}
-                        <div class="w-[2px] self-stretch bg-gray-200 rounded-full shrink-0 mx-1 hidden md:block mt-8 mb-2"></div>
-                        ${noteBlock}
-                        ${calBlock}
-                    </div>
-                </div>
-                ${previewBlock}
-            </div>
-            <!-- BOÎTE DE DIALOGUE AUDIO PLACÉE EN DESSOUS, PLEINE LARGEUR -->
-            <div id="inline-media-${id}" class="hidden w-full mt-2" data-current-url=""></div>
+              <div class="flex flex-col lg:flex-row gap-6 w-full">
+                  <div class="flex-1 flex flex-col gap-4">
+                      <div class="flex flex-col gap-2">
+                          <div class="flex items-center gap-2 flex-wrap">
+                              <span class="bg-paia-ivory text-paia-blue px-3 py-1.5 rounded-xl border-2 border-paia-blue text-[11px] font-black uppercase tracking-widest shadow-[2px_2px_0px_#0F2C48]">${id}</span>
+                              ${ecfBadgeHtml}
+                          </div>
+                          <h3 class="text-xl md:text-2xl font-black text-paia-blue leading-tight">${titre}</h3>
+                      </div>
+
+                      <div class="flex flex-wrap items-stretch gap-3 w-full mt-auto">
+                          ${offBlock}
+                          ${coreBlock}
+                          ${extBlock}
+                          ${noteBlock}
+                          ${calBlock}
+                      </div>
+
+                      <div id="inline-media-${id}" class="hidden w-full" data-current-url=""></div>
+                  </div>
+                  ${previewBlock}
+              </div>
           `;
 
           list.appendChild(card);
           cardIdx++;
-        });
+        }); // Fin du database.forEach
 
-        const pb = document.getElementById("progressBar");
-        if (pb) pb.style.width = totalCount ? (vueCount / totalCount * 100) + "%" : "0%";
-        const pt = document.getElementById("progressText");
-        if (pt) pt.innerText = Math.round(totalCount ? (vueCount / totalCount * 100) : 0) + "%";
-        const crv = document.getElementById("compteurResVue");
-        if (crv) crv.innerText = vueCount;
-        const crt = document.getElementById("compteurResTotal");
-        if (crt) crt.innerText = totalCount;
-      }
+        // Mise à jour de la barre de progression globale du header si des éléments sont trouvés
+        if (totalCount > 0) {
+            const globalProgressVal = Math.round((vueCount / totalCount) * 100);
+            const globalProgressText = document.getElementById('progressText');
+            const globalProgressBar = document.getElementById('progressBar');
+            const compTotal = document.getElementById('compteurResTotal');
+            const compVue = document.getElementById('compteurResVue');
+
+            if (globalProgressText) globalProgressText.innerText = globalProgressVal + '%';
+            if (globalProgressBar) globalProgressBar.style.width = globalProgressVal + '%';
+            if (compTotal) compTotal.innerText = totalCount;
+            if (compVue) compVue.innerText = vueCount;
+        }
+
+        // Affichage alternatif si aucun module ne correspond à la recherche
+        if (cardIdx === 0) {
+            list.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-20 text-center opacity-60">
+                    <i class="fas fa-search text-6xl mb-4 text-paia-blue"></i>
+                    <h2 class="text-2xl font-black text-paia-blue mb-2">Aucun module trouvé</h2>
+                    <p class="text-sm font-bold text-gray-500">Essayez une autre recherche ou changez de bloc.</p>
+                </div>
+            `;
+        }
+      } // Fin de la fonction afficherModules
+
+      // Gestion individuelle des clics sur les badges (Check/Uncheck)
+      window.toggleRes = function(id, type, emoji, color) {
+          const key = `${id}-${type}`;
+          progressRes[key] = !progressRes[key];
+          localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
+
+          // Vérification si le module complet vient d'être terminé suite à ce clic
+          const itemObj = database.find(d => d.Code === id);
+          if (itemObj) {
+              const safeFileName = encodeURIComponent(`${id} - ${itemObj.Titre}`) + '.html';
+              const resMap = { audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie, slide: itemObj.Slides, video: itemObj.Vidéo, notebook: itemObj.NoteBook_LM, glo: `Glossaire/${safeFileName}`, map: `Carte Mentale/${safeFileName}`, quiz: `Quiz/${safeFileName}` };
+              const allCheckable = ["audio", "excel", "infog", "slide", "video", "notebook", "glo", "map", "quiz"];
+              const validRids = allCheckable.filter(r => resMap[r] && resMap[r].trim() !== '');
+
+              const isModuleAll = validRids.every(r => progressRes[`${id}-${r}`]);
+
+              let blocKey = "bloc0";
+              if(id.includes("_B1_")) blocKey = "bloc1";
+              else if(id.includes("_B2_")) blocKey = "bloc2";
+              else if(id.includes("_B3_")) blocKey = "bloc3";
+              else if(id.includes("_B4_")) blocKey = "bloc4";
+
+              if (isModuleAll) {
+                  progressState[blocKey].completed.add(id);
+                  if (typeof confetti === 'function') confetti({ particleCount: 150, spread: 80, origin: { y: 0.8 }, colors: ['#0F2C48', '#D9A526', '#3b82f6'] });
+              } else {
+                  progressState[blocKey].completed.delete(id);
+              }
+              saveState();
+              updateProgressUI();
+          }
+
+          if (progressRes[key]) {
+              afficherToastCustom(`<div class="flex items-center gap-3"><div class="text-2xl">${emoji}</div><div><div class="text-sm font-black text-paia-blue">Ressource validée !</div><div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Progression sauvegardée</div></div></div>`, color);
+              if (typeof confetti === 'function') confetti({ particleCount: 30, spread: 40, origin: { y: 0.8 }, colors: [color || '#0F2C48', '#FFFFFF'] });
+          }
+
+          const searchInputEl = document.getElementById("searchInput");
+          afficherModules(searchInputEl ? searchInputEl.value : "", false);
+      };
 
       window.toggleSujet = function(sujetCode, blocId) {
-            const set = progressState[blocId].completed;
-            const isNowCompleted = !set.has(sujetCode);
+            const chk = document.getElementById(`chk-${sujetCode}`);
+            if (!chk) return;
+            const isNowCompleted = chk.checked;
 
             if (isNowCompleted) {
-                set.add(sujetCode);
+                progressState[blocId].completed.add(sujetCode);
+                if (typeof confetti === 'function') confetti({ particleCount: 30, spread: 40, origin: { y: 0.7 } });
             } else {
-                set.delete(sujetCode);
+                progressState[blocId].completed.delete(sujetCode);
             }
 
             const itemObj = database.find(d => d.Code === sujetCode);
             if (itemObj) {
-                const allCheckable = ["audio", "excel", "infog", "slide", "video", "notebook", "glo", "map", "quiz"];
                 const safeFileName = encodeURIComponent(`${sujetCode} - ${itemObj.Titre}`) + '.html';
+                const allCheckable = ["audio", "excel", "infog", "slide", "video", "notebook", "glo", "map", "quiz"];
                 const resMap = {
                     audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie,
                     slide: itemObj.Slides, video: itemObj.Vidéo, notebook: itemObj.NoteBook_LM,
@@ -2984,16 +3165,20 @@
             }
       };
 
-      window.afficherTravaux = function(n) {
-        const txt = document.getElementById("modalTxt");
-        if (txt) txt.innerText = n;
-        const modal = document.getElementById("modalTravaux");
-        if (modal) modal.style.display = "flex";
-      }
+      // Modal pour les documents non disponibles / en chantier
+      window.afficherTravaux = function(titre) {
+          const mod = document.getElementById('modalTravaux');
+          const txt = document.getElementById('modalTxt');
+          if(mod && txt) {
+              txt.innerText = titre;
+              mod.style.display = 'flex';
+          }
+      };
 
-      const searchInputEl = document.getElementById("searchInput");
-      if (searchInputEl) {
-          searchInputEl.addEventListener("input", () => afficherModules(searchInputEl.value, false));
+      // Écouteur d'événement sur la barre de recherche
+      const searchInputElGlobal = document.getElementById("searchInput");
+      if (searchInputElGlobal) {
+          searchInputElGlobal.addEventListener("input", (e) => afficherModules(e.target.value, false));
       }
 
     </script>
