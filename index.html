@@ -74,6 +74,18 @@
         box-shadow: 0 25px 50px -12px rgba(15, 44, 72, 0.2), 6px 6px 0px var(--paia-blue);
       }
 
+      /* Animation d'Aperçu (Effet Ken Burns Lent) */
+      @keyframes slowPan {
+          0% { transform: scale(1.1) translate(0, 0); }
+          25% { transform: scale(1.15) translate(2%, 2%); }
+          50% { transform: scale(1.1) translate(0, 4%); }
+          75% { transform: scale(1.15) translate(-2%, 2%); }
+          100% { transform: scale(1.1) translate(0, 0); }
+      }
+      .animate-slow-pan {
+          animation: slowPan 25s infinite linear alternate;
+      }
+
       /* Burger Menu Animation */
       #mobile-menu {
         transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -228,8 +240,8 @@
 
       .cal-badge {
         position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 3px;
-        background: #ef4444; color: white; border-radius: 9px; font-size: 9px; font-weight: 900;
-        display: flex; align-items: center; justify-content: center; border: 2px solid white;
+        border-radius: 9px; font-size: 9px; font-weight: 900;
+        display: flex; align-items: center; justify-content: center;
         box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 20;
       }
       .check-badge {
@@ -378,11 +390,11 @@
       <div class="tabs-sticky py-3 mb-8 flex flex-col xl:flex-row gap-4 justify-between items-center rounded-xl px-2 md:px-0">
           <div class="flex flex-wrap gap-3 w-full xl:w-auto" id="tabsMenu">
             <button class="tab-btn active" id="tab-ALL" onclick="filtrerBloc('ALL')">Vue Globale</button>
-            <button class="tab-btn" id="tab-B0" onclick="filtrerBloc('B0')">B0: Socle</button>
-            <button class="tab-btn" id="tab-B1" onclick="filtrerBloc('B1')">B1: Concevoir</button>
-            <button class="tab-btn" id="tab-B2" onclick="filtrerBloc('B2')">B2: Animer</button>
-            <button class="tab-btn" id="tab-B3" onclick="filtrerBloc('B3')">B3: Accompagner</button>
-            <button class="tab-btn" id="tab-B4" onclick="filtrerBloc('B4')">B4: Qualité</button>
+            <button class="tab-btn" id="tab-B0" onclick="filtrerBloc('B0')">B0 : Socle</button>
+            <button class="tab-btn" id="tab-B1" onclick="filtrerBloc('B1')">B1 : Concevoir</button>
+            <button class="tab-btn" id="tab-B2" onclick="filtrerBloc('B2')">B2 : Animer</button>
+            <button class="tab-btn" id="tab-B3" onclick="filtrerBloc('B3')">B3 : Accompagner</button>
+            <button class="tab-btn" id="tab-B4" onclick="filtrerBloc('B4')">B4 : Qualité</button>
           </div>
           <div class="relative w-full xl:max-w-sm mt-2 xl:mt-0">
             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-paia-blue/40 text-lg"></i>
@@ -532,12 +544,12 @@
                 <!-- Choix du Bloc -->
                 <div>
                     <label class="text-gray-600 text-xs font-bold mb-1 block">1. Sélectionner le Bloc à planifier :</label>
-                    <select id="bulk-bloc-select" class="w-full bg-white border-2 border-paia-blue text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm shadow-[2px_2px_0px_#0F2C48] outline-none">
-                        <option value="B0">Bloc 0 (Fondamentaux)</option>
-                        <option value="B1">Bloc 1 (Concevoir)</option>
-                        <option value="B2">Bloc 2 (Animer)</option>
-                        <option value="B3">Bloc 3 (Accompagner)</option>
-                        <option value="B4">Bloc 4 (Qualité)</option>
+                    <select id="bulk-bloc-select" onchange="updateBulkPreview()" class="w-full bg-white border-2 border-paia-blue text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm shadow-[2px_2px_0px_#0F2C48] outline-none">
+                        <option value="B0">B0 : Socle</option>
+                        <option value="B1">B1 : Concevoir</option>
+                        <option value="B2">B2 : Animer</option>
+                        <option value="B3">B3 : Accompagner</option>
+                        <option value="B4">B4 : Qualité</option>
                     </select>
                 </div>
 
@@ -545,7 +557,7 @@
                 <div class="flex gap-4">
                     <div class="flex-1">
                         <label class="text-gray-600 text-xs font-bold mb-1 block">2. Date de début :</label>
-                        <input type="date" id="bulk-start-date" class="w-full bg-white border-2 border-paia-blue text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm shadow-[2px_2px_0px_#0F2C48] outline-none">
+                        <input type="date" id="bulk-start-date" onchange="updateBulkPreview()" class="w-full bg-white border-2 border-paia-blue text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm shadow-[2px_2px_0px_#0F2C48] outline-none">
                     </div>
                     <div class="w-1/3">
                         <label class="text-gray-600 text-xs font-bold mb-1 block">Heure :</label>
@@ -557,23 +569,30 @@
                 <div>
                     <label class="text-gray-600 text-xs font-bold mb-2 block">3. Vos jours d'apprentissage réguliers :</label>
                     <div class="flex justify-between gap-1">
-                        <input type="checkbox" id="d-1" class="day-cb" checked><label for="d-1">L</label>
-                        <input type="checkbox" id="d-2" class="day-cb" checked><label for="d-2">M</label>
-                        <input type="checkbox" id="d-3" class="day-cb" checked><label for="d-3">M</label>
-                        <input type="checkbox" id="d-4" class="day-cb" checked><label for="d-4">J</label>
-                        <input type="checkbox" id="d-5" class="day-cb" checked><label for="d-5">V</label>
-                        <input type="checkbox" id="d-6" class="day-cb"><label for="d-6">S</label>
-                        <input type="checkbox" id="d-0" class="day-cb"><label for="d-0">D</label>
+                        <input type="checkbox" id="d-1" class="day-cb" checked onchange="updateBulkPreview()"><label for="d-1">L</label>
+                        <input type="checkbox" id="d-2" class="day-cb" checked onchange="updateBulkPreview()"><label for="d-2">M</label>
+                        <input type="checkbox" id="d-3" class="day-cb" checked onchange="updateBulkPreview()"><label for="d-3">M</label>
+                        <input type="checkbox" id="d-4" class="day-cb" checked onchange="updateBulkPreview()"><label for="d-4">J</label>
+                        <input type="checkbox" id="d-5" class="day-cb" checked onchange="updateBulkPreview()"><label for="d-5">V</label>
+                        <input type="checkbox" id="d-6" class="day-cb" onchange="updateBulkPreview()"><label for="d-6">S</label>
+                        <input type="checkbox" id="d-0" class="day-cb" onchange="updateBulkPreview()"><label for="d-0">D</label>
                     </div>
                 </div>
 
                 <!-- Options supplémentaires -->
                 <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 mt-2">
                     <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" id="bulk-exclude-holidays" checked class="w-5 h-5 rounded border-2 border-paia-blue text-paia-blue focus:ring-paia-blue cursor-pointer">
+                        <input type="checkbox" id="bulk-exclude-holidays" checked onchange="updateBulkPreview()" class="w-5 h-5 rounded border-2 border-paia-blue text-paia-blue focus:ring-paia-blue cursor-pointer">
                         <span class="text-sm font-bold text-[#0F2C48]">Ignorer les jours fériés français</span>
                     </label>
                 </div>
+            </div>
+
+            <!-- APERÇU DYNAMIQUE DES DATES -->
+            <div id="bulk-preview" class="text-[11px] font-medium text-emerald-800 bg-emerald-50 p-4 rounded-xl border-2 border-emerald-200 mt-4 hidden shadow-inner">
+                <strong class="block mb-2 font-black uppercase tracking-wider text-emerald-600"><i class="fas fa-eye mr-1"></i> Aperçu du planning généré</strong>
+                <ul id="bulk-preview-list" class="space-y-1 ml-1"></ul>
+                <p class="text-[9px] mt-3 opacity-60 italic text-emerald-900">*Chaque module recevra automatiquement ses 6 rappels (J0, J3, J7, J14, J30, J60) à partir de sa date de début.</p>
             </div>
 
             <div class="mt-8 flex flex-col gap-3">
@@ -627,12 +646,18 @@
             <div class="text-left mb-6 flex gap-4">
               <div class="flex-1">
                   <label class="text-gray-600 text-xs font-bold mb-2 block">Jour 0 (Aujourd'hui) :</label>
-                  <input type="date" id="sr-start-date" class="w-full bg-white border-2 border-paia-blue text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm shadow-[2px_2px_0px_#0F2C48] outline-none">
+                  <input type="date" id="sr-start-date" onchange="updateSRPreview()" class="w-full bg-white border-2 border-paia-blue text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm shadow-[2px_2px_0px_#0F2C48] outline-none">
               </div>
               <div class="w-1/3">
                   <label class="text-gray-600 text-xs font-bold mb-2 block">Horaire :</label>
                   <input type="time" id="sr-start-time" value="14:00" class="w-full bg-white border-2 border-paia-blue text-[#0F2C48] px-3 py-3 rounded-xl font-black text-sm shadow-[2px_2px_0px_#0F2C48] outline-none">
               </div>
+            </div>
+
+            <!-- APERÇU DYNAMIQUE DES DATES POUR UN MODULE -->
+            <div id="sr-preview" class="text-left mb-6 bg-gray-50 border border-gray-200 p-3 rounded-xl hidden">
+                <span class="text-[10px] font-black uppercase text-gray-500 tracking-wider mb-2 block"><i class="fas fa-eye mr-1"></i> Vos 6 rappels calculés :</span>
+                <div id="sr-preview-list" class="flex flex-wrap gap-2"></div>
             </div>
 
             <button onclick="calculateAndSaveDates()" class="w-full bg-rose-500 border-2 border-rose-700 text-white px-4 py-3.5 rounded-xl font-black text-xs shadow-[4px_4px_0px_#9f1239] transition-all transform hover:-translate-y-1 mb-3">Générer mon programme !</button>
@@ -735,9 +760,9 @@
       let currentBloc = "ALL";
       let currentMod = "ALL";
 
-      // 100% de la Data des modules conservée
+      // --- Mises à jour strictes des intitulés ---
       const dataProgram = {
-            bloc0: { id: "bloc0", themeKey: "trans", title: "0. Fondamentaux & Transverses", icon: "🧠", modules: [
+            bloc0: { id: "bloc0", themeKey: "trans", title: "B0 : Socle", icon: "🧠", modules: [
                 { title: "M01 : Méthodes & Jeux", sujets: [
                     "000_FPA_B0_M01_S001 - Présentation du module et auto positionnement",
                     "000_FPA_B0_M01_S002 - Plus de 15 jeux pédagogiques 1",
@@ -748,29 +773,29 @@
                 { title: "M02 : Classe Virtuelle", sujets: [
                     "000_FPA_B0_M02_S001 - Les usages de la classe virtuelle",
                     "000_FPA_B0_M02_S002 - Se lancer dans la classe virtuelle",
-                    "000_FPA_B0_M02_S003 - Préparer l’animation d’une classe virtuelle",
+                    "000_FPA_B0_M02_S003 - Préparer l'animation d'une classe virtuelle",
                     "000_FPA_B0_M02_S004 - Animer une classe virtuelle",
                     "000_FPA_B0_M02_S005 - Les outils de la classe virtuelle"
                 ]},
                 { title: "M03 : Pédagogie Inversée", sujets: [
                     "000_FPA_B0_M03_S001 - Auto-positionnement pédagogie inversée",
-                    "000_FPA_B0_M03_S002 - Qu’est-ce que la pédagogie inversée",
+                    "000_FPA_B0_M03_S002 - Qu'est-ce que la pédagogie inversée",
                     "000_FPA_B0_M03_S003 - Le Learning by Doing",
-                    "000_FPA_B0_M03_S004 - Styles d’apprentissage et rôle du formateur",
+                    "000_FPA_B0_M03_S004 - Styles d'apprentissage et rôle du formateur",
                     "000_FPA_B0_M03_S005 - Les différents niveaux de la classe inversée",
                     "000_FPA_B0_M03_S006 - Quelques outils pour inverser sa classe"
                 ]}
             ]},
-            bloc1: { id: "bloc1", themeKey: "bloc1", title: "1. Concevoir et préparer", icon: "🏗️", modules: [
+            bloc1: { id: "bloc1", themeKey: "bloc1", title: "B1 : Concevoir", icon: "🏗️", modules: [
                 { title: "M01 : Analyse demande", sujets: [
                     "000_FPA_B1_M01_S000 - Graduate Formateur pour adultes",
-                    "001_FPA_B1_M01_S001 - L’analyse de la demande",
+                    "001_FPA_B1_M01_S001 - L'analyse de la demande",
                     "002_FPA_B1_M01_S002 - La demande formelle ou informelle et les besoins en formation",
                     "003_ FPA_B1_M01_S003 - Les caractéristiques des publics"
                 ]},
                 { title: "M02 : Obligations légales", sujets: [
                     "004_FPA_B1_M02_S001 - Le cadre légal de la formation professionnelle",
-                    "005_FPA_B1_M02_S002 - Le cadre règlementaires, législatif de l’activité de formation",
+                    "005_FPA_B1_M02_S002 - Le cadre règlementaires, législatif de l'activité de formation",
                     "006_FPA_B1_M02_S003 - Les obligations administratives des organismes de formation",
                     "007_FPA_B1_M02_S004 - La mise en œuvre des prestations"
                 ]},
@@ -778,70 +803,70 @@
                     "008_FPA_B1_M03_S001 - La gouvernance et le financement du système de la formation professionnelle",
                     "009_FPA_B1_M03_S002 - Les financements du public Travailleur Non Salarié",
                     "010_FPA_B1_M03_S003 - Les financements du public salarié",
-                    "011_FPA_B1_M03_S004 - Le financement des demandeurs d’emploi",
+                    "011_FPA_B1_M03_S004 - Le financement des demandeurs d'emploi",
                     "012_FPA_B1_M03_S005 - Le financement des autres publics",
                     "013_FPA_B1_M03_S006 - Le Compte Personnel de Formation"
                 ]},
                 { title: "M04 : Ingénierie", sujets: [
                     "014_FPA_B1_M04_S001 - Les référentiels en formation",
                     "015_FPA_B1_M04_S002 - La pédagogie des adultes",
-                    "016_FPA_B1_M04_S003 - Les concepts de base de l’ingénierie et le vocabulaire de formation",
+                    "016_FPA_B1_M04_S003 - Les concepts de base de l'ingénierie et le vocabulaire de formation",
                     "017_FPA_B1_M04_S004 - Structurer sa formation en blocs de compétences"
                 ]},
                 { title: "M05 : Moyens", sujets: [
-                    "018_FPA_B1_M05_S001 - Les modalités pédagogiques et les modalités d’accompagnement",
-                    "019_FPA_B1_M05_S002 - Les situations d’apprentissage, d’accompagnement et d’évaluation",
-                    "020_FPA_B1_M05_S003 - L’accompagnement pédagogique"
+                    "018_FPA_B1_M05_S001 - Les modalités pédagogiques et les modalités d'accompagnement",
+                    "019_FPA_B1_M05_S002 - Les situations d'apprentissage, d'accompagnement et d'évaluation",
+                    "020_FPA_B1_M05_S003 - L'accompagnement pédagogique"
                 ]},
                 { title: "M06 : Progression", sujets: [
-                    "021_FPA_B1_M06_S001 - Les étapes de la formation et de l’accompagnement et les durées associées",
-                    "022_FPA_B1_M06_S002 - La rédaction d’une progression pédagogique et d’un plan d’accompagnement",
-                    "023_FPA_B1_M06_S003 - L’organisation logistique des moyens pédagogiques",
-                    "024_FPA_B1_M06_S004 - Application - Élaborer la progression pédagogique d’une formation multimodale à partir d’une demande"
+                    "021_FPA_B1_M06_S001 - Les étapes de la formation et de l'accompagnement et les durées associées",
+                    "022_FPA_B1_M06_S002 - La rédaction d'une progression pédagogique et d'un plan d'accompagnement",
+                    "023_FPA_B1_M06_S003 - L'organisation logistique des moyens pédagogiques",
+                    "024_FPA_B1_M06_S004 - Application - Élaborer la progression pédagogique d’une formation multimodale à partir d'une demande"
                 ]},
                 { title: "M07 : Techniques", sujets: [
                     "025_FPA_B1_M07_S001 - Les méthodes pédagogiques",
                     "026_FPA_B1_M07_S002 - Les concepts, modalités et démarches pédagogiques",
                     "027_FPA_B1_M07_S003 - Les techniques pédagogiques",
-                    "028_FPA_B1_M07_S004 - L’outillage pédagogique",
-                    "029_FPA_B1_M07_S005 - Les stratégies favorisant l’analyse réflexive, les pédagogies actives et l’apprentissage par les pairs",
-                    "030_FPA_B1_M07_S006 - Les types d’évaluation et de positionnement",
-                    "031_FPA_B1_M07_S007 - Les concepts de base de l’ingénierie pédagogique adaptée aux adultes"
+                    "028_FPA_B1_M07_S004 - L'outillage pédagogique",
+                    "029_FPA_B1_M07_S005 - Les stratégies favorisant l'analyse réflexive, les pédagogies actives et l'apprentissage par les pairs",
+                    "030_FPA_B1_M07_S006 - Les types d'évaluation et de positionnement",
+                    "031_FPA_B1_M07_S007 - Les concepts de base de l'ingénierie pédagogique adaptée aux adultes"
                 ]},
                 { title: "M08 : Individualisation", sujets: [
-                    "032_FPA_B1_M08_S001 - Les outils d’auto-formation et d’auto-évaluation",
+                    "032_FPA_B1_M08_S001 - Les outils d'auto-formation et d'auto-évaluation",
                     "033_FPA_B1_M08_S002 - Les spécificités des formations individualisées",
-                    "034_FPA_B1_M08_S003 - La formation en alternance et l’AFEST"
+                    "034_FPA_B1_M08_S003 - La formation en alternance et l'AFEST"
                 ]},
                 { title: "M09 : Scénarisation", sujets: [
-                    "035_FPA_B1_M09_S001 - Les théories de l’apprentissage social et des outils collaboratifs",
-                    "036_FPA_B1_M09_S002 - Les différents styles d’apprentissage",
+                    "035_FPA_B1_M09_S001 - Les théories de l'apprentissage social et des outils collaboratifs",
+                    "036_FPA_B1_M09_S002 - Les différents styles d'apprentissage",
                     "037_FPA_B1_M09_S003 - Les environnements et services numériques mobilisables",
                     "038_FPA_B1_M09_S004 - Les principales obligations des organismes de formation sur le handicap",
                     "039_FPA_B1_M09_S005 - Les étapes clés structurant un temps de formation",
                     "040_FPA_B1_M09_S006 - La construction du scénario pédagogique"
                 ]},
                 { title: "M10 : Scénario Tutoral", sujets: [
-                    "041_FPA_B1_M10_S001 - Les types d’accompagnement et des outils de suivi associés",
-                    "042_FPA_B1_M10_S002 - Les situations d’accueil et d’accompagnements des apprenants",
-                    "043_FPA_B1_M10_S003 - La rédaction d’un scénario tutoral d’accompagnement"
+                    "041_FPA_B1_M10_S001 - Les types d'accompagnement et des outils de suivi associés",
+                    "042_FPA_B1_M10_S002 - Les situations d'accueil et d'accompagnements des apprenants",
+                    "043_FPA_B1_M10_S003 - La rédaction d'un scénario tutoral d'accompagnement"
                 ]},
                 { title: "M11 : Multimodalité", sujets: [
-                    "044_FPA_B1_M11_S001 - La scénarisation d’un parcours",
+                    "044_FPA_B1_M11_S001 - La scénarisation d'un parcours",
                     "045_FPA_B1_M11_S002 - Scénariser ses parcours avec les blended-learning",
-                    "046_FPA_B1_M11_S003 - La planification et l’accueil de nouveaux apprenants y compris dans les formations à entrées et sorties permanentes",
-                    "047_FPA_B1_M11_S004 - Application - Concevoir un scénario pédagogique et d’accompagnement en intégrant la multimodalité"
+                    "046_FPA_B1_M11_S003 - La planification et l'accueil de nouveaux apprenants y compris dans les formations à entrées et sorties permanentes",
+                    "047_FPA_B1_M11_S004 - Application - Concevoir un scénario pédagogique et d'accompagnement en intégrant la multimodalité"
                 ]},
                 { title: "M12 : Communication", sujets: [
-                    "048_FPA_B1_M12_S001 - Capter l’attention grâce aux images et aux schémas",
-                    "049_FPA_B1_M12_S002 - Les règles d’écriture d’une consigne, de communication et de conception graphique",
+                    "048_FPA_B1_M12_S001 - Capter l'attention grâce aux images et aux schémas",
+                    "049_FPA_B1_M12_S002 - Les règles d'écriture d'une consigne, de communication et de conception graphique",
                     "050_FPA_B1_M12_S003 - La méthode FALC"
                 ]},
                 { title: "M13 : Conception", sujets: [
-                    "051_FPA_B1_M13_S001 - La conception d’un support de formation et d’une activité d’apprentissage",
-                    "052_FPA_B1_M13_S002 - La conception d’un support de formation et d’une activité d’apprentissage spécifique à l’autoformation",
-                    "053_FPA_B1_M13_S003 - La digitalisation d’une formation",
-                    "054_FPA_B1_M13_S004 - La réalisation d’un storyboard",
+                    "051_FPA_B1_M13_S001 - La conception d'un support de formation et d'une activité d'apprentissage",
+                    "052_FPA_B1_M13_S002 - La conception d'un support de formation et d'une activité d'apprentissage spécifique à l'autoformation",
+                    "053_FPA_B1_M13_S003 - La digitalisation d'une formation",
+                    "054_FPA_B1_M13_S004 - La réalisation d'un storyboard",
                     "055_FPA_B1_M13_S005 - Comment construire un questionnaire de satisfaction ?",
                     "056_FPA_B1_M13_S006 - Travailler sur des projets de conception d’activités d’apprentissage ou d’évaluation"
                 ]},
@@ -850,156 +875,156 @@
                     "058_FPA_B1_M14_S002 - Organiser un dispositif de veille efficace",
                     "059_FPA_B1_M14_S003 - La veille technologique - sources, référents, outils et bonnes pratiques",
                     "060_FPA_B1_M14_S004 - La synthèse des veilles",
-                    "061_FPA_B1_M14_S005 - Application - Concevoir des activités d’apprentissage et d’évaluation"
+                    "061_FPA_B1_M14_S005 - Application - Concevoir des activités d'apprentissage et d'évaluation"
                 ]}
             ]},
-            bloc2: { id: "bloc2", themeKey: "bloc2", title: "2. Animer et évaluer", icon: "🎤", modules: [
+            bloc2: { id: "bloc2", themeKey: "bloc2", title: "B2 : Animer", icon: "🎤", modules: [
                 { title: "M01 : Facilitation", sujets: [
                     "062_FPA_B2_M01_S001 - La posture de facilitateur",
                     "063_FPA_B2_M01_S002 - La communication pédagogique",
-                    "064_FPA_B2_M01_S003 - L’intelligence collective en formation",
+                    "064_FPA_B2_M01_S003 - L'intelligence collective en formation",
                     "065_FPA_B2_M01_S004 - Les consignes de travail, la gestion du temps",
-                    "066_FPA_B2_M01_S005 - La facilitation et l’exploitation des interventions des stagiaires"
+                    "066_FPA_B2_M01_S005 - La facilitation et l'exploitation des interventions des stagiaires"
                 ]},
                 { title: "M02 : Animation", sujets: [
                     "067_FPA_B2_M02_S001 - Préparer sa posture professionnelle et son animation",
                     "068_FPA_B2_M02_S002 - Démarrer une session de formation, plus de 15 ateliers de lancement",
                     "069_FPA_B2_M02_S003 - L’impact du démarrage et de la conclusion d’une formation",
-                    "070_FPA_B2_M02_S004 - L’écoute active",
-                    "071_FPA_B2_M02_S005 - Le lancement des sequences pédagogiques",
+                    "070_FPA_B2_M02_S004 - L'écoute active",
+                    "071_FPA_B2_M02_S005 - Le lancement des séquences pédagogiques",
                     "072_FPA_B2_M02_S006 - La dynamique de groupe",
                     "073_FPA_B2_M02_S007 - Stimuler et canaliser les participants"
                 ]},
                 { title: "M03 : Digital", sujets: [
                     "074_FPA_B2_M03_S001 - Le digital Learning",
-                    "075_FPA_B2_M03_S002 - Préparer l’animation d’une classe virtuelle",
+                    "075_FPA_B2_M03_S002 - Préparer l'animation d'une classe virtuelle",
                     "076_FPA_B2_M03_S003 - Animer une classe virtuelle"
                 ]},
                 { title: "M04 : Neurosciences", sujets: [
-                    "077_FPA_B2_M04_S001 - L’individualisation",
-                    "078_FPA_B2_M04_S002 - Les difficultés individuelles et collectives d’apprentissage",
+                    "077_FPA_B2_M04_S001 - L'individualisation",
+                    "078_FPA_B2_M04_S002 - Les difficultés individuelles et collectives d'apprentissage",
                     "079_FPA_B2_M04_S003 - Désamorcer une situation conflictuelle",
                     "080_FPA_B2_M04_S004 - Les troubles DYS dans les apprentissages",
                     "081_FPA_B2_M04_S005 - Les autres types de handicaps et leurs conséquences en formation",
-                    "082_FPA_B2_M04_S006 - Les mécanismes de l’attention, de la motivation et les neurosciences",
+                    "082_FPA_B2_M04_S006 - Les mécanismes de l'attention, de la motivation et les neurosciences",
                     "083_FPA_B2_M04_S007 - Application - Animer une formation et faciliter les apprentissages selon différentes modalités"
                 ]},
                 { title: "M05 : Planif Eval.", sujets: [
-                    "084_FPA_B2_M05_S001 - La planification et la mise en place d’une évaluation",
-                    "085_FPA_B2_M05_S002 - Le dispositif d’évaluation",
-                    "086_FPA_B2_M05_S003 - Les référentiels, les critères et indicateurs de l’évaluation",
+                    "084_FPA_B2_M05_S001 - La planification et la mise en place d'une évaluation",
+                    "085_FPA_B2_M05_S002 - Le dispositif d'évaluation",
+                    "086_FPA_B2_M05_S003 - Les référentiels, les critères et indicateurs de l'évaluation",
                     "087_FPA_B2_M05_S004 - La réglementation sur l’adaptation des évaluations pour les apprenants en situation de handicap",
-                    "088_FPA_B2_M05_S005 - L’alignement pédagogique entre les objectifs d’apprentissage, les activités et l’évaluation"
+                    "088_FPA_B2_M05_S005 - L'alignement pédagogique entre les objectifs d'apprentissage, les activités et l'évaluation"
                 ]},
                 { title: "M06 : Outils Eval.", sujets: [
-                    "089_FPA_B2_M06_S001 - L’évaluation des acquis",
-                    "090_FPA_B2_M06_S002 - Les outils d’évaluation",
-                    "091_FPA_B2_M06_S003 - La construction d’activités et d’outils d’évaluation des acquis"
+                    "089_FPA_B2_M06_S001 - L'évaluation des acquis",
+                    "090_FPA_B2_M06_S002 - Les outils d'évaluation",
+                    "091_FPA_B2_M06_S003 - La construction d'activités et d'outils d'évaluation des acquis"
                 ]},
                 { title: "M07 : Restitution", sujets: [
-                    "092_FPA_B2_M07_S001 - Les modalités de restitution d’une évaluation",
-                    "093_FPA_B2_M07_S002 - L’exploitation des résultats en tant que situation d’apprentissage",
-                    "094_FPA_B2_M07_S003 - La planification des temps d’évaluation, de correction, de restitution",
+                    "092_FPA_B2_M07_S001 - Les modalités de restitution d'une évaluation",
+                    "093_FPA_B2_M07_S002 - L'exploitation des résultats en tant que situation d'apprentissage",
+                    "094_FPA_B2_M07_S003 - La planification des temps d'évaluation, de correction, de restitution",
                     "095_FPA_B2_M07_S004 - La restitution de bilans pédagogiques individuels et collectifs",
                     "096_FPA_B2_M07_S005 - Application - Evaluer les acquis de formation des apprenants"
                 ]},
                 { title: "M08 : Difficultés", sujets: [
                     "097_FPA_B2_M08_S001 - Les difficultés et obstacles à l’apprentissage",
-                    "098_FPA_B2_M08_S002 - Remédier aux difficultés d’apprentissage",
+                    "098_FPA_B2_M08_S002 - Remédier aux difficultés d'apprentissage",
                     "099_FPA_B2_M08_S003 - Les indicateurs de décrochage et les stratégies de remédiation"
                 ]},
                 { title: "M09 : Stratégies", sujets: [
-                    "100_FPA_B2_M09_S001 - L’adaptation de la formation en cas de difficultés individuelles",
+                    "100_FPA_B2_M09_S001 - L'adaptation de la formation en cas de difficultés individuelles",
                     "101_FPA_B2_M09_S002 - Les techniques de résolution de problème",
-                    "102_FPA_B2_M09_S003 - La posture à adopter pour remédier aux difficultés individuelles d’apprentissage",
-                    "103_FPA_B2_M09_S004 - Application - Remédier aux difficultés individuelles d’apprentissage"
+                    "102_FPA_B2_M09_S003 - La posture à adopter pour remédier aux difficultés individuelles d'apprentissage",
+                    "103_FPA_B2_M09_S004 - Application - Remédier aux difficultés individuelles d'apprentissage"
                 ]}
             ]},
-            bloc3: { id: "bloc3", themeKey: "bloc3", title: "3. Accompagner", icon: "🤝", modules: [
+            bloc3: { id: "bloc3", themeKey: "bloc3", title: "B3 : Accompagner", icon: "🤝", modules: [
                 { title: "M01 : Diagnostiquer", sujets: [
-                    "104_FPA_B3_M01_S001 - Les différents types de difficultés périphériques et besoin d’accompagnement",
+                    "104_FPA_B3_M01_S001 - Les différents types de difficultés périphériques et besoin d'accompagnement",
                     "105_FPA_B3_M01_S002 - Les démarches diagnostiques"
                 ]},
                 { title: "M02 : Entretien", sujets: [
-                    "106_FPA_B3_M02_S001 - Les techniques d’entretien",
-                    "107_FPA_B3_M02_S002 - Les différents types d’entretien",
+                    "106_FPA_B3_M02_S001 - Les techniques d'entretien",
+                    "107_FPA_B3_M02_S002 - Les différents types d'entretien",
                     "108_FPA_B3_M02_S003 - Les outils de suivi et de bilan",
-                    "109_FPA_B3_M02_S004 - Les outils d’accompagnement pédagogique"
+                    "109_FPA_B3_M02_S004 - Les outils d'accompagnement pédagogique"
                 ]},
                 { title: "M03 : Émotions", sujets: [
-                    "110_FPA_B3_M03_S001 - L’intelligence émotionnelle - au coeur de l’être humain",
-                    "111_FPA_B3_M03_S002 - La réadaptation d’un parcours de formation",
-                    "112_FPA_B3_M03_S003 - Les acteurs de l’accompagnement",
-                    "113_FPA_B3_M03_S004 - La communication de la situation d’un apprenant"
+                    "110_FPA_B3_M03_S001 - L'intelligence émotionnelle - au coeur de l'être humain",
+                    "111_FPA_B3_M03_S002 - La réadaptation d'un parcours de formation",
+                    "112_FPA_B3_M03_S003 - Les acteurs de l'accompagnement",
+                    "113_FPA_B3_M03_S004 - La communication de la situation d'un apprenant"
                 ]},
                 { title: "M04 : Gestion", sujets: [
-                    "114_FPA_B3_M04_S001 - Les flux d’apprenants dans la gestion d’un parcours",
+                    "114_FPA_B3_M04_S001 - Les flux d'apprenants dans la gestion d'un parcours",
                     "115_FPA_B3_M04_S002 - Administrer et suivre un parcours de formation sur une plateforme numérique",
                     "116_FPA_B3_M04_S003 - Application - Accompagner les apprenants dans leurs parcours de formation"
                 ]},
                 { title: "M05 : Co-construction", sujets: [
                     "117_FPA_B3_M05_S001 - Le positionnement des apprenants",
-                    "118_FPA_B3_M05_S002 - L’analyse et la restitution du résultat d’un positionnement",
-                    "119_FPA_B3_M05_S003 - La co-construction d’un parcours de formation",
-                    "120_FPA_B3_M05_S004 - La mise en place d’un protocole individuel de formation"
+                    "118_FPA_B3_M05_S002 - L'analyse et la restitution du résultat d'un positionnement",
+                    "119_FPA_B3_M05_S003 - La co-construction d'un parcours de formation",
+                    "120_FPA_B3_M05_S004 - La mise en place d'un protocole individuel de formation"
                 ]},
                 { title: "M06 : Accueil", sujets: [
-                    "121_FPA_B3_M06_S001 - L’accueil individuel d’un apprenant en formation",
-                    "122_FPA_B3_M06_S002 - L’analyse réflexive et l’auto-évaluation",
+                    "121_FPA_B3_M06_S001 - L'accueil individuel d'un apprenant en formation",
+                    "122_FPA_B3_M06_S002 - L'analyse réflexive et l'auto-évaluation",
                     "123_FPA_B3_M06_S003 - Application - Accueillir un apprenant en formation et co-construire un parcours"
                 ]},
                 { title: "M07 : Distance", sujets: [
-                    "124_FPA_B3_M07_S001 - Fonctions tutorales et besoins de l’apprenant en formation à distance",
+                    "124_FPA_B3_M07_S001 - Fonctions tutorales et besoins de l'apprenant en formation à distance",
                     "125_FPA_B3_M07_S002 - Les mécanismes motivationnels et attentionnels en formation à distance",
                     "126_FPA_B3_M07_S003 - Les leviers et freins aux apprentissages dans la relation à distance",
                     "127_FPA_B3_M07_S004 - La remédiation aux difficultés techniques"
                 ]},
                 { title: "M08 : Communautés", sujets: [
-                    "128_FPA_B3_M08_S001 - Les principes de fonctionnement des communautés d’apprentissage",
-                    "129_FPA_B3_M08_S002 - L’écriture pour les réseaux sociaux",
+                    "128_FPA_B3_M08_S001 - Les principes de fonctionnement des communautés d'apprentissage",
+                    "129_FPA_B3_M08_S002 - L'écriture pour les réseaux sociaux",
                     "130_FPA_B3_M08_S003 - Le feed-back dans une situation de formation à distance",
                     "131_FPA_B3_M08_S004 - La protection des données personnelles - Grands principes et lois informatique et Libertés",
                     "132_FPA_B3_M08_S005 - Les spécificités des apprenants dans le tutorat à distance",
                     "133_FPA_B3_M08_S006 - Application - Tutorer les apprenants à distance"
                 ]},
                 { title: "M09 : Alternance", sujets: [
-                    "134_FPA_B3_M09_S001 - Les enjeux de l’alternance",
-                    "135_FPA_B3_M09_S002 - Les contrats d’apprentissage et de professionnalisation",
-                    "136_FPA_B3_M09_S003 - La reconversion ou promotion par l’alternance, le “PRO-A”"
+                    "134_FPA_B3_M09_S001 - Les enjeux de l'alternance",
+                    "135_FPA_B3_M09_S002 - Les contrats d'apprentissage et de professionnalisation",
+                    "136_FPA_B3_M09_S003 - La reconversion ou promotion par l'alternance, le \"PRO-A\""
                 ]},
                 { title: "M10 : AFEST", sujets: [
                     "137_FPA_B3_M10_S001 - Le tutorat en entreprise"
                 ]},
                 { title: "M11 : Insertion", sujets: [
-                    "138_FPA_B3_M11_S001 - L’insertion sociale et professionnelle",
+                    "138_FPA_B3_M11_S001 - L'insertion sociale et professionnelle",
                     "139_FPA_B3_M11_S002 - Les problématiques pouvant constituer des freins à la mise en œuvre du projet",
                     "140_FPA_B3_M11_S003 - La démarche HANDICAP",
                     "141_FPA_B3_M11_S004 - Le suivi dans le développement professionnel des apprenants",
-                    "142_FPA_B3_M11_S005 - Les outils numériques d’accompagnement au projet professionnel et de recherche d’emploi",
-                    "143_FPA_B3_M11_S006 - Les méthodes d’accompagnement au projet professionnel"
+                    "142_FPA_B3_M11_S005 - Les outils numériques d'accompagnement au projet professionnel et de recherche d'emploi",
+                    "143_FPA_B3_M11_S006 - Les méthodes d'accompagnement au projet professionnel"
                 ]},
                 { title: "M12 : Emploi", sujets: [
-                    "144_FPA_B3_M12_S001 - Les techniques de recherche d’emploi",
-                    "145_FPA_B3_M12_S002 - Les mesures d’accès à la formation et à l’emploi",
+                    "144_FPA_B3_M12_S001 - Les techniques de recherche d'emploi",
+                    "145_FPA_B3_M12_S002 - Les mesures d'accès à la formation et à l'emploi",
                     "146_FPA_B3_M12_S003 - Application - Accompagner le développement des apprenants"
                 ]}
             ]},
-            bloc4: { id: "bloc4", themeKey: "bloc4", title: "4. Qualité et RSE", icon: "🔎", modules: [
+            bloc4: { id: "bloc4", themeKey: "bloc4", title: "B4 : Qualité", icon: "🔎", modules: [
                 { title: "M01 : Réglementation", sujets: [
-                    "147_FPA_B4_M01_S001 - Le cadre légale de l’activité de formation",
+                    "147_FPA_B4_M01_S001 - Le cadre légale de l'activité de formation",
                     "148_FPA_B4_M01_S002 - La démarche Qualiopi",
                     "149_FPA_B4_M01_S003 - Les réglementations Qualiopi",
                     "150_FPA_B4_M01_S004 - Le bilan pédagogique et financier"
                 ]},
                 { title: "M02 : Prévention", sujets: [
-                    "151_FPA_B4_M02_S001 - Les principes de l’égalité professionnelle appliquée à la formation professionnelle",
+                    "151_FPA_B4_M02_S001 - Les principes de l'égalité professionnelle appliquée à la formation professionnelle",
                     "152_FPA_B4_M02_S002 - La démarche de prévention appliquée à une activité de travail",
-                    "153_FPA_B4_M02_S003 - Les risques liés à l’activité physique du métier",
-                    "154_FPA_B4_M02_S004 - Les risques professionnels dans l’activité de travail",
+                    "153_FPA_B4_M02_S003 - Les risques liés à l'activité physique du métier",
+                    "154_FPA_B4_M02_S004 - Les risques professionnels dans l'activité de travail",
                     "155_FPA_B4_M02_S005 - La démarche ergonomique",
                     "156_FPA_B4_M02_S006 - La charge mentale",
                     "157_FPA_B4_M02_S007 - Les risques psychosociaux et la qualité de vie au travail",
-                    "158_FPA_B4_M02_S008 - Les réglementation sur l’hygiène, la santé et la sécurité de la FP",
+                    "158_FPA_B4_M02_S008 - Les réglementation sur l'hygiène, la santé et la sécurité de la FP",
                     "159_FPA_B4_M02_S009 - Les principes et enjeux de la RSE en formation",
                     "160_FPA_B4_M02_S010 - La lutte contre la discrimination en formation",
                     "161_FPA_B4_M02_S011 - Application - Respecter et faire respecter la réglementation en vigueur en formation et dans son domaine de spécialité"
@@ -1007,7 +1032,7 @@
                 { title: "M03 : Veille", sujets: [
                     "162_FPA_B4_M03_S001 - La veille professionnelle",
                     "163_FPA_B4_M03_S002 - Le cadre légal autour de la diffusion de ressources",
-                    "164_FPA_B4_M03_S003 - Méthodologies de recherche, de capitalisation d’informations et d’organisation de la veille",
+                    "164_FPA_B4_M03_S003 - Méthodologies de recherche, de capitalisation d'informations et d'organisation de la veille",
                     "165_FPA_B4_M03_S004 - Les outils de surveillance et de recherche"
                 ]},
                 { title: "M04 : Actualiser", sujets: [
@@ -1016,9 +1041,9 @@
                     "168_FPA_B4_M04_S003 - Application - Respecter et faire respecter la réglementation en vigueur en formation et dans sa spécialité"
                 ]},
                 { title: "M05 : Analyse pratique", sujets: [
-                    "169_FPA_B4_M05_S001 - L’analyse de pratique",
-                    "170_FPA_B4_M05_S002 - L’analyse réflexive",
-                    "171_FPA_B4_M05_S003 - Les axes d’amélioration du parcours",
+                    "169_FPA_B4_M05_S001 - L'analyse de pratique",
+                    "170_FPA_B4_M05_S002 - L'analyse réflexive",
+                    "171_FPA_B4_M05_S003 - Les axes d'amélioration du parcours",
                     "172_FPA_B4_M05_S004 - Analyser ses pratiques de formation",
                     "173_FPA_B4_M05_S005 - Application - Analyser ses pratiques professionnelles"
                 ]}
@@ -1027,16 +1052,16 @@
 
       // 100% de la Data des évaluations conservée
       const dataEvaluations = {
-            eval_ccp1: { id: "eval_ccp1", themeKey: "bloc1", title: "Concevoir et préparer", subtitle: "Évaluations du Bloc 1", icon: "🏗️", items: [
+            eval_ccp1: { id: "eval_ccp1", themeKey: "bloc1", title: "B1 : Concevoir", subtitle: "Évaluations du Bloc 1", icon: "🏗️", items: [
                 { id: "e_c1_ecf_ent", title: "ECF d'entraînement - CCP1" }, { id: "e_c1_dt_d1", title: "Dossier technique Chap. 1 - Dépôt 1" }, { id: "e_c1_dt_d2", title: "Dossier technique Chap. 1 - Dépôt 2" }, { id: "e_c1_dt_df", title: "Dossier technique Chap. 1 - Dépôt final" }, { id: "e_c1_ecf_fin", title: "ECF Finale 2026 - CCP1" }
             ]},
-            eval_ccp2: { id: "eval_ccp2", themeKey: "bloc2", title: "Animer et évaluer", subtitle: "Évaluations du Bloc 2", icon: "🎤", items: [
+            eval_ccp2: { id: "eval_ccp2", themeKey: "bloc2", title: "B2 : Animer", subtitle: "Évaluations du Bloc 2", icon: "🎤", items: [
                 { id: "e_c2_ecf_ent", title: "ECF d'entraînement - CCP2" }, { id: "e_c2_dt_d1", title: "Dossier technique Chap. 2 - Dépôt 1" }, { id: "e_c2_dt_d2", title: "Dossier technique Chap. 2 - Dépôt 2" }, { id: "e_c2_dt_df", title: "Dossier technique Chap. 2 - Dépôt final" }, { id: "e_c2_ecf_fin", title: "ECF Finale 2026 - CCP2" }
             ]},
-            eval_ccp3: { id: "eval_ccp3", themeKey: "bloc3", title: "Accompagner", subtitle: "Évaluations du Bloc 3", icon: "🤝", items: [
+            eval_ccp3: { id: "eval_ccp3", themeKey: "bloc3", title: "B3 : Accompagner", subtitle: "Évaluations du Bloc 3", icon: "🤝", items: [
                 { id: "e_c3_ecf_ent", title: "ECF d'entraînement - CCP3" }, { id: "e_c3_dt_d1", title: "Dossier technique Chap. 3 - Dépôt 1" }, { id: "e_c3_dt_d2", title: "Dossier technique Chap. 3 - Dépôt 2" }, { id: "e_c3_dt_df", title: "Dossier technique Chap. 3 - Dépôt final" }, { id: "e_c3_ecf_fin", title: "ECF Finale 2026 - CCP3" }
             ]},
-            eval_ccp4: { id: "eval_ccp4", themeKey: "bloc4", title: "Qualité et RSE", subtitle: "Évaluations du Bloc 4", icon: "🔎", items: [
+            eval_ccp4: { id: "eval_ccp4", themeKey: "bloc4", title: "B4 : Qualité", subtitle: "Évaluations du Bloc 4", icon: "🔎", items: [
                 { id: "e_c4_ecf_ent", title: "ECF d'entraînement - CCP4" }, { id: "e_c4_dt_d1", title: "Dossier technique Chap. 4 - Dépôt 1" }, { id: "e_c4_dt_d2", title: "Dossier technique Chap. 4 - Dépôt 2" }, { id: "e_c4_dt_df", title: "Dossier technique Chap. 4 - Dépôt final" }, { id: "e_c4_ecf_fin", title: "ECF Finale 2026 - CCP4" }
             ]},
             eval_trans: { id: "eval_trans", themeKey: "trans", title: "Évaluations Transverses", subtitle: "Dossier Pro & Examens Finaux", icon: "🏆", items: [
@@ -1269,43 +1294,6 @@
               </div>
           `;
       }
-
-      window.toggleSujet = function(sujetCode, blocId) {
-            const set = progressState[blocId].completed;
-            const isNowCompleted = !set.has(sujetCode);
-
-            if (isNowCompleted) {
-                set.add(sujetCode);
-            } else {
-                set.delete(sujetCode);
-            }
-
-            const itemObj = database.find(d => d.Code === sujetCode);
-            if (itemObj) {
-                const allCheckable = ["audio", "excel", "infog", "slide", "video", "glo", "map", "quiz"];
-                const safeFileName = encodeURIComponent(`${sujetCode} - ${itemObj.Titre}`) + '.html';
-                const resMap = {
-                    audio: itemObj.Audio, excel: itemObj.Excel, infog: itemObj.Infographie,
-                    slide: itemObj.Slides, video: itemObj.Vidéo,
-                    glo: `Glossaire/${safeFileName}`, map: `Carte Mentale/${safeFileName}`, quiz: `Quiz/${safeFileName}`
-                };
-
-                const validRids = allCheckable.filter(r => resMap[r] && resMap[r].trim() !== '');
-                validRids.forEach(r => {
-                    progressRes[`${sujetCode}-${r}`] = isNowCompleted;
-                });
-                localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
-            }
-
-            saveState();
-            updateProgressUI();
-
-            const searchInputEl = document.getElementById("searchInput");
-            const listContainer = document.getElementById('listContainer');
-            if (listContainer && !listContainer.classList.contains('hidden')) {
-                afficherModules(searchInputEl ? searchInputEl.value : "");
-            }
-      };
 
       window.toggleEvalInProgress = function(evalId) {
             const set = progressState.evaluations.inProgress;
@@ -1593,7 +1581,7 @@
             chartInstance = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['B0: Socle', 'B1: Concevoir', 'B2: Animer', 'B3: Accompagner', 'B4: Qualité'],
+                    labels: ['B0 : Socle', 'B1 : Concevoir', 'B2 : Animer', 'B3 : Accompagner', 'B4 : Qualité'],
                     datasets: [{
                         data: [
                             progressState.bloc0.total || 16,
@@ -1882,12 +1870,168 @@
           document.body.removeChild(link);
       };
 
-      // --- NOUVEAU GÉNÉRATEUR INTELLIGENT DE PLANNING PAR BLOC ---
+
+      // --- FONCTIONS MANQUANTES RÉINTÉGRÉES POUR LE MODAL INDIVIDUEL ---
+
+      window.openSpacedRepetitionModal = function(moduleId, moduleTitle) {
+          document.getElementById('sr-module-id').innerText = moduleId;
+          document.getElementById('sr-module-title').innerText = moduleTitle;
+
+          const now = new Date();
+          document.getElementById('sr-start-date').valueAsDate = now;
+          document.getElementById('sr-start-time').value = String(now.getHours()).padStart(2, '0') + ":00";
+
+          updateSRPreview(); // Met à jour l'aperçu dès l'ouverture
+
+          document.getElementById('srModal').style.display = 'flex';
+          setTimeout(() => {
+              document.getElementById('srModalContent').classList.remove('scale-95');
+              document.getElementById('srModalContent').classList.add('scale-100');
+          }, 10);
+      };
+
+      window.closeSpacedRepetitionModal = function() {
+          document.getElementById('srModalContent').classList.remove('scale-100');
+          document.getElementById('srModalContent').classList.add('scale-95');
+          setTimeout(() => { document.getElementById('srModal').style.display = 'none'; }, 200);
+      };
+
+      window.calculateAndSaveDates = function() {
+          const moduleId = document.getElementById('sr-module-id').innerText;
+          const moduleTitle = document.getElementById('sr-module-title').innerText;
+          const startDateStr = document.getElementById('sr-start-date').value;
+          const startTimeStr = document.getElementById('sr-start-time').value;
+
+          if(!startDateStr || !startTimeStr) {
+              alert("Veuillez sélectionner une date et une heure.");
+              return;
+          }
+
+          const startDateTime = new Date(`${startDateStr}T${startTimeStr}`);
+          const intervals = [0, 3, 7, 14, 30, 60];
+          let savedRevisions = JSON.parse(localStorage.getItem('paia_revisions')) || [];
+
+          // Supprimer les anciennes révisions pour ce module
+          savedRevisions = savedRevisions.filter(r => r.moduleId !== moduleId);
+
+          intervals.forEach((days, index) => {
+              let revDate = new Date(startDateTime);
+              revDate.setDate(revDate.getDate() + days);
+
+              const yyyy = revDate.getFullYear();
+              const mm = String(revDate.getMonth() + 1).padStart(2, '0');
+              const dd = String(revDate.getDate()).padStart(2, '0');
+
+              savedRevisions.push({
+                  id: Math.random().toString(36).substr(2, 9),
+                  moduleId: moduleId,
+                  titre: moduleTitle,
+                  dateStr: `${yyyy}-${mm}-${dd}`,
+                  datetime: revDate.getTime(),
+                  num: index + 1,
+                  days: days,
+                  label: days === 0 ? "J0" : `J+${days}`,
+                  done: false
+              });
+          });
+
+          localStorage.setItem('paia_revisions', JSON.stringify(savedRevisions));
+
+          closeSpacedRepetitionModal();
+          afficherToastCustom(`Programme de révision généré avec succès ! 🚀`, "#10b981");
+
+          if (currentBloc === 'CAL') {
+              renderCalendarView();
+          } else {
+              const searchInputEl = document.getElementById("searchInput");
+              afficherModules(searchInputEl ? searchInputEl.value : "", false);
+          }
+      };
+
+      // --- APERÇUS DYNAMIQUES DES DATES (NOUVEAUTÉ) ---
+
+      window.updateSRPreview = function() {
+          const startDateStr = document.getElementById('sr-start-date').value;
+          if(!startDateStr) return;
+
+          const startDateTime = new Date(startDateStr);
+          const intervals = [0, 3, 7, 14, 30, 60];
+          let html = '';
+
+          intervals.forEach((days) => {
+              let revDate = new Date(startDateTime);
+              revDate.setDate(revDate.getDate() + days);
+              const label = days === 0 ? "J0" : `J+${days}`;
+              const dateStr = revDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+
+              html += `<span class="bg-white px-2 py-1 rounded-md text-[10px] font-black border border-rose-200 text-rose-600 shadow-sm">${label} : ${dateStr}</span>`;
+          });
+
+          document.getElementById('sr-preview-list').innerHTML = html;
+          document.getElementById('sr-preview').classList.remove('hidden');
+      };
+
+      window.updateBulkPreview = function() {
+          const blocId = document.getElementById('bulk-bloc-select').value;
+          const startStr = document.getElementById('bulk-start-date').value;
+          const timeStr = document.getElementById('bulk-start-time').value;
+          const excludeHolidays = document.getElementById('bulk-exclude-holidays').checked;
+
+          if(!startStr || !timeStr) return;
+
+          const allowedDaysMask = [
+              document.getElementById('d-1').checked, document.getElementById('d-2').checked,
+              document.getElementById('d-3').checked, document.getElementById('d-4').checked,
+              document.getElementById('d-5').checked, document.getElementById('d-6').checked,
+              document.getElementById('d-0').checked
+          ];
+
+          if (!allowedDaysMask.includes(true)) {
+              document.getElementById('bulk-preview').classList.add('hidden');
+              return;
+          }
+
+          const blocData = dataProgram[`bloc${blocId.replace('B','')}`];
+          if (!blocData || !blocData.modules) return;
+
+          let currentStartDate = new Date(`${startStr}T${timeStr}`);
+          let previewHtml = '';
+
+          // On calcule uniquement pour les 3 premiers sujets pour donner un exemple sans surcharger l'affichage
+          let previewCount = 0;
+
+          for (let i = 0; i < blocData.modules.length && previewCount < 3; i++) {
+              for (let j = 0; j < blocData.modules[i].sujets.length && previewCount < 3; j++) {
+                  let j0Date = getNextValidDate(currentStartDate, allowedDaysMask, excludeHolidays);
+                  const dateStr = j0Date.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+
+                  const sujetCode = blocData.modules[i].sujets[j].split(' - ')[0];
+
+                  previewHtml += `<li class="flex gap-2 items-center"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> <strong>${sujetCode}</strong> commencera le ${dateStr}</li>`;
+
+                  currentStartDate = new Date(j0Date);
+                  currentStartDate.setDate(currentStartDate.getDate() + 1);
+                  previewCount++;
+              }
+          }
+
+          if (previewCount > 0) {
+             previewHtml += `<li class="flex gap-2 items-center text-emerald-600/70 italic mt-1">... et ainsi de suite pour tout le bloc.</li>`;
+          }
+
+          document.getElementById('bulk-preview-list').innerHTML = previewHtml;
+          document.getElementById('bulk-preview').classList.remove('hidden');
+      };
+
+
+      // --- GÉNÉRATEUR INTELLIGENT DE PLANNING PAR BLOC ---
 
       window.openBulkPlanModal = function() {
           const now = new Date();
           document.getElementById('bulk-start-date').valueAsDate = now;
           document.getElementById('bulk-start-time').value = String(now.getHours()).padStart(2, '0') + ":00";
+
+          updateBulkPreview(); // Met à jour l'aperçu dès l'ouverture
 
           document.getElementById('bulkPlanModal').style.display = 'flex';
           setTimeout(() => {
@@ -2293,13 +2437,6 @@
       }
 
       window.toggleInlineContent = function(id, url, type, titre) {
-          // Cette fonction est conservée pour ne pas modifier la structure,
-          // mais on force tout vers le nouvel onglet pour répondre à ta demande.
-          if (url) {
-              window.open(url, '_blank');
-              return;
-          }
-
           const container = document.getElementById(`inline-media-${id}`);
           if (!container || !url) return;
 
@@ -2316,38 +2453,20 @@
               el.dataset.currentUrl = '';
           });
 
-          let contentHtml = '';
-          const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
-
-          // V3 : Plus de boite de dialogue "Espace interactif", on simplifie au max pour la taille.
+          // Seul l'audio utilise ce bloc désormais (les autres ont un target="_blank")
           if (type === 'embed-audio') {
-            const itemObj = database.find(d => d.Code === id);
-            if (itemObj) {
-                let comboHtml = `<div class="flex flex-col gap-4 mt-4 animate-slideIn">`;
-                comboHtml += buildMiniPlayer(url, url, 'embed-audio', titre);
-                comboHtml += `</div>`;
-                contentHtml = comboHtml;
-            }
-          } else if (type.startsWith("embed-")) {
-              contentHtml = buildMiniPlayer(url, url, type, titre);
-          } else {
-              contentHtml = `
-                  <div class="mt-4 bg-white rounded-2xl p-6 border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] animate-slideIn text-center w-full">
-                      <p class="text-sm font-bold text-[#0F2C48] mb-4">🔒 Ce contenu s'ouvre dans une nouvelle page.</p>
-                      <a href="${url}" target="_blank" class="inline-block bg-[#0F2C48] text-white px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest border-2 border-[#0F2C48] shadow-[4px_4px_0px_#B4792A] transition-all hover:-translate-y-1">Ouvrir le contenu ↗</a>
-                  </div>
-              `;
+              const comboHtml = `<div class="flex flex-col gap-4 mt-4 animate-slideIn">` +
+                                buildMiniPlayer(url, url, 'embed-audio', titre) +
+                                `</div>`;
+              container.innerHTML = comboHtml;
+              container.dataset.currentUrl = url;
+              container.classList.remove('hidden');
+
+              setTimeout(() => {
+                  const y = container.getBoundingClientRect().top + window.scrollY - 180;
+                  window.scrollTo({top: y, behavior: 'smooth'});
+              }, 100);
           }
-
-          container.innerHTML = contentHtml;
-          container.dataset.currentUrl = url;
-          container.classList.remove('hidden');
-
-          // Scroll fluide pour centrer l'élément à l'écran juste sous les onglets (180px d'offset)
-          setTimeout(() => {
-              const y = container.getBoundingClientRect().top + window.scrollY - 180;
-              window.scrollTo({top: y, behavior: 'smooth'});
-          }, 100);
       };
 
       function getActionLink(url, titre, type, emoji, id) {
@@ -2365,14 +2484,18 @@
           if (type === 'embed-pdf' && !isUnlocked) {
               return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}', '${id}', '${safeTitre}')" style="cursor:pointer;"` };
           }
-          // MODIFICATION: Tout s'ouvre désormais dans un nouvel onglet
+
+          // L'Audio reste en inline, tout le reste s'ouvre dans un nouvel onglet
+          if (type === 'embed-audio') {
+              return { tag: "div", action: `onclick="toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"` };
+          }
+
           return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
       }
 
       window.handleProtectedClick = function(url, id, titre) {
           const isUnlocked = localStorage.getItem('paia_unlocked') === 'true';
           if (isUnlocked) {
-              // MODIFICATION: Ouvert dans un nouvel onglet si déverrouillé
               window.open(url, '_blank');
           } else {
               pendingPdfUrl = url;
@@ -2411,7 +2534,6 @@
               if (typeof afficherModules === 'function') afficherModules(searchInputEl ? searchInputEl.value : "");
 
               if (pendingPdfUrl && pendingPdfId) {
-                  // MODIFICATION: Ouvert dans un nouvel onglet après avoir tapé le code pin
                   window.open(pendingPdfUrl, '_blank');
                   pendingPdfUrl = ""; pendingPdfId = ""; pendingPdfTitre = "";
               } else if (pendingPdfUrl) {
@@ -2605,29 +2727,24 @@
           const isExtFull = validRidsExt.length > 0 && lineCheckedExt === validRidsExt.length;
 
           const moduleRevs = savedRevisions.filter(r => r.moduleId === id);
-          let btnCalendarHTML = '';
-          if (moduleRevs.length > 0) {
-              const nbDone = moduleRevs.filter(r => r.done).length;
-              const nbTotal = moduleRevs.length;
-              btnCalendarHTML = `
-                  <div class="relative tooltip-container">
-                      <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource bg-rose-500 text-white border-2 border-rose-700 shadow-[2px_2px_0px_#9f1239]">
-                          <span>⏰</span>
-                      </button>
-                      <div class="cal-badge border-2 border-rose-700">${nbDone}/${nbTotal}</div>
-                      <span class="tooltip text-nowrap">Modifier mon Planning</span>
-                  </div>
-              `;
-          } else {
-              btnCalendarHTML = `
-                  <div class="relative tooltip-container">
-                      <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource bg-white border-2 border-gray-300 text-gray-400 hover:text-rose-500 hover:border-rose-400 shadow-[2px_2px_0px_rgba(0,0,0,0.1)] transition-colors">
-                          <span>⏰</span>
-                      </button>
-                      <span class="tooltip text-nowrap">Planifier Révisions</span>
-                  </div>
-              `;
-          }
+
+          // NOUVEAUTÉ : Affichage d'un badge 0/6 même si ce n'est pas encore programmé
+          const nbTotal = moduleRevs.length > 0 ? moduleRevs.length : 6;
+          const nbDone = moduleRevs.length > 0 ? moduleRevs.filter(r => r.done).length : 0;
+
+          // Si planifié: rouge ou vert. Si non planifié: gris.
+          const badgeColorClass = moduleRevs.length > 0 ? "border-rose-700 bg-rose-500" : "border-gray-400 bg-gray-400 opacity-70";
+          const btnCalendarClass = moduleRevs.length > 0 ? "bg-rose-500 text-white border-rose-700 shadow-[2px_2px_0px_#9f1239]" : "bg-white text-gray-400 border-gray-300 hover:text-rose-500 hover:border-rose-400 shadow-[2px_2px_0px_rgba(0,0,0,0.1)] transition-colors";
+
+          let btnCalendarHTML = `
+              <div class="relative tooltip-container">
+                  <button onclick="openSpacedRepetitionModal('${id}', '${titre.replace(/'/g, "\\'")}')" class="btn-resource border-2 transition-all ${btnCalendarClass}">
+                      <span>⏰</span>
+                  </button>
+                  <div class="cal-badge border-2 text-white ${badgeColorClass}">${nbDone}/${nbTotal}</div>
+                  <span class="tooltip text-nowrap">${moduleRevs.length > 0 ? 'Modifier mon Planning' : 'Planifier Révisions'}</span>
+              </div>
+          `;
 
           const isFull = validRids.length > 0 && (lineCheckedCore + lineCheckedExt) === validRids.length;
 
@@ -2681,14 +2798,15 @@
           let slideUrl = itemObj.Slides ? (itemObj.Slides.startsWith('http') ? itemObj.Slides : `Slides/${itemObj.Slides}`) : null;
           let hasAudio = audioUrl && audioUrl.trim() !== '';
 
-          let visualUrlForThumb = infogUrl && infogUrl.trim() !== '' ? infogUrl : null;
-          let visualType = 'embed-image';
-          let visualLabel = 'Infographie';
+          // NOUVEAUTÉ : On donne la priorité à la SLIDE (Diaporama)
+          let visualUrlForThumb = slideUrl && slideUrl.trim() !== '' ? slideUrl : null;
+          let visualType = 'embed-presentation';
+          let visualLabel = 'Diaporama';
 
-          if (!visualUrlForThumb && slideUrl && slideUrl.trim() !== '') {
-              visualUrlForThumb = slideUrl;
-              visualType = 'embed-presentation';
-              visualLabel = 'Diaporama';
+          if (!visualUrlForThumb && infogUrl && infogUrl.trim() !== '') {
+              visualUrlForThumb = infogUrl;
+              visualType = 'embed-image';
+              visualLabel = 'Infographie';
           }
 
           if (visualUrlForThumb) {
@@ -2697,15 +2815,13 @@
 
               let audioInsideHtml = '';
               if (hasAudio) {
-                  // MODIFICATION: Bouton audio dans l'aperçu ouvre un nouvel onglet
                   audioInsideHtml = `
-                      <button class="absolute top-3 right-3 w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[3px_3px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#0F2C48] transition-all z-20" title="Écouter le podcast" onclick="event.stopPropagation(); window.open('${audioUrl}', '_blank')">
+                      <button class="absolute top-3 right-3 w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[3px_3px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#0F2C48] transition-all z-20" title="Écouter le podcast inline" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl.replace(/'/g, "\\'")}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
                           <i class="fas fa-play text-[12px] ml-1"></i>
                       </button>
                   `;
               }
 
-              // MODIFICATION: Clic sur l'aperçu global ouvre un nouvel onglet
               previewBlock = `
               <div class="lg:w-[320px] shrink-0 ml-auto h-full min-h-[180px]">
                   <div class="relative w-full h-full rounded-[24px] border-2 border-paia-blue overflow-hidden bg-paia-blue group cursor-zoom-in shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all"
@@ -2713,7 +2829,10 @@
                       <div class="absolute inset-0 bg-gray-100 flex items-center justify-center">
                           <i class="fas fa-image text-gray-300 text-3xl"></i>
                       </div>
-                      <img src="${thumbUrl}" alt="Aperçu" class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 z-10" onerror="this.style.opacity='0'">
+
+                      <!-- L'image possède maintenant la classe 'animate-slow-pan' pour donner un effet défilement doux -->
+                      <img src="${thumbUrl}" alt="Aperçu" class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 animate-slow-pan z-10" onerror="this.style.opacity='0'">
+
                       <div class="absolute inset-0 bg-gradient-to-t from-paia-blue/90 via-paia-blue/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity z-10"></div>
 
                       ${audioInsideHtml}
@@ -2734,9 +2853,8 @@
           } else {
               let audioInsideHtml = '';
               if (hasAudio) {
-                  // MODIFICATION: Bouton audio dans la zone vide ouvre un nouvel onglet
                   audioInsideHtml = `
-                      <button class="w-14 h-14 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all z-20 mb-3" title="Écouter le podcast" onclick="event.stopPropagation(); window.open('${audioUrl}', '_blank')">
+                      <button class="w-14 h-14 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all z-20 mb-3" title="Écouter le podcast" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl.replace(/'/g, "\\'")}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
                           <i class="fas fa-play text-xl ml-1"></i>
                       </button>
                       <span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-100 px-3 py-1.5 rounded-xl border border-indigo-200">Podcast Audio</span>
@@ -2758,12 +2876,11 @@
           card.className = `card-3d bg-white p-6 rounded-[32px] border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] flex flex-col lg:flex-row gap-6 items-stretch mb-6 ${isFull ? "bg-blue-50/30 border-paia-blue shadow-[4px_4px_0px_#3b82f6]" : ""} ${anim ? "card-animate" : ""}`;
           if (anim) card.style.animationDelay = `${(cardIdx + 1) * 0.03}s`;
 
-          // MODIFICATION: Le bloc d'iframe en dessous devient redondant (il restera toujours caché et vide)
           card.innerHTML = `
             <div class="flex-grow flex flex-col min-w-0">
-                <div class="flex items-center gap-4 mb-4">
-                    <span class="px-4 py-1.5 bg-paia-blue text-white font-black rounded-xl text-sm shadow-[2px_2px_0px_#B4792A] shrink-0">${id.split('_')[0]}</span>
-                    <h3 class="text-xl md:text-2xl font-black text-paia-blue uppercase tracking-tight truncate leading-tight">${titre}</h3>
+                <div class="flex flex-col xl:flex-row xl:items-center gap-3 mb-4">
+                    <span class="self-start px-3 py-1.5 bg-paia-blue text-white font-black rounded-lg text-xs shadow-[2px_2px_0px_#B4792A] shrink-0 tracking-wider">${id}</span>
+                    <h3 class="text-lg md:text-xl font-black text-paia-blue uppercase tracking-tight leading-tight">${titre}</h3>
                 </div>
                 <div class="flex items-stretch w-full overflow-x-auto scrollbar-hide pb-3 pt-1 snap-x mt-2 gap-4">
                     ${offBlock}
