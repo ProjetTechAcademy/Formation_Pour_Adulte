@@ -752,7 +752,7 @@
         B1: [{ id: "M01" }, { id: "M02" }, { id: "M03" }, { id: "M04" }, { id: "M05" }, { id: "M06" }, { id: "M07" }, { id: "M08" }, { id: "M09" }, { id: "M10" }, { id: "M11" }, { id: "M12" }, { id: "M13" }, { id: "M14" }],
         B2: [{ id: "M01" }, { id: "M02" }, { id: "M03" }, { id: "M04" }, { id: "M05" }, { id: "M06" }, { id: "M07" }, { id: "M08" }, { id: "M09" }],
         B3: [{ id: "M01" }, { id: "M02" }, { id: "M03" }, { id: "M04" }, { id: "M05" }, { id: "M06" }, { id: "M07" }, { id: "M08" }, { id: "M09" }, { id: "M10" }, { id: "M11" }, { id: "M12" }],
-        B4: [{ id: "M01" }, { id: "M02" }, { id: "M03" }, { id: "M04" }, { id: "M05" }],
+        B4: [{ id: "M01" }, { id: "M02" }, { id: "M03" }, { id: "M04" }, { id: "M05" }]
       };
 
       let progressRes = JSON.parse(localStorage.getItem("paia_p_v10")) || {};
@@ -760,7 +760,6 @@
       let currentBloc = "ALL";
       let currentMod = "ALL";
 
-      // --- Mises à jour strictes des intitulés ---
       const dataProgram = {
             bloc0: { id: "bloc0", themeKey: "trans", title: "B0 : Socle", icon: "🧠", modules: [
                 { title: "M01 : Méthodes & Jeux", sujets: [
@@ -912,7 +911,7 @@
                 { title: "M05 : Planif Eval.", sujets: [
                     "084_FPA_B2_M05_S001 - La planification et la mise en place d'une évaluation",
                     "085_FPA_B2_M05_S002 - Le dispositif d'évaluation",
-                    "086_FPA_B2_M05_S003 - Les référentiels, les critères et indicateurs de l'évaluation",
+                    "086_FPA_B2_M05_S003 - Les référentiels, les criteria et indicateurs de l'évaluation",
                     "087_FPA_B2_M05_S004 - La réglementation sur l’adaptation des évaluations pour les apprenants en situation de handicap",
                     "088_FPA_B2_M05_S005 - L'alignement pédagogique entre les objectifs d'apprentissage, les activités et l'évaluation"
                 ]},
@@ -1050,7 +1049,6 @@
             ]}
       };
 
-      // 100% de la Data des évaluations conservée
       const dataEvaluations = {
             eval_ccp1: { id: "eval_ccp1", themeKey: "bloc1", title: "B1 : Concevoir", subtitle: "Évaluations du Bloc 1", icon: "🏗️", items: [
                 { id: "e_c1_ecf_ent", title: "ECF d'entraînement - CCP1" }, { id: "e_c1_dt_d1", title: "Dossier technique Chap. 1 - Dépôt 1" }, { id: "e_c1_dt_d2", title: "Dossier technique Chap. 1 - Dépôt 2" }, { id: "e_c1_dt_df", title: "Dossier technique Chap. 1 - Dépôt final" }, { id: "e_c1_ecf_fin", title: "ECF Finale 2026 - CCP1" }
@@ -1077,7 +1075,6 @@
             trans: { bg: 'bg-sky-600', text: 'text-sky-600', border: 'border-sky-600', light: 'bg-sky-50', fill: 'bg-sky-600', hex: '#0284c7' }
       };
 
-      // JS LOGIC 100% IDENTIQUE AU FICHIER ORIGINAL FPA
       const progressState = {
             bloc0: { total: 0, completed: new Set() },
             bloc1: { total: 0, completed: new Set() },
@@ -1310,7 +1307,7 @@
             saveState();
             updateProgressUI();
             if (['valide', 'livret_recu', 'termine'].includes(status)) {
-                fireWorksCertif();
+                if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 if (evalId.endsWith('_d1')) {
                     const d2Id = evalId.replace('_d1', '_d2');
                     progressState.evaluations.completed.add(d2Id);
@@ -1870,9 +1867,6 @@
           document.body.removeChild(link);
       };
 
-
-      // --- FONCTIONS MANQUANTES RÉINTÉGRÉES POUR LE MODAL INDIVIDUEL ---
-
       window.openSpacedRepetitionModal = function(moduleId, moduleTitle) {
           document.getElementById('sr-module-id').innerText = moduleId;
           document.getElementById('sr-module-title').innerText = moduleTitle;
@@ -1948,8 +1942,6 @@
           }
       };
 
-      // --- APERÇUS DYNAMIQUES DES DATES (NOUVEAUTÉ) ---
-
       window.updateSRPreview = function() {
           const startDateStr = document.getElementById('sr-start-date').value;
           if(!startDateStr) return;
@@ -2022,9 +2014,6 @@
           document.getElementById('bulk-preview-list').innerHTML = previewHtml;
           document.getElementById('bulk-preview').classList.remove('hidden');
       };
-
-
-      // --- GÉNÉRATEUR INTELLIGENT DE PLANNING PAR BLOC ---
 
       window.openBulkPlanModal = function() {
           const now = new Date();
@@ -2876,6 +2865,8 @@
           card.className = `card-3d bg-white p-6 rounded-[32px] border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] flex flex-col lg:flex-row gap-6 items-stretch mb-6 ${isFull ? "bg-blue-50/30 border-paia-blue shadow-[4px_4px_0px_#3b82f6]" : ""} ${anim ? "card-animate" : ""}`;
           if (anim) card.style.animationDelay = `${(cardIdx + 1) * 0.03}s`;
 
+          // CORRECTION ICI: Le bloc inline-media est maintenant à l'intérieur de la colonne de gauche (le flex-grow flex-col)
+          // Il s'affichera donc en dessous des onglets (offBlock, coreBlock, extBlock, calBlock) mais l'infographie (previewBlock) restera visible à sa droite.
           card.innerHTML = `
             <div class="flex-grow flex flex-col min-w-0">
                 <div class="flex flex-col xl:flex-row xl:items-center gap-3 mb-4">
@@ -2889,9 +2880,10 @@
                     <div class="w-[2px] self-stretch bg-gray-200 rounded-full shrink-0 mx-1 hidden md:block"></div>
                     ${calBlock}
                 </div>
+                <!-- BOÎTE DE DIALOGUE AUDIO PLACÉE SOUS LES ONGLETS, PLEINE LARGEUR DE LA COLONNE GAUCHE -->
+                <div id="inline-media-${id}" class="hidden w-full mt-2" data-current-url=""></div>
             </div>
             ${previewBlock}
-            <div id="inline-media-${id}" class="hidden w-full col-span-full mt-4" data-current-url=""></div>
           `;
 
           list.appendChild(card);
