@@ -7,35 +7,41 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        paia: {
-                            ivory: '#F6F2E8',
-                            blue: '#0F2C48',
-                            yellow: '#D9A526',
-                            bronze: '#B4792A',
-                            dark: '#0f172a'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Roboto', 'sans-serif'],
-                        mono: ['Space Mono', 'monospace'],
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              paia: {
+                ivory: "#F6F2E8",
+                blue: "#0F2C48",
+                yellow: "#D9A526",
+                bronze: "#B4792A",
+                dark: "#0f172a",
+              },
+            },
+            fontFamily: {
+              sans: ["Roboto", "sans-serif"],
+              mono: ["Space Mono", "monospace"],
+            },
+          },
+        },
+      };
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      rel="stylesheet"
+    />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&family=Open+Dyslexic&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Space+Mono&family=Open+Dyslexic&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       :root {
@@ -65,58 +71,87 @@
       }
 
       .card-3d {
-        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+        transition:
+          transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          box-shadow 0.4s ease;
         transform-style: preserve-3d;
       }
       .card-3d:hover {
         transform: translateY(-8px) rotateX(2deg) rotateY(1deg);
-        box-shadow: 0 25px 50px -12px rgba(15, 44, 72, 0.2), 6px 6px 0px var(--paia-blue);
+        box-shadow:
+          0 25px 50px -12px rgba(15, 44, 72, 0.2),
+          6px 6px 0px var(--paia-blue);
       }
 
       @keyframes slowPan {
-          0% { transform: scale(1.1) translate(0, 0); }
-          25% { transform: scale(1.15) translate(2%, 2%); }
-          50% { transform: scale(1.1) translate(0, 4%); }
-          75% { transform: scale(1.15) translate(-2%, 2%); }
-          100% { transform: scale(1.1) translate(0, 0); }
+        0% {
+          transform: scale(1.1) translate(0, 0);
+        }
+        25% {
+          transform: scale(1.15) translate(2%, 2%);
+        }
+        50% {
+          transform: scale(1.1) translate(0, 4%);
+        }
+        75% {
+          transform: scale(1.15) translate(-2%, 2%);
+        }
+        100% {
+          transform: scale(1.1) translate(0, 0);
+        }
       }
       .animate-slow-pan {
-          animation: slowPan 25s infinite linear alternate;
+        animation: slowPan 25s infinite linear alternate;
       }
 
       #mobile-menu {
         transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
-      .menu-open #mobile-menu { transform: translateX(0); }
-      .menu-closed #mobile-menu { transform: translateX(100%); }
+      .menu-open #mobile-menu {
+        transform: translateX(0);
+      }
+      .menu-closed #mobile-menu {
+        transform: translateX(100%);
+      }
 
       .radar-active {
         animation: radar-pulse 2s infinite;
         background: #e11d48;
       }
       @keyframes radar-pulse {
-          0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4); }
-          70% { box-shadow: 0 0 0 10px rgba(225, 29, 72, 0); }
-          100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+        0% {
+          box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(225, 29, 72, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(225, 29, 72, 0);
+        }
       }
 
-      .scrollbar-hide::-webkit-scrollbar { display: none; }
-      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
 
       .tabs-sticky {
-          position: sticky;
-          top: 90px;
-          z-index: 50;
-          background: rgba(246, 242, 232, 0.95);
-          backdrop-filter: blur(16px);
-          border-bottom: 2px solid rgba(15, 44, 72, 0.1);
-          padding-top: 10px;
-          padding-bottom: 10px;
+        position: sticky;
+        top: 90px;
+        z-index: 50;
+        background: rgba(246, 242, 232, 0.95);
+        backdrop-filter: blur(16px);
+        border-bottom: 2px solid rgba(15, 44, 72, 0.1);
+        padding-top: 10px;
+        padding-bottom: 10px;
       }
 
       .full-page-media {
-          height: calc(100vh - 200px);
-          min-height: 500px;
+        height: calc(100vh - 200px);
+        min-height: 500px;
       }
 
       .bg-animated-blob {
@@ -127,35 +162,94 @@
         opacity: 0.2;
         animation: floatBlob 20s infinite alternate ease-in-out;
       }
-      .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #e0e7ff; animation-delay: 0s; }
-      .blob-2 { bottom: -20%; right: -10%; width: 60vw; height: 60vw; background: #fef08a; animation-delay: -5s; }
-      .blob-3 { top: 40%; left: 60%; width: 40vw; height: 40vw; background: #fce7f3; animation-delay: -10s; }
+      .blob-1 {
+        top: -10%;
+        left: -10%;
+        width: 50vw;
+        height: 50vw;
+        background: #e0e7ff;
+        animation-delay: 0s;
+      }
+      .blob-2 {
+        bottom: -20%;
+        right: -10%;
+        width: 60vw;
+        height: 60vw;
+        background: #fef08a;
+        animation-delay: -5s;
+      }
+      .blob-3 {
+        top: 40%;
+        left: 60%;
+        width: 40vw;
+        height: 40vw;
+        background: #fce7f3;
+        animation-delay: -10s;
+      }
 
       @keyframes floatBlob {
-        0% { transform: translate(0, 0) scale(1); }
-        50% { transform: translate(5%, 10%) scale(1.1); }
-        100% { transform: translate(-5%, -5%) scale(0.9); }
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(5%, 10%) scale(1.1);
+        }
+        100% {
+          transform: translate(-5%, -5%) scale(0.9);
+        }
       }
 
       #loader {
-        position: fixed; inset: 0; background-color: var(--paia-ivory);
-        z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        position: fixed;
+        inset: 0;
+        background-color: var(--paia-ivory);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         transition: opacity 0.5s;
       }
       .spinner {
-        width: 50px; height: 50px; border: 5px solid rgba(15, 44, 72, 0.1); border-top-color: var(--paia-blue);
-        border-radius: 50%; animation: spin 1s linear infinite;
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(15, 44, 72, 0.1);
+        border-top-color: var(--paia-blue);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
       }
-      @keyframes spin { to { transform: rotate(360deg); } }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
 
-      body.dys-mode * { font-family: "Open Dyslexic", sans-serif !important; }
-      body.high-contrast { background-color: #1a1a1a !important; color: #ffffff !important; }
-      body.high-contrast .bg-animated-blob { display: none; }
-      body.high-contrast header { background-color: #1a1a1a !important; border-bottom: 2px solid #ffffff !important; }
+      body.dys-mode * {
+        font-family: "Open Dyslexic", sans-serif !important;
+      }
+      body.high-contrast {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+      }
+      body.high-contrast .bg-animated-blob {
+        display: none;
+      }
+      body.high-contrast header {
+        background-color: #1a1a1a !important;
+        border-bottom: 2px solid #ffffff !important;
+      }
 
       .btn-nav-app {
-        width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
-        font-size: 1.4rem; color: var(--paia-blue); position: relative; text-decoration: none;
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: var(--paia-blue);
+        position: relative;
+        text-decoration: none;
         background-color: white;
         box-shadow: 2px 2px 0px var(--paia-blue);
         border: 2px solid var(--paia-blue);
@@ -178,208 +272,563 @@
         transition: 0.3s;
       }
       @media (max-width: 768px) {
-          .tab-btn { padding: 10px 18px; font-size: 0.85rem; flex: 1 1 auto; text-align: center; }
+        .tab-btn {
+          padding: 10px 18px;
+          font-size: 0.85rem;
+          flex: 1 1 auto;
+          text-align: center;
+        }
       }
 
       .btn-resource {
-        width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
-        font-size: 1rem; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), inset 0 2px 2px rgba(255, 255, 255, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.4); z-index: 1; text-decoration: none;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        box-shadow:
+          0 4px 10px rgba(0, 0, 0, 0.08),
+          inset 0 2px 2px rgba(255, 255, 255, 0.4),
+          inset 0 -2px 4px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        z-index: 1;
+        text-decoration: none;
       }
       .btn-resource:hover {
         transform: translateY(-4px) scale(1.05);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), inset 0 2px 2px rgba(255, 255, 255, 0.6), inset 0 -2px 4px rgba(0, 0, 0, 0.08);
+        box-shadow:
+          0 10px 20px rgba(0, 0, 0, 0.12),
+          inset 0 2px 2px rgba(255, 255, 255, 0.6),
+          inset 0 -2px 4px rgba(0, 0, 0, 0.08);
         z-index: 10;
       }
 
-      .bg-audio { background: linear-gradient(135deg, #667eea 0%, #5a68d8 100%); color: white; }
-      .bg-pdf { background: linear-gradient(135deg, #0f2c48 0%, #174069 100%); color: #d9a526; }
-      .bg-lien { background: linear-gradient(135deg, #0078d4 0%, #0060a8 100%); color: white; }
-      .bg-notebook { background: linear-gradient(135deg, #d946ef 0%, #a21caf 100%); color: white; }
-      .bg-excel { background: linear-gradient(135deg, #107c41 0%, #0d6334 100%); color: white; }
-      .bg-infog { background: linear-gradient(135deg, #e81123 0%, #b80d1b 100%); color: white; }
-      .bg-slide { background: linear-gradient(135deg, #d83b01 0%, #ad2f01 100%); color: white; }
-      .bg-video { background: linear-gradient(135deg, #e52d27 0%, #b8241f 100%); color: white; }
-      .bg-glo { background: linear-gradient(135deg, #4a5568 0%, #3a4352 100%); color: white; }
-      .bg-map { background: linear-gradient(135deg, #ffb900 0%, #cc9400 100%); color: #0f2c48; }
-      .bg-quiz { background: linear-gradient(135deg, #b4792a 0%, #906122 100%); color: white; }
-      .bg-locked { background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important; color: #94a3b8 !important; border-color: #94a3b8 !important; box-shadow: none !important;}
+      .bg-audio {
+        background: linear-gradient(135deg, #667eea 0%, #5a68d8 100%);
+        color: white;
+      }
+      .bg-pdf {
+        background: linear-gradient(135deg, #0f2c48 0%, #174069 100%);
+        color: #d9a526;
+      }
+      .bg-lien {
+        background: linear-gradient(135deg, #0078d4 0%, #0060a8 100%);
+        color: white;
+      }
+      .bg-notebook {
+        background: linear-gradient(135deg, #d946ef 0%, #a21caf 100%);
+        color: white;
+      }
+      .bg-excel {
+        background: linear-gradient(135deg, #107c41 0%, #0d6334 100%);
+        color: white;
+      }
+      .bg-infog {
+        background: linear-gradient(135deg, #e81123 0%, #b80d1b 100%);
+        color: white;
+      }
+      .bg-slide {
+        background: linear-gradient(135deg, #d83b01 0%, #ad2f01 100%);
+        color: white;
+      }
+      .bg-video {
+        background: linear-gradient(135deg, #e52d27 0%, #b8241f 100%);
+        color: white;
+      }
+      .bg-glo {
+        background: linear-gradient(135deg, #4a5568 0%, #3a4352 100%);
+        color: white;
+      }
+      .bg-map {
+        background: linear-gradient(135deg, #ffb900 0%, #cc9400 100%);
+        color: #0f2c48;
+      }
+      .bg-quiz {
+        background: linear-gradient(135deg, #b4792a 0%, #906122 100%);
+        color: white;
+      }
+      .bg-locked {
+        background: linear-gradient(
+          135deg,
+          #e2e8f0 0%,
+          #cbd5e1 100%
+        ) !important;
+        color: #94a3b8 !important;
+        border-color: #94a3b8 !important;
+        box-shadow: none !important;
+      }
 
       .cal-badge {
-        position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 3px;
-        border-radius: 9px; font-size: 9px; font-weight: 900;
-        display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 20;
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 3px;
+        border-radius: 9px;
+        font-size: 9px;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 20;
       }
       .check-badge {
-        position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center; font-size: 7px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); pointer-events: auto; z-index: 20;
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 7px;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        pointer-events: auto;
+        z-index: 20;
       }
 
       .tooltip-container .tooltip {
-        position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
-        background: #0f2c48; color: white; padding: 6px 12px; border-radius: 8px;
-        font-size: 0.65rem; font-weight: 800; white-space: nowrap; opacity: 0; visibility: hidden;
-        transition: 0.2s; z-index: 9999; border: 1px solid var(--paia-yellow); pointer-events: none;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        position: absolute;
+        bottom: 130%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #0f2c48;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.2s;
+        z-index: 9999;
+        border: 1px solid var(--paia-yellow);
+        pointer-events: none;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       }
-      .tooltip-container:hover .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-5px); }
+      .tooltip-container:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(-5px);
+      }
 
-      .card-animate { animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-      @keyframes slideIn { from { transform: translateY(20px) scale(0.98); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+      .card-animate {
+        animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateY(20px) scale(0.98);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+      }
 
       .skeleton-loader {
-        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%);
-        background-size: 200% 100%; animation: shimmer 1.5s infinite linear;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.7) 50%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite linear;
       }
-      @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
 
-      .toast-msg { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+      .toast-msg {
+        animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
     </style>
   </head>
   <body class="relative">
-
     <div id="loader">
       <div class="spinner"></div>
-      <p class="mt-4 font-black uppercase text-xs tracking-widest text-paia-blue">Synchronisation Base_PAIE...</p>
-      <p class="text-[10px] mt-2 opacity-50 font-bold text-paia-blue">MATHILDE MARTINE PAISLEY</p>
+      <p
+        class="mt-4 font-black uppercase text-xs tracking-widest text-paia-blue"
+      >
+        Synchronisation Base_PAIE...
+      </p>
+      <p class="text-[10px] mt-2 opacity-50 font-bold text-paia-blue">
+        MATHILDE MARTINE PAISLEY
+      </p>
     </div>
 
-    <div class="bg-animated-blob blob-1 fixed inset-0 pointer-events-none opacity-20"></div>
+    <div
+      class="bg-animated-blob blob-1 fixed inset-0 pointer-events-none opacity-20"
+    ></div>
 
-    <header class="bg-white/90 backdrop-blur-xl border-b-2 border-paia-blue h-[90px] flex items-center sticky top-0 z-[1000]">
-      <div class="w-full max-w-[1600px] mx-auto px-6 flex items-center justify-between">
-        <div class="flex items-center gap-4 cursor-pointer" onclick="location.reload()">
-          <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo" class="w-14 h-14 rounded-xl border-2 border-paia-blue object-cover shadow-[2px_2px_0px_#0F2C48]" />
+    <header
+      class="bg-white/90 backdrop-blur-xl border-b-2 border-paia-blue h-[90px] flex items-center sticky top-0 z-[1000]"
+    >
+      <div
+        class="w-full max-w-[1600px] mx-auto px-6 flex items-center justify-between"
+      >
+        <div
+          class="flex items-center gap-4 cursor-pointer"
+          onclick="location.reload()"
+        >
+          <img
+            src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg"
+            alt="Logo"
+            class="w-14 h-14 rounded-xl border-2 border-paia-blue object-cover shadow-[2px_2px_0px_#0F2C48]"
+          />
           <div class="hidden sm:block">
-            <h1 class="text-xl font-black uppercase text-paia-blue tracking-tighter">Mon Parcours PAIE</h1>
-            <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-widest">Promotion De Vinci 2024-2026</p>
+            <h1
+              class="text-xl font-black uppercase text-paia-blue tracking-tighter"
+            >
+              Mon Parcours PAIE
+            </h1>
+            <p
+              class="text-[10px] text-emerald-600 font-bold uppercase tracking-widest"
+            >
+              Promotion De Vinci 2024-2026
+            </p>
           </div>
         </div>
 
         <nav class="hidden lg:flex items-center gap-4">
-            <button onclick="filtrerBloc('CAL')" class="btn-nav-app group" title="Planning">
-              <i class="fa-solid fa-calendar-check text-emerald-400"></i>
-            </button>
-            <button onclick="filtrerBloc('CERTIF')" class="btn-nav-app group" title="Certification">
-              <i class="fa-solid fa-trophy text-paia-bronze"></i>
-            </button>
+          <button
+            onclick="filtrerBloc('CAL')"
+            class="btn-nav-app group"
+            title="Planning"
+          >
+            <i class="fa-solid fa-calendar-check text-emerald-400"></i>
+          </button>
+          <button
+            onclick="filtrerBloc('CERTIF')"
+            class="btn-nav-app group"
+            title="Certification"
+          >
+            <i class="fa-solid fa-trophy text-paia-bronze"></i>
+          </button>
         </nav>
 
-        <button onclick="toggleMobileMenu()" class="lg:hidden w-12 h-12 flex items-center justify-center border-2 border-paia-blue rounded-xl bg-white shadow-[2px_2px_0px_#0F2C48]" aria-label="Ouvrir le menu">
-            <i id="burger-icon" class="fas fa-bars"></i>
+        <button
+          onclick="toggleMobileMenu()"
+          class="lg:hidden w-12 h-12 flex items-center justify-center border-2 border-paia-blue rounded-xl bg-white shadow-[2px_2px_0px_#0F2C48]"
+          aria-label="Ouvrir le menu"
+        >
+          <i id="burger-icon" class="fas fa-bars"></i>
         </button>
       </div>
     </header>
 
-    <div id="mobile-menu" class="fixed inset-0 bg-paia-blue z-[900] hidden flex-col items-center justify-center gap-8 text-white p-10 transform translate-x-full transition-transform duration-300">
-        <button onclick="toggleMobileMenu()" class="absolute top-8 right-8 text-4xl text-paia-ivory"><i class="fas fa-times"></i></button>
-        <button onclick="filtrerBloc('CAL'); toggleMobileMenu()" class="text-2xl font-black uppercase tracking-widest"><i class="fas fa-calendar-check mr-4 text-emerald-400"></i> Planning</button>
-        <button onclick="filtrerBloc('CERTIF'); toggleMobileMenu()" class="text-2xl font-black uppercase tracking-widest"><i class="fas fa-trophy mr-4 text-paia-bronze"></i> Certification</button>
+    <div
+      id="mobile-menu"
+      class="fixed inset-0 bg-paia-blue z-[900] hidden flex-col items-center justify-center gap-8 text-white p-10 transform translate-x-full transition-transform duration-300"
+    >
+      <button
+        onclick="toggleMobileMenu()"
+        class="absolute top-8 right-8 text-4xl text-paia-ivory"
+        aria-label="Fermer le menu"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+      <button
+        onclick="
+          filtrerBloc('CAL');
+          toggleMobileMenu();
+        "
+        class="text-2xl font-black uppercase tracking-widest"
+      >
+        <i class="fas fa-calendar-check mr-4 text-emerald-400"></i> Planning
+      </button>
+      <button
+        onclick="
+          filtrerBloc('CERTIF');
+          toggleMobileMenu();
+        "
+        class="text-2xl font-black uppercase tracking-widest"
+      >
+        <i class="fas fa-trophy mr-4 text-paia-bronze"></i> Certification
+      </button>
     </div>
 
-    <main class="flex-grow w-full max-w-[1600px] mx-auto px-4 md:px-6 py-6 md:py-8">
-
-      <div class="tabs-sticky py-3 mb-8 flex flex-col xl:flex-row gap-4 justify-between items-center rounded-xl px-2 md:px-0">
-          <div class="flex flex-wrap gap-3 w-full xl:w-auto" id="tabsMenu">
-            <button class="tab-btn" id="tab-ALL" onclick="filtrerBloc('ALL')">Vue Globale</button>
-            <button class="tab-btn" id="tab-B0" onclick="filtrerBloc('B0')">B0 : Socle</button>
-            <button class="tab-btn" id="tab-B1" onclick="filtrerBloc('B1')">B1 : Paie & Décla</button>
-            <button class="tab-btn" id="tab-B2" onclick="filtrerBloc('B2')">B2 : Admin RH</button>
-            <button class="tab-btn" id="tab-B3" onclick="filtrerBloc('B3')">B3 : Conseil & SIRH</button>
-          </div>
-          <div class="relative w-full xl:max-w-sm mt-2 xl:mt-0">
-            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-paia-blue/40 text-lg"></i>
-            <input type="text" id="searchInput" placeholder="Rechercher un module..." class="w-full bg-white border-2 border-paia-blue rounded-xl py-3 pl-12 pr-3 text-paia-blue text-sm outline-none shadow-[3px_3px_0px_#0F2C48]" />
-          </div>
+    <main
+      class="flex-grow w-full max-w-[1600px] mx-auto px-4 md:px-6 py-6 md:py-8"
+    >
+      <div
+        class="tabs-sticky py-3 mb-8 flex flex-col xl:flex-row gap-4 justify-between items-center rounded-xl px-2 md:px-0"
+      >
+        <div class="flex flex-wrap gap-3 w-full xl:w-auto" id="tabsMenu">
+          <button class="tab-btn" id="tab-ALL" onclick="filtrerBloc('ALL')">
+            Vue Globale
+          </button>
+          <button class="tab-btn" id="tab-B0" onclick="filtrerBloc('B0')">
+            B0 : Socle
+          </button>
+          <button class="tab-btn" id="tab-B1" onclick="filtrerBloc('B1')">
+            B1 : Paie & Décla
+          </button>
+          <button class="tab-btn" id="tab-B2" onclick="filtrerBloc('B2')">
+            B2 : Admin RH
+          </button>
+          <button class="tab-btn" id="tab-B3" onclick="filtrerBloc('B3')">
+            B3 : Conseil & SIRH
+          </button>
+        </div>
+        <div class="relative w-full xl:max-w-sm mt-2 xl:mt-0">
+          <i
+            class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-paia-blue/40 text-lg"
+          ></i>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Rechercher un module..."
+            class="w-full bg-white border-2 border-paia-blue rounded-xl py-3 pl-12 pr-3 text-paia-blue text-sm outline-none shadow-[3px_3px_0px_#0F2C48]"
+          />
+        </div>
       </div>
 
-      <div id="globalProgressHeader" class="bg-white rounded-3xl p-6 md:p-8 border-2 border-paia-blue shadow-[6px_6px_0px_rgba(15,44,72,1)] mb-12 flex flex-col md:flex-row items-center gap-6 md:gap-10">
+      <div
+        id="globalProgressHeader"
+        class="bg-white rounded-3xl p-6 md:p-8 border-2 border-paia-blue shadow-[6px_6px_0px_rgba(15,44,72,1)] mb-12 flex flex-col md:flex-row items-center gap-6 md:gap-10"
+      >
         <div class="text-center md:text-left">
-          <span class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Avancement Global</span>
-          <div class="text-5xl font-black text-paia-blue" id="progressText">0%</div>
+          <span
+            class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]"
+            >Avancement Global</span
+          >
+          <div class="text-5xl font-black text-paia-blue" id="progressText">
+            0%
+          </div>
         </div>
-        <div class="flex-grow w-full bg-paia-blue/5 h-6 rounded-full border-2 border-paia-blue p-1 overflow-hidden">
-          <div id="progressBar" class="h-full bg-paia-blue rounded-full transition-all duration-1000" style="width: 0%"></div>
+        <div
+          class="flex-grow w-full bg-paia-blue/5 h-6 rounded-full border-2 border-paia-blue p-1 overflow-hidden"
+        >
+          <div
+            id="progressBar"
+            class="h-full bg-paia-blue rounded-full transition-all duration-1000"
+            style="width: 0%"
+          ></div>
         </div>
         <div class="flex flex-col items-end hidden md:flex">
-            <div class="text-2xl font-black text-paia-blue"><span id="compteurResVue">0</span><span class="text-gray-300 mx-1">/</span><span id="compteurResTotal" class="text-paia-bronze">0</span></div>
-            <span class="text-[9px] font-black uppercase text-gray-400 tracking-widest">Ressources validées</span>
+          <div class="text-2xl font-black text-paia-blue">
+            <span id="compteurResVue">0</span
+            ><span class="text-gray-300 mx-1">/</span
+            ><span id="compteurResTotal" class="text-paia-bronze">0</span>
+          </div>
+          <span
+            class="text-[9px] font-black uppercase text-gray-400 tracking-widest"
+            >Ressources validées</span
+          >
         </div>
       </div>
 
       <div id="subTabsContainer" class="hidden mb-10 flex-wrap gap-3"></div>
       <div id="listContainer" class="grid grid-cols-1 gap-6 pb-20"></div>
       <div id="calendarContainer" class="hidden"></div>
-      <div id="certifContainer" class="hidden flex-col gap-8 pb-12 w-full animate-slideIn px-2 md:px-0"></div>
-
+      <div
+        id="certifContainer"
+        class="hidden flex-col gap-8 pb-12 w-full animate-slideIn px-2 md:px-0"
+      ></div>
     </main>
 
-    <div id="pinModal" class="fixed inset-0 bg-paia-blue/95 backdrop-blur-md hidden items-center justify-center z-[10000]">
-        <div class="bg-paia-ivory p-10 rounded-3xl border-4 border-paia-blue max-w-sm w-full mx-4 text-center shadow-[10px_10px_0px_rgba(0,0,0,1)] transform scale-95" id="pinModalContent">
-            <div class="w-20 h-20 bg-paia-blue text-white rounded-full mx-auto flex items-center justify-center text-3xl mb-6 shadow-xl"><i class="fas fa-lock"></i></div>
-            <h2 class="text-2xl font-black uppercase mb-4 text-paia-blue">Accès Restreint</h2>
-            <p class="text-gray-500 text-xs mb-8 font-medium">Document privé appartenant à la plateforme de formation. PIN Requis.</p>
-            <input type="password" id="pinInput" class="w-full bg-white border-4 border-paia-blue text-center text-4xl py-4 rounded-2xl mb-6 outline-none" maxlength="4" placeholder="••••">
-            <div class="flex gap-4">
-                <button onclick="closePinModal()" class="flex-1 font-bold text-gray-500 border-2 border-gray-300 rounded-xl py-3 hover:bg-gray-100 transition-colors">ANNULER</button>
-                <button onclick="verifyPin()" class="flex-1 bg-paia-blue border-2 border-paia-blue text-white py-3 rounded-xl font-black shadow-[4px_4px_0px_#B4792A]">OUVRIR</button>
-            </div>
+    <div
+      id="pinModal"
+      class="fixed inset-0 bg-paia-blue/95 backdrop-blur-md hidden items-center justify-center z-[10000]"
+    >
+      <div
+        class="bg-paia-ivory p-10 rounded-3xl border-4 border-paia-blue max-w-sm w-full mx-4 text-center shadow-[10px_10px_0px_rgba(0,0,0,1)] transform scale-95"
+        id="pinModalContent"
+      >
+        <div
+          class="w-20 h-20 bg-paia-blue text-white rounded-full mx-auto flex items-center justify-center text-3xl mb-6 shadow-xl"
+        >
+          <i class="fas fa-lock"></i>
         </div>
-    </div>
-
-    <div id="modalTravaux" class="fixed inset-0 bg-paia-blue/90 backdrop-blur-md hidden items-center justify-center z-[10000]">
-      <div class="bg-white p-8 rounded-3xl border-4 border-paia-blue text-center max-w-sm w-full mx-4 shadow-[10px_10px_0px_rgba(0,0,0,1)]">
-        <i class="fas fa-tools text-5xl text-paia-bronze mb-4"></i>
-        <h2 class="font-black text-paia-blue text-xl uppercase mb-2">En chantier</h2>
-        <p class="text-gray-500 text-sm mb-6">Le document pour <strong id="modalTxt"></strong> arrive bientôt.</p>
-        <button onclick="document.getElementById('modalTravaux').style.display = 'none';" class="w-full bg-paia-blue text-white py-3 rounded-xl font-black">RETOUR</button>
+        <h2 class="text-2xl font-black uppercase mb-4 text-paia-blue">
+          Accès Restreint
+        </h2>
+        <p class="text-gray-500 text-xs mb-8 font-medium">
+          Document privé appartenant à la plateforme de formation. PIN Requis.
+        </p>
+        <input
+          type="password"
+          id="pinInput"
+          class="w-full bg-white border-4 border-paia-blue text-center text-4xl py-4 rounded-2xl mb-6 outline-none"
+          maxlength="4"
+          placeholder="••••"
+        />
+        <div class="flex gap-4">
+          <button
+            onclick="closePinModal()"
+            class="flex-1 font-bold text-gray-500 border-2 border-gray-300 rounded-xl py-3 hover:bg-gray-100 transition-colors"
+          >
+            ANNULER
+          </button>
+          <button
+            onclick="verifyPin()"
+            class="flex-1 bg-paia-blue border-2 border-paia-blue text-white py-3 rounded-xl font-black shadow-[4px_4px_0px_#B4792A]"
+          >
+            OUVRIR
+          </button>
+        </div>
       </div>
     </div>
 
-    <div id="srModal" class="fixed inset-0 bg-paia-blue/90 backdrop-blur-md hidden items-center justify-center z-[10000]">
-      <div class="bg-white p-8 rounded-[30px] border-4 border-paia-blue shadow-[10px_10px_0px_rgba(0,0,0,1)] text-center max-w-md w-full mx-4 transform scale-95" id="srModalContent">
-        <div class="w-16 h-16 bg-rose-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border-2 border-rose-200"><span class="text-3xl text-rose-600"><i class="fas fa-clock"></i></span></div>
-        <h2 class="font-black text-[#0F2C48] text-2xl mb-1 tracking-tight">Ancrage Mémoriel</h2>
-        <p class="text-[10px] text-rose-500 font-bold uppercase tracking-widest mb-4">Planification des révisions (J0 -> J60)</p>
-        <div class="bg-rose-50 text-rose-900 text-xs p-4 rounded-xl mb-6 text-left border border-rose-100">
-            <p class="font-black mt-2 text-[#0F2C48]" id="sr-module-title"></p>
-            <span id="sr-module-id" class="hidden"></span>
+    <div
+      id="modalTravaux"
+      class="fixed inset-0 bg-paia-blue/90 backdrop-blur-md hidden items-center justify-center z-[10000]"
+    >
+      <div
+        class="bg-white p-8 rounded-3xl border-4 border-paia-blue text-center max-w-sm w-full mx-4 shadow-[10px_10px_0px_rgba(0,0,0,1)]"
+      >
+        <i class="fas fa-tools text-5xl text-paia-bronze mb-4"></i>
+        <h2 class="font-black text-paia-blue text-xl uppercase mb-2">
+          En chantier
+        </h2>
+        <p class="text-gray-500 text-sm mb-6">
+          Le document pour <strong id="modalTxt"></strong> arrive bientôt.
+        </p>
+        <button
+          onclick="
+            document.getElementById('modalTravaux').style.display = 'none'
+          "
+          class="w-full bg-paia-blue text-white py-3 rounded-xl font-black"
+        >
+          RETOUR
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="srModal"
+      class="fixed inset-0 bg-paia-blue/90 backdrop-blur-md hidden items-center justify-center z-[10000]"
+    >
+      <div
+        class="bg-white p-8 rounded-[30px] border-4 border-paia-blue shadow-[10px_10px_0px_rgba(0,0,0,1)] text-center max-w-md w-full mx-4 transform scale-95"
+        id="srModalContent"
+      >
+        <div
+          class="w-16 h-16 bg-rose-100 rounded-full mx-auto flex items-center justify-center shadow-inner mb-4 border-2 border-rose-200"
+        >
+          <span class="text-3xl text-rose-600"
+            ><i class="fas fa-clock"></i
+          ></span>
+        </div>
+        <h2 class="font-black text-[#0F2C48] text-2xl mb-1 tracking-tight">
+          Ancrage Mémoriel
+        </h2>
+        <p
+          class="text-[10px] text-rose-500 font-bold uppercase tracking-widest mb-4"
+        >
+          Planification des révisions (J0 -> J60)
+        </p>
+        <div
+          class="bg-rose-50 text-rose-900 text-xs p-4 rounded-xl mb-6 text-left border border-rose-100"
+        >
+          <p class="font-black mt-2 text-[#0F2C48]" id="sr-module-title"></p>
+          <span id="sr-module-id" class="hidden"></span>
         </div>
         <div class="text-left mb-6 flex gap-4">
           <div class="flex-1">
-              <label class="text-gray-600 text-xs font-bold mb-2 block">Date début :</label>
-              <input type="date" id="sr-start-date" class="w-full border-2 border-paia-blue p-3 rounded-xl font-black text-sm outline-none">
+            <label class="text-gray-600 text-xs font-bold mb-2 block"
+              >Date début :</label
+            >
+            <input
+              type="date"
+              id="sr-start-date"
+              class="w-full border-2 border-paia-blue p-3 rounded-xl font-black text-sm outline-none"
+            />
           </div>
           <div class="w-1/3">
-              <label class="text-gray-600 text-xs font-bold mb-2 block">Heure :</label>
-              <input type="time" id="sr-start-time" value="14:00" class="w-full border-2 border-paia-blue p-3 rounded-xl font-black text-sm outline-none">
+            <label class="text-gray-600 text-xs font-bold mb-2 block"
+              >Heure :</label
+            >
+            <input
+              type="time"
+              id="sr-start-time"
+              value="14:00"
+              class="w-full border-2 border-paia-blue p-3 rounded-xl font-black text-sm outline-none"
+            />
           </div>
         </div>
-        <button onclick="calculateAndSaveDates()" class="w-full bg-rose-500 text-white py-3.5 rounded-xl font-black text-xs shadow-[4px_4px_0px_#9f1239] mb-3 uppercase">Générer mon programme</button>
-        <button onclick="closeSpacedRepetitionModal()" class="text-gray-400 text-xs font-bold underline">Annuler</button>
+        <button
+          onclick="calculateAndSaveDates()"
+          class="w-full bg-rose-500 text-white py-3.5 rounded-xl font-black text-xs shadow-[4px_4px_0px_#9f1239] mb-3 uppercase"
+        >
+          Générer mon programme
+        </button>
+        <button
+          onclick="closeSpacedRepetitionModal()"
+          class="text-gray-400 text-xs font-bold underline"
+        >
+          Annuler
+        </button>
       </div>
     </div>
 
-    <div id="toastContainer" class="fixed bottom-10 right-10 flex flex-col gap-3 pointer-events-none z-[11000]"></div>
+    <div
+      id="toastContainer"
+      class="fixed bottom-10 right-10 flex flex-col gap-3 pointer-events-none z-[11000]"
+    ></div>
 
-    <footer class="py-12 flex flex-col items-center gap-5 bg-[#0F2C48]/5 backdrop-blur-md border-t border-paia-blue/10 mt-auto relative z-10">
-      <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo" class="w-16 h-16 rounded-full border-4 border-white shadow-lg object-cover" />
-      <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest text-center text-[#0F2C48] leading-relaxed">
-        💫 GESTIONNAIRE DE PAIE HUB | By Mathilde Martine PAISLEY - © 2026<br/>
+    <footer
+      class="py-12 flex flex-col items-center gap-5 bg-[#0F2C48]/5 backdrop-blur-md border-t border-paia-blue/10 mt-auto relative z-10"
+    >
+      <img
+        src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg"
+        alt="Logo"
+        class="w-16 h-16 rounded-full border-4 border-white shadow-lg object-cover"
+      />
+      <p
+        class="text-[10px] font-bold opacity-60 uppercase tracking-widest text-center text-[#0F2C48] leading-relaxed"
+      >
+        💫 GESTIONNAIRE DE PAIE HUB | By Mathilde Martine PAISLEY - © 2026<br />
       </p>
     </footer>
 
     <script>
       // LIEN DU FICHIER ORIGINAL TRANSMIS DANS LA DERNIERE DEMANDE
-      const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTkqT90s2eYR3uo7-sKh2GCDmpsKLD03N10pQbj77sqaQSShANVYINjg__6cwzW2jQj1UHs1aGvt4IR/pub?gid=0&single=true&output=csv";
+      const CSV_URL =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vTkqT90s2eYR3uo7-sKh2GCDmpsKLD03N10pQbj77sqaQSShANVYINjg__6cwzW2jQj1UHs1aGvt4IR/pub?gid=0&single=true&output=csv";
 
       const configStructure = {
-        B0: [{ id: "M1" }, { id: "M2" }, { id: "M3" }, { id: "M4" }, { id: "M5" }],
-        B1: [{ id: "M1" }, { id: "M2" }, { id: "M3" }, { id: "M4" }, { id: "M5" }, { id: "M6" }, { id: "M7" }],
+        B0: [
+          { id: "M1" },
+          { id: "M2" },
+          { id: "M3" },
+          { id: "M4" },
+          { id: "M5" },
+        ],
+        B1: [
+          { id: "M1" },
+          { id: "M2" },
+          { id: "M3" },
+          { id: "M4" },
+          { id: "M5" },
+          { id: "M6" },
+          { id: "M7" },
+        ],
         B2: [{ id: "M1" }, { id: "M2" }, { id: "M3" }, { id: "M4" }],
-        B3: [{ id: "M1" }, { id: "M2" }, { id: "M3" }, { id: "M4" }, { id: "M5" }]
+        B3: [
+          { id: "M1" },
+          { id: "M2" },
+          { id: "M3" },
+          { id: "M4" },
+          { id: "M5" },
+        ],
       };
 
       const ENCODED_PIN = "MTQwMw=="; // 1403
@@ -390,39 +839,51 @@
       let currentBloc = "ALL";
       let currentMod = "ALL";
 
-      window.toggleMobileMenu = function() {
-        const menu = document.getElementById('mobile-menu');
-        const icon = document.getElementById('burger-icon');
-        if(!menu || !icon) return;
-        if (menu.classList.contains('hidden')) {
-            menu.classList.remove('hidden');
-            setTimeout(() => menu.classList.replace('translate-x-full', 'translate-x-0'), 10);
-            icon.className = "fas fa-times";
+      window.toggleMobileMenu = function () {
+        const menu = document.getElementById("mobile-menu");
+        const icon = document.getElementById("burger-icon");
+        if (!menu || !icon) return;
+        if (menu.classList.contains("hidden")) {
+          menu.classList.remove("hidden");
+          setTimeout(
+            () => menu.classList.replace("translate-x-full", "translate-x-0"),
+            10,
+          );
+          icon.className = "fas fa-times";
         } else {
-            menu.classList.replace('translate-x-0', 'translate-x-full');
-            setTimeout(() => menu.classList.add('hidden'), 400);
-            icon.className = "fas fa-bars";
+          menu.classList.replace("translate-x-0", "translate-x-full");
+          setTimeout(() => menu.classList.add("hidden"), 400);
+          icon.className = "fas fa-bars";
         }
       };
 
       function convertDriveLink(url) {
-          if (!url) return "";
-          let fileId = "";
-          if (url.includes("open?id=")) fileId = url.split("open?id=")[1].split("&")[0];
-          else if (url.includes("/file/d/")) fileId = url.split("/file/d/")[1].split("/")[0];
-          return fileId ? `https://drive.google.com/file/d/${fileId}/preview` : url;
+        if (!url) return "";
+        let fileId = "";
+        if (url.includes("open?id="))
+          fileId = url.split("open?id=")[1].split("&")[0];
+        else if (url.includes("/file/d/"))
+          fileId = url.split("/file/d/")[1].split("/")[0];
+        return fileId
+          ? `https://drive.google.com/file/d/${fileId}/preview`
+          : url;
       }
 
       function getDriveThumbnailUrl(url) {
-          if (!url) return '';
-          let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-          return match ? `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800` : '';
+        if (!url) return "";
+        let match =
+          url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
+          url.match(/id=([a-zA-Z0-9_-]+)/);
+        return match
+          ? `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800`
+          : "";
       }
 
       function normalizeUrl(url) {
         if (!url) return "";
         if (url.includes("drive.google.com")) return convertDriveLink(url);
-        if (url.includes("youtube.com/watch")) return url.replace("watch?v=", "embed/");
+        if (url.includes("youtube.com/watch"))
+          return url.replace("watch?v=", "embed/");
         if (url.includes("youtu.be/")) {
           const id = url.split("youtu.be/")[1];
           return `https://www.youtube.com/embed/${id}`;
@@ -431,59 +892,77 @@
       }
 
       function getActionLink(url, titre, type, emoji, id) {
-          if (!url || url.trim() === "") {
-              return { tag: "div", action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"` };
-          }
-          let finalUrl = url;
-          if (finalUrl.includes("drive.google.com")) {
-              finalUrl = convertDriveLink(finalUrl);
-          }
-          const safeUrl = finalUrl.replace(/'/g, "\\'");
-          const safeTitre = (titre || "").replace(/'/g, "\\'");
-          const isUnlocked = window.paia_unlocked === true;
+        if (!url || url.trim() === "") {
+          return {
+            tag: "div",
+            action: `onclick="afficherTravaux('${(titre || "").replace(/'/g, "\\'")}')" style="cursor:pointer;"`,
+          };
+        }
+        let finalUrl = url;
+        if (finalUrl.includes("drive.google.com")) {
+          finalUrl = convertDriveLink(finalUrl);
+        }
+        const safeUrl = finalUrl.replace(/'/g, "\\'");
+        const safeTitre = (titre || "").replace(/'/g, "\\'");
+        const isUnlocked = window.paia_unlocked === true;
 
-          if (type === 'embed-pdf' && !isUnlocked) {
-              return { tag: "div", action: `onclick="handleProtectedClick('${safeUrl}')" style="cursor:pointer;"` };
-          }
+        if (type === "embed-pdf" && !isUnlocked) {
+          return {
+            tag: "div",
+            action: `onclick="handleProtectedClick('${safeUrl}')" style="cursor:pointer;"`,
+          };
+        }
 
-          if (type === 'embed-audio') {
-              return { tag: "div", action: `onclick="event.stopPropagation(); toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"` };
-          }
+        if (type === "embed-audio") {
+          return {
+            tag: "div",
+            action: `onclick="event.stopPropagation(); toggleInlineContent('${id}', '${safeUrl}', '${type}', '${safeTitre}')" style="cursor:pointer;"`,
+          };
+        }
 
-          return { tag: "a", action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"` };
+        return {
+          tag: "a",
+          action: `href="${safeUrl}" target="_blank" style="cursor:pointer;"`,
+        };
       }
 
-      window.afficherTravaux = function(titre) {
-          const mod = document.getElementById('modalTravaux');
-          const txt = document.getElementById('modalTxt');
-          if(mod && txt) {
-              txt.innerText = titre;
-              mod.style.display = 'flex';
-          }
+      window.afficherTravaux = function (titre) {
+        const mod = document.getElementById("modalTravaux");
+        const txt = document.getElementById("modalTxt");
+        if (mod && txt) {
+          txt.innerText = titre;
+          mod.style.display = "flex";
+        }
       };
 
-      window.lire = function(txt) {
+      window.lire = function (txt) {
         if (!isVoice) return;
         window.speechSynthesis.cancel();
-        const txtSansEmoji = txt.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '');
+        const txtSansEmoji = txt.replace(
+          /[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu,
+          "",
+        );
         const u = new SpeechSynthesisUtterance(txtSansEmoji.trim());
         u.lang = "fr-FR";
         window.speechSynthesis.speak(u);
       };
 
-      window.afficherToastCustom = function(htmlContent, borderColorHex) {
+      window.afficherToastCustom = function (htmlContent, borderColorHex) {
         const c = document.getElementById("toastContainer");
         const t = document.createElement("div");
         t.className = `toast-msg p-5 bg-white/95 backdrop-blur-xl shadow-[6px_6px_0px_#0F2C48] border-2 border-paia-blue rounded-xl flex items-start gap-3 pointer-events-auto z-[7000] border-l-[8px]`;
-        t.style.borderLeftColor = borderColorHex || '#3b82f6';
+        t.style.borderLeftColor = borderColorHex || "#3b82f6";
         t.innerHTML = htmlContent;
         c.appendChild(t);
-        setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 9000);
+        setTimeout(() => {
+          t.style.opacity = "0";
+          setTimeout(() => t.remove(), 300);
+        }, 9000);
       };
 
       function buildMiniPlayer(url, titre) {
         const finalUrl = normalizeUrl(url);
-        const iframeId = 'iframe-' + Math.random().toString(36).substr(2, 9);
+        const iframeId = "iframe-" + Math.random().toString(36).substr(2, 9);
         return `
           <div class="mt-4 w-full rounded-[24px] overflow-hidden bg-paia-ivory border-2 border-paia-blue shadow-[6px_6px_0px_rgba(15,44,72,1)] animate-slideIn p-3 transition-all hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_rgba(15,44,72,1)]">
               <div class="flex items-center justify-between mb-3 px-4 pt-3 bg-white rounded-xl pb-3 border-2 border-paia-blue shadow-[2px_2px_0px_#0F2C48]">
@@ -519,36 +998,41 @@
         `;
       }
 
-      window.toggleInlineContent = function(id, url, type, titre) {
-          const container = document.getElementById(`inline-media-${id}`);
-          if (!container || !url) return;
+      window.toggleInlineContent = function (id, url, type, titre) {
+        const container = document.getElementById(`inline-media-${id}`);
+        if (!container || !url) return;
 
-          if (!container.classList.contains('hidden') && container.dataset.currentUrl === url) {
-              container.classList.add('hidden');
-              container.innerHTML = '';
-              container.dataset.currentUrl = '';
-              return;
-          }
+        if (
+          !container.classList.contains("hidden") &&
+          container.dataset.currentUrl === url
+        ) {
+          container.classList.add("hidden");
+          container.innerHTML = "";
+          container.dataset.currentUrl = "";
+          return;
+        }
 
-          document.querySelectorAll('[id^="inline-media-"]').forEach(el => {
-              el.innerHTML = '';
-              el.classList.add('hidden');
-              el.dataset.currentUrl = '';
-          });
+        document.querySelectorAll('[id^="inline-media-"]').forEach((el) => {
+          el.innerHTML = "";
+          el.classList.add("hidden");
+          el.dataset.currentUrl = "";
+        });
 
-          if (type === 'embed-audio') {
-              const comboHtml = `<div class="flex flex-col gap-4 mt-4 animate-slideIn">` +
-                                buildMiniPlayer(url, titre) +
-                                `</div>`;
-              container.innerHTML = comboHtml;
-              container.dataset.currentUrl = url;
-              container.classList.remove('hidden');
+        if (type === "embed-audio") {
+          const comboHtml =
+            `<div class="flex flex-col gap-4 mt-4 animate-slideIn">` +
+            buildMiniPlayer(url, titre) +
+            `</div>`;
+          container.innerHTML = comboHtml;
+          container.dataset.currentUrl = url;
+          container.classList.remove("hidden");
 
-              setTimeout(() => {
-                  const y = container.getBoundingClientRect().top + window.scrollY - 180;
-                  window.scrollTo({top: y, behavior: 'smooth'});
-              }, 100);
-          }
+          setTimeout(() => {
+            const y =
+              container.getBoundingClientRect().top + window.scrollY - 180;
+            window.scrollTo({ top: y, behavior: "smooth" });
+          }, 100);
+        }
       };
 
       // Gestion de la complétion globale des groupes de ressources
@@ -557,43 +1041,50 @@
         event.preventDefault();
 
         // Récupération souple (Code/Titre OU Programme)
-        const itemObj = database.find(d => {
-            let rowId = d.Code;
-            if (!rowId && d.Programme) rowId = d.Programme.split('-')[0].trim();
-            return rowId === id;
+        const itemObj = database.find((d) => {
+          let rowId = d.Code;
+          if (!rowId && d.Programme) rowId = d.Programme.split("-")[0].trim();
+          return rowId === id;
         });
         if (!itemObj) return;
 
         let titre = itemObj.Titre;
         if (!titre && itemObj.Programme) {
-            const parts = itemObj.Programme.split('-');
-            titre = parts.length > 1 ? parts.slice(1).join('-').trim() : "Sans titre";
+          const parts = itemObj.Programme.split("-");
+          titre =
+            parts.length > 1 ? parts.slice(1).join("-").trim() : "Sans titre";
         }
         titre = titre || "Sans titre";
 
         const resMap = {
-            audio: itemObj.Audio,
-            excel: itemObj.Excel,
-            infog: itemObj.Infographie,
-            slide: itemObj.Slides || itemObj['Présentation'],
-            video: itemObj.Vidéo || itemObj.Video,
-            notebook: itemObj.NoteBook_LM
+          audio: itemObj.Audio,
+          excel: itemObj.Excel,
+          infog: itemObj.Infographie,
+          slide: itemObj.Slides || itemObj["Présentation"],
+          video: itemObj.Vidéo || itemObj.Video,
+          notebook: itemObj.NoteBook_LM,
         };
 
         let checkableRids = [];
-        if (groupType === 'core') checkableRids = ["audio", "excel", "infog", "slide", "video"];
-        if (groupType === 'note') checkableRids = ["notebook"];
+        if (groupType === "core")
+          checkableRids = ["audio", "excel", "infog", "slide", "video"];
+        if (groupType === "note") checkableRids = ["notebook"];
 
-        const validRids = checkableRids.filter(r => resMap[r] && resMap[r].trim() !== '');
+        const validRids = checkableRids.filter(
+          (r) => resMap[r] && resMap[r].trim() !== "",
+        );
         if (validRids.length === 0) return;
 
-        const isGroupAll = validRids.every(r => progressRes[`${id}-${r}`]);
+        const isGroupAll = validRids.every((r) => progressRes[`${id}-${r}`]);
 
-        validRids.forEach(r => { progressRes[`${id}-${r}`] = !isGroupAll; });
+        validRids.forEach((r) => {
+          progressRes[`${id}-${r}`] = !isGroupAll;
+        });
         localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
 
         if (!isGroupAll) {
-            if (typeof confetti === 'function') confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
+          if (typeof confetti === "function")
+            confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
         }
 
         const searchInputEl = document.getElementById("searchInput");
@@ -601,187 +1092,314 @@
       };
 
       window.onload = () => {
-          Papa.parse(CSV_URL, {
-              download: true, header: true, skipEmptyLines: true,
-              complete: (results) => {
-                  database = results.data;
-                  document.getElementById('loader').style.display = 'none';
-                  filtrerBloc("ALL");
-              }
-          });
+        Papa.parse(CSV_URL, {
+          download: true,
+          header: true,
+          skipEmptyLines: true,
+          complete: (results) => {
+            database = results.data;
+            document.getElementById("loader").style.display = "none";
+            filtrerBloc("ALL");
+          },
+        });
       };
 
       function filtrerBloc(bloc) {
-          currentBloc = bloc;
-          currentMod = "ALL";
-          document.querySelectorAll(".tab-btn").forEach(btn => btn.className = "tab-btn bg-white text-gray-500 border-2 border-gray-200 px-4 py-2 rounded-xl font-bold text-sm");
-          const activeBtn = document.getElementById("tab-" + bloc);
-          if (activeBtn) activeBtn.className = "tab-btn bg-paia-blue text-white border-paia-blue px-4 py-2 rounded-xl font-bold text-sm shadow-md";
+        currentBloc = bloc;
+        currentMod = "ALL";
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach(
+            (btn) =>
+              (btn.className =
+                "tab-btn bg-white text-gray-500 border-2 border-gray-200 px-4 py-2 rounded-xl font-bold text-sm"),
+          );
+        const activeBtn = document.getElementById("tab-" + bloc);
+        if (activeBtn)
+          activeBtn.className =
+            "tab-btn bg-paia-blue text-white border-paia-blue px-4 py-2 rounded-xl font-bold text-sm shadow-md";
 
-          renderSubTabs();
-          const searchInputEl = document.getElementById("searchInput");
-          afficherModules(searchInputEl ? searchInputEl.value : "", true);
+        renderSubTabs();
+        const searchInputEl = document.getElementById("searchInput");
+        afficherModules(searchInputEl ? searchInputEl.value : "", true);
       }
 
       function renderSubTabs() {
-          const sub = document.getElementById("subTabsContainer");
-          sub.innerHTML = "";
-          if (currentBloc === "ALL") { sub.classList.add("hidden"); return; }
-          sub.classList.remove("hidden");
-          const mods = configStructure[currentBloc] || [];
+        const sub = document.getElementById("subTabsContainer");
+        sub.innerHTML = "";
+        if (currentBloc === "ALL") {
+          sub.classList.add("hidden");
+          return;
+        }
+        sub.classList.remove("hidden");
+        const mods = configStructure[currentBloc] || [];
 
-          mods.forEach(m => {
-              const btn = document.createElement("button");
-              btn.className = `px-5 py-2.5 rounded-xl border-2 font-black text-xs uppercase transition-all ${currentMod === m.id ? 'bg-paia-blue text-white border-paia-blue shadow-md' : 'bg-white text-gray-400 border-gray-100'}`;
-              btn.innerText = m.id;
-              btn.onclick = () => {
-                  currentMod = m.id;
-                  renderSubTabs();
-                  const searchInputEl = document.getElementById("searchInput");
-                  afficherModules(searchInputEl ? searchInputEl.value : "", false);
-              };
-              sub.appendChild(btn);
-          });
+        mods.forEach((m) => {
+          const btn = document.createElement("button");
+          btn.className = `px-5 py-2.5 rounded-xl border-2 font-black text-xs uppercase transition-all ${currentMod === m.id ? "bg-paia-blue text-white border-paia-blue shadow-md" : "bg-white text-gray-400 border-gray-100"}`;
+          btn.innerText = m.id;
+          btn.onclick = () => {
+            currentMod = m.id;
+            renderSubTabs();
+            const searchInputEl = document.getElementById("searchInput");
+            afficherModules(searchInputEl ? searchInputEl.value : "", false);
+          };
+          sub.appendChild(btn);
+        });
       }
 
       function toggleRes(id, resId, emoji, color) {
-          const key = `${id}-${resId}`;
-          progressRes[key] = !progressRes[key];
-          localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
+        const key = `${id}-${resId}`;
+        progressRes[key] = !progressRes[key];
+        localStorage.setItem("paia_p_v10", JSON.stringify(progressRes));
 
-          if(progressRes[key] && typeof confetti === 'function') {
-              confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 }, colors: [color || '#0F2C48'] });
-              afficherToastCustom(`<div class="flex items-center gap-3"><div class="text-2xl">${emoji}</div><div><div class="text-sm font-black text-paia-blue">Ressource validée !</div><div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Progression sauvegardée</div></div></div>`, color);
-          }
+        if (progressRes[key] && typeof confetti === "function") {
+          confetti({
+            particleCount: 30,
+            spread: 50,
+            origin: { y: 0.8 },
+            colors: [color || "#0F2C48"],
+          });
+          afficherToastCustom(
+            `<div class="flex items-center gap-3"><div class="text-2xl">${emoji}</div><div><div class="text-sm font-black text-paia-blue">Ressource validée !</div><div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Progression sauvegardée</div></div></div>`,
+            color,
+          );
+        }
 
-          const searchInputEl = document.getElementById("searchInput");
-          afficherModules(searchInputEl ? searchInputEl.value : "", false);
+        const searchInputEl = document.getElementById("searchInput");
+        afficherModules(searchInputEl ? searchInputEl.value : "", false);
       }
 
       function afficherModules(filtre = "", anim = true) {
-          const list = document.getElementById("listContainer");
-          if (!list) return;
-          list.innerHTML = "";
+        const list = document.getElementById("listContainer");
+        if (!list) return;
+        list.innerHTML = "";
 
-          const searchInputEl = document.getElementById("searchInput");
-          const search = searchInputEl?.value.toLowerCase() || "";
-          const finalFiltre = filtre.toLowerCase() || search;
+        const searchInputEl = document.getElementById("searchInput");
+        const search = searchInputEl?.value.toLowerCase() || "";
+        const finalFiltre = filtre.toLowerCase() || search;
 
-          let vueCount = 0, totalCount = 0, cardIdx = 0;
-          const isUnlocked = window.paia_unlocked;
+        let vueCount = 0,
+          totalCount = 0,
+          cardIdx = 0;
+        const isUnlocked = window.paia_unlocked;
 
-          database.forEach((itemObj) => {
-              // Récupération souple (Code/Titre OU Programme)
-              let id = itemObj.Code;
-              let titre = itemObj.Titre;
+        database.forEach((itemObj) => {
+          // Récupération souple (Code/Titre OU Programme)
+          let id = itemObj.Code;
+          let titre = itemObj.Titre;
 
-              if (!id && itemObj.Programme) {
-                  const parts = itemObj.Programme.split('-');
-                  id = parts[0].trim();
-                  titre = parts.length > 1 ? parts.slice(1).join('-').trim() : "Sans titre";
+          if (!id && itemObj.Programme) {
+            const parts = itemObj.Programme.split("-");
+            id = parts[0].trim();
+            titre =
+              parts.length > 1 ? parts.slice(1).join("-").trim() : "Sans titre";
+          }
+          if (!id) return;
+          titre = titre || "Sans titre";
+
+          const fullItemName = `${id} - ${titre}`;
+
+          const matchesSearch = fullItemName
+            .toLowerCase()
+            .includes(finalFiltre);
+          const matchesBloc =
+            currentBloc === "ALL" ||
+            id.includes(`_${currentBloc}_`) ||
+            id.includes(`${currentBloc}_`);
+          const matchesMod =
+            currentMod === "ALL" ||
+            id.includes(`_${currentMod}_`) ||
+            id.includes(`${currentMod}_`);
+
+          if (!matchesSearch || !matchesBloc || !matchesMod) return;
+
+          const resOfficiels = [
+            {
+              id: "pdf",
+              em: "📄",
+              n: "Cours Officiel PDF",
+              b: "bg-pdf",
+              url: itemObj.Cours,
+              type: "embed-pdf",
+              color: "#0f2c48",
+            },
+          ];
+
+          const resCore = [
+            {
+              id: "audio",
+              em: "🎧",
+              n: "Audio",
+              b: "bg-audio",
+              url: itemObj.Audio,
+              type: "embed-audio",
+              color: "#667eea",
+            },
+            {
+              id: "excel",
+              em: "📊",
+              n: "Excel",
+              b: "bg-excel",
+              url: itemObj.Excel,
+              type: "embed-doc",
+              color: "#2563eb",
+            },
+            {
+              id: "infog",
+              em: "🖼️",
+              n: "Infographie",
+              b: "bg-infog",
+              url: itemObj.Infographie,
+              type: "embed-image",
+              color: "#e81123",
+            },
+            {
+              id: "slide",
+              em: "📽️",
+              n: "Slide",
+              b: "bg-slide",
+              url: itemObj.Slides || itemObj["Présentation"],
+              type: "embed-presentation",
+              color: "#d83b01",
+            },
+            {
+              id: "video",
+              em: "🎬",
+              n: "Vidéo",
+              b: "bg-video",
+              url: itemObj.Vidéo || itemObj.Video,
+              type: "embed-video",
+              color: "#e52d27",
+            },
+          ];
+
+          const resNote = [
+            {
+              id: "notebook",
+              em: "📓",
+              n: "NoteBook_LM",
+              b: "bg-notebook",
+              url: itemObj.NoteBook_LM,
+              type: "external",
+              color: "#d946ef",
+            },
+          ];
+
+          // Rendu Bloc Officiel
+          let htmlOff = resOfficiels
+            .map((r) => {
+              let displayEmoji = r.em;
+              let tooltipText = r.n;
+              let btnClass = r.b;
+
+              if (r.id === "pdf" && !isUnlocked) {
+                displayEmoji = "🔒";
+                tooltipText = "Document Privé (Droits d'auteur)";
+                btnClass = "bg-locked";
+              } else if (r.id === "pdf" && isUnlocked) {
+                displayEmoji = "📄";
+                tooltipText = "Cours Officiel PDF";
+                btnClass = "bg-pdf";
               }
-              if (!id) return;
-              titre = titre || "Sans titre";
 
-              const fullItemName = `${id} - ${titre}`;
+              const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
+              let extraDivClass =
+                !r.url || r.url.trim() === ""
+                  ? "opacity-40 grayscale pointer-events-none"
+                  : "";
+              let colSpanClass = "flex justify-center";
 
-              const matchesSearch = fullItemName.toLowerCase().includes(finalFiltre);
-              const matchesBloc = currentBloc === "ALL" || id.includes(`_${currentBloc}_`) || id.includes(`${currentBloc}_`);
-              const matchesMod = currentMod === "ALL" || id.includes(`_${currentMod}_`) || id.includes(`${currentMod}_`);
-
-              if (!matchesSearch || !matchesBloc || !matchesMod) return;
-
-              const resOfficiels = [
-                  { id: "pdf", em: "📄", n: "Cours Officiel PDF", b: "bg-pdf", url: itemObj.Cours, type: "embed-pdf", color: "#0f2c48" }
-              ];
-
-              const resCore = [
-                  { id: "audio", em: "🎧", n: "Audio", b: "bg-audio", url: itemObj.Audio, type: "embed-audio", color: "#667eea" },
-                  { id: "excel", em: "📊", n: "Excel", b: "bg-excel", url: itemObj.Excel, type: "embed-doc", color: "#2563eb" },
-                  { id: "infog", em: "🖼️", n: "Infographie", b: "bg-infog", url: itemObj.Infographie, type: "embed-image", color: "#e81123" },
-                  { id: "slide", em: "📽️", n: "Slide", b: "bg-slide", url: itemObj.Slides || itemObj['Présentation'], type: "embed-presentation", color: "#d83b01" },
-                  { id: "video", em: "🎬", n: "Vidéo", b: "bg-video", url: itemObj.Vidéo || itemObj.Video, type: "embed-video", color: "#e52d27" }
-              ];
-
-              const resNote = [
-                  { id: "notebook", em: "📓", n: "NoteBook_LM", b: "bg-notebook", url: itemObj.NoteBook_LM, type: "external", color: "#d946ef" }
-              ];
-
-              // Rendu Bloc Officiel
-              let htmlOff = resOfficiels.map((r) => {
-                  let displayEmoji = r.em;
-                  let tooltipText = r.n;
-                  let btnClass = r.b;
-
-                  if (r.id === 'pdf' && !isUnlocked) {
-                      displayEmoji = "🔒"; tooltipText = "Document Privé (Droits d'auteur)"; btnClass = "bg-locked";
-                  } else if (r.id === 'pdf' && isUnlocked) {
-                      displayEmoji = "📄"; tooltipText = "Cours Officiel PDF"; btnClass = "bg-pdf";
-                  }
-
-                  const linkProps = getActionLink(r.url, titre, r.type, r.em, id);
-                  let extraDivClass = (!r.url || r.url.trim() === '') ? "opacity-40 grayscale pointer-events-none" : "";
-                  let colSpanClass = "flex justify-center";
-
-                  return `<div class="relative tooltip-container ${extraDivClass} ${colSpanClass}">
+              return `<div class="relative tooltip-container ${extraDivClass} ${colSpanClass}">
                               <${linkProps.tag} ${linkProps.action} aria-label="Ressource ${tooltipText}" class="btn-resource ${btnClass}" onmouseenter="lire('${tooltipText.replace(/'/g, "\\'")}')"><span>${displayEmoji}</span></${linkProps.tag}>
                               <span class="tooltip">${tooltipText}</span>
                           </div>`;
-              }).join("");
+            })
+            .join("");
 
-              // Gestion de la progression globale (sans resExternes)
-              const trackableRes = [...resCore, ...resNote];
-              const validRids = trackableRes.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
-              totalCount += validRids.length;
-              validRids.forEach(rid => { if (progressRes[`${id}-${rid}`]) vueCount++; });
+          // Gestion de la progression globale (sans resExternes)
+          const trackableRes = [...resCore, ...resNote];
+          const validRids = trackableRes
+            .filter((r) => r.url && r.url.trim() !== "")
+            .map((r) => r.id);
+          totalCount += validRids.length;
+          validRids.forEach((rid) => {
+            if (progressRes[`${id}-${rid}`]) vueCount++;
+          });
 
-              const buildTrackableHtml = (arr) => {
-                  return arr.map((r) => {
-                      const hasUrl = r.url && r.url.trim() !== '';
-                      const isV = hasUrl && progressRes[`${id}-${r.id}`];
+          const buildTrackableHtml = (arr) => {
+            return arr
+              .map((r) => {
+                const hasUrl = r.url && r.url.trim() !== "";
+                const isV = hasUrl && progressRes[`${id}-${r.id}`];
 
-                      let displayTitre = titre || "";
-                      if (r.id === "notebook" && !hasUrl) { displayTitre = "NoteBook_LM - " + displayTitre; }
+                let displayTitre = titre || "";
+                if (r.id === "notebook" && !hasUrl) {
+                  displayTitre = "NoteBook_LM - " + displayTitre;
+                }
 
-                      const linkProps = getActionLink(r.url, displayTitre, r.type, r.em, id);
+                const linkProps = getActionLink(
+                  r.url,
+                  displayTitre,
+                  r.type,
+                  r.em,
+                  id,
+                );
 
-                      let checkC = "";
-                      let checkIcon = "";
-                      let badgeAction = "";
-                      let extraDivClass = "";
+                let checkC = "";
+                let checkIcon = "";
+                let badgeAction = "";
+                let extraDivClass = "";
 
-                      if (!hasUrl) {
-                          checkC = "bg-red-50 text-red-500 border-red-400 cursor-not-allowed";
-                          checkIcon = "fas fa-times";
-                          badgeAction = `onclick="afficherTravaux('${displayTitre.replace(/'/g, "\\'")}')"`;
-                          extraDivClass = r.id === "notebook" ? "" : "opacity-60 grayscale-[30%]";
-                      } else {
-                          checkC = isV ? "bg-[#3b82f6] text-white border-[#3b82f6]" : "bg-white text-gray-200 border-gray-200 hover:border-[#3b82f6] hover:text-[#3b82f6]";
-                          checkIcon = "fas fa-check";
-                          badgeAction = `onclick="toggleRes('${id}','${r.id}','${r.em}','${r.color}')"`;
-                      }
+                if (!hasUrl) {
+                  checkC =
+                    "bg-red-50 text-red-500 border-red-400 cursor-not-allowed";
+                  checkIcon = "fas fa-times";
+                  badgeAction = `onclick="afficherTravaux('${displayTitre.replace(/'/g, "\\'")}')"`;
+                  extraDivClass =
+                    r.id === "notebook" ? "" : "opacity-60 grayscale-[30%]";
+                } else {
+                  checkC = isV
+                    ? "bg-[#3b82f6] text-white border-[#3b82f6]"
+                    : "bg-white text-gray-200 border-gray-200 hover:border-[#3b82f6] hover:text-[#3b82f6]";
+                  checkIcon = "fas fa-check";
+                  badgeAction = `onclick="toggleRes('${id}','${r.id}','${r.em}','${r.color}')"`;
+                }
 
-                      return `<div class="relative tooltip-container ${extraDivClass}">
+                return `<div class="relative tooltip-container ${extraDivClass}">
                                   <${linkProps.tag} ${linkProps.action} aria-label="Ressource ${r.n}" class="btn-resource ${r.b}" onmouseenter="lire('${r.n.replace(/'/g, "\\'")}')"><span>${r.em}</span></${linkProps.tag}>
                                   <button ${badgeAction} class="check-badge ${checkC}"><i class="${checkIcon}"></i></button>
                                   <span class="tooltip">${r.n}</span>
                               </div>`;
-                  }).join("");
-              };
+              })
+              .join("");
+          };
 
-              let htmlCore = buildTrackableHtml(resCore);
-              let htmlNote = buildTrackableHtml(resNote);
+          let htmlCore = buildTrackableHtml(resCore);
+          let htmlNote = buildTrackableHtml(resNote);
 
-              const validRidsCore = resCore.filter(r => r.url && r.url.trim() !== '').map(r => r.id);
-              let lineCheckedCore = 0;
-              validRidsCore.forEach(rid => { if (progressRes[`${id}-${rid}`]) lineCheckedCore++; });
-              const percentCore = validRidsCore.length > 0 ? Math.round((lineCheckedCore / validRidsCore.length) * 100) : 0;
-              const isCoreFull = validRidsCore.length > 0 && lineCheckedCore === validRidsCore.length;
+          const validRidsCore = resCore
+            .filter((r) => r.url && r.url.trim() !== "")
+            .map((r) => r.id);
+          let lineCheckedCore = 0;
+          validRidsCore.forEach((rid) => {
+            if (progressRes[`${id}-${rid}`]) lineCheckedCore++;
+          });
+          const percentCore =
+            validRidsCore.length > 0
+              ? Math.round((lineCheckedCore / validRidsCore.length) * 100)
+              : 0;
+          const isCoreFull =
+            validRidsCore.length > 0 &&
+            lineCheckedCore === validRidsCore.length;
 
-              const isFull = validRids.length > 0 && (lineCheckedCore + (progressRes[`${id}-notebook`] ? 1 : 0)) === validRids.length;
+          const isFull =
+            validRids.length > 0 &&
+            lineCheckedCore + (progressRes[`${id}-notebook`] ? 1 : 0) ===
+              validRids.length;
 
-              // Construction des Blocs Visuels
-              let offBlock = `
+          // Construction des Blocs Visuels
+          let offBlock = `
                   <div class="flex flex-col gap-2 bg-slate-50 pt-3 pb-2 px-3 rounded-2xl border-2 border-slate-200 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative transition-colors duration-500">
                       <div class="flex gap-2 z-10 w-full place-items-center justify-center">${htmlOff}</div>
                       <div class="flex items-center justify-center w-full px-1 z-10 mt-1 border-t-2 border-slate-200 pt-1 pb-1">
@@ -789,22 +1407,22 @@
                       </div>
                   </div>`;
 
-              let coreBlock = '';
-              if (validRidsCore.length > 0) {
-                  coreBlock = `
-                  <div class="flex flex-col gap-2 ${isCoreFull ? 'bg-emerald-50 border-emerald-400' : 'bg-cyan-50 border-cyan-300'} pt-3 pb-2 px-3 rounded-2xl border-2 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative transition-colors duration-500">
+          let coreBlock = "";
+          if (validRidsCore.length > 0) {
+            coreBlock = `
+                  <div class="flex flex-col gap-2 ${isCoreFull ? "bg-emerald-50 border-emerald-400" : "bg-cyan-50 border-cyan-300"} pt-3 pb-2 px-3 rounded-2xl border-2 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative transition-colors duration-500">
                       <div class="flex gap-2 z-10">${htmlCore}</div>
-                      <div class="flex items-center justify-between w-full px-1 z-10 mt-1 border-t-2 ${isCoreFull ? 'border-emerald-200' : 'border-cyan-200'} pt-1 pb-1">
-                          <span class="text-[8px] font-black uppercase ${isCoreFull ? 'text-emerald-600' : 'text-cyan-600'} tracking-widest leading-none transition-colors">Skill Up</span>
-                          <button onclick="toggleGroup(event, '${id}', 'core')" class="text-[20px] ml-2 leading-none hover:scale-125 transition-transform ${isCoreFull ? 'text-emerald-500' : 'text-cyan-500 drop-shadow-sm'}" title="${isCoreFull ? 'Annuler' : 'Valider Skill Up'}">${isCoreFull ? '✅' : '🚀'}</button>
+                      <div class="flex items-center justify-between w-full px-1 z-10 mt-1 border-t-2 ${isCoreFull ? "border-emerald-200" : "border-cyan-200"} pt-1 pb-1">
+                          <span class="text-[8px] font-black uppercase ${isCoreFull ? "text-emerald-600" : "text-cyan-600"} tracking-widest leading-none transition-colors">Skill Up</span>
+                          <button onclick="toggleGroup(event, '${id}', 'core')" class="text-[20px] ml-2 leading-none hover:scale-125 transition-transform ${isCoreFull ? "text-emerald-500" : "text-cyan-500 drop-shadow-sm"}" title="${isCoreFull ? "Annuler" : "Valider Skill Up"}">${isCoreFull ? "✅" : "🚀"}</button>
                       </div>
                       <div class="absolute bottom-0 left-0 w-full h-[6px] bg-black/5 z-0 rounded-b-[14px] overflow-hidden">
-                          <div class="absolute top-0 left-0 h-full ${isCoreFull ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : 'bg-gradient-to-r from-cyan-400 to-cyan-500'} transition-all duration-700 ease-out z-0" style="width: ${percentCore}%;"></div>
+                          <div class="absolute top-0 left-0 h-full ${isCoreFull ? "bg-gradient-to-r from-emerald-400 to-emerald-500" : "bg-gradient-to-r from-cyan-400 to-cyan-500"} transition-all duration-700 ease-out z-0" style="width: ${percentCore}%;"></div>
                       </div>
                   </div>`;
-              }
+          }
 
-              let noteBlock = `
+          let noteBlock = `
                   <div class="flex flex-col gap-2 bg-fuchsia-50 pt-3 pb-2 px-3 rounded-2xl border-2 border-fuchsia-200 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative transition-colors duration-500">
                       <div class="flex justify-center z-10 w-full">${htmlNote}</div>
                       <div class="flex items-center justify-center w-full px-1 z-10 mt-1 border-t-2 border-fuchsia-200 pt-1 pb-1">
@@ -812,7 +1430,7 @@
                       </div>
                   </div>`;
 
-              let calBlock = `
+          let calBlock = `
                   <div class="flex flex-col gap-2 bg-rose-50 pt-3 pb-2 px-3 rounded-2xl border-2 border-rose-200 shadow-[2px_2px_0px_rgba(15,44,72,0.1)] shrink-0 relative transition-colors duration-500 h-full">
                       <div class="flex justify-center z-10">
                           <div class="relative tooltip-container">
@@ -827,35 +1445,36 @@
                       </div>
                   </div>`;
 
-              // Gestion de la vignette visuelle droite (previewBlock)
-              let previewBlock = '';
-              let audioUrl = itemObj.Audio;
-              let infogUrl = itemObj.Infographie;
-              let slideUrl = itemObj.Slides || itemObj['Présentation'];
-              let hasAudio = audioUrl && audioUrl.trim() !== '';
+          // Gestion de la vignette visuelle droite (previewBlock)
+          let previewBlock = "";
+          let audioUrl = itemObj.Audio;
+          let infogUrl = itemObj.Infographie;
+          let slideUrl = itemObj.Slides || itemObj["Présentation"];
+          let hasAudio = audioUrl && audioUrl.trim() !== "";
 
-              let visualUrlForThumb = infogUrl && infogUrl.trim() !== '' ? infogUrl : null;
-              let visualType = 'embed-image';
-              let visualLabel = 'Infographie';
+          let visualUrlForThumb =
+            infogUrl && infogUrl.trim() !== "" ? infogUrl : null;
+          let visualType = "embed-image";
+          let visualLabel = "Infographie";
 
-              if (!visualUrlForThumb && slideUrl && slideUrl.trim() !== '') {
-                  visualUrlForThumb = slideUrl;
-                  visualType = 'embed-presentation';
-                  visualLabel = 'Diaporama';
-              }
+          if (!visualUrlForThumb && slideUrl && slideUrl.trim() !== "") {
+            visualUrlForThumb = slideUrl;
+            visualType = "embed-presentation";
+            visualLabel = "Diaporama";
+          }
 
-              if (visualUrlForThumb) {
-                  let thumbUrl = getDriveThumbnailUrl(visualUrlForThumb);
-                  let audioInsideHtml = '';
-                  if (hasAudio) {
-                      audioInsideHtml = `
+          if (visualUrlForThumb) {
+            let thumbUrl = getDriveThumbnailUrl(visualUrlForThumb);
+            let audioInsideHtml = "";
+            if (hasAudio) {
+              audioInsideHtml = `
                           <button class="absolute top-3 right-3 w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[3px_3px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#0F2C48] transition-all z-20" title="Écouter le podcast inline" aria-label="Écouter le podcast audio" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl.replace(/'/g, "\\'")}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
                               <i class="fas fa-play text-[12px] ml-1"></i>
                           </button>
                       `;
-                  }
+            }
 
-                  previewBlock = `
+            previewBlock = `
                   <div class="w-full lg:w-[35%] xl:w-[30%] max-w-[400px] shrink-0 h-full min-h-[220px] mt-4 lg:mt-0 lg:ml-auto">
                       <div class="relative w-full h-full rounded-[24px] border-2 border-paia-blue overflow-hidden bg-paia-blue group cursor-zoom-in shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all"
                   onclick="event.stopPropagation(); window.open('${visualUrlForThumb.replace(/'/g, "\\'")}', '_blank')">
@@ -876,33 +1495,37 @@
                           </div>
                       </div>
                   </div>`;
-              } else {
-                  let audioInsideHtml = '';
-                  if (hasAudio) {
-                      audioInsideHtml = `
+          } else {
+            let audioInsideHtml = "";
+            if (hasAudio) {
+              audioInsideHtml = `
                           <button class="w-14 h-14 rounded-full bg-indigo-500 text-white flex items-center justify-center border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0F2C48] transition-all z-20 mb-3" title="Écouter le podcast" aria-label="Écouter le podcast audio" onclick="event.stopPropagation(); toggleInlineContent('${id}', '${audioUrl.replace(/'/g, "\\'")}', 'embed-audio', '${titre.replace(/'/g, "\\'")}')">
                               <i class="fas fa-play text-xl ml-1"></i>
                           </button>
                           <span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-100 px-3 py-1.5 rounded-xl border border-indigo-200">Podcast Audio</span>
                       `;
-                  }
+            }
 
-                  previewBlock = `
+            previewBlock = `
                   <div class="w-full lg:w-[35%] xl:w-[30%] max-w-[400px] shrink-0 h-full min-h-[220px] mt-4 lg:mt-0 lg:ml-auto">
                       <div class="w-full h-full rounded-[24px] border-2 border-dashed border-gray-300 bg-gray-50 flex flex-col items-center justify-center p-4 hover:border-paia-blue hover:bg-white transition-colors">
-                          ${hasAudio ? audioInsideHtml : `
+                          ${
+                            hasAudio
+                              ? audioInsideHtml
+                              : `
                           <i class="fas fa-image mb-3 text-gray-300 text-3xl"></i>
                           <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 bg-white px-4 py-2 rounded-xl border border-gray-200">Visuel à venir</span>
-                          `}
+                          `
+                          }
                       </div>
                   </div>`;
-              }
+          }
 
-              const card = document.createElement("div");
-              card.className = `card-3d bg-white p-6 rounded-[32px] border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] flex flex-col gap-6 items-stretch mb-6 ${isFull ? "bg-blue-50/30 border-paia-blue shadow-[4px_4px_0px_#3b82f6]" : ""} ${anim ? "card-animate" : ""}`;
-              if (anim) card.style.animationDelay = `${(cardIdx + 1) * 0.03}s`;
+          const card = document.createElement("div");
+          card.className = `card-3d bg-white p-6 rounded-[32px] border-2 border-paia-blue shadow-[4px_4px_0px_#0F2C48] flex flex-col gap-6 items-stretch mb-6 ${isFull ? "bg-blue-50/30 border-paia-blue shadow-[4px_4px_0px_#3b82f6]" : ""} ${anim ? "card-animate" : ""}`;
+          if (anim) card.style.animationDelay = `${(cardIdx + 1) * 0.03}s`;
 
-              card.innerHTML = `
+          card.innerHTML = `
                   <div class="flex flex-col lg:flex-row gap-6 w-full">
                       <div class="flex-1 flex flex-col gap-4">
                           <div class="flex flex-col gap-2">
@@ -925,80 +1548,108 @@
                   </div>
               `;
 
-              list.appendChild(card);
-              cardIdx++;
-          });
+          list.appendChild(card);
+          cardIdx++;
+        });
 
-          if (totalCount > 0) {
-              const globalProgressVal = Math.round((vueCount / totalCount) * 100);
-              const globalProgressText = document.getElementById('progressText');
-              const globalProgressBar = document.getElementById('progressBar');
-              const compTotal = document.getElementById('compteurResTotal');
-              const compVue = document.getElementById('compteurResVue');
+        if (totalCount > 0) {
+          const globalProgressVal = Math.round((vueCount / totalCount) * 100);
+          const globalProgressText = document.getElementById("progressText");
+          const globalProgressBar = document.getElementById("progressBar");
+          const compTotal = document.getElementById("compteurResTotal");
+          const compVue = document.getElementById("compteurResVue");
 
-              if (globalProgressText) globalProgressText.innerText = globalProgressVal + '%';
-              if (globalProgressBar) globalProgressBar.style.width = globalProgressVal + '%';
-              if (compTotal) compTotal.innerText = totalCount;
-              if (compVue) compVue.innerText = vueCount;
-          }
+          if (globalProgressText)
+            globalProgressText.innerText = globalProgressVal + "%";
+          if (globalProgressBar)
+            globalProgressBar.style.width = globalProgressVal + "%";
+          if (compTotal) compTotal.innerText = totalCount;
+          if (compVue) compVue.innerText = vueCount;
+        }
 
-          if (cardIdx === 0) {
-              list.innerHTML = `
+        if (cardIdx === 0) {
+          list.innerHTML = `
                   <div class="flex flex-col items-center justify-center py-20 text-center opacity-60">
                       <i class="fas fa-search text-6xl mb-4 text-paia-blue"></i>
                       <h2 class="text-2xl font-black text-paia-blue mb-2">Aucun module trouvé</h2>
                       <p class="text-sm font-bold text-gray-500">Essayez une autre recherche ou changez de bloc.</p>
                   </div>
               `;
-          }
+        }
       }
 
       window.handleProtectedClick = (url) => {
-          window.pendingPdfUrl = url;
-          document.getElementById('pinModal').style.display = 'flex';
-          setTimeout(() => document.getElementById('pinModalContent').className = "bg-paia-ivory p-10 rounded-3xl border-4 border-paia-blue max-w-sm w-full mx-4 text-center shadow-[10px_10px_0px_rgba(0,0,0,1)] transform scale-100 transition-all", 10);
+        window.pendingPdfUrl = url;
+        document.getElementById("pinModal").style.display = "flex";
+        setTimeout(
+          () =>
+            (document.getElementById("pinModalContent").className =
+              "bg-paia-ivory p-10 rounded-3xl border-4 border-paia-blue max-w-sm w-full mx-4 text-center shadow-[10px_10px_0px_rgba(0,0,0,1)] transform scale-100 transition-all"),
+          10,
+        );
       };
 
       window.verifyPin = () => {
-          const pin = document.getElementById('pinInput').value;
-          if (btoa(pin) === ENCODED_PIN) {
-              window.paia_unlocked = true;
-              document.getElementById('pinModal').style.display = 'none';
-              if(window.pendingPdfUrl) window.open(window.pendingPdfUrl, '_blank');
-              afficherModules();
-          } else {
-              document.getElementById('pinInput').className = "w-full bg-red-50 border-4 border-red-500 text-center text-4xl py-4 rounded-2xl mb-6 outline-none animate-pulse";
-              setTimeout(() => document.getElementById('pinInput').className = "w-full bg-white border-4 border-paia-blue text-center text-4xl py-4 rounded-2xl mb-6 outline-none", 1000);
-          }
+        const pin = document.getElementById("pinInput").value;
+        if (btoa(pin) === ENCODED_PIN) {
+          window.paia_unlocked = true;
+          document.getElementById("pinModal").style.display = "none";
+          if (window.pendingPdfUrl) window.open(window.pendingPdfUrl, "_blank");
+          afficherModules();
+        } else {
+          document.getElementById("pinInput").className =
+            "w-full bg-red-50 border-4 border-red-500 text-center text-4xl py-4 rounded-2xl mb-6 outline-none animate-pulse";
+          setTimeout(
+            () =>
+              (document.getElementById("pinInput").className =
+                "w-full bg-white border-4 border-paia-blue text-center text-4xl py-4 rounded-2xl mb-6 outline-none"),
+            1000,
+          );
+        }
       };
 
-      window.closePinModal = () => document.getElementById('pinModal').style.display = 'none';
+      window.closePinModal = () =>
+        (document.getElementById("pinModal").style.display = "none");
 
-      window.openSpacedRepetitionModal = function(moduleId, moduleTitle) {
-          document.getElementById('sr-module-id').innerText = moduleId;
-          document.getElementById('sr-module-title').innerText = moduleTitle;
-          const now = new Date();
-          document.getElementById('sr-start-date').valueAsDate = now;
-          document.getElementById('sr-start-time').value = String(now.getHours()).padStart(2, '0') + ":00";
-          document.getElementById('srModal').style.display = 'flex';
-          setTimeout(() => document.getElementById('srModalContent').className = "bg-white p-8 rounded-[30px] border-4 border-paia-blue shadow-[10px_10px_0px_rgba(0,0,0,1)] text-center max-w-md w-full mx-4 transform scale-100 transition-all", 10);
+      window.openSpacedRepetitionModal = function (moduleId, moduleTitle) {
+        document.getElementById("sr-module-id").innerText = moduleId;
+        document.getElementById("sr-module-title").innerText = moduleTitle;
+        const now = new Date();
+        document.getElementById("sr-start-date").valueAsDate = now;
+        document.getElementById("sr-start-time").value =
+          String(now.getHours()).padStart(2, "0") + ":00";
+        document.getElementById("srModal").style.display = "flex";
+        setTimeout(
+          () =>
+            (document.getElementById("srModalContent").className =
+              "bg-white p-8 rounded-[30px] border-4 border-paia-blue shadow-[10px_10px_0px_rgba(0,0,0,1)] text-center max-w-md w-full mx-4 transform scale-100 transition-all"),
+          10,
+        );
       };
 
-      window.closeSpacedRepetitionModal = function() {
-          document.getElementById('srModalContent').className = "bg-white p-8 rounded-[30px] border-4 border-paia-blue shadow-[10px_10px_0px_rgba(0,0,0,1)] text-center max-w-md w-full mx-4 transform scale-95 transition-all";
-          setTimeout(() => document.getElementById('srModal').style.display = 'none', 200);
+      window.closeSpacedRepetitionModal = function () {
+        document.getElementById("srModalContent").className =
+          "bg-white p-8 rounded-[30px] border-4 border-paia-blue shadow-[10px_10px_0px_rgba(0,0,0,1)] text-center max-w-md w-full mx-4 transform scale-95 transition-all";
+        setTimeout(
+          () => (document.getElementById("srModal").style.display = "none"),
+          200,
+        );
       };
 
-      window.calculateAndSaveDates = function() {
-          closeSpacedRepetitionModal();
-          afficherToastCustom("Planification enregistrée (Bientôt disponible sur le Hub PAIE !)", "#10b981");
+      window.calculateAndSaveDates = function () {
+        closeSpacedRepetitionModal();
+        afficherToastCustom(
+          "Planification enregistrée (Bientôt disponible sur le Hub PAIE !)",
+          "#10b981",
+        );
       };
 
       const searchInputElGlobal = document.getElementById("searchInput");
       if (searchInputElGlobal) {
-          searchInputElGlobal.addEventListener("input", (e) => afficherModules(e.target.value, false));
+        searchInputElGlobal.addEventListener("input", (e) =>
+          afficherModules(e.target.value, false),
+        );
       }
-
     </script>
   </body>
 </html>
