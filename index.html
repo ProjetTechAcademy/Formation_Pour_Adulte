@@ -3,9 +3,188 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mon Parcours FPA - Évolution Premium V2.ECF</title>
+    <title>Hub de Veille PAIE - Premium V26</title>
 
-    <script src="data.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;900&family=Space+Mono&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        paia: {
+                            ivory: '#F6F2E8',
+                            blue: '#0F2C48',
+                            yellow: '#D9A526',
+                            bronze: '#B4792A',
+                            dark: '#0f172a',
+                            glow: '#3b82f6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        mono: ['Space Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="relative">
+
+    <div id="loader">
+      <div class="spinner"></div>
+      <p class="mt-4 font-display font-black uppercase text-xs tracking-widest text-paia-blue">Synchronisation Base_PAIE...</p>
+      <p class="text-[10px] mt-2 opacity-50 font-bold text-paia-blue">CHARGEMENT DE VOTRE ESPACE</p>
+    </div>
+
+    <div class="bg-animated-blob blob-1"></div>
+    <div class="bg-animated-blob blob-2"></div>
+    <div class="bg-animated-blob blob-3"></div>
+    <div class="bg-animated-blob blob-4"></div>
+
+    <header class="bg-white/60 backdrop-blur-2xl border-b border-white/40 h-[110px] flex items-center sticky top-0 z-[1000] shadow-sm">
+      <div class="w-full max-w-[1600px] mx-auto px-4 md:px-6 flex items-center justify-between">
+        <div class="flex items-center gap-5 cursor-pointer group" onclick="location.reload()">
+          <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo" class="w-16 h-16 md:w-[72px] md:h-[72px] rounded-2xl border-[3px] border-paia-blue object-cover shadow-[4px_4px_0px_#0F2C48] group-hover:-translate-y-1 transition-transform duration-300" />
+          <div class="hidden sm:block">
+            <h1 class="text-2xl md:text-3xl font-display font-black uppercase text-paia-blue tracking-tight leading-none mb-1">Mon Parcours PAIE</h1>
+            <p class="text-[10px] md:text-[11px] text-paia-bronze font-bold uppercase tracking-widest">Veille & Maintien des Compétences</p>
+          </div>
+        </div>
+
+        <nav class="hidden lg:flex items-center gap-6">
+            <div class="relative tooltip-container">
+                <button onclick="window.openFPA(event)" class="w-[72px] h-[72px] rounded-2xl bg-gradient-to-br from-purple-50 to-purple-200 border-[3px] border-paia-blue shadow-[4px_4px_0px_#0F2C48] flex items-center justify-center transition-all hover:-translate-y-1 group relative">
+                    <i class="fas fa-lock absolute -top-3 -right-3 text-[14px] text-paia-blue bg-white rounded-full p-1.5 shadow-sm border-[3px] border-paia-blue z-10" id="fpa-lock-icon"></i>
+                    <span class="text-4xl group-hover:scale-110 transition-transform duration-300">🎓</span>
+                </button>
+                <span class="tooltip text-nowrap">Parcours FPA Privé</span>
+            </div>
+            <div class="relative tooltip-container">
+                <button onclick="window.filtrerBloc('CAL')" class="w-[72px] h-[72px] rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-200 border-[3px] border-paia-blue shadow-[4px_4px_0px_#0F2C48] flex items-center justify-center transition-all hover:-translate-y-1 group relative">
+                    <span class="text-4xl group-hover:scale-110 transition-transform duration-300">📅</span>
+                </button>
+                <span class="tooltip text-nowrap">Mon Planning</span>
+            </div>
+        </nav>
+
+        <button onclick="window.toggleMobileMenu()" class="lg:hidden w-14 h-14 flex items-center justify-center rounded-2xl border-[3px] border-paia-blue bg-white shadow-[4px_4px_0px_#0F2C48]">
+            <i id="burger-icon" class="fas fa-bars text-2xl text-paia-blue"></i>
+        </button>
+      </div>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-paia-blue/95 backdrop-blur-xl z-[900] hidden flex-col items-center justify-center gap-8 text-white p-10 transform translate-x-full transition-transform duration-300">
+        <button onclick="window.toggleMobileMenu()" class="absolute top-8 right-8 text-4xl text-paia-ivory"><i class="fas fa-times"></i></button>
+        <button onclick="window.openFPA(event)" class="text-3xl font-display font-black uppercase tracking-widest hover:text-paia-yellow flex items-center gap-4"><span class="text-4xl">🎓</span> FPA Privé</button>
+        <button onclick="window.filtrerBloc('CAL'); window.toggleMobileMenu()" class="text-3xl font-display font-black uppercase tracking-widest hover:text-indigo-300 flex items-center gap-4"><span class="text-4xl">📅</span> Planning</button>
+    </div>
+
+    <main class="flex-grow w-full max-w-[1600px] mx-auto px-4 md:px-6 py-6 md:py-8 relative">
+      <div class="mb-8 flex flex-col lg:flex-row items-center justify-between bg-white/70 backdrop-blur-xl p-6 md:p-8 rounded-[32px] border border-white shadow-lg gap-6">
+          <div class="text-center lg:text-left cursor-pointer group" onclick="window.askForName()">
+              <h2 id="welcome-text" class="text-2xl md:text-3xl font-display font-black text-paia-blue group-hover:text-paia-glow transition-colors">Bonjour ! 👋</h2>
+              <p id="welcome-sub" class="text-sm font-medium text-gray-500 mt-1">Prêt(e) pour ta session de veille ?</p>
+          </div>
+          <div class="w-full lg:max-w-xl flex-1 relative group">
+              <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-paia-blue/40 text-lg group-focus-within:text-paia-blue"></i>
+              <input type="text" id="searchInput" placeholder="Rechercher un module..." class="w-full bg-white/80 backdrop-blur-sm border-2 border-white focus:border-paia-blue rounded-2xl py-4 pl-14 pr-20 text-paia-blue text-sm outline-none shadow-sm transition-all focus:shadow-[4px_4px_0px_#0F2C48]" />
+              <div class="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 items-center gap-1 opacity-50">
+                  <span class="text-[10px] font-bold bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">Ctrl</span>
+                  <span class="text-[10px] font-bold bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">K</span>
+              </div>
+          </div>
+          <div class="flex items-center gap-4 bg-white/80 p-3 pr-6 rounded-2xl border border-gray-100">
+              <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-orange-500 shadow-inner">
+                  <i class="fas fa-fire text-2xl animate-pulse"></i>
+              </div>
+              <div class="text-left">
+                  <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-0.5">Score Veille</p>
+                  <p class="text-xl font-display font-black text-paia-blue leading-none"><span id="streakCount">0</span> Pts</p>
+              </div>
+          </div>
+      </div>
+
+      <div class="tabs-sticky rounded-[24px] px-4 md:px-6 shadow-sm">
+          <div class="flex flex-wrap justify-center xl:justify-start gap-2 w-full" id="tabsMenu">
+              <button class="tab-btn" id="tab-ALL" onclick="window.filtrerBloc('ALL')">Vue Globale</button>
+              <button class="tab-btn text-paia-yellow" id="tab-FAV" onclick="window.filtrerBloc('FAV')"><i class="fas fa-star"></i> Favoris</button>
+              <button class="tab-btn" id="tab-B0" onclick="window.filtrerBloc('B0')">B0 : Socle</button>
+              <button class="tab-btn" id="tab-B1" onclick="window.filtrerBloc('B1')">B1 : Paie & Décla</button>
+              <button class="tab-btn" id="tab-B2" onclick="window.filtrerBloc('B2')">B2 : Admin RH</button>
+              <button class="tab-btn" id="tab-B3" onclick="window.filtrerBloc('B3')">B3 : Conseil & SIRH</button>
+          </div>
+          <div id="mediaFilters" class="flex gap-2 overflow-x-auto pb-1 mt-4 scrollbar-hide justify-center xl:justify-start">
+              <button onclick="window.setMediaFilter('ALL')" id="filter-ALL" class="media-filter bg-paia-blue text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap">Tous les formats</button>
+              <button onclick="window.setMediaFilter('video')" id="filter-video" class="media-filter bg-white/80 text-gray-500 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-gray-200">📽️ Vidéos</button>
+              <button onclick="window.setMediaFilter('audio')" id="filter-audio" class="media-filter bg-white/80 text-gray-500 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-gray-200">🎧 Audios</button>
+              <button onclick="window.setMediaFilter('pdf')" id="filter-pdf" class="media-filter bg-white/80 text-gray-500 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-gray-200">📄 PDF</button>
+              <button onclick="window.setMediaFilter('notebook')" id="filter-notebook" class="media-filter bg-white/80 text-gray-500 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-gray-200">📓 NoteBook</button>
+          </div>
+      </div>
+
+      <div id="globalProgressHeader" class="bg-white/60 backdrop-blur-xl rounded-[32px] p-6 md:p-8 border border-white shadow-lg mb-12 flex flex-col md:flex-row items-center gap-6 md:gap-10">
+        <div class="text-center md:text-left shrink-0">
+          <span class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Avancement Veille</span>
+          <div class="text-5xl font-display font-black text-paia-blue tracking-tight" id="progressText">0%</div>
+        </div>
+        <div class="flex-grow w-full bg-white h-6 rounded-full border border-gray-200 p-1 overflow-hidden relative shadow-inner">
+          <div id="progressBar" class="h-full bg-blue-500 rounded-full transition-all duration-1000 progress-glow relative overflow-hidden" style="width: 0%">
+              <div class="absolute inset-0 bg-white/20 w-full h-full transform -skew-x-12 translate-x-full animate-[shimmer_2s_infinite]"></div>
+          </div>
+        </div>
+        <div class="flex flex-col items-end hidden md:flex shrink-0 bg-white px-5 py-2 rounded-2xl border border-gray-100">
+            <div class="text-2xl font-display font-black text-paia-blue"><span id="compteurResVue">0</span><span class="text-gray-300 mx-1">/</span><span id="compteurResTotal" class="text-paia-bronze">0</span></div>
+            <span class="text-[9px] font-black uppercase text-gray-400 tracking-widest mt-1">Éléments validés</span>
+        </div>
+      </div>
+
+      <div id="subTabsContainer" class="hidden mb-10 flex-wrap gap-2 md:gap-3"></div>
+      <div id="listContainer" class="grid grid-cols-1 gap-6 pb-20 min-h-[50vh]"></div>
+      <div id="calendarContainer" class="hidden animate-slideIn px-2 md:px-0 pb-20"></div>
+    </main>
+
+    <div id="pdfSecurityModal" class="fixed inset-0 bg-paia-blue/90 backdrop-blur-xl hidden items-center justify-center z-[12000]">
+      <div id="pdfSecurityModalContent" class="bg-white p-8 rounded-[32px] border-[3px] border-paia-blue shadow-[8px_8px_0px_#0F2C48] max-w-lg w-full mx-4 transform scale-95 opacity-0 transition-all duration-300">
+        <div class="w-20 h-20 bg-red-50 rounded-full mx-auto flex items-center justify-center mb-6 border-2 border-red-200 shadow-inner"><i class="fas fa-shield-alt text-4xl text-red-500"></i></div>
+        <h2 class="font-display font-black text-paia-blue text-center text-2xl mb-2">Accès Restreint</h2>
+        <input type="password" id="pdfPinInput" maxlength="4" placeholder="Code" class="w-full text-center text-2xl font-display font-black text-paia-blue bg-white border-2 border-gray-200 p-4 rounded-xl mb-4 shadow-inner" onkeydown="if(event.key === 'Enter') window.verifyPdfPIN()" />
+        <div class="flex gap-3">
+            <button onclick="window.closePdfSecurityModal()" class="flex-1 bg-white text-gray-500 border-2 border-gray-200 py-4 rounded-xl font-black text-sm uppercase">Fermer</button>
+            <button onclick="window.verifyPdfPIN()" class="flex-1 bg-paia-blue text-white border-[3px] border-paia-blue py-4 rounded-xl font-black text-sm shadow-[4px_4px_0px_#B4792A] uppercase">Valider</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modalTravaux" class="fixed inset-0 bg-paia-blue/90 backdrop-blur-md hidden items-center justify-center z-[10000]">
+      <div class="bg-white p-8 rounded-3xl border-4 border-paia-blue text-center max-w-sm w-full mx-4 shadow-[10px_10px_0px_rgba(0,0,0,1)]">
+        <i class="fas fa-tools text-6xl text-paia-bronze mb-4 animate-pulse"></i>
+        <h2 class="font-display font-black text-paia-blue text-xl uppercase mb-2">En chantier</h2>
+        <p class="text-gray-500 text-sm mb-6">Le document pour <strong id="modalTxt"></strong> arrive bientôt.</p>
+        <button onclick="document.getElementById('modalTravaux').style.display = 'none';" class="w-full bg-paia-blue text-white py-3 rounded-xl font-black shadow-[4px_4px_0px_#B4792A]">RETOUR</button>
+      </div>
+    </div>
+
+    <footer class="py-12 flex flex-col items-center gap-5 bg-white/40 backdrop-blur-md border-t border-white/60 mt-auto relative z-10">
+      <img src="https://projettechacademy.github.io/Projet_Python/Asset/Logo_MMPA.jpeg" alt="Logo" class="w-16 h-16 rounded-full border-4 border-white shadow-lg object-cover" />
+      <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest text-center text-[#0F2C48] leading-relaxed">
+        💫 GESTIONNAIRE DE PAIE HUB | Créé par Mathilde Martine PAISLEY - © 2026
+      </p>
+    </footer>
+
     <script src="app.js"></script>
   </body>
 </html>
