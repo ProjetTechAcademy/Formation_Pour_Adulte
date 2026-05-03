@@ -1,8 +1,8 @@
 const CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTkqT90s2eYR3uo7-sKh2GCDmpsKLD03N10pQbj77sqaQSShANVYINjg__6cwzW2jQj1UHs1aGvt4IR/pub?gid=0&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSJuJce5_6A5Yd0xbYLhb4OZRZ4dyvi0oArF2a_Ks1U_dvGflru_lb8XLgLVs6NApu6cJUS_C6GYU71/pub?gid=842464760&single=true&output=csv";
 
 const configStructure = {
-  B0: [{ id: "M1" }, { id: "M2" }, { id: "M3" }, { id: "M4" }, { id: "M5" }],
+  B0: [{ id: "M1" }, { id: "M2" }, { id: "M3" }],
   B1: [
     { id: "M1" },
     { id: "M2" },
@@ -11,59 +11,65 @@ const configStructure = {
     { id: "M5" },
     { id: "M6" },
     { id: "M7" },
+    { id: "M8" },
+    { id: "M9" },
+    { id: "M10" },
+    { id: "M11" },
+    { id: "M12" },
+    { id: "M13" },
+    { id: "M14" },
   ],
-  B2: [{ id: "M1" }, { id: "M2" }, { id: "M3" }, { id: "M4" }],
-  B3: [{ id: "M1" }, { id: "M2" }, { id: "M3" }, { id: "M4" }, { id: "M5" }],
+  B2: [
+    { id: "M1" },
+    { id: "M2" },
+    { id: "M3" },
+    { id: "M4" },
+    { id: "M5" },
+    { id: "M6" },
+    { id: "M7" },
+    { id: "M8" },
+    { id: "M9" },
+  ],
+  B3: [
+    { id: "M1" },
+    { id: "M2" },
+    { id: "M3" },
+    { id: "M4" },
+    { id: "M5" },
+    { id: "M6" },
+    { id: "M7" },
+    { id: "M8" },
+    { id: "M9" },
+    { id: "M10" },
+    { id: "M11" },
+    { id: "M12" },
+  ],
+  B4: [{ id: "M1" }, { id: "M2" }, { id: "M3" }, { id: "M4" }, { id: "M5" }],
 };
 
 let database = [];
 let progressRes = JSON.parse(localStorage.getItem("paia_p_v10")) || {};
 let favorites = JSON.parse(localStorage.getItem("paia_favorites")) || [];
-let isVoice = false;
 let currentBloc = "ALL";
 let currentMod = "ALL";
 let currentMediaFilter = "ALL";
 
-// Initialisation
 window.onload = () => {
   updateWelcomeMessage();
   window.updateLockIcon();
 
-  if (!localStorage.getItem("paia_username")) {
-    window.askForName();
-  }
-
   Papa.parse(CSV_URL, {
     download: true,
-    header: false,
+    header: true,
     skipEmptyLines: true,
     complete: (results) => {
-      database = results.data
-        .slice(1)
-        .map((row) => ({
-          Programme: row[0] || "",
-          Audio: row[1] || "",
-          Cours: row[2] || "",
-          Infographie: row[3] || "",
-          Présentation: row[4] || "",
-          Vidéo: row[5] || "",
-          NoteBook_LM: row[6] || "",
-          Lien_Studi: row[7] || "",
-          MJA: row[8] || "",
-          Date_MJA: row[9] || "",
-          MAJ_2: row[10] || "",
-          Date_MAJ_2: row[11] || "",
-        }))
-        .filter((item) => item.Programme.trim() !== "");
-
+      database = results.data;
       document.getElementById("loader").style.display = "none";
       window.filtrerBloc("ALL");
-      window.checkDailyRevisions();
     },
   });
 };
 
-// Fonctions Globales (extraites de ton index.html)
 window.filtrerBloc = function (bloc) {
   currentBloc = bloc;
   currentMod = "ALL";
@@ -75,11 +81,9 @@ window.filtrerBloc = function (bloc) {
           "tab-btn bg-white/60 text-gray-500 border border-gray-200 px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm"),
     );
   const activeBtn = document.getElementById("tab-" + bloc);
-  if (activeBtn) {
+  if (activeBtn)
     activeBtn.className =
-      "tab-btn bg-paia-blue text-white border-paia-blue px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transform -translate-y-0.5";
-  }
-  window.renderSubTabs();
+      "tab-btn bg-paia-blue text-white border-paia-blue px-5 py-2.5 rounded-xl font-bold text-sm shadow-md";
   window.afficherModules(document.getElementById("searchInput").value, true);
 };
 
@@ -92,53 +96,48 @@ window.afficherModules = function (filtre = "", anim = true) {
     totalCount = 0;
   const finalFiltre = filtre.toLowerCase();
 
-  database.forEach((itemObj) => {
-    const parts = itemObj.Programme.split("-");
-    let id = parts[0].trim();
-    let titre =
-      parts.length > 1 ? parts.slice(1).join("-").trim() : "Sans titre";
-    const safeId = id.toUpperCase();
-
-    // Filtres
+  database.forEach((item) => {
+    if (!item.Code) return;
+    if (currentBloc !== "ALL" && !item.Code.includes(`_${currentBloc}_`))
+      return;
     if (
-      !id.toLowerCase().includes(finalFiltre) &&
-      !titre.toLowerCase().includes(finalFiltre)
+      finalFiltre &&
+      !item.Titre.toLowerCase().includes(finalFiltre) &&
+      !item.Code.toLowerCase().includes(finalFiltre)
     )
       return;
-    if (currentBloc !== "ALL" && !safeId.includes(`_${currentBloc}_`)) return;
 
-    // Calcul stats
     totalCount++;
-    if (progressRes[`${id}-audio`] || progressRes[`${id}-pdf`]) vueCount++; // Simplifié pour l'exemple
-
     const card = document.createElement("div");
     card.className =
-      "card-3d reveal bg-white/90 p-6 rounded-[28px] border border-white shadow-sm mb-6";
+      "card-3d bg-white p-6 rounded-[28px] border border-white shadow-sm mb-6 flex flex-col md:flex-row items-center gap-6";
     card.innerHTML = `
-            <div class="flex justify-between items-center">
-                <div>
-                    <span class="bg-paia-blue text-white px-3 py-1 rounded-lg text-[10px] font-black">${id}</span>
-                    <h3 class="text-xl font-display font-black text-paia-blue mt-2">${titre}</h3>
-                </div>
-                <div class="flex gap-2">
-                    <a href="${itemObj.Cours}" target="_blank" class="btn-resource bg-pdf">📄</a>
-                    <a href="${itemObj.Vidéo}" target="_blank" class="btn-resource bg-video">🎬</a>
+            <div class="flex-grow">
+                <span class="bg-paia-blue text-white px-3 py-1 rounded-lg text-[10px] font-black">${item.Code}</span>
+                <h3 class="text-xl font-display font-black text-paia-blue mt-2">${item.Titre}</h3>
+                <div class="flex gap-3 mt-4">
+                    <a href="${item.Cours}" target="_blank" class="btn-resource bg-pdf">📄</a>
+                    <a href="${item.Audio}" target="_blank" class="btn-resource bg-audio">🎧</a>
+                    <a href="${item.Vidéo}" target="_blank" class="btn-resource bg-video">🎬</a>
                 </div>
             </div>`;
     list.appendChild(card);
   });
 
-  // Update Progress
   const pct = totalCount > 0 ? Math.round((vueCount / totalCount) * 100) : 0;
   document.getElementById("progressText").innerText = pct + "%";
   document.getElementById("progressBar").style.width = pct + "%";
 };
-
-// ... Ajoute ici toutes les autres fonctions (toggleFavorite, checkDailyRevisions, etc.) présentes dans ton script d'origine.
-// Je les ai omises ici pour ne pas saturer le message, mais elles doivent être copiées-collées de ton fichier d'origine vers ce app.js.
 
 function updateWelcomeMessage() {
   const userName = localStorage.getItem("paia_username") || "Mathilde";
   document.getElementById("welcome-text").innerText =
     `Bonjour ${userName} ! 👋`;
 }
+
+window.updateLockIcon = () => {};
+window.toggleMobileMenu = () => {
+  const menu = document.getElementById("mobile-menu");
+  menu.classList.toggle("hidden");
+  menu.classList.toggle("translate-x-full");
+};
